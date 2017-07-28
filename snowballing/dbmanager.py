@@ -1,13 +1,14 @@
-""" dbmanager contains operations to manipulate the database
+"""This module contains operations to manipulate the database
 
 Warning: since it involves manipulating source code, some operations may not be 
 very reliable.
+
 Additionaly, we currently do not have tests for this file.
-Thus, my suggestion is to use only the 'insert' and 'set_attribute' functions.
-These functions were heavily used during my snowballing
+Thus, my suggestion is to use only the :meth:`~insert` and :meth:`~set_attribute` functions.
+These functions were heavily used during my snowballing.
 
 For other operations, such as removing citations/work, I recommend editting 
-files manually
+files manually.
 """
 
 import pyposast
@@ -23,7 +24,7 @@ from .dbindex import increment_str
 
 
 class ReplaceOperation(object):
-    """ Operation for replacing .target lines by :value """
+    """Operation for replacing `.target` lines by `:value`"""
 
     def __init__(self, target):
         self.first_line = target.first_line - 1
@@ -32,7 +33,7 @@ class ReplaceOperation(object):
         self.last_col = target.last_col
     
     def apply(self, lines, value):
-        """ Replaces lines of :target by value """
+        """Replace `lines` of `:target` by `:value`"""
         lines[self.first_line] = (
             lines[self.first_line][:self.first_col] + value 
             + lines[self.last_line][self.last_col:]
@@ -42,14 +43,14 @@ class ReplaceOperation(object):
 
 
 class DelOperation(object):
-    """ Operation for removing .keyword """
+    """Operation for removing `.keyword`"""
     def __init__(self, keyword, delete_lines=False):
         self.keyword = keyword
         self.delete_lines = delete_lines
         
         
     def apply(self, lines, value):
-        """ Removes .keyword from :lines """
+        """Remove `.keyword` from `:lines`"""
         replace = ReplaceOperation(self.keyword)
         replace.apply(lines, "")
         if self.delete_lines:
@@ -59,13 +60,13 @@ class DelOperation(object):
 
 
 class AddKeywordOperation(object):
-    """ Operation for adding :attribute """
+    """Operation for adding `:attribute`"""
     def __init__(self, attribute, last_line):
         self.last_line = last_line
         self.attribute = attribute
         
     def apply(self, lines, value):
-        """ Adds .attribute = :value into :lines """
+        """Add `.attribute` = `:value` into `:lines`"""
         lines.insert(
             self.last_line,
             "    {}={},".format(
@@ -75,14 +76,14 @@ class AddKeywordOperation(object):
 
 
 class InsertOperation(object):
-    """ Operation for inserting values in a given line """
+    """Operation for inserting values in a given line"""
     def __init__(self, last_line, last=False, add_line=True):
         self.last_line = last_line - 1
         self.last = last
         self.add_line = add_line
         
     def apply(self, lines, value):
-        """ Inserts :value at line .last_line """
+        """Insert `:value` at line `.last_line`"""
         new_entry = value.split("\n")
         if self.add_line:
             new_entry.append("")
@@ -96,7 +97,7 @@ class InsertOperation(object):
 
 
 class DetectOperation(object):
-    """ Operation for detecting eleements """
+    """Operation for detecting elements"""
     
     def __init__(self):
         self.work_list = []
@@ -104,13 +105,14 @@ class DetectOperation(object):
         self.imports = []
         
     def apply(self, lines, value):
+        """Detect elements"""
         value["work_list"] = self.work_list
         value["citations"] = self.citations
         value["imports"] = self.imports
 
 
 def is_assign_to_name(stmt):
-    """ Checks if stmt is an assignment to name """
+    """Check if stmt is an assignment to name"""
     return (
         isinstance(stmt, ast.Assign) and 
         isinstance(stmt.targets[0], ast.Name)
@@ -118,7 +120,7 @@ def is_assign_to_name(stmt):
 
 
 def is_call_statement(stmt):
-    """ Checks if stmt is a call expr """
+    """Check if stmt is a call expr"""
     return (
         isinstance(stmt, ast.Expr) and
         isinstance(stmt.value, ast.Call)
@@ -126,7 +128,7 @@ def is_call_statement(stmt):
 
 
 class EditVisitor(ast.NodeVisitor):
-    """ Visitor for editing attributes of a Work identified by .varname """
+    """Visitor for editing attributes of a Work identified by `.varname`"""
     def __init__(self, lines, varname, operation="rename"):
         self.varname = varname
         self.operation = operation
@@ -135,17 +137,17 @@ class EditVisitor(ast.NodeVisitor):
         self.lines = lines
     
     def replace(self, node):
-        """ Instantiates a replace operation """
+        """Instantiate a replace operation"""
         self.result = ReplaceOperation(node)
         self.old = pyposast.extract_code(self.lines, node)
     
     def add_keyword(self, attribute, last_line):
-        """ Instantiates an operation to add keyword """
+        """Instantiate an operation to add keyword"""
         self.result = AddKeywordOperation(attribute, last_line)
         self.old = ""
     
     def remove_keyword(self, keyword, remove_lines):
-        """ Instantiates an operation to remove a keyword """
+        """Instantiate an operation to remove a keyword"""
         if not remove_lines:
             warnings.warn(
                 "PyPosAST bug"
@@ -156,8 +158,10 @@ class EditVisitor(ast.NodeVisitor):
             self.lines, keyword.value)
     
     def visit_Assign(self, node):
-        """ Visits assign and checks if it represents the desired .varname
-        Then, instantiates and applies the desired .operation """
+        """Visits assign and check if it represents the desired `.varname`
+        
+        Then, instantiate and apply the desired `.operation`
+        """
         for target in node.targets:
             if isinstance(target, ast.Name) and target.id == self.varname:
                 if self.operation == "rename":
@@ -194,7 +198,7 @@ class EditVisitor(ast.NodeVisitor):
        
 
 class BodyVisitor(ast.NodeVisitor):
-    """ Visits body of year file to find .varname and apply .operation """
+    """Visit body of year file to find `.varname` and apply `.operation`"""
     
     def __init__(self, lines, varname, operation="delete"):
         self.varname = varname
@@ -204,17 +208,17 @@ class BodyVisitor(ast.NodeVisitor):
         self.old = ""
     
     def remove_stmt(self, stmt):
-        """ Instantiates an operation to remove the stmt """
+        """Instantiate an operation to remove the stmt"""
         self.result = DelOperation(stmt, True)
         self.old = pyposast.extract_code(self.lines, stmt)
         
     def insert(self, line, last):
-        """ Instantiates an operation to insert code """
+        """Instantiate an operation to insert code"""
         self.result = InsertOperation(line, last)
         self.old = ""
     
     def process_body(self, body):
-        """ Finds desired varnames in body and applies the operation """
+        """Finds desired varnames in body and instantiate operation"""
         oper = self.operation
         lines = self.lines
         if oper == "detect":
@@ -245,20 +249,20 @@ class BodyVisitor(ast.NodeVisitor):
             self.insert(stmt.last_line, True)
     
     def visit_Interactive(self, node):
-        """ Processes body of Interactive node """
+        """Process body of Interactive node"""
         self.process_body(node.body)
         
     def visit_Module(self, node):
-        """ Processes body of Module node """
+        """Process body of Module node"""
         self.process_body(node.body)
         
     def visit_Suite(self, node):
-        """ Processes body of Suite node """
+        """Processes body of Suite node"""
         self.process_body(node.body)
 
 
 class CitationVisitor(ast.NodeVisitor):
-    """ Visits body of citation file to apply operation """
+    """Visit body of citation file to apply operation"""
     
     def __init__(self, lines, varname, year, operation="remove import"):
         self.varname = varname
@@ -269,7 +273,7 @@ class CitationVisitor(ast.NodeVisitor):
         self.lines = lines
         
     def process_body(self, body):
-        """ Finds citation/import and applies the desired .operation """
+        """Find citation/import and applies the desired `.operation`"""
         if self.operation in ("find", "detect"):
             self.result = DetectOperation()
         last_line = 0
@@ -323,23 +327,22 @@ class CitationVisitor(ast.NodeVisitor):
 
         if self.operation == "insert import" and not self.result:
             self.result = InsertOperation(last_line + 1, True, add_line=True)
-
-                    
+          
     def visit_Interactive(self, node):
-        """ Processes body of Interactive node """
+        """Process body of Interactive node"""
         self.process_body(node.body)
         
     def visit_Module(self, node):
-        """ Processes body of Module node """
+        """Process body of Module node"""
         self.process_body(node.body)
         
     def visit_Suite(self, node):
-        """ Processes body of Suite node """
+        """Processes body of Suite node"""
         self.process_body(node.body)
 
 
 def read_file(filename):
-    """ Reads python file with the right codec """
+    """Read python file with the right codec"""
     with open(filename, "rb") as script_file:
         code = pyposast.native_decode_source(script_file.read())
     sep = "\r\n" if "\r" in code else "\n"
@@ -348,13 +351,13 @@ def read_file(filename):
 
 
 def save_lines(filename, lines, sep="\n"):
-    """ Writes python file with utf-8 """
+    """Write python file with utf-8"""
     with open(filename, "wb") as script_file:
         script_file.write(sep.join(lines).encode("utf-8"))
 
 
 def work_operation(filename, lines, varname, operation, value=""):
-    """ Applies :operation for :varname in a year file :filename """
+    """Apply `:operation` for `:varname` in a year file `:filename`"""
     vis_class = EditVisitor
     if operation in ("delete", "insert", "detect"):
         vis_class = BodyVisitor
@@ -368,7 +371,7 @@ def work_operation(filename, lines, varname, operation, value=""):
 
 
 def citation_operation(filename, lines, varname, year, operation, value=""):
-    """ Applies :operation for :varname in a citation file :filename """
+    """Apply `:operation` for `:varname` in a citation file `:filename`"""
     visitor = CitationVisitor(lines, varname, year, operation)
     if operation == "rename":
         regex = re.compile(varname + r"\s*?,")
@@ -394,7 +397,7 @@ def citation_operation(filename, lines, varname, year, operation, value=""):
 
 
 def rename_citation(name, original_varname, new_varname, year=None, new_year=None, dry_run=False):
-    """ Rename citation varname """
+    """Rename citation varname"""
     year = discover_year(original_varname, year)
     new_year = discover_year(new_varname, new_year, fail_raise=False) or year
     filename = citation_file(name)
@@ -412,7 +415,7 @@ def rename_citation(name, original_varname, new_varname, year=None, new_year=Non
 
 
 def remove_source_citation(name, varname, year=None, dry_run=False):
-    """ Remove citation where the citer is :varname """
+    """Remove citation where the citer is `:varname`"""
     year = discover_year(varname, year)
     filename = citation_file(name)
     lines, sep = read_file(filename)
@@ -442,7 +445,7 @@ def remove_source_citation(name, varname, year=None, dry_run=False):
 
 
 def remove_target_citation(name, varname, year=None, dry_run=False):
-    """ Remove citation where the cited is :varname """
+    """Remove citation where the cited is `:varname`"""
     year = discover_year(varname, year)
     filename = citation_file(name)
     lines, sep = read_file(filename)
@@ -472,7 +475,7 @@ def remove_target_citation(name, varname, year=None, dry_run=False):
 
 
 def insert_citation(name, text, dry_run=False):
-    """ Insert citation by :text in file :name"""
+    """Insert citation by `:text` in file `:name`"""
     filename = citation_file(name)
     try:
         lines, sep = read_file(filename)
@@ -512,7 +515,7 @@ def insert_citation(name, text, dry_run=False):
 
 
 def insert_work(varname, name, text, year=None, ratio=0.9, dry_run=False):
-    """ Insert work  by :text in file :name"""
+    """Insert work by `:text` in file `:name`"""
     year = discover_year(varname, year)
     filename = year_file(year)
     try:
@@ -550,7 +553,7 @@ def insert_work(varname, name, text, year=None, ratio=0.9, dry_run=False):
 
 
 def rename_work(original_name, new_name, year=None, new_year=None, citations=True, dry_run=False):
-    """ Rename work """
+    """Rename work"""
     year = discover_year(original_name, year)
     new_year = discover_year(new_name, new_year, fail_raise=False) or year
     filename = year_file(year)
@@ -561,7 +564,7 @@ def rename_work(original_name, new_name, year=None, new_year=None, citations=Tru
 
 
 def rename_lines(filename, lines, sep, original_name, new_name, year=None, new_year=None, citations=True, dry_run=False):
-    """ Rename work in year and citation files """
+    """Rename work in year and citation files"""
     year = discover_year(original_name, year)
     new_year = discover_year(new_name, new_year, fail_raise=False) or year
     print("-Rename:", original_name, "to", new_name)
@@ -596,10 +599,25 @@ def rename_lines(filename, lines, sep, original_name, new_name, year=None, new_y
 
 
 def set_attribute(varname, field, value, year=None, dry_run=False):
-    """ Sets attribute :field for work :varname 
+    """Set attribute for work 
 
-    Example:
-    In [1]: set_attribute('murta2014a', "display", "now");
+    Arguments:
+
+    * `varname` -- work variable name
+
+    * `field` -- work attribute name
+
+    * `value` -- new value for attribute
+
+    Keyword arguments:
+
+    * `year` -- limit work search for specific year
+
+    * `dry_run` -- do not apply changes to the database
+
+    Example::
+
+        set_attribute('murta2014a', "display", "now");
     """
     year = discover_year(varname, year)
     filename = year_file(year)
@@ -615,28 +633,38 @@ def set_attribute(varname, field, value, year=None, dry_run=False):
 
 
 def insert(text, citations=None, ratio=0.9, dry_run=False):
-    """ Inserts :text that might contains works and citations.
-    Insert citations in :citations file 
+    """Insert text that might contain works and citations.
 
-    Example:
-    ```
-    insert('''
-    pimentel2016a = DB(WorkSnowball(
-        2016, "Tracking and analyzing the evolution of provenance from scripts",
-        display="noworkflow a",
-        authors="Pimentel, João Felipe and Freire, Juliana and Braganholo, Vanessa and Murta, Leonardo",
-        place=IPAW,
-        pp="16--28",
-        entrytype="inproceedings",
-    ))
+    Arguments:
+
+    * `text` -- code with work and citations
+
+    Keyword arguments:
+
+    * `citations` -- citations filename
+
+    * `ratio` -- comparison threshold for existing work
+
+    * `dry_run` -- do not apply changes to the database
     
-    DB(Citation(
-        pimentel2016a, murta2014a, ref="[14]",
-        contexts=[
-        ],
-    ))
-    ''', citations="murta2014a");
-    ```
+    Example::
+    
+        insert('''
+        pimentel2016a = DB(WorkSnowball(
+            2016, "Tracking and analyzing the evolution of provenance from scripts",
+            display="noworkflow a",
+            authors="Pimentel, João Felipe and Freire, Juliana and Braganholo, Vanessa and Murta, Leonardo",
+            place=IPAW,
+            pp="16--28",
+            entrytype="inproceedings",
+        ))
+        
+        DB(Citation(
+            pimentel2016a, murta2014a, ref="[14]",
+            contexts=[
+            ],
+        ))
+        ''', citations="murta2014a");
 
     """
     result = {}

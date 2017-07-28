@@ -20,7 +20,6 @@ murta2014a = DB(WorkSnowball(
     file="murta2014a.pdf",
     scholar="http://scholar.google.com/scholar?cites=5458343950729529273&as_sdt=2005&sciodt=0,5&hl=en",
     scholar_id="ucciVefuv0sJ",
-    scholar_id2="FiutAE4j0IgJ",
     pp="71--83",
     entrytype="inproceedings",
     organization="Springer",

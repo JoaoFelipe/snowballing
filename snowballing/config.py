@@ -1,4 +1,7 @@
-""" config contains the configuration for the snowballing """
+"""This module configures the snowballing.
+
+Please, use the database __init__ to replace these configurations.
+"""
 from pathlib import Path
 
 # Database path
@@ -26,10 +29,6 @@ CLASSES = [
     ("WorkLang", "lang", "hide", "#ff8040", "white"),
     ("Site", "site", "hide", "#000080", "white"),
     ("Email", "site", "hide", "#000080", "white"),
-
-    # Remove
-    ("WorkBinarySnowball", "binarysnowball", "hide", "#DE9BF9", "white"),
-    ("WorkBinaryOk", "binary ok", "hide", "#DE9BF9", "white"),
 ]
 # Default class for insertion
 DEFAULT_CLASS = "Work"
@@ -58,17 +57,8 @@ BIBTEX_IGNORE_FIELDS = [
     # Tool
     "_.*", "force_.*", "file.*", "category", "alias", "aliases", "scholar_ok",
     "scholar", "cluster_id", "scholar_id", "display", "metakey", "due", "tyear",
-    "citation_file", "notes", "tracking", "snowball", 
-
-    # Extra
-    "request",
-    "arxiv",
-    "may_be_related_to", "summary",  "approach_name", 
-    "draw", "ignore", "generate_title", "star", "evaluation", "export",
-    "resumo", "star2",  "scholar_id2", "see",
-    "define", "summarization", "visualization", "categories", "todo",
-    "tool_summary", "collection", "lab", "note", "query", "storage",
-    "acm",  
+    "citation_file", "notes", "tracking", "snowball", "request", "draw",
+    "may_be_related_to", "ignore", "generate_title", "note", 
 ]
 
 # Map Work to BibTeX
@@ -99,24 +89,6 @@ WORK_BIBTEX_MAP = {
 FORM_BUTTONS = [
     [
         (
-            "Unrelated: Scripts", {
-                "due_widget": "Unrelated to scripts",
-                "file_field_widget": True,
-            }
-        ),
-        (
-            "Unrelated: Provenance", {
-                "due_widget": "Unrelated to provenance",
-                "file_field_widget": True,
-            }
-        ),
-        (
-            "Both", {
-                "due_widget": "Unrelated to scripts. Unrelated to provenance",
-                "file_field_widget": True,
-            }
-        ),
-        (
             "Ok", {
                 "work_type_widget": "WorkOk",
                 "file_field_widget": True,
@@ -133,8 +105,6 @@ FORM_BUTTONS = [
 FORM_TEXT_FIELDS = [
     ("Related", "may_be_related_to", None),
     ("Display", "display", None),
-    ("Summary", "summary", None),
-    ("Star", "star", None),
     ("Link", "link", None),
 ]
 

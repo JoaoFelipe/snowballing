@@ -1,19 +1,33 @@
-""" common_places includes common places in the database """
+"""This module includes common places in the database and provides functions
+for creating other places
+
+It includes the following common places in the database:
+
+* Book -- represents books
+* Lang -- represents places in foreign language
+* Patent -- represents patents
+* Standard -- represents standards
+* TechReport -- represents technical reports
+* Thesis -- represents thesis
+* Unpublished -- represents work that were not published
+* Web -- represents websites
+
+"""
 from .models import Place, DB
 
 
 def conference(acrom, name, **kwargs):
-    """ Creates a place with 'Conference' type """
+    """Create a place with 'Conference' type"""
     return DB(Place(acrom, name, "Conference", **kwargs))
 
 
 def journal(acrom, name, **kwargs):
-    """ Creates a place with 'Journal' type """
+    """Create a place with 'Journal' type"""
     return DB(Place(acrom, name, "Journal", **kwargs))
 
 
 def magazine(acrom, name, **kwargs):
-    """ Creates a place with 'Magazine' type """
+    """Create a place with 'Magazine' type"""
     return DB(Place(acrom, name, "Magazine", **kwargs))
 
 

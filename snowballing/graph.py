@@ -1,4 +1,4 @@
-""" graph produces citation graphs """
+"""This module produces citation graphs"""
 
 import os
 import svgwrite
@@ -22,7 +22,7 @@ from . import config
 
 
 class GraphConfig:
-    """ Configures graph """
+    """Configure graph"""
     def __init__(self, **kwargs):
         self._max_by_year = float('inf')
         self.r = 20
@@ -51,7 +51,16 @@ class GraphConfig:
 
 
 def set_positions(work_list, graph_config=None):
-    """ Sets positions for each work in :work_list according to :graph_config """
+    """Set positions for each work
+
+    Arguments:
+    
+    * `work_list` -- list of work
+
+    Keyword arguments:
+
+    * `graph_config` -- GraphConfig object with style configurations
+    """
     graph_config = graph_config or GraphConfig()
     by_year = defaultdict(list)
     years = {}
@@ -101,8 +110,17 @@ def set_positions(work_list, graph_config=None):
 
 
 def create_graph(name, work_list, references, graph_config=None):
-    """ Creates graph with :name based on :work_list, :references
-    Uses style defined in :graph_config
+    """Create citation graph
+
+    Arguments:
+
+    * `name` -- file name
+    * `work_list` -- list of work
+    * `references` -- list of citations
+
+    Keyword arguments:
+
+    * `graph_config` -- GraphConfig object with style configurations
     """
     graph_config = graph_config or GraphConfig()
     years, rows, max_in_one_year = set_positions(work_list, graph_config)
@@ -143,7 +161,15 @@ def create_graph(name, work_list, references, graph_config=None):
 
 
 class Graph(Box):
-    """ Graph class for creating interactive graphs """
+    """Graph widget class for creating interactive graphs
+
+    Keyword arguments:
+
+    * `name` -- graph name
+    * `delayed` -- use a draw button instead of updating on every change
+    * `**kwargs` -- default configurations for the graph according to 
+      GraphConfig attributes and category names
+    """
 
     def __init__(self, name="graph", delayed=False, **kwargs):
         self._display_stack = 1
@@ -213,12 +239,12 @@ class Graph(Box):
         self.delayed_draw()
 
     def delayed_draw(self, *args):
-        """ Draws graph """
+        """Draw graph"""
         self._display_stack = 0
         self.display()
 
     def slider(self, description, attribute, min, max, step, default, fn=None):
-        """ Creates slider """
+        """Creates slider"""
         widget = IntSlider(
             description=description,
             min=min,
@@ -231,12 +257,12 @@ class Graph(Box):
         return widget
 
     def update_widget(self, *args):
-        """ Callback for generic widgets """
+        """Callback for generic widgets"""
         self._display_stack += 1
         self.display()
         
     def update_r_widget(self, *args):
-        """ Callback for updating r_widget value """
+        """Callback for updating r_widget value"""
         self._display_stack += 1
         r_value = self.r_widget.value
         dist_min = 2 * r_value + 2
@@ -256,13 +282,13 @@ class Graph(Box):
         self.display()
         
     def visible_classes(self):
-        """ Generates classes """
+        """Generate classes"""
         for class_ in config.CLASSES:
             if class_[2] in ("display", "hide"):
                 yield class_
         
     def create_category(self, name, attr, value, color, font_color):
-        """ Creates category widget """
+        """Create category widget"""
         VIS = ['none', '']
         widget = self.toggle_widgets[attr] = ToggleButton(value=value, description=name)
         wcolor = self.color_widgets[attr] = ColorPicker(value=color, description=name, width="180px")
@@ -279,7 +305,7 @@ class Graph(Box):
         visibility()
         
     def create_widgets(self):
-        """ Creates custom categories """
+        """Create custom categories"""
         for class_ in self.visible_classes():
             self.create_category(
                 class_[0], class_[1],
@@ -288,7 +314,7 @@ class Graph(Box):
             )
             
     def graph(self):
-        """ Creates graph """
+        """Create graph"""
         reload()
         work_list = load_work()
         references = load_citations()
@@ -324,11 +350,11 @@ class Graph(Box):
         return work_list, ref_list
 
     def work_key(self, work):
-        """ Returns work category """
+        """Return work category"""
         return work.category
     
     def work_colors(self, work):
-        """ Returns colors for work """
+        """Return colors for work"""
         key = self.work_key(work)
         if key not in self.color_widgets:
             return ('white', 'black')
@@ -338,7 +364,7 @@ class Graph(Box):
         )
     
     def filter_work(self, work):
-        """ Filters work """
+        """Filter work"""
         key = self.work_key(work)
         if key not in self._display_categories:
             return False
@@ -351,7 +377,7 @@ class Graph(Box):
         return False
         
     def display(self, *args):
-        """ Displays interactive graph """
+        """Display interactive graph"""
         if self._display_stack:
             if not self.delayed:
                 self._display_stack -= 1
@@ -397,7 +423,7 @@ class Graph(Box):
 
 
 def getcolors():
-    """ Generates colors """
+    """Generate colors"""
     kelly_colors = OrderedDict([
         ('D6.1', (140, 81, 10)),
         ('D6.2', (216, 179, 101)),
@@ -433,7 +459,9 @@ def getcolors():
             yield color
         print("WARNING: repeating colors")
 
+
 def getsvgcolors():
+    """Generate pairs of colors"""
     textcolors = OrderedDict([
         ((140, 81, 10), "white"),
         ((216, 179, 101), "black"),

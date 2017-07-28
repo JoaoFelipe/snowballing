@@ -1,5 +1,5 @@
-""" operations contains functions to reload the database, load work and 
-citations from there, and operate bibtex """
+"""This module contains functions to :meth:`~reload` the database, load work and 
+citations from there, and operate BibTeX"""
 
 import importlib
 import re
@@ -29,22 +29,26 @@ GROUP_CACHE = {}
 
 
 def load_work():
-    """ loads a list of all work in the database """
+    """Load a list of all work in the database"""
     return list(DB.work())
 
 
 def load_citations():
-    """ loads a list of all citations """
+    """Load a list of all citations"""
     return list(DB.citations())
 
 
 def load_places_vars():
-    """ loads all places from the database 
+    """Load all places from the database 
+    
     It generates tuples with variable name and Place object
 
-    Doctest
-    >>> 'arXiv' in [varname for varname, _ in load_places_vars()]
-    True
+    Doctest:
+
+    .. doctest::
+
+        >>> 'arXiv' in [varname for varname, _ in load_places_vars()]
+        True
     """
     places = config.MODULES['places']
     for varname, varvalue in places.__dict__.items():
@@ -53,13 +57,16 @@ def load_places_vars():
 
 
 def load_work_map(year):
-    """ loads all work from a given year file
+    """Load all work from a given year file
     It generates tuples with variable name and Work object
 
-    Doctest
-    >>> reload()
-    >>> sorted([(work.year, key) for key, work in load_work_map(2015)])
-    [(2014, 'murta2014a'), (2015, 'pimentel2015a')]
+    Doctest:
+
+    .. doctest::
+
+        >>> reload()
+        >>> sorted([(work.year, key) for key, work in load_work_map(2015)])
+        [(2014, 'murta2014a'), (2015, 'pimentel2015a')]
 
     (2014, 'murta2014a') appears because it has an alias in 2015
     """
@@ -73,13 +80,16 @@ def load_work_map(year):
 
 
 def work_by_varname(varname, year=None):
-    """ loads work by varname 
+    """Load work by varname 
 
-    Doctest
-    >>> reload()
-    >>> work = work_by_varname('murta2014a')
-    >>> work.year
-    2014
+    Doctest:
+
+    .. doctest::
+
+        >>> reload()
+        >>> work = work_by_varname('murta2014a')
+        >>> work.year
+        2014
     """
     if year is None:
         year = int(parse_varname(varname, 2) or -1)
@@ -91,12 +101,15 @@ def work_by_varname(varname, year=None):
 
 
 def load_work_map_all_years():
-    """ loads all work from all years 
+    """Load all work from all years 
 
-    Doctest
-    >>> reload()
-    >>> sorted([(work.year, key) for key, work in load_work_map_all_years()])
-    [(2008, 'freire2008a'), (2014, 'murta2014a'), (2014, 'murta2014a'), (2015, 'pimentel2015a')]
+    Doctest:
+
+    .. doctest::
+
+        >>> reload()
+        >>> sorted([(work.year, key) for key, work in load_work_map_all_years()])
+        [(2008, 'freire2008a'), (2014, 'murta2014a'), (2014, 'murta2014a'), (2015, 'pimentel2015a')]
 
     (2014, 'murta2014a') appears twice because it has an alias in 2015
     """
@@ -106,7 +119,7 @@ def load_work_map_all_years():
 
 
 def _clear_db():
-    """ Erases database """
+    """Erase database"""
     from .approaches import APPROACHES
     APPROACHES.clear()
     importlib.invalidate_caches()
@@ -115,7 +128,7 @@ def _clear_db():
 
 
 def _reload_work():
-    """ Reloads work and creates WORD_CACHE """
+    """Reload work and create WORD_CACHE"""
     for key, module in import_submodules(config.MODULES['work']).items():
         yname = key.split('.')[-1]
         fname = (yname + '.py')
@@ -127,15 +140,19 @@ def _reload_work():
 
 
 def reload():
-    """ Reloads all the database 
+    """Reload all the database 
 
-    >>> reload()
-    >>> from example.database.work.y2014 import murta2014a
-    >>> murta2014a.metakey
-    'murta2014a'
-    >>> from example.database.work.y2015 import murta2014a as alias
-    >>> alias is murta2014a
-    True
+    Doctest:
+
+    ..doctest::
+
+        >>> reload()
+        >>> from example.database.work.y2014 import murta2014a
+        >>> murta2014a.metakey
+        'murta2014a'
+        >>> from example.database.work.y2015 import murta2014a as alias
+        >>> alias is murta2014a
+        True
     """
     _clear_db()
     importlib.reload(config.MODULES['places'])
@@ -159,40 +176,51 @@ def reload():
 
 
 def bibtex_to_info(citation):
-    """ Converts bibtex dict from bibtexparse to info dict for adding a db entry 
+    """Convert BibTeX dict from bibtexparse to info dict for adding a db entry 
 
     It has the following conversions:
-        title -> name (required)
-        author -> authors (required)
-        year -> year (0 if not specified)
-            If there is '[in press]', creates 'note' with 'in press'
-        journal/booktitle -> place1 ('' if not specified)
-            If 'place1' matches a place in the database, creates also 'place'
-        pages -> pp
-        ENTRYTYPE -> entrytype
+
+    * title -> name (required)
+    
+    * author -> authors (required)
+        
+    * year -> year (0 if not specified)
+            
+      * If there is '[in press]', creates 'note' with 'in press'
+    
+    * journal/booktitle -> place1 ('' if not specified)
+            
+      * If 'place1' matches a place in the database, creates also 'place'
+    
+    * pages -> pp
+    
+    * ENTRYTYPE -> entrytype
 
     Also creates the following fields:
-        -> display
-            Last name of first author
-        -> pyref
-            {display}{year}{letter}
+    
+    * display -- Last name of first author
+    
+    * pyref -- {display}{year}{letter}
 
 
-    Doctest
-    >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J'})
-    {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'place1': '', 'display': 'pim', 'pyref': 'pim0a'}
-    >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'year': '2017'})
-    {'name': 'a', 'authors': 'Pim, J', 'year': 2017, 'place1': '', 'display': 'pim', 'pyref': 'pim2017a'}
-    >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'year': '2017 [in press]'})
-    {'name': 'a', 'authors': 'Pim, J', 'note': 'in press', 'year': 2017, 'place1': '', 'display': 'pim', 'pyref': 'pim2017a'}
-    >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'pages': '1--5'})
-    {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'pp': '1--5', 'place1': '', 'display': 'pim', 'pyref': 'pim0a'}
-    >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'journal': 'CiSE'})
-    {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'place1': 'CiSE', 'place': 'CiSE', 'display': 'pim', 'pyref': 'pim0a'}
-    >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'ENTRYTYPE': 'article'})
-    {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'place1': '', 'entrytype': 'article', 'display': 'pim', 'pyref': 'pim0a'}
-    >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'other': 'a'})
-    {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'place1': '', 'display': 'pim', 'pyref': 'pim0a', 'other': 'a'}
+    Doctest:
+
+    .. doctest::
+
+        >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J'})
+        {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'place1': '', 'display': 'pim', 'pyref': 'pim0a'}
+        >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'year': '2017'})
+        {'name': 'a', 'authors': 'Pim, J', 'year': 2017, 'place1': '', 'display': 'pim', 'pyref': 'pim2017a'}
+        >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'year': '2017 [in press]'})
+        {'name': 'a', 'authors': 'Pim, J', 'note': 'in press', 'year': 2017, 'place1': '', 'display': 'pim', 'pyref': 'pim2017a'}
+        >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'pages': '1--5'})
+        {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'pp': '1--5', 'place1': '', 'display': 'pim', 'pyref': 'pim0a'}
+        >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'journal': 'CiSE'})
+        {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'place1': 'CiSE', 'place': 'CiSE', 'display': 'pim', 'pyref': 'pim0a'}
+        >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'ENTRYTYPE': 'article'})
+        {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'place1': '', 'entrytype': 'article', 'display': 'pim', 'pyref': 'pim0a'}
+        >>> bibtex_to_info({'title': 'a', 'author': 'Pim, J', 'other': 'a'})
+        {'name': 'a', 'authors': 'Pim, J', 'year': 0, 'place1': '', 'display': 'pim', 'pyref': 'pim0a', 'other': 'a'}
     """
     result = {}
     setitem(result, "name", consume(citation, "title"))
@@ -218,30 +246,34 @@ def bibtex_to_info(citation):
 
 
 def set_display(info, check_existence=False):
-    """ Sets displays of info based on the authors field
+    """Set displays of info based on the authors field
+
     Selects the last name of the first author
 
-    Doctest
-    >>> info = {'authors': 'Pimentel, Joao'}; set_display(info)
-    >>> info['display']
-    'pimentel'
-    >>> info = {'authors': 'Pimentel, Joao and Braganholo, Vanessa'}
-    >>> set_display(info)
-    >>> info['display']
-    'pimentel'
-    >>> info = {'authors': 'Joao Pimentel'}
-    >>> set_display(info)
-    >>> info['display']
-    'pimentel'
-    >>> info = {'authors': 'Joao Pimentel and Vanessa Braganholo'}
-    >>> set_display(info)
-    >>> info['display']
-    'pimentel'
-    >>> info = {'authors': 'Joao Pimentel, Vanessa Braganholo'}
-    >>> set_display(info)
-    >>> info['display']
-    'pimentel'
-    """
+    Doctest:
+
+    .. doctest::
+
+        >>> info = {'authors': 'Pimentel, Joao'}; set_display(info)
+        >>> info['display']
+        'pimentel'
+        >>> info = {'authors': 'Pimentel, Joao and Braganholo, Vanessa'}
+        >>> set_display(info)
+        >>> info['display']
+        'pimentel'
+        >>> info = {'authors': 'Joao Pimentel'}
+        >>> set_display(info)
+        >>> info['display']
+        'pimentel'
+        >>> info = {'authors': 'Joao Pimentel and Vanessa Braganholo'}
+        >>> set_display(info)
+        >>> info['display']
+        'pimentel'
+        >>> info = {'authors': 'Joao Pimentel, Vanessa Braganholo'}
+        >>> set_display(info)
+        >>> info['display']
+        'pimentel'
+        """
     if check_existence and 'display' in info:
         return
     authors = info['authors']
@@ -255,17 +287,20 @@ def set_display(info, check_existence=False):
 
 
 def set_pyref(info, check_existence=False):
-    """ Sets pyref of info. Finds the next available letter in the database 
+    """Set pyref of info. Finds the next available letter in the database 
 
-    Doctest
-    >>> info = {'display': 'pimentel', 'year': 2017}
-    >>> set_pyref(info)
-    >>> info['pyref']
-    'pimentel2017a'
-    >>> info = {'display': 'pimentel', 'year': 2015}
-    >>> set_pyref(info)
-    >>> info['pyref']
-    'pimentel2015b'
+    Doctest:
+
+    .. doctest::
+
+        >>> info = {'display': 'pimentel', 'year': 2017}
+        >>> set_pyref(info)
+        >>> info['pyref']
+        'pimentel2017a'
+        >>> info = {'display': 'pimentel', 'year': 2015}
+        >>> set_pyref(info)
+        >>> info['pyref']
+        'pimentel2015b'
     """
     if check_existence and 'pyref' in info:
         return
@@ -278,33 +313,39 @@ def set_pyref(info, check_existence=False):
 
 
 def set_place(info, check_existence=False):
-    """ Sets place of info. 
+    """Set place of info 
 
     It reorders common patterns:
-        Proceedings of the
-        International Conference on
-        International Convention on
-        International Symposium on
+
+    * Proceedings of the
+    * International Conference on
+    * International Convention on
+    * International Symposium on
 
     Then, it removes numbers and it tries to match places in the database.
-    It considers a match if the matching ratio for the place name is >= config.SIMILARITY_RATIO (0.8)
-    It also considers a match if the acronym matches
 
-    Doctest
-    >>> info = {"place1": "IPAW"}
-    >>> set_place(info)
-    >>> info["place"]
-    'IPAW'
-    >>> info = {"place1": "Software Engineering, International Conference on"}
-    >>> set_place(info)
-    >>> info["place"]
-    'ICSE'
-    >>> info = {"place1": "A random conference"}
-    >>> set_place(info)
-    >>> 'place' not in info
-    True
+    It considers a match if the matching ratio for the place name 
+    is >= config.SIMILARITY_RATIO (0.8).
+
+    It also considers a match if the acronym matches.
+
+    Doctest:
+
+    .. doctest::
+
+        >>> info = {"place1": "IPAW"}
+        >>> set_place(info)
+        >>> info["place"]
+        'IPAW'
+        >>> info = {"place1": "Software Engineering, International Conference on"}
+        >>> set_place(info)
+        >>> info["place"]
+        'ICSE'
+        >>> info = {"place1": "A random conference"}
+        >>> set_place(info)
+        >>> 'place' not in info
+        True
     """
-
     if check_existence and 'place' in info:
         return
     import re
@@ -327,32 +368,37 @@ def set_place(info, check_existence=False):
 
 
 def extract_info(article):
-    """ Extracts info from google scholar article
+    """Extract info from google scholar article
 
-    Doctest
-    Mock:
-    >>> class Article: pass
-    >>> article = Article()
-    >>> article.as_citation = lambda: '''
-    ... @inproceedings{murta2014noworkflow,
-    ...   title={noWorkflow: capturing and analyzing provenance of scripts},
-    ...   author={Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
-    ...   booktitle={International Provenance and Annotation Workshop},
-    ...   pages={71--83},
-    ...   year={2014},
-    ...   organization={Springer}
-    ... }'''
-    >>> article.attrs = {
-    ...   'excerpt': ['Abstract'],
-    ...   'cluster_id': ['5458343950729529273'],
-    ...   'url_citations': ['http://scholar.google.com/scholar?cites=5458343950729529273&as_sdt=2005&sciodt=0,5&hl=en'],
-    ... }
-    >>> article.div = None
+    Doctest:
 
-    Test
-    >>> reload()  # Deterministic name
-    >>> extract_info(article)
-    {'name': 'noWorkflow: capturing and analyzing provenance of scripts', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'year': 2014, 'pp': '71--83', 'place1': 'International Provenance and Annotation Workshop', 'entrytype': 'inproceedings', 'place': 'IPAW', 'display': 'murta', 'pyref': 'murta2014b', 'organization': 'Springer', 'ID': 'murta2014noworkflow', 'excerpt': 'Abstract', 'cluster_id': '5458343950729529273', 'scholar': 'http://scholar.google.com/scholar?cites=5458343950729529273&as_sdt=2005&sciodt=0,5&hl=en'}
+    .. doctest::
+
+        Mock:
+
+        >>> class Article: pass
+        >>> article = Article()
+        >>> article.as_citation = lambda: '''
+        ... @inproceedings{murta2014noworkflow,
+        ...   title={noWorkflow: capturing and analyzing provenance of scripts},
+        ...   author={Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
+        ...   booktitle={International Provenance and Annotation Workshop},
+        ...   pages={71--83},
+        ...   year={2014},
+        ...   organization={Springer}
+        ... }'''
+        >>> article.attrs = {
+        ...   'excerpt': ['Abstract'],
+        ...   'cluster_id': ['5458343950729529273'],
+        ...   'url_citations': ['http://scholar.google.com/scholar?cites=5458343950729529273&as_sdt=2005&sciodt=0,5&hl=en'],
+        ... }
+        >>> article.div = None
+
+        Test:
+
+        >>> reload()  # Deterministic name
+        >>> extract_info(article)
+        {'name': 'noWorkflow: capturing and analyzing provenance of scripts', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'year': 2014, 'pp': '71--83', 'place1': 'International Provenance and Annotation Workshop', 'entrytype': 'inproceedings', 'place': 'IPAW', 'display': 'murta', 'pyref': 'murta2014b', 'organization': 'Springer', 'ID': 'murta2014noworkflow', 'excerpt': 'Abstract', 'cluster_id': '5458343950729529273', 'scholar': 'http://scholar.google.com/scholar?cites=5458343950729529273&as_sdt=2005&sciodt=0,5&hl=en'}
     """
     parser = BibTexParser()
     parser.customization = convert_to_unicode
@@ -369,91 +415,97 @@ def extract_info(article):
 
    
 def info_to_code(article):
-    """ Converts info dict into code 
+    """Convert info dict into code 
 
     Required attributes:
-        pyref
-        display
-        year
-        name
-        place || place1
+    
+    * pyref
+    * display
+    * year
+    * name
+    * place || place1
 
     Doctest:
-    >>> print(info_to_code({
-    ...   'pyref': 'pimentel2017a',
-    ...   'display': 'disp',
-    ...   'year': 2017,
-    ...   'name': 'snowballing',
-    ...   'authors': 'Pimentel, Joao',
-    ...   'place1': 'CACM'
-    ... }))
-    <BLANKLINE>
-    pimentel2017a = DB(Work(
-        2017, "snowballing",
-        display="disp",
-        authors="Pimentel, Joao",
-        place1="CACM",
-    ))
 
-    With place
-    >>> print(info_to_code({
-    ...   'pyref': 'murta2014a',
-    ...   'display': 'noworkflow',
-    ...   'year': 2014,
-    ...   'name': 'noWorkflow: capturing and analyzing provenance of scripts',
-    ...   'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana',
-    ...   'place': config.MODULES['places'].IPAW,
-    ... }))
-    <BLANKLINE>
-    murta2014a = DB(Work(
-        2014, "noWorkflow: capturing and analyzing provenance of scripts",
-        display="noworkflow",
-        authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana",
-        place=IPAW,
-    <BLANKLINE>
-    ))
+    .. doctest::
 
-    With string place
-    >>> print(info_to_code({
-    ...   'pyref': 'murta2014a',
-    ...   'display': 'noworkflow',
-    ...   'year': 2014,
-    ...   'name': 'noWorkflow: capturing and analyzing provenance of scripts',
-    ...   'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana',
-    ...   'place': 'IPAW',
-    ... }))
-    <BLANKLINE>
-    murta2014a = DB(Work(
-        2014, "noWorkflow: capturing and analyzing provenance of scripts",
-        display="noworkflow",
-        authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana",
-        place=IPAW,
-    <BLANKLINE>
-    ))
+        >>> print(info_to_code({
+        ...   'pyref': 'pimentel2017a',
+        ...   'display': 'disp',
+        ...   'year': 2017,
+        ...   'name': 'snowballing',
+        ...   'authors': 'Pimentel, Joao',
+        ...   'place1': 'CACM'
+        ... }))
+        <BLANKLINE>
+        pimentel2017a = DB(Work(
+            2017, "snowballing",
+            display="disp",
+            authors="Pimentel, Joao",
+            place1="CACM",
+        ))
 
-    With _work_type, due, excerpt, others
-    >>> print(info_to_code({
-    ...   '_work_type': 'WorkSnowball',
-    ...   'due': 'Unrelated to my snowballing',
-    ...   'excerpt': 'Ignore excerpt',
-    ...   'other': 'Do not ignore other fields',
-    ...   'pyref': 'murta2014a',
-    ...   'display': 'noworkflow',
-    ...   'year': 2014,
-    ...   'name': 'noWorkflow: capturing and analyzing provenance of scripts',
-    ...   'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana',
-    ...   'place': config.MODULES['places'].IPAW,
-    ... }))
-    <BLANKLINE>
-    murta2014a = DB(WorkSnowball(
-        2014, "noWorkflow: capturing and analyzing provenance of scripts",
-        due="Unrelated to my snowballing",
-        display="noworkflow",
-        authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana",
-        place=IPAW,
-        other="Do not ignore other fields",
-    ))
+        With place:
 
+        >>> print(info_to_code({
+        ...   'pyref': 'murta2014a',
+        ...   'display': 'noworkflow',
+        ...   'year': 2014,
+        ...   'name': 'noWorkflow: capturing and analyzing provenance of scripts',
+        ...   'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana',
+        ...   'place': config.MODULES['places'].IPAW,
+        ... }))
+        <BLANKLINE>
+        murta2014a = DB(Work(
+            2014, "noWorkflow: capturing and analyzing provenance of scripts",
+            display="noworkflow",
+            authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana",
+            place=IPAW,
+        <BLANKLINE>
+        ))
+
+        With string place:
+
+        >>> print(info_to_code({
+        ...   'pyref': 'murta2014a',
+        ...   'display': 'noworkflow',
+        ...   'year': 2014,
+        ...   'name': 'noWorkflow: capturing and analyzing provenance of scripts',
+        ...   'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana',
+        ...   'place': 'IPAW',
+        ... }))
+        <BLANKLINE>
+        murta2014a = DB(Work(
+            2014, "noWorkflow: capturing and analyzing provenance of scripts",
+            display="noworkflow",
+            authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana",
+            place=IPAW,
+        <BLANKLINE>
+        ))
+
+        With _work_type, due, excerpt, others:
+
+        >>> print(info_to_code({
+        ...   '_work_type': 'WorkSnowball',
+        ...   'due': 'Unrelated to my snowballing',
+        ...   'excerpt': 'Ignore excerpt',
+        ...   'other': 'Do not ignore other fields',
+        ...   'pyref': 'murta2014a',
+        ...   'display': 'noworkflow',
+        ...   'year': 2014,
+        ...   'name': 'noWorkflow: capturing and analyzing provenance of scripts',
+        ...   'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana',
+        ...   'place': config.MODULES['places'].IPAW,
+        ... }))
+        <BLANKLINE>
+        murta2014a = DB(WorkSnowball(
+            2014, "noWorkflow: capturing and analyzing provenance of scripts",
+            due="Unrelated to my snowballing",
+            display="noworkflow",
+            authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana",
+            place=IPAW,
+            other="Do not ignore other fields",
+        ))
     """
     info = copy(article)
     work_type = consume(info, "_work_type") or "Work"
@@ -492,31 +544,44 @@ def info_to_code(article):
 
 
 def citation_text(workref, cited, ref="", backward=False):
-    """ Creates code for citation
+    """Create code for citation
 
-    By default :cited (info dict) cites :workref (str).
-    If :backward == True, it is the opposite: :workref cites :cited
+    Arguments:
+    
+    * `workref` -- work varname that is cited (by default)
 
-    Doctest
-    >>> print(citation_text('freire2008a', {'pyref': 'murta2014a'}))
-    <BLANKLINE>
-    DB(Citation(
-        murta2014a, freire2008a, ref="",
-        contexts=[
-    <BLANKLINE>
-        ],
-    ))
-    <BLANKLINE>
+    * `cited` -- work info dict that cites the work (by default)
 
-    >>> print(citation_text('pimentel2015a', {'pyref': 'murta2014a'}, backward=True, ref="[8]"))
-    <BLANKLINE>
-    DB(Citation(
-        pimentel2015a, murta2014a, ref="[8]",
-        contexts=[
-    <BLANKLINE>
-        ],
-    ))
-    <BLANKLINE>
+    Keyword arguments:
+
+    * `ref` -- citation number
+
+    * `backward` -- invert citation: `workref` cites `cited`
+
+
+    Doctest:
+
+    .. doctest::
+
+        >>> print(citation_text('freire2008a', {'pyref': 'murta2014a'}))
+        <BLANKLINE>
+        DB(Citation(
+            murta2014a, freire2008a, ref="",
+            contexts=[
+        <BLANKLINE>
+            ],
+        ))
+        <BLANKLINE>
+
+        >>> print(citation_text('pimentel2015a', {'pyref': 'murta2014a'}, backward=True, ref="[8]"))
+        <BLANKLINE>
+        DB(Citation(
+            pimentel2015a, murta2014a, ref="[8]",
+            contexts=[
+        <BLANKLINE>
+            ],
+        ))
+        <BLANKLINE>
     """
     pyref = cited["pyref"]
     thepyref = pyref
@@ -533,49 +598,67 @@ def citation_text(workref, cited, ref="", backward=False):
 
 
 def compare_paper_to_work(letter, key, work, paper):
-    """ Compares :paper info to :work
+    """Compares paper info to work
 
-    :letter is a number indicating the last letter 
-    :key indicates the key ID in bibtex
+    Arguments:
+
+    * `letter` -- indicates last letter
+
+    * `key` -- indicates the key ID in BibTeX
+
+    * `work` -- work object
+
+    * `paper` -- paper info dict
+
 
     Returns: work, letter
-    If it doesn't match, work is None
     
-    Doctest
-    >>> reload()
-    >>> work = work_by_varname('murta2014a')
+    *  If it doesn't match, work is None
     
-    Fail
-    >>> paper = {'pyref': 'pimentel2017a', 'authors': 'Pimentel, Joao', 'name': 'Other', 'year': 2017}
-    >>> compare_paper_to_work(ord("a") - 1, 'pimentel2017a', work, paper)
-    (None, 98)
-    >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper)
-    (None, 96)
+    Doctest:
 
-    Cluster ID
-    >>> paper['cluster_id'] = '5458343950729529273'
-    >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper) == (work, 96)
-    True
+    .. doctest::
 
-    Alias
-    >>> paper = {'pyref': 'chirigati2015a', 'authors': 'Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: Capturing and Analyzing Provenance of Scripts', 'year': 2015}
-    >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper) == (work, 96)
-    True
+        >>> reload()
+        >>> work = work_by_varname('murta2014a')
+        
+        Fail:
 
-    Name
-    >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: capturing and analyzing provenance of scripts', 'year': 2014}
-    >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper) == (work, 96)
-    True
+        >>> paper = {'pyref': 'pimentel2017a', 'authors': 'Pimentel, Joao', 'name': 'Other', 'year': 2017}
+        >>> compare_paper_to_work(ord("a") - 1, 'pimentel2017a', work, paper)
+        (None, 98)
+        >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper)
+        (None, 96)
 
-    Similar Name fail
-    >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: capturing provenance of scripts', 'year': 2014}
-    >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper)
-    (None, 96)
+        Cluster ID:
 
-    Similar Name works due to same place
-    >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: capturing provenance of scripts', 'year': 2014, 'place': 'IPAW'}
-    >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper) == (work, 96)
-    True
+        >>> paper['cluster_id'] = '5458343950729529273'
+        >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper) == (work, 96)
+        True
+
+        Alias:
+
+        >>> paper = {'pyref': 'chirigati2015a', 'authors': 'Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: Capturing and Analyzing Provenance of Scripts', 'year': 2015}
+        >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper) == (work, 96)
+        True
+
+        Name:
+
+        >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: capturing and analyzing provenance of scripts', 'year': 2014}
+        >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper) == (work, 96)
+        True
+
+        Similar Name fail:
+
+        >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: capturing provenance of scripts', 'year': 2014}
+        >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper)
+        (None, 96)
+
+        Similar Name works due to same place:
+
+        >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: capturing provenance of scripts', 'year': 2014, 'place': 'IPAW'}
+        >>> compare_paper_to_work(ord("a") - 1, 'other2017a', work, paper) == (work, 96)
+        True
     """
     if work is None:
         return None, letter
@@ -613,28 +696,37 @@ def compare_paper_to_work(letter, key, work, paper):
 
 
 def find_work_by_info(paper, pyrefs=None):
-    """ Finds work by paper info dict
+    """Find work by paper info dict
 
     Limits search for specific year (or all years, if year is 0)
+
     Generates 'place' based on 'entrytype'
+    
     Converts 'school' -> 'local'
+    
     Tries to get varname from 'ID' in case the bibtex were generated from our db
+    
     If it finds the work, it returns it
+    
     Otherwise, it updates pyref and display to include a valid letter
 
-    Doctest
-    >>> reload()
-    >>> work = work_by_varname('murta2014a')
-    >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: capturing and analyzing provenance of scripts', 'year': 2014}
-    >>> find_work_by_info(paper) == work
-    True
-    >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo', 'name': 'Other', 'year': 2014, 'display': 'murta'}
-    >>> find_work_by_info(paper) is None
-    True
-    >>> paper['pyref']
-    'murta2014b'
-    >>> paper['display']
-    'murta b'
+
+    Doctest:
+
+    .. doctest::
+
+        >>> reload()
+        >>> work = work_by_varname('murta2014a')
+        >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana', 'name': 'noWorkflow: capturing and analyzing provenance of scripts', 'year': 2014}
+        >>> find_work_by_info(paper) == work
+        True
+        >>> paper = {'pyref': 'murta2014a', 'authors': 'Murta, Leonardo', 'name': 'Other', 'year': 2014, 'display': 'murta'}
+        >>> find_work_by_info(paper) is None
+        True
+        >>> paper['pyref']
+        'murta2014b'
+        >>> paper['display']
+        'murta b'
     """
 
     if paper.get('_work_type', '') == 'Site':
@@ -691,25 +783,28 @@ def find_work_by_info(paper, pyrefs=None):
 
 
 def find_citation(citer, cited):
-    """ Finds citation in the local database
+    """Find citation in the local database
 
-    Returns the citation if the :citer work cites the :cited work
+    Returns the citation if the `citer` work cites the `cited` work
 
-    Doctest
-    >>> reload()
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> freire2008a = work_by_varname("freire2008a")
-    >>> pimentel2015a = work_by_varname("pimentel2015a")
-    >>> citation = find_citation(murta2014a, freire2008a)
-    >>> citation is None
-    False
-    >>> citation.ref
-    '5'
+    Doctest:
 
-    Not found:
-    >>> citation = find_citation(pimentel2015a, freire2008a)
-    >>> citation is None
-    True
+    .. doctest::
+
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> freire2008a = work_by_varname("freire2008a")
+        >>> pimentel2015a = work_by_varname("pimentel2015a")
+        >>> citation = find_citation(murta2014a, freire2008a)
+        >>> citation is None
+        False
+        >>> citation.ref
+        '5'
+
+        Not found:
+        >>> citation = find_citation(pimentel2015a, freire2008a)
+        >>> citation is None
+        True
     """
     for citation in load_citations():
         if citation.work == citer and citation.citation == cited:
@@ -718,31 +813,35 @@ def find_citation(citer, cited):
 
 
 def find_global_local_citation(citer, cited, file=None):
-    """ Finds citations locally and globally for the works
+    """Find citations locally and globally for the works
+    
     We use it to check if there is citation redefinition 
 
-    Doctest
-    >>> reload()
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> freire2008a = work_by_varname("freire2008a")
-    >>> pimentel2015a = work_by_varname("pimentel2015a")
-    >>> glo, loc = find_global_local_citation(murta2014a, freire2008a, "random")
-    >>> glo is None
-    False
-    >>> glo.ref
-    '5'
-    >>> loc is None
-    True
-    >>> fname = "murta2014a"
-    >>> glo, loc = find_global_local_citation(murta2014a, freire2008a, fname)
-    >>> glo is None
-    False
-    >>> glo.ref
-    '5'
-    >>> loc is None
-    False
-    >>> loc is glo
-    True
+    Doctest:
+
+    .. doctest::
+
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> freire2008a = work_by_varname("freire2008a")
+        >>> pimentel2015a = work_by_varname("pimentel2015a")
+        >>> glo, loc = find_global_local_citation(murta2014a, freire2008a, "random")
+        >>> glo is None
+        False
+        >>> glo.ref
+        '5'
+        >>> loc is None
+        True
+        >>> fname = "murta2014a"
+        >>> glo, loc = find_global_local_citation(murta2014a, freire2008a, fname)
+        >>> glo is None
+        False
+        >>> glo.ref
+        '5'
+        >>> loc is None
+        False
+        >>> loc is glo
+        True
     """
     glob, loc = None, None
     for citation in load_citations():
@@ -756,46 +855,49 @@ def find_global_local_citation(citer, cited, file=None):
 
 
 def work_to_bibtex_entry(work, name=None, homogeneize=True, acronym=False):
-    """ Converts work to bibtex entry dict for bibtexparser
+    """Convert work to BibTeX entry dict for bibtexparser
 
     Doctest:
-    >>> reload()
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> result = work_to_bibtex_entry(murta2014a)
-    >>> list(result)
-    ['ID', 'address', 'publisher', 'pages', 'booktitle', 'author', 'title', 'year', 'ENTRYTYPE']
-    >>> result['ID']
-    'murta2014a'
-    >>> result['address']
-    'Cologne, Germany'
-    >>> result['publisher']
-    'Springer'
-    >>> result['pages']
-    '71--83'
-    >>> result['booktitle']
-    'International Provenance and Annotation Workshop'
-    >>> result['author']  # doctest: +ELLIPSIS
-    'Murta, Leonardo and Braganholo, Vanessa and ... and Freire, Juliana'
-    >>> result['title']
-    'no{W}orkflow: capturing and analyzing provenance of scripts'
-    >>> result['year']
-    '2014'
-    >>> result['ENTRYTYPE']
-    'inproceedings'
 
-    Custom name:
-    >>> result = work_to_bibtex_entry(murta2014a, name="other")
-    >>> list(result)
-    ['ID', 'address', 'publisher', 'pages', 'booktitle', 'author', 'title', 'year', 'ENTRYTYPE']
-    >>> result['ID']
-    'other'
+    .. doctest::
 
-    Use acronym for place name:
-    >>> result = work_to_bibtex_entry(murta2014a, acronym=True)
-    >>> list(result)
-    ['ID', 'address', 'publisher', 'pages', 'booktitle', 'author', 'title', 'year', 'ENTRYTYPE']
-    >>> result['booktitle']
-    'IPAW'
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> result = work_to_bibtex_entry(murta2014a)
+        >>> list(result)
+        ['ID', 'address', 'publisher', 'pages', 'booktitle', 'author', 'title', 'year', 'ENTRYTYPE']
+        >>> result['ID']
+        'murta2014a'
+        >>> result['address']
+        'Cologne, Germany'
+        >>> result['publisher']
+        'Springer'
+        >>> result['pages']
+        '71--83'
+        >>> result['booktitle']
+        'International Provenance and Annotation Workshop'
+        >>> result['author']  # doctest: +ELLIPSIS
+        'Murta, Leonardo and Braganholo, Vanessa and ... and Freire, Juliana'
+        >>> result['title']
+        'no{W}orkflow: capturing and analyzing provenance of scripts'
+        >>> result['year']
+        '2014'
+        >>> result['ENTRYTYPE']
+        'inproceedings'
+
+        Custom name:
+        >>> result = work_to_bibtex_entry(murta2014a, name="other")
+        >>> list(result)
+        ['ID', 'address', 'publisher', 'pages', 'booktitle', 'author', 'title', 'year', 'ENTRYTYPE']
+        >>> result['ID']
+        'other'
+
+        Use acronym for place name:
+        >>> result = work_to_bibtex_entry(murta2014a, acronym=True)
+        >>> list(result)
+        ['ID', 'address', 'publisher', 'pages', 'booktitle', 'author', 'title', 'year', 'ENTRYTYPE']
+        >>> result['booktitle']
+        'IPAW'
     """
     options = config.WORK_FIELDS
     ignore = config.BIBTEX_IGNORE_FIELDS
@@ -835,54 +937,60 @@ def work_to_bibtex_entry(work, name=None, homogeneize=True, acronym=False):
         result = homogeneize_latex_encoding(result)
     return result
 
+
 def work_to_bibtex(work, name=None, acronym=False):
-    """ Converts work to bibtex text 
+    """Convert work to bibtex text 
 
-    Doctest
-    >>> reload()
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> print(work_to_bibtex(murta2014a))
-    @inproceedings{murta2014a,
-      address = {Cologne, Germany},
-      author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
-      booktitle = {International Provenance and Annotation Workshop},
-      pages = {71--83},
-      publisher = {Springer},
-      title = {no{W}orkflow: capturing and analyzing provenance of scripts},
-      year = {2014}
-    }
-    <BLANKLINE>
-    <BLANKLINE>
+    Doctest:
 
-    Custom name:
-    >>> reload()
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> print(work_to_bibtex(murta2014a, name="other"))
-    @inproceedings{other,
-      address = {Cologne, Germany},
-      author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
-      booktitle = {International Provenance and Annotation Workshop},
-      pages = {71--83},
-      publisher = {Springer},
-      title = {no{W}orkflow: capturing and analyzing provenance of scripts},
-      year = {2014}
-    }
-    <BLANKLINE>
-    <BLANKLINE>
+    .. doctest::
 
-    Use acronym for place name:
-    >>> print(work_to_bibtex(murta2014a, acronym=True))
-    @inproceedings{murta2014a,
-      address = {Cologne, Germany},
-      author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
-      booktitle = {IPAW},
-      pages = {71--83},
-      publisher = {Springer},
-      title = {no{W}orkflow: capturing and analyzing provenance of scripts},
-      year = {2014}
-    }
-    <BLANKLINE>
-    <BLANKLINE>
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> print(work_to_bibtex(murta2014a))
+        @inproceedings{murta2014a,
+          address = {Cologne, Germany},
+          author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
+          booktitle = {International Provenance and Annotation Workshop},
+          pages = {71--83},
+          publisher = {Springer},
+          title = {no{W}orkflow: capturing and analyzing provenance of scripts},
+          year = {2014}
+        }
+        <BLANKLINE>
+        <BLANKLINE>
+
+        Custom name:
+
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> print(work_to_bibtex(murta2014a, name="other"))
+        @inproceedings{other,
+          address = {Cologne, Germany},
+          author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
+          booktitle = {International Provenance and Annotation Workshop},
+          pages = {71--83},
+          publisher = {Springer},
+          title = {no{W}orkflow: capturing and analyzing provenance of scripts},
+          year = {2014}
+        }
+        <BLANKLINE>
+        <BLANKLINE>
+
+        Use acronym for place name:
+
+        >>> print(work_to_bibtex(murta2014a, acronym=True))
+        @inproceedings{murta2014a,
+          address = {Cologne, Germany},
+          author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
+          booktitle = {IPAW},
+          pages = {71--83},
+          publisher = {Springer},
+          title = {no{W}orkflow: capturing and analyzing provenance of scripts},
+          year = {2014}
+        }
+        <BLANKLINE>
+        <BLANKLINE>
     """
     result = work_to_bibtex_entry(work, name=name, acronym=acronym)
     db = BibDatabase()
@@ -892,24 +1000,30 @@ def work_to_bibtex(work, name=None, acronym=False):
     writer.indent = '  '
     return writer.write(db)
 
+
 def match_bibtex_to_work(bibtex_str):
-    """ Find works by bibtex entries
+    """Find works by bibtex entries
+    
     Returns a list of matches: (entry, work)
 
-    >>> reload()
-    >>> bibtex = ''' @inproceedings{murta2014a,
-    ...   address = {Cologne, Germany},
-    ...   author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
-    ...   booktitle = {IPAW},
-    ...   pages = {71--83},
-    ...   publisher = {Springer},
-    ...   title = {no{W}orkflow: capturing and analyzing provenance of scripts},
-    ...   year = {2014}
-    ... } '''
-    >>> works = match_bibtex_to_work(bibtex)
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> works[0][1] is murta2014a
-    True
+    Doctest:
+
+    .. doctest::
+
+        >>> reload()
+        >>> bibtex = ''' @inproceedings{murta2014a,
+        ...   address = {Cologne, Germany},
+        ...   author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
+        ...   booktitle = {IPAW},
+        ...   pages = {71--83},
+        ...   publisher = {Springer},
+        ...   title = {no{W}orkflow: capturing and analyzing provenance of scripts},
+        ...   year = {2014}
+        ... } '''
+        >>> works = match_bibtex_to_work(bibtex)
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> works[0][1] is murta2014a
+        True
     """
     parser = BibTexParser()
     parser.customization = convert_to_unicode
@@ -921,7 +1035,9 @@ def match_bibtex_to_work(bibtex_str):
         for entry in entries
     ]
 
+
 def find(text):
+    """Find work by text in any of its attributes"""
     words = text.split()
     for work in load_work():
         match = True

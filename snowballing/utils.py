@@ -1,4 +1,4 @@
-""" utils contains helper utility functions """
+"""This module contains helper utility functions"""
 import re
 import importlib
 import pkgutil
@@ -11,26 +11,28 @@ from math import atan2, sin
 
 
 def text_y(lines, font_size=12):
-    """ Returns a list of lines positions according to how many lines are
-    available
+    """Return a list of lines positions according to how many lines are available
 
     Doctest:
-    >>> text_y(0)
-    [0]
-    >>> text_y(1)
-    [0]
-    >>> text_y(2)
-    [-6, 6]
-    >>> text_y(3)
-    [-12, 0, 12]
-    >>> text_y(4)
-    [-18, -6, 6, 18]
-    >>> text_y(5)
-    [-24, -12, 0, 12, 24]
-    >>> text_y(6)
-    [-30, -18, -6, 6, 18, 30]
-    >>> text_y(7)
-    [-36, -24, -12, 0, 12, 24, 36]
+
+    .. doctest::
+
+        >>> text_y(0)
+        [0]
+        >>> text_y(1)
+        [0]
+        >>> text_y(2)
+        [-6, 6]
+        >>> text_y(3)
+        [-12, 0, 12]
+        >>> text_y(4)
+        [-18, -6, 6, 18]
+        >>> text_y(5)
+        [-24, -12, 0, 12, 24]
+        >>> text_y(6)
+        [-30, -18, -6, 6, 18, 30]
+        >>> text_y(7)
+        [-36, -24, -12, 0, 12, 24, 36]
     """
     if lines < 2:
         return [0]
@@ -42,12 +44,15 @@ def text_y(lines, font_size=12):
 
 
 def lines_len_in_circle(r, font_size=12, letter_width=7.2):
-    """ Returns the amount of chars that fits each line in a circle according to
+    """Return the amount of chars that fits each line in a circle according to
     its radius *r*
 
-    Doctest
-    >>> lines_len_in_circle(20)
-    [2, 5, 2]
+    Doctest:
+
+    .. doctest::
+
+        >>> lines_len_in_circle(20)
+        [2, 5, 2]
     """
     lines = 2 * r // font_size
     positions = [
@@ -61,11 +66,14 @@ def lines_len_in_circle(r, font_size=12, letter_width=7.2):
 
 
 def multiline_wrap(text, widths=[10]*5):
-    """ Wraps text in multiple lines according to pre-specified widths
+    """Wrap text in multiple lines according to pre-specified widths
 
-    Doctest
-    >>> multiline_wrap('ab cd ef gh', widths=[5, 2, 2])
-    ['ab cd', 'ef', 'gh']
+    Doctest:
+    
+    .. doctest::
+    
+        >>> multiline_wrap('ab cd ef gh', widths=[5, 2, 2])
+        ['ab cd', 'ef', 'gh']
     """
     from copy import copy
     max_wrap = []
@@ -90,7 +98,7 @@ def multiline_wrap(text, widths=[10]*5):
 
 
 class MultiLine(TextWrapper):
-    """ MultiLine wrapper that considers different widths for each line """
+    """MultiLine wrapper that considers different widths for each line"""
 
     def __init__(self, widths, **kwargs):
         super(MultiLine, self).__init__(width=widths[0], **kwargs)
@@ -98,7 +106,7 @@ class MultiLine(TextWrapper):
         self.max_lines = len(widths)
 
     def _wrap_chunks(self, chunks):
-        """ _wrap_chunks(chunks : [string]) -> [string]
+        """_wrap_chunks(chunks : [string]) -> [string]
 
         Wrap a sequence of text chunks and return a list of lines of
         length 'self.width' or less.  (If 'break_long_words' is false,
@@ -203,53 +211,68 @@ class MultiLine(TextWrapper):
 
 
 class Point(namedtuple("Point", "x y")):
-    """ Represents a point with two coordinates with operations
+    """Represent a point with two coordinates with operations
 
-    Doctest
-    >>> point = Point(3, 4)
-    >>> point.x
-    3
-    >>> point.y
-    4
-    >>> point[0]
-    3
-    >>> point[1]
-    4
+    Doctest:
+
+    .. doctest::
+
+        >>> point = Point(3, 4)
+        >>> point.x
+        3
+        >>> point.y
+        4
+        >>> point[0]
+        3
+        >>> point[1]
+        4
     """
     
     def __str__(self):
-        """ Represents a point
+        """Represent a point
         
-        Doctest
-        >>> str(Point(3, 4))
-        '3,4'
+        Doctest:
+
+        .. doctest:
+
+            >>> str(Point(3, 4))
+            '3,4'
         """
         return ",".join(map(str, self))
     
     def __add__(self, other):
-        """ Adds points
+        """Add points
 
-        Doctest
-        >>> Point(1, 2) + Point(3, 4)
-        Point(x=4, y=6)
+        Doctest:
+
+        .. doctest:
+
+            >>> Point(1, 2) + Point(3, 4)
+            Point(x=4, y=6)
         """
         return Point(self.x + other[0], self.y + other[1])
 
     def __sub__(self, other):
-        """ Subtracts points
+        """Subtract points
 
-        Doctest
-        >>> Point(1, 2) - Point(3, 4)
-        Point(x=-2, y=-2)
+        Doctest:
+
+        .. doctest:
+
+            >>> Point(1, 2) - Point(3, 4)
+            Point(x=-2, y=-2)
         """
         return self + Point(-other.x, -other.y)
     
     def rotate(self, should_rotate=True):
-        """ Swaps coordinates
+        """Swap coordinates
 
-        Doctest
-        >>> Point(1, 2).rotate()
-        Point(x=2, y=1)
+        Doctest:
+
+        .. doctest::
+
+            >>> Point(1, 2).rotate()
+            Point(x=2, y=1)
         """
         if should_rotate:
             return Point(self.y, self.x)
@@ -257,17 +280,20 @@ class Point(namedtuple("Point", "x y")):
 
 
 def adjust_point(x0, y0, x1, y1, dt, shape="circle"):
-    """ Calculates the point in (x1, y1) that should be connected to (x0, y0) 
+    """Calculate the point in (x1, y1) that should be connected to (x0, y0) 
     according to the radius (or distance to center) *dt*
 
-    Doctest
-    >>> adjust_point(0, 0, 0, 10, 5)
-    (0, 5)
-    >>> adjust_point(0, 0, 10, 0, 5)
-    (5, 0)
-    >>> point = adjust_point(0, 0, 10, 10, 5)
-    >>> point[0] == point[1]  # 45 degree angle, sin == cos
-    True
+    Doctest:
+
+    .. doctest::
+
+        >>> adjust_point(0, 0, 0, 10, 5)
+        (0, 5)
+        >>> adjust_point(0, 0, 10, 0, 5)
+        (5, 0)
+        >>> point = adjust_point(0, 0, 10, 10, 5)
+        >>> point[0] == point[1]  # 45 degree angle, sin == cos
+        True
     """
     sign_x = 1 if x1 > x0 else -1
     sign_y = 1 if y1 > y0 else -1
@@ -287,11 +313,15 @@ def adjust_point(x0, y0, x1, y1, dt, shape="circle"):
 
 
 def import_submodules(package, recursive=True):
-    """ Import all submodules of a module, recursively, including subpackages
+    """Import all submodules of a module, recursively, including subpackages
 
-    :param package: package (name or actual module)
-    :type package: str | module
-    :rtype: dict[str, types.ModuleType]
+    Arguments:
+
+    * `package` -- package (name or actual module)
+
+    Keyword arguments:
+
+    * `recursive` -- import modules recursively
     """
     if package is None:
         return {}
@@ -310,16 +340,24 @@ def import_submodules(package, recursive=True):
 
 
 def consume(info, key):
-    """ Consumes key from dict :item
+    """Consumes key from dict
 
-    Doctest
-    >>> info = {'abc': 1, 'def': 2}
-    >>> consume(info, 'abc')
-    1
-    >>> info
-    {'def': 2}
-    >>> consume(info, 'abc') is None
-    True
+    Arguments:
+
+    * `info` -- dict
+    * `key` -- key
+
+    Doctest:
+
+    .. doctest::
+
+        >>> info = {'abc': 1, 'def': 2}
+        >>> consume(info, 'abc')
+        1
+        >>> info
+        {'def': 2}
+        >>> consume(info, 'abc') is None
+        True
     """
     if key not in info:
         return None
@@ -329,42 +367,52 @@ def consume(info, key):
 
 
 def setitem(info, key, value):
-    """ Sets item in dict info if value is not None 
+    """Set item in dict info if value is not None 
 
-    Doctest
-    >>> info = {}
-    >>> setitem(info, 'def', 2)
-    >>> info
-    {'def': 2}
-    >>> setitem(info, 'abc', None)
-    >>> info
-    {'def': 2}
+    Doctest:
+
+    .. doctest::
+
+        >>> info = {}
+        >>> setitem(info, 'def', 2)
+        >>> info
+        {'def': 2}
+        >>> setitem(info, 'abc', None)
+        >>> info
+        {'def': 2}
     """
     if value is not None:
         info[key] = value
 
 
 def compare_str(first, second):
-    """ Compares strings and returns matching ratio
+    """Compare strings and return matching ratio
 
-    Doctest
-    >>> compare_str('abcd', 'abed')
-    0.75
+    Doctest:
+
+    .. doctest::
+
+        >>> compare_str('abcd', 'abed')
+        0.75
     """
     return difflib.SequenceMatcher(None, first, second).ratio()
 
-def match_any(string, regexes):
-    """ Check if string matches any regex in list
 
-    Doctest
-    >>> match_any("a", ["b", "c"])
-    False
-    >>> match_any("a", ["b", "c", "a"])
-    True
-    >>> match_any("_a", ["b", "c", "a"])
-    False
-    >>> match_any("_a", ["b", "c", "a", "_.*"])
-    True
+def match_any(string, regexes):
+    """Check if string matches any regex in list
+
+    Doctest:
+
+    .. doctest::
+
+        >>> match_any("a", ["b", "c"])
+        False
+        >>> match_any("a", ["b", "c", "a"])
+        True
+        >>> match_any("_a", ["b", "c", "a"])
+        False
+        >>> match_any("_a", ["b", "c", "a", "_.*"])
+        True
     """
     if len(regexes) >= 100:
         return any(re.match(regex + "$", string) for regex in regexes)

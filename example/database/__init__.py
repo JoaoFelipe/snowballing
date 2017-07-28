@@ -56,18 +56,13 @@ config.BIBTEX_IGNORE_FIELDS = [
     # Tool
     "_.*", "force_.*", "file.*", "category", "alias", "aliases", "scholar_ok",
     "scholar", "cluster_id", "scholar_id", "display", "metakey", "due", "tyear",
-    "citation_file", "notes", "tracking", "snowball", "may_be_related_to", 
+    "citation_file", "notes", "tracking", "snowball", "request", "draw",
+    "may_be_related_to", "ignore", "generate_title", "note",
 
     # Extra
-    "request",
-    "arxiv",
-    "summary",  "approach_name", 
-    "draw", "ignore", "generate_title", "star", "evaluation", "export",
-    "resumo", "star2",  "scholar_id2", "see",
-    "define", "summarization", "visualization", "categories", "todo",
-    "tool_summary", "collection", "lab", "note", "query", "storage",
-    "acm",  
+    "summary", "star", "approach_name",
 ]
+
 
 ### Map Work to BibTeX
 config.WORK_BIBTEX_MAP = {

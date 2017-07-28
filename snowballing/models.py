@@ -1,5 +1,5 @@
-""" models contains classes for defining the database and producing the 
-citation graph """
+"""This module contains classes for defining the database and producing the 
+citation graph"""
 
 import inspect
 import svgwrite
@@ -11,7 +11,7 @@ from .utils import text_y, adjust_point, Point
 
 
 class Title(object):
-    """ Represents a Title object for svgwrite """
+    """Represent a Title object for svgwrite"""
 
     def __init__(self, text):
         self.text = text
@@ -21,24 +21,29 @@ class Title(object):
 
 
 class WithTitle(object):
-    """ Graph object with title """
+    """Graph object with title"""
     ignore = set()
     
     def generate_title(self, prepend="\n\n"):
-        """ Generates title text with all attributes from the object
-        Ignores attributes that start with _, or attributes in the .ignore set
+        """Generate title text with all attributes from the object
 
-        Doctest
-        >>> obj = WithTitle()
-        >>> obj.attr = 'x'
-        >>> obj.attr2 = 'y'
-        >>> obj._ignored = 'z'
-        >>> print(obj.generate_title(prepend=""))
-        attr: x
-        attr2: y
-        >>> obj.ignore.add('attr')
-        >>> print(obj.generate_title(prepend=""))
-        attr2: y
+        Ignores attributes that start with `_`, or attributes in the 
+        :attr:`~ignore` set
+
+        Doctest:
+
+        .. doctest::
+
+            >>> obj = WithTitle()
+            >>> obj.attr = 'x'
+            >>> obj.attr2 = 'y'
+            >>> obj._ignored = 'z'
+            >>> print(obj.generate_title(prepend=""))
+            attr: x
+            attr2: y
+            >>> obj.ignore.add('attr')
+            >>> print(obj.generate_title(prepend=""))
+            attr2: y
         """
         result = "\n".join(
             "{}: {}".format(attr, str(value))
@@ -51,36 +56,49 @@ class WithTitle(object):
 
 
 class Place(WithTitle):
-    """ Place represents the place that the work are published into 
+    """Represent a publication Place
 
     It has the following attributes:
-        .acronym: Place acronym (e.g., 'IPAW')
-        .name: Full name of the place
-          (e.g., 'International Provenance and Annotation Workshop')
-        .type: Type of place (e.g., 'conference')
+
+    * :attr:`~acronym` -- place acronym (e.g., 'IPAW')
+    
+      * Surround it with <>, if the place has no acronym or you do not know it
+        (e.g., '<ImaginaryAcronym>')
+
+    * :attr:`~name` -- full name of the place (e.g., 'International Provenance
+      and Annotation Workshop')
+
+    * :attr:`~type` -- place acronym (e.g., 'IPAW')
 
     Other attributes are optional and can be used to include extra information
     about the place.
-    Note however that it has the following reversed attributes
-        .ignore: set that specifies ignore attributes in titles (WithTitle)
-        .draw: method that draws the place
+    Note however that it has the following reversed attributes:
+
+    * :attr:`~ignore` -- set that specifies ignore attributes in titles 
+      (:class:`~WithTitle`)
+
+    * :meth:`~draw` -- method that draws the place
     
 
-    Doctest
-    >>> ipaw = Place('IPAW', 'International Provenance and Annotation Workshop',
-    ...              'conference')
-    >>> ipaw.acronym
-    'IPAW'
-    >>> ipaw.name
-    'International Provenance and Annotation Workshop'
-    >>> ipaw.type
-    'conference'
+    Doctest:
 
-    Places are considered equal if they have the same name
-    >>> ipaw2 = Place('I', 'International Provenance and Annotation Workshop',
-    ...              'journal')
-    >>> ipaw == ipaw2
-    True
+    .. doctest::
+
+        >>> ipaw = Place('IPAW', 
+        ...              'International Provenance and Annotation Workshop',
+        ...              'conference')
+        >>> ipaw.acronym
+        'IPAW'
+        >>> ipaw.name
+        'International Provenance and Annotation Workshop'
+        >>> ipaw.type
+        'conference'
+
+        Places are considered equal if they have the same name
+        >>> ipaw2 = Place('I', 'International Provenance and Annotation Workshop',
+        ...              'journal')
+        >>> ipaw == ipaw2
+        True
     """
 
     def __init__(self, acronym, name="", *args, **kwargs):
@@ -121,76 +139,131 @@ class Place(WithTitle):
 
 
 class Work(WithTitle):
-    """ Work represents papers in the snowballing
+    """Work represents papers in the snowballing
  
     It has the following attributes:
-        .year: year of publication (int)
-          Convention: Use 0 if it is not informed
-        .name: paper title
-        .authors: paper authors
-        .display: display label for graphs
-        .metakey: variable name (automatically collected from database)
-        .file: filename of the work (optional)
-        .due: reason for it not being selected
-        .notes: use it to append a string to year in BIBTEX
-          For example: 
+
+    * :attr:`~year` -- year of publivation (int)
+      
+      * Convention: use 0 if it is not required (website), or 9999 if it is not
+        informed
+
+    * :attr:`~name` -- paper title
+
+    * :attr:`~authors` -- paper authors
+
+      * For exporting properly to BibTeX, I suggest using the format 'LastName1,
+        FirstName1 and LastName2, FirstName2 and LastName3, FirstName3 ...'
+
+    * :attr:`~display` -- display label for graphs
+        
+    * :attr:`~metakey` -- variable name
+
+      * It is automatically collected from the database. It it does not exist,
+        call :func:`snowvalling.operations.reload` again.
+
+    * :attr:`~file` -- filename of the work (optional)
+    
+    * :attr:`~due` -- reason for work not being related (optional)
+
+    * :attr:`~notes` -- use it to append a string to year in BibTeX (optional)
+
+      * For example::
+
             work.year = 2014
             work.notes = "in press"
-            Bibtex: 2014 [in press]
-        .snowball: forward snowballing date
-        .citation_file: citation filename (without .py)
-          Indicates where are the citations of this work
-        .alias: tuple with (year, title, authors) that represents the same work in google scholar (optional)
-          The tuple can have two elements if the authors match: (year, title)
-          Use year = 0, if the citation on google scholar doesn't have the year information
-        .aliases: list of alias attributes
-        .scholar: url of the work in google scholar
-        .scholar_ok: status of the work according to a google scholar curation
-          True means that we already merged google scholar's bibtex to the work
-          False means that we didn't
-        .tracking: indicates if we set an alert for the work
-          Note: the alert is manual. This tools does not set the alert
-          Options: 'alert', 'impossible'
+            
+      * Produces: 2014 [in press]
+        
+    * :attr:`~snowball` -- forward snowballing date (optional)
+
+    * :attr:`~citation_file` -- citation filename (without .py)
+          
+      * Indicates where are the citations of this work
+        
+
+    * :attr:`~alias` -- tuple with (year, title, authors) (optional)
+
+      * Represents the same work in google scholar 
+          
+          * The tuple can have two elements if the authors match: (year, title)
+          
+          * Use year = 0, if the citation on google scholar doesn't have the 
+            year information
+        
+    * :attr:`~aliases` -- list of alias attributes (optional)
+
+    * :attr:`~scholar` -- url of the work in google scholar (optional)
+    
+    * :attr:`~scholar_ok` -- status of the work according to a google scholar 
+      curation (optional)
+
+      * True means that we already merged google scholar's bibtex to the work
+      
+      * False means that we didn't
+    
+    * :attr:`~tracking` indicates if we set an alert for the work (optional)
+    
+      * Note: the alert is manual. This tool does not set the alert.
+        You can use whatever value you want for it
+
 
     Other attributes are optional and can be used to include extra information
     about the work.
 
-    Note however that it has the following reserved attributes
-        .category: work status in the snowballing
-        .tyear: year object for drawing
-        .ignore: set that specifies ignore attributes in titles (WithTitle)
-        .draw: method that draws the place
-        ._x: x position for drawing the work
-        ._y: y position for drawing the work
-        ._r: radius for circular node drawing
-        ._i: column index for drawing the work
-        ._year_index: row index for drawing the work
-        ._letters: max amount of letters for drawing
-        ._shape: shape of node (circle vs rectangle)
-    
 
-    Doctest
-    >>> IPAW = Place('IPAW', 'IPAW', 'conference')
-    >>> murta2014a = Work(
-    ...     2014, "noWorkflow: capturing and analyzing provenance of scripts",
-    ...     display="noWorkflow",
-    ...     authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, "
-    ...             "Fernando and Koop, David and Freire, Juliana",
-    ...     place=IPAW,
-    ...     local="Cologne, Germany",
-    ...     file="Murta2014a.pdf",
-    ...     pp="71--83",
-    ...     entrytype="inproceedings",
-    ...     citation_file="noworkflow2014",
-    ... )
-    >>> murta2014a.year
-    2014
-    >>> murta2014a.name
-    'noWorkflow: capturing and analyzing provenance of scripts'
-    >>> murta2014a.pp
-    '71--83'
+    Note however that it has the following reserved attributes:
+
+    * :attr:`~category` -- work status in the snowballing
+    
+    * :attr:`~tyear` -- year object for drawing
+    
+    * :attr:`~ignore` -- set that specifies ignore attributes in titles 
+      (:class:`~WithTitle`)
+
+    * :meth:`~draw` -- method that draws the work
+
+    * :attr:`~_x` -- x position for drawing the work
+    
+    * :attr:`~_y` -- y position for drawing the work
+    
+    * :attr:`~_r` -- radius for circular node drawing
+    
+    * :attr:`~_i` -- column index for drawing the work
+    
+    * :attr:`~_year_index` -- row index for drawing the work
+    
+    * :attr:`~_letters` -- max amount of letters for drawing
+    
+    * :attr:`~_shape` -- shape of node (circle vs rectangle)
+
 
     Works are considered equal if they have the same place, name and year
+        
+
+    Doctest:
+
+    .. doctest::
+
+        >>> IPAW = Place('IPAW', 'IPAW', 'conference')
+        >>> murta2014a = Work(
+        ...     2014, "noWorkflow: capturing and analyzing provenance of scripts",
+        ...     display="noWorkflow",
+        ...     authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, "
+        ...             "Fernando and Koop, David and Freire, Juliana",
+        ...     place=IPAW,
+        ...     local="Cologne, Germany",
+        ...     file="Murta2014a.pdf",
+        ...     pp="71--83",
+        ...     entrytype="inproceedings",
+        ...     citation_file="noworkflow2014",
+        ... )
+        >>> murta2014a.year
+        2014
+        >>> murta2014a.name
+        'noWorkflow: capturing and analyzing provenance of scripts'
+        >>> murta2014a.pp
+        '71--83'
     """
 
     category = "work"
@@ -233,12 +306,12 @@ class Work(WithTitle):
         return self.name
 
     def generate_title(self, prepend="\n\n"):
-        """ The title of a work is its bibtex """
+        """The title of a work is its BibTeX"""
         from .operations import work_to_bibtex
         return prepend + work_to_bibtex(self, name=None)
 
     def draw(self, dwg, fill_color=None, draw_place=False, use_circle=False):
-        """ Draws work"""
+        """Draw work"""
         position = Point(self._x, self._y)
         if fill_color is None:
             fill_color = lambda x: "white", "black"
@@ -297,18 +370,23 @@ class Work(WithTitle):
 
 
 class Site(Work):
-    """ Represents a site reference.
+    """Represent a site reference
 
     It does not have an year, but it requires following attributes:
-        .name
-        .link
 
-    Doctest
-    >>> site = Site("GitHub", "http://www.github.com")
-    >>> site.name
-    'GitHub'
-    >>> site.link
-    'http://www.github.com'
+    * :attr:`~name` -- website name
+
+    * :attr:`~link` -- website link
+
+    Doctest:
+
+    .. doctest::
+
+        >>> site = Site("GitHub", "http://www.github.com")
+        >>> site.name
+        'GitHub'
+        >>> site.link
+        'http://www.github.com'
     """
 
     category = "site"
@@ -319,21 +397,28 @@ class Site(Work):
 
 
 class Email(Work):
-    """ Represents an email reference.
+    """Represent an email reference
 
-    It requires the following attributes
-        .year
-        .authors
-        .name: subject
+    It requires the following attributes:
 
-    Doctest
-    >>> email = Email(2017, "Pimentel, Joao", "noWorkflow model")
-    >>> email.year
-    2017
-    >>> email.authors
-    'Pimentel, Joao'
-    >>> email.name
-    'noWorkflow model'
+    * :attr:`~year` -- year it was received
+
+    * :attr:`~authors` -- email author
+
+    * :attr:`~name` -- email subject
+
+
+    Doctest:
+
+    .. doctest::
+
+        >>> email = Email(2017, "Pimentel, Joao", "noWorkflow model")
+        >>> email.year
+        2017
+        >>> email.authors
+        'Pimentel, Joao'
+        >>> email.name
+        'noWorkflow model'
     """
     category = "site"
 
@@ -343,25 +428,38 @@ class Email(Work):
 
 
 class Year(object):
-    """ Represents a year in the citation graph
+    """Represent a year in the citation graph
 
     It has the following attributes:
-        .year: int
-        .next_year: tuple with year object and index
-            year = -1 indicates that there is no next year
-        .previous_year: tuple with year object and index
-            previous = -1 indicates that there is no previous year
-        .works: list of works in the year
+    
+    * :attr:`~year` --  int
+    
+    * :attr:`~next_year` --  tuple with year object and index
+    
+      * year = -1 indicates that there is no next year
+
+    * :attr:`~previous_year` --  tuple with year object and index
+      * previous = -1 indicates that there is no previous year
+    
+    * :attr:`~works` --  list of works in the year
+
 
     It has the following reversed attributes
-        ._i: column index for drawing the year
-        ._dist: distance between year columns
-        ._r: extra margin
+    
+    * :attr:`~_i` --  column index for drawing the year
+    
+    * :attr:`~_dist` --  distance between year columns
+    
+    * :attr:`~_r` -- extra margin
 
-    Doctest
-    >>> y2017 = Year(2017, (-1, 0), [])
-    >>> y2017.year
-    2017
+
+    Doctest:
+
+    .. doctest::
+
+        >>> y2017 = Year(2017, (-1, 0), [])
+        >>> y2017.year
+        2017
     """
 
     def __init__(self, year, previous, works, i=-1, dist=60, r=20):
@@ -374,7 +472,7 @@ class Year(object):
         self._r = r
     
     def draw(self, dwg):
-        """ Draws year in the position """
+        """Draw year in the position"""
         x = self._i * self._dist + self._r
         dwg.add(svgwrite.text.Text(
             self.year[0], (x, 20),
@@ -384,16 +482,21 @@ class Year(object):
 
 
 class Citation(WithTitle):
-    """ Represents a citation for the work
+    """Represent a citation for the work
 
     Attributes:
-        .work: the work that cites
-        .citation: the work that is cited
+
+    * :attr:`~work` -- the work that cites
+
+    * :attr:`~citation` -- the work that is cited
 
     Other attributes are optional and can be used to include extra information
     about the citation.
-    Note however that it has the following reserved attributes
-        .citations_file: file where the citation is defined
+
+
+    Note however that it has the following reserved attributes:
+
+    * :attr:`~citations_file` -- file where the citation is defined
     """
     ignore = {"work", "citation"}
     
@@ -410,7 +513,7 @@ class Citation(WithTitle):
             setattr(self, key, value)
         
     def _belzier_gen(self, work, ref, rotate):
-        """ Creates belzier line points
+        """Create belzier line points
         Usage: 
         ... svgwrite.path.Path(
         ...      "M{0} C{1} {2} {3}".format(*belzier_gen(work, ref, False)
@@ -424,9 +527,11 @@ class Citation(WithTitle):
         yield ref_point + Point(-ref._r - 7, 0).rotate(rotate)
 
     def _line_gen(self, work, ref):
-        """ Creates line points
-        Usage
-        .... svgwrite.shapes.Line(*self._line_gen(work, ref), stroke="black")
+        """Create line points
+        
+        Usage::
+        
+            svgwrite.shapes.Line(*self._line_gen(work, ref), stroke="black")
         """
         point0 = adjust_point(
             ref._x, ref._y, work._x, work._y, work._r, work._shape
@@ -435,7 +540,7 @@ class Citation(WithTitle):
         yield adjust_point(*point0, ref._x, ref._y, ref._r + 7, ref._shape)
 
     def draw(self, dwg, marker, years, rows, draw_place=False):
-        """ Draws citation line """
+        """Draw citation line"""
         work, ref = self.work, self.citation
         if work == ref:
             return
@@ -512,13 +617,13 @@ class Citation(WithTitle):
 
 
 class Database(object):
-    """ Represents a database with all elements that can be accessed """
+    """Represent a database with all elements that can be accessed"""
 
     def __init__(self):
         self._elements = []
 
     def filter(self, type):
-        """ Filters database by type """
+        """Filter database by type"""
         for k, v in self.__dict__.items():
             if not k.startswith("_") and isinstance(v, type):
                 yield v
@@ -528,7 +633,7 @@ class Database(object):
                 yield v
 
     def clear(self, type):
-        """ Clears type from database """
+        """Clear type from database"""
         for k, v in self.__dict__.items():
             if not k.startswith("_") and isinstance(v, type):
                 delattr(self, k)
@@ -536,27 +641,27 @@ class Database(object):
         self._elements = [v for v in self._elements if not isinstance(v, type)]
 
     def clear_work(self):
-        """ Clears all work """
+        """Clear all work"""
         self.clear(Work)
 
     def clear_places(self):
-        """ Clears all places """
+        """Clear all places"""
         self.clear(Place)
 
     def clear_citations(self):
-        """ Clears citations """
+        """Clear citations"""
         self.clear(Citation)
 
     def work(self):
-        """ Generates all work """
+        """Generate all work"""
         yield from self.filter(Work)
 
     def places(self):
-        """ Generates all places """
+        """Generate all places"""
         yield from self.filter(Place)
 
     def citations(self):
-        """ Gerenetes all citations """
+        """Gerenete all citations"""
         yield from self.filter(Citation)
 
     def __call__(self, *args, **kwargs):

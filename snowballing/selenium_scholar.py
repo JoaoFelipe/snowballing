@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 """
 This module provides classes for querying Google Scholar using selenium and 
 parsing returned results. It currently *only* processes the first results

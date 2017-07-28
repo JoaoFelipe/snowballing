@@ -5,7 +5,6 @@ This project provides tools for perfoming a liberature review through snowballin
 
 This package was tested on Python 3.6 using Windows, but it should support Python > 3.5 in any operating system. Please, open an issue if it is not the case.
 
-
 Getting started
 ------------------
 
@@ -67,6 +66,10 @@ Do not hesitate to contact me:
 
 License Terms
 -------------
+
+The MIT License (MIT)
+
+Copyright (c) 2017 Joao Felipe Pimentel <joaofelipenp@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

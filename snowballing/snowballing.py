@@ -1,5 +1,5 @@
-""" snowballing provides tools to analyze the snowballing and widgets to perform
-and curate the snowballing """
+"""This module provides tools to analyze the snowballing and widgets to perform
+and curate the snowballing"""
 import base64
 import re
 import json
@@ -34,17 +34,19 @@ Step = namedtuple("Step", "name new_references new_related total_visited total_r
 
 @contextmanager
 def snowballing(initial_set, filter_function=None):
-    """ Context manager for helping producing snowballing provenance based on
-    the initial_set
+    """Context manager for helping producing snowballing provenance
     
     By default, the filter_function selects work with "snowball" category
     
+    Returns backward, forward, log, visited:
 
-    Returns backward, foward, log, visited
-    backward is a function that expands the frontier following backward refs
-    foward is a function that expands the frontier following foward refs
-    log is a list of steps
-    visited is a set of references
+    * backward is a function that expands the frontier following backward refs
+    
+    * forward is a function that expands the frontier following forward refs
+    
+    * log is a list of steps
+    
+    * visited is a set of references
     """
     if filter_function is None:
         filter_function = lambda x: x.category == "snowball"
@@ -99,47 +101,65 @@ def snowballing(initial_set, filter_function=None):
 
 
 def create_provenance(initial_set, filter_function=None, backward_first=True):
-    """ Produces snowballing provenance using an :initial_set
-    By default, it applies backward snowballing first.
-    It is possible to switch the order by setting :backward_first = False
+    """Produce snowballing provenance
 
-    Returns frontier, log, visited
+    Arguments:
+
+    * `initial_set` -- start set of the snowballing
+
+    Keyword arguments:
+
+    * `filter_function` -- function for filtering results
+
+      * By default it selects work with category == 'snowball'
+
+    * `backward_first` -- order of the snowball
+
+      * By default it applies backward snowballing first
+
+    
+    Returns: frontier, log, visited
+
 
     Doctest:
-    >>> from .operations import reload, work_by_varname
-    >>> reload()
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> frontier, log, visited = create_provenance({murta2014a})
-    >>> len(frontier)
-    1
-    >>> len(log)
-    3
-    >>> log[0]
-    Step(name='start', new_references=1, new_related=1, total_visited=1, total_related=1)
-    >>> log[1]
-    Step(name='backward', new_references=1, new_related=0, total_visited=2, total_related=1)
-    >>> log[2]
-    Step(name='forward', new_references=1, new_related=0, total_visited=3, total_related=1)
-    >>> len(visited)
-    3
 
-    Forward first:
-    >>> from .operations import reload, work_by_varname
-    >>> reload()
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> frontier, log, visited = create_provenance({murta2014a}, backward_first=False)
-    >>> len(frontier)
-    1
-    >>> len(log)
-    3
-    >>> log[0]
-    Step(name='start', new_references=1, new_related=1, total_visited=1, total_related=1)
-    >>> log[1]
-    Step(name='forward', new_references=1, new_related=0, total_visited=2, total_related=1)
-    >>> log[2]
-    Step(name='backward', new_references=1, new_related=0, total_visited=3, total_related=1)
-    >>> len(visited)
-    3
+    .. doctest::
+
+        >>> from .operations import reload, work_by_varname
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> frontier, log, visited = create_provenance({murta2014a})
+        >>> len(frontier)
+        1
+        >>> len(log)
+        3
+        >>> log[0]
+        Step(name='start', new_references=1, new_related=1, total_visited=1, total_related=1)
+        >>> log[1]
+        Step(name='backward', new_references=1, new_related=0, total_visited=2, total_related=1)
+        >>> log[2]
+        Step(name='forward', new_references=1, new_related=0, total_visited=3, total_related=1)
+        >>> len(visited)
+        3
+
+        Forward first:
+
+        >>> from .operations import reload, work_by_varname
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> frontier, log, visited = create_provenance({murta2014a}, backward_first=False)
+        >>> len(frontier)
+        1
+        >>> len(log)
+        3
+        >>> log[0]
+        Step(name='start', new_references=1, new_related=1, total_visited=1, total_related=1)
+        >>> log[1]
+        Step(name='forward', new_references=1, new_related=0, total_visited=2, total_related=1)
+        >>> log[2]
+        Step(name='backward', new_references=1, new_related=0, total_visited=3, total_related=1)
+        >>> len(visited)
+        3
     """
     frontier = copy(initial_set)
     with snowballing(frontier, filter_function) as (backward, forward, log, visited):
@@ -159,26 +179,31 @@ def create_provenance(initial_set, filter_function=None, backward_first=True):
 
 
 def log_to_provn(log):
-    """ Converts log of steps (produced by the snowballing function) into provn
-    >>> from .operations import reload, work_by_varname
-    >>> reload()
-    >>> murta2014a = work_by_varname("murta2014a")
-    >>> frontier, log, visited = create_provenance({murta2014a}, backward_first=False)
-    >>> print(log_to_provn(log))
-    document
-      default <http://example.org/>
-    <BLANKLINE>
-      activity(start, -, -)
-      entity(s0, [type="Set", length="1"])
-      wasGeneratedBy(g0; s0, start, -)
-    <BLANKLINE>
-      activity(forward1, -, -, [found="1", related="0"])
-      used(u0; forward1, s0, -)
-    <BLANKLINE>
-      activity(backward1, -, -, [found="1", related="0"])
-      used(u1; backward1, s0, -)
-    <BLANKLINE>
-    endDocument
+    """Convert log of steps (produced by the snowballing function) into provn
+    
+    Doctest:
+
+    .. doctest::
+
+        >>> from .operations import reload, work_by_varname
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> frontier, log, visited = create_provenance({murta2014a}, backward_first=False)
+        >>> print(log_to_provn(log))
+        document
+          default <http://example.org/>
+        <BLANKLINE>
+          activity(start, -, -)
+          entity(s0, [type="Set", length="1"])
+          wasGeneratedBy(g0; s0, start, -)
+        <BLANKLINE>
+          activity(forward1, -, -, [found="1", related="0"])
+          used(u0; forward1, s0, -)
+        <BLANKLINE>
+          activity(backward1, -, -, [found="1", related="0"])
+          used(u1; backward1, s0, -)
+        <BLANKLINE>
+        endDocument
     """
     set_id = -1
     current_set = 0
@@ -226,33 +251,46 @@ def log_to_provn(log):
 
 
 class Converter:
-    """ Converts texts into other formats 
+    """Convert texts into other formats 
 
     Four modes are available:
-      BibTeX
-        Converts bibtex to a json for inserting the reference
-      Text
-        Removes line breaks and diacricts from text
-        Use it to copy text from pdf documents
-      [N] author name place other year
-        Converts references in this format to a json for inserting the reference
-        Consider each space as a line break
-        The "other" field can be created using multiple (or 0) lines
-          it also can define the attribute names using 'attr=value'
 
-        For example:
-          [1]
-          Pimentel, João Felipe and Braganholo, Vanessa and Murta, Leonardo and Freire, Juliana
-          Tracking and analyzing the evolution of provenance from scripts
-          IPAW
-          pp=16--28
-          Springer
-          2016
+    * BibTeX
+      
+      * Converts bibtex to a json for inserting the reference
+   
+    * Text
+      
+      * Removes line breaks and diacricts from text. Use it to copy text from 
+        pdf documents
+    
+    * [N] author name place other year
+      
+      * Converts references in this format to a json for inserting the
+        reference
+    
+      * Consider each space as a line break
+        
+      * The "other" field can be created using multiple (or 0) lines
+        
+        * It also can define the attribute names using 'attr=value'
 
-          [2]
-          ...
-      Quoted
-        Surrounds text with quotation marks and add spaces to fit the citation
+        * For example::
+
+              [1]
+              Pimentel, João Felipe and Braganholo, Vanessa and Murta, Leonardo and Freire, Juliana
+              Tracking and analyzing the evolution of provenance from scripts
+              IPAW
+              pp=16--28
+              Springer
+              2016
+
+              [2]
+              ...
+    
+    * Quoted
+      
+      * Surrounds text with quotation marks and add spaces to fit the citation
     """
     
     def __init__(self, mode="text"):
@@ -396,7 +434,7 @@ class Converter:
 
 
 class ArticleNavigator:
-    """ Navigates on article list for insertion """
+    """Navigate on article list for insertion"""
 
     def __init__(self, citation_var=None, citation_file=None, articles=None, backward=True, force_citation_file=True):
         reload()
@@ -479,7 +517,7 @@ class ArticleNavigator:
         self.erase_article_form()
 
     def create_custom_text(self, tup):
-        """ Creates custom text based on config.FORM_TEXT_FIELDS tuple """
+        """Create custom text based on config.FORM_TEXT_FIELDS tuple"""
         text = Text(value="", description=tup[0])
         text._workattr = tup[1]
         self.custom_widgets.append(text)
@@ -491,7 +529,7 @@ class ArticleNavigator:
         return text
 
     def create_custom_button(self, tup):
-        """ Creates custom button based on config.FORM_BUTTONS tuple """
+        """Create custom button based on config.FORM_BUTTONS tuple"""
         button = Button(description=tup[0])
         def function(b):
             for key, value in tup[1].items():
@@ -501,7 +539,7 @@ class ArticleNavigator:
         return button
 
     def set_articles(self, articles):
-        """ Sets list of articles and restarts slider """
+        """Set list of articles and restart slider"""
         self.articles = list(self.valid_articles(articles))
         self.disable_show = True
         self.selector_widget.value = 0
@@ -515,7 +553,7 @@ class ArticleNavigator:
         self.disable_show = False
         
     def erase_article_form(self):
-        """ Erases form fields """
+        """Erases form fields"""
         self.article_number_widget.value = "{}/{}".format(
             min(self.selector_widget.value + 1, len(self.articles)),
             len(self.articles)
@@ -531,31 +569,31 @@ class ArticleNavigator:
             widget.value = ""
         
     def write_due(self, b=None):
-        """ Write event for due_widget """
+        """Write event for due_widget"""
         if self.due_widget.value and self.work_type_widget.value == "Work":
             self.work_type_widget.value = "WorkUnrelated"
         elif not self.due_widget.value and self.work_type_widget.value == "WorkUnrelated":
             self.work_type_widget.value = "Work"
 
     def write_place(self, b=None):
-        """ Write event for place_widget """ 
+        """Write event for place_widget""" 
         if self.place_widget.value == "Lang" and self.work_type_widget.value == "Work":
             self.work_type_widget.value = "WorkLang"
          
     def next_article(self, b=None):
-        """ Next article click event """
+        """Next article click event"""
         self.selector_widget.value = min(self.selector_widget.value + 1, self.selector_widget.max)
         self.erase_article_form()
         self.show(clear=True)
     
     def previous_article(self, b=None):
-        """ Previous article click event """
+        """Previous article click event"""
         self.selector_widget.value = max(self.selector_widget.value - 1, self.selector_widget.min)
         self.erase_article_form()
         self.show(clear=True)
         
     def valid_articles(self, articles, show=False):
-        """ Generates valid articles """
+        """Generate valid articles"""
         if not articles:
             return
         for article in articles:
@@ -597,7 +635,7 @@ class ArticleNavigator:
                 continue
                         
     def clear(self):
-        """ Clears cell and output """
+        """Clear cell and output"""
         if self.disable_show:
             return
         self.to_display = []
@@ -606,13 +644,13 @@ class ArticleNavigator:
         clear_output()
         
     def update_info(self, info, field, widget, value=None, default=""):
-        """ Updates info according to widget """
+        """Update info according to widget"""
         if widget.value != default:
             info[field] = widget.value if value is None else value
         return bool(widget.value)
             
     def show_site(self, article, nwork, info):
-        """ Displays site citation """
+        """Display site citation"""
         text = "# Temp\n"
         text += "insert('''"
         text += citation_text(
@@ -632,7 +670,7 @@ class ArticleNavigator:
         self.to_display = []
 
     def show_article(self, article, nwork, info):
-        """ Displays article """
+        """Display article"""
         citations = ""
         text = "# Temp\n"
         text += "insert('''"
@@ -669,7 +707,7 @@ class ArticleNavigator:
         self.to_display = []
         
     def show(self, b=None, clear=True):
-        """ Generic display """
+        """Generic display"""
         _up = self.update_info
         reload()
         self.next_article_widget.disabled = self.selector_widget.value == self.selector_widget.max
@@ -705,13 +743,13 @@ class ArticleNavigator:
             self.show_article(article, nwork, info)
             
     def browser(self):
-        """ Widget visualization """
+        """Widget visualization"""
         print("Press 'Reload Article'")
         return self.view
 
 
 class BackwardSnowballing(ArticleNavigator):
-    """ Navigates on article list for insertion with backward citation """
+    """Navigate on article list for insertion with backward citation"""
 
     def __init__(self, citation_var, citation_file=None, articles=None, force_citation_file=True):
         work = work_by_varname(citation_var)
@@ -726,7 +764,7 @@ class BackwardSnowballing(ArticleNavigator):
 
 
 class ForwardSnowballing:
-    """ Navigates on article list for insertion with forward citation """
+    """Navigate on article list for insertion with forward citation"""
     
     def __init__(self, querier, citation_var, citation_file=None, debug=False, start=None, load=True):
         from .selenium_scholar import URLQuery
@@ -796,7 +834,7 @@ class ForwardSnowballing:
 
 
 class ScholarUpdate:
-    """ Widget for curating database """
+    """Widget for curating database"""
     
     def __init__(self, querier, worklist, force=False, debug=False, index=0):
         reload()
@@ -829,23 +867,23 @@ class ScholarUpdate:
 
         
     def next_page(self, b):
-        """ Goes to next page """
+        """Go to next page"""
         self.index = min(len(self.worklist) - 1, self.index + 1)
         self.reload(b)
     
     def previous_page(self, b):
-        """ Goes to previous page """
+        """Go to previous page"""
         self.query = max(0, self.index - 1)
         self.reload(b)
         
     def set_index(self):
-        """ Sets page index """
+        """Set page index"""
         self.page_number_widget.value = str(self.index)
         self.next_page_widget.disabled = self.index == len(self.worklist) - 1
         self.previous_page_widget.disabled = self.index == 0
         
     def show(self, b=None):
-        """ Shows comparison """
+        """Show comparison"""
         clear_output()
         if not self.articles:
             print(self.varname, "<unknown>")
@@ -899,7 +937,7 @@ class ScholarUpdate:
             print(self.varname, '<error>')
         
     def reload(self, b=None, show=True):
-        """ Reloads """
+        """Reload"""
         clear_output()
         if self.debug_widget.value:
             ScholarConf.LOG_LEVEL = 3
@@ -932,7 +970,7 @@ class ScholarUpdate:
         self.set_index()
         
     def browser(self):
-        """ Presents widget """
+        """Present widget"""
         self.show()
         return self.view
     
