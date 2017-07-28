@@ -1,1 +1,3 @@
-theme: minimal
+title: Snowballing
+description: Provides tools for literature snowballing.
+theme: jekyll-theme-minimal
