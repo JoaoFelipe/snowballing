@@ -1,6 +1,8 @@
 Snowballing
 ===========
 
+`GitHub page <https://github.com/JoaoFelipe/snowballing>`_
+
 This project provides tools for perfoming a liberature review through
 snowballing. It includes Jupyter Notebook widgets that assist the
 backward and forward steps of literature snowballing, notebooks that
