@@ -1,0 +1,716 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snowballing.graph &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>snowballing.graph</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snowballing.graph</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module produces citation graphs&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">svgwrite</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span><span class="p">,</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">groupby</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">textwrap</span> <span class="k">import</span> <span class="n">dedent</span>
+
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">Text</span><span class="p">,</span> <span class="n">ToggleButton</span><span class="p">,</span> <span class="n">IntSlider</span><span class="p">,</span> <span class="n">VBox</span><span class="p">,</span> <span class="n">HBox</span><span class="p">,</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">ColorPicker</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">SVG</span><span class="p">,</span> <span class="n">clear_output</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">SVG</span><span class="p">,</span> <span class="n">Javascript</span><span class="p">,</span> <span class="n">HTML</span>
+
+<span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">load_work</span><span class="p">,</span> <span class="n">load_citations</span><span class="p">,</span> <span class="n">reload</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="k">import</span> <span class="n">Year</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">lines_len_in_circle</span><span class="p">,</span> <span class="n">multiline_wrap</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">config</span>
+
+
+<div class="viewcode-block" id="GraphConfig"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.GraphConfig">[docs]</a><span class="k">class</span> <span class="nc">GraphConfig</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Configure graph&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_by_year</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">70</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin_left</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_x</span> <span class="o">=</span> <span class="mi">60</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_y</span> <span class="o">=</span> <span class="mi">60</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">letters</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="s2">&quot;square&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_by_year</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fill_color</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_place</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_by_year</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_by_year</span>
+
+    <span class="nd">@max_by_year</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">max_by_year</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_by_year</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_by_year</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="set_positions"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.set_positions">[docs]</a><span class="k">def</span> <span class="nf">set_positions</span><span class="p">(</span><span class="n">work_list</span><span class="p">,</span> <span class="n">graph_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set positions for each work</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">    </span>
+<span class="sd">    * `work_list` -- list of work</span>
+
+<span class="sd">    Keyword arguments:</span>
+
+<span class="sd">    * `graph_config` -- GraphConfig object with style configurations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">graph_config</span> <span class="o">=</span> <span class="n">graph_config</span> <span class="ow">or</span> <span class="n">GraphConfig</span><span class="p">()</span>
+    <span class="n">by_year</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">lines_len</span> <span class="o">=</span> <span class="n">lines_len_in_circle</span><span class="p">(</span><span class="n">graph_config</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">year</span><span class="p">,</span> <span class="n">works</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="n">work_list</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">year</span><span class="p">):</span>
+        <span class="n">tyear</span> <span class="o">=</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">works</span><span class="p">:</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">by_year</span><span class="p">[</span><span class="n">tyear</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">max_by_year</span><span class="p">:</span>
+                <span class="n">tyear</span> <span class="o">=</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">tyear</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">by_year</span><span class="p">[</span><span class="n">tyear</span><span class="p">]))</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">margin</span> <span class="o">+</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">dist_y</span> <span class="o">*</span> <span class="n">i</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_r</span> <span class="o">=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">r</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_dist_x</span> <span class="o">=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">dist_x</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_dist_y</span> <span class="o">=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">dist_y</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_margin</span> <span class="o">=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">margin</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_letters</span> <span class="o">=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">letters</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_circle_text</span> <span class="o">=</span> <span class="n">multiline_wrap</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">display</span><span class="p">,</span> <span class="n">lines_len</span><span class="p">)</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_square_text</span> <span class="o">=</span> <span class="n">multiline_wrap</span><span class="p">(</span>
+                <span class="n">work</span><span class="o">.</span><span class="n">display</span><span class="p">,</span> <span class="p">[</span><span class="n">graph_config</span><span class="o">.</span><span class="n">letters</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines_len</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_link</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;scholar&quot;</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">]</span><span class="c1">#[&quot;file&quot;, &quot;link&quot;, &quot;scholar&quot;]</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">tyear</span> <span class="o">=</span> <span class="n">tyear</span>
+            <span class="n">by_year</span><span class="p">[</span><span class="n">tyear</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+
+    <span class="n">prev</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">years</span><span class="p">[</span><span class="n">prev</span><span class="p">]</span> <span class="o">=</span> <span class="n">Year</span><span class="p">(</span>
+        <span class="n">prev</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="p">[],</span> <span class="n">dist</span><span class="o">=</span><span class="n">graph_config</span><span class="o">.</span><span class="n">dist_x</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">graph_config</span><span class="o">.</span><span class="n">margin_left</span>
+    <span class="p">)</span>
+    <span class="n">max_in_one_year</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tyear</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">by_year</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+        <span class="n">years</span><span class="p">[</span><span class="n">prev</span><span class="p">]</span><span class="o">.</span><span class="n">next_year</span> <span class="o">=</span> <span class="n">tyear</span>
+        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">by_year</span><span class="p">[</span><span class="n">tyear</span><span class="p">]:</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">dist_x</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">margin_left</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">_year_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">work</span><span class="o">.</span><span class="n">_i</span><span class="p">])</span>
+            <span class="n">rows</span><span class="p">[</span><span class="n">work</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+        <span class="n">years</span><span class="p">[</span><span class="n">tyear</span><span class="p">]</span> <span class="o">=</span> <span class="n">Year</span><span class="p">(</span>
+            <span class="n">tyear</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">by_year</span><span class="p">[</span><span class="n">tyear</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> 
+            <span class="n">dist</span><span class="o">=</span><span class="n">graph_config</span><span class="o">.</span><span class="n">dist_x</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">graph_config</span><span class="o">.</span><span class="n">margin_left</span>
+        <span class="p">)</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">tyear</span>
+        <span class="n">max_in_one_year</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_in_one_year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">by_year</span><span class="p">[</span><span class="n">tyear</span><span class="p">]))</span>
+        
+    <span class="k">return</span> <span class="n">years</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">max_in_one_year</span></div>
+
+
+<div class="viewcode-block" id="create_graph"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.create_graph">[docs]</a><span class="k">def</span> <span class="nf">create_graph</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">work_list</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">graph_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create citation graph</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    * `name` -- file name</span>
+<span class="sd">    * `work_list` -- list of work</span>
+<span class="sd">    * `references` -- list of citations</span>
+
+<span class="sd">    Keyword arguments:</span>
+
+<span class="sd">    * `graph_config` -- GraphConfig object with style configurations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">graph_config</span> <span class="o">=</span> <span class="n">graph_config</span> <span class="ow">or</span> <span class="n">GraphConfig</span><span class="p">()</span>
+    <span class="n">years</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">max_in_one_year</span> <span class="o">=</span> <span class="n">set_positions</span><span class="p">(</span><span class="n">work_list</span><span class="p">,</span> <span class="n">graph_config</span><span class="p">)</span>
+
+    <span class="n">dwg</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">Drawing</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span>
+        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">dist_x</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">margin_left</span><span class="p">,</span>
+        <span class="mi">2</span> <span class="o">*</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">margin</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_in_one_year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">graph_config</span><span class="o">.</span><span class="n">dist_y</span>
+    <span class="p">))</span>
+
+    <span class="n">marker</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
+        <span class="n">markerWidth</span><span class="o">=</span><span class="s2">&quot;7&quot;</span><span class="p">,</span> <span class="n">markerHeight</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">refY</span><span class="o">=</span><span class="s2">&quot;5&quot;</span>
+    <span class="p">)</span>
+    <span class="n">marker</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">svgwrite</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+        <span class="s2">&quot;M0,10 L7,5 0,0&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
+    <span class="p">))</span>
+    <span class="n">dwg</span><span class="o">.</span><span class="n">defs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">marker</span><span class="p">)</span>
+
+
+    <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">work_list</span><span class="p">:</span>
+        <span class="n">work</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
+            <span class="n">dwg</span><span class="p">,</span>
+            <span class="n">fill_color</span><span class="o">=</span><span class="n">graph_config</span><span class="o">.</span><span class="n">fill_color</span><span class="p">,</span>
+            <span class="n">draw_place</span><span class="o">=</span><span class="n">graph_config</span><span class="o">.</span><span class="n">draw_place</span>
+        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+        <span class="n">ref</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">dwg</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">years</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">draw_place</span><span class="o">=</span><span class="n">graph_config</span><span class="o">.</span><span class="n">draw_place</span><span class="p">)</span>
+
+    <span class="n">tyear</span> <span class="o">=</span> <span class="n">years</span><span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">next_year</span>
+    <span class="k">while</span> <span class="n">tyear</span> <span class="o">!=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">years</span><span class="p">[</span><span class="n">tyear</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">dwg</span><span class="p">)</span>
+        <span class="n">tyear</span> <span class="o">=</span> <span class="n">years</span><span class="p">[</span><span class="n">tyear</span><span class="p">]</span><span class="o">.</span><span class="n">next_year</span>
+
+    <span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">import</span> <span class="n">tostring</span> 
+    <span class="n">dwg</span><span class="o">.</span><span class="n">tostring</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="o">=</span><span class="n">dwg</span><span class="p">:</span> <span class="n">tostring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xml</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="n">dwg</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">dwg</span></div>
+
+
+<div class="viewcode-block" id="Graph"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph">[docs]</a><span class="k">class</span> <span class="nc">Graph</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Graph widget class for creating interactive graphs</span>
+
+<span class="sd">    Keyword arguments:</span>
+
+<span class="sd">    * `name` -- graph name</span>
+<span class="sd">    * `delayed` -- use a draw button instead of updating on every change</span>
+<span class="sd">    * `**kwargs` -- default configurations for the graph according to </span>
+<span class="sd">      GraphConfig attributes and category names</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;graph&quot;</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_stack</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_categories</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filter_in</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filter_out</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_svg_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed</span> <span class="o">=</span> <span class="n">delayed</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toggle_widgets</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_widgets</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">font_color_widgets</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_in_widget</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Filter In&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filter_in&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_out_widget</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Filter Out&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filter_out&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">r_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">update_r_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">&quot;Margin&quot;</span><span class="p">,</span> <span class="s2">&quot;margin&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">59</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin_left_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">&quot;M. Left&quot;</span><span class="p">,</span> <span class="s2">&quot;margin_left&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_x_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">&quot;Dist. X&quot;</span><span class="p">,</span> <span class="s2">&quot;dist_x&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">76</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_y_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">&quot;Dist. Y&quot;</span><span class="p">,</span> <span class="s2">&quot;dist_y&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">76</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">letters_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">&quot;Letters&quot;</span><span class="p">,</span> <span class="s2">&quot;letters&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">by_year_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">&quot;By Year&quot;</span><span class="p">,</span> <span class="s2">&quot;max_by_year&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">places_widget</span> <span class="o">=</span> <span class="n">ToggleButton</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Places&quot;</span><span class="p">,</span>
+                                          <span class="n">value</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;places&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">references_widget</span> <span class="o">=</span> <span class="n">ToggleButton</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;References&quot;</span><span class="p">,</span>
+                                              <span class="n">value</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Draw&quot;</span><span class="p">)</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_in_widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_widget</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_out_widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_widget</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">places_widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_widget</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">references_widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_widget</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delayed_draw</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_widgets</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_r_widget</span><span class="p">()</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Graph</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span>
+            <span class="n">Box</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">filter_in_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_out_widget</span>
+                <span class="p">]</span> <span class="o">+</span> 
+                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toggle_widgets</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> 
+                <span class="p">[</span>
+                    <span class="n">HBox</span><span class="p">([</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_widgets</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_color_widgets</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="p">]</span> <span class="o">+</span>
+                <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">places_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">references_widget</span>
+                <span class="p">]</span> <span class="o">+</span>
+                <span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">delayed_widget</span><span class="p">]</span> <span class="k">if</span> <span class="n">delayed</span> <span class="k">else</span> <span class="p">[])</span>
+            <span class="p">),</span>
+            <span class="n">VBox</span><span class="p">([</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">r_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin_left_widget</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dist_x_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_y_widget</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">letters_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">by_year_widget</span><span class="p">,</span>
+            <span class="p">])</span>
+        <span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="s1">&#39;flex&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">align_items</span> <span class="o">=</span> <span class="s1">&#39;stretch&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_draw</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Graph.delayed_draw"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.delayed_draw">[docs]</a>    <span class="k">def</span> <span class="nf">delayed_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw graph&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_stack</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Graph.slider"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.slider">[docs]</a>    <span class="k">def</span> <span class="nf">slider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates slider&quot;&quot;&quot;</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">IntSlider</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="nb">min</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span>
+            <span class="nb">max</span><span class="o">=</span><span class="nb">max</span><span class="p">,</span>
+            <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="n">default</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">_configattr</span> <span class="o">=</span> <span class="n">attribute</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">fn</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_widget</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">widget</span></div>
+
+<div class="viewcode-block" id="Graph.update_widget"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.update_widget">[docs]</a>    <span class="k">def</span> <span class="nf">update_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Callback for generic widgets&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_stack</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="Graph.update_r_widget"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.update_r_widget">[docs]</a>    <span class="k">def</span> <span class="nf">update_r_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Callback for updating r_widget value&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_stack</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">r_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">dist_min</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">r_value</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="n">letters_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">r_value</span> <span class="o">/</span> <span class="mf">3.6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin_left_widget</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin_left_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">r_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin_left_widget</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin_left_widget</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">r_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_x_widget</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_x_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dist_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_x_widget</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_x_widget</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">dist_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_y_widget</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_y_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dist_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_y_widget</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_y_widget</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">dist_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">letters_widget</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">5000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">letters_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">letters_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters_widget</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">letters_widget</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="n">letters_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="Graph.visible_classes"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.visible_classes">[docs]</a>    <span class="k">def</span> <span class="nf">visible_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate classes&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">class_</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">CLASSES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">class_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;hide&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">class_</span></div>
+        
+<div class="viewcode-block" id="Graph.create_category"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.create_category">[docs]</a>    <span class="k">def</span> <span class="nf">create_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">font_color</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create category widget&quot;&quot;&quot;</span>
+        <span class="n">VIS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toggle_widgets</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">ToggleButton</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">wcolor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_widgets</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">ColorPicker</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;180px&quot;</span><span class="p">)</span>
+        <span class="n">wfont_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_color_widgets</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">ColorPicker</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">font_color</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;110px&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">visibility</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;&quot; Toggles visibility of category &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_display_stack</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">wcolor</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">VIS</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span>
+            <span class="n">wfont_color</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">VIS</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">visibility</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="n">wcolor</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_widget</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="n">wfont_color</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_widget</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="n">visibility</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="Graph.create_widgets"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.create_widgets">[docs]</a>    <span class="k">def</span> <span class="nf">create_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create custom categories&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">class_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">visible_classes</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_category</span><span class="p">(</span>
+                <span class="n">class_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">class_</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="p">(</span><span class="n">class_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;display&quot;</span><span class="p">),</span>
+                <span class="n">class_</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">class_</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
+            <span class="p">)</span></div>
+            
+<div class="viewcode-block" id="Graph.graph"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.graph">[docs]</a>    <span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create graph&quot;&quot;&quot;</span>
+        <span class="n">reload</span><span class="p">()</span>
+        <span class="n">work_list</span> <span class="o">=</span> <span class="n">load_work</span><span class="p">()</span>
+        <span class="n">references</span> <span class="o">=</span> <span class="n">load_citations</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_svg_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph_name</span> <span class="o">+</span> <span class="s2">&quot;.svg&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_categories</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">toggle_widgets</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filter_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_in_widget</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filter_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_out_widget</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        
+        <span class="n">work_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_work</span><span class="p">,</span> <span class="n">work_list</span><span class="p">))</span>
+        <span class="n">ref_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">references_widget</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">references</span> <span class="o">=</span> <span class="n">ref_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_work</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">citation</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_work</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">work</span><span class="p">),</span>
+                <span class="n">references</span>
+            <span class="p">))</span>
+            
+        <span class="n">graph_config</span> <span class="o">=</span> <span class="n">GraphConfig</span><span class="p">()</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">margin_left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin_left_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">dist_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_x_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">dist_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_y_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">letters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">max_by_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">by_year_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">draw_place</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">places_widget</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">graph_config</span><span class="o">.</span><span class="n">fill_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_colors</span>
+        
+        <span class="n">create_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_svg_name</span><span class="p">,</span> <span class="n">work_list</span><span class="p">,</span> <span class="n">ref_list</span><span class="p">,</span> <span class="n">graph_config</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">work_list</span><span class="p">,</span> <span class="n">ref_list</span></div>
+
+<div class="viewcode-block" id="Graph.work_key"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.work_key">[docs]</a>    <span class="k">def</span> <span class="nf">work_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return work category&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">work</span><span class="o">.</span><span class="n">category</span></div>
+    
+<div class="viewcode-block" id="Graph.work_colors"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.work_colors">[docs]</a>    <span class="k">def</span> <span class="nf">work_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return colors for work&quot;&quot;&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_key</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_widgets</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">color_widgets</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">font_color_widgets</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Graph.filter_work"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.filter_work">[docs]</a>    <span class="k">def</span> <span class="nf">filter_work</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter work&quot;&quot;&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_key</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_categories</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_out</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_out</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_in</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+        
+<div class="viewcode-block" id="Graph.display"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.Graph.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display interactive graph&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_stack</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">delayed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_display_stack</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_stack</span><span class="p">:</span>
+                <span class="c1"># Skip display if other widgets will invoke display soon</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">clear_output</span><span class="p">()</span>
+        <span class="n">work_list</span><span class="p">,</span> <span class="n">references</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">()</span>
+        <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_svg_name</span><span class="p">)</span>
+        <span class="n">svg</span> <span class="o">=</span> <span class="n">SVG</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_svg_name</span><span class="p">)</span>
+        <span class="n">svg</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">svg</span><span class="o">.</span><span class="n">_data</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; class=&quot;refgraph&quot;&#39;</span> <span class="o">+</span> <span class="n">svg</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">svg</span><span class="p">)</span>
+        
+        <span class="n">interaction</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            $(&quot;.hoverable polyline, .hoverable line&quot;).mouseenter(</span>
+<span class="s2">                function(e) {</span>
+<span class="s2">                    //e.stopPropagation();</span>
+<span class="s2">                    $(this).css(&quot;stroke&quot;, &quot;blue&quot;);</span>
+<span class="s2">                    $(this).css(&quot;stroke-width&quot;, &quot;3px&quot;);</span>
+<span class="s2">                }).mouseleave(</span>
+<span class="s2">                function() {</span>
+<span class="s2">                    $(this).css(&quot;stroke&quot;, &quot;black&quot;);</span>
+<span class="s2">                    $(this).css(&quot;stroke-width&quot;, &quot;inherit&quot;);</span>
+<span class="s2">                });</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">interaction</span><span class="p">))</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            &lt;script type=&quot;text/javascript&quot;&gt;</span>
+<span class="s2">                </span><span class="si">%s</span><span class="s2"></span>
+
+<span class="s2">                require([&quot;./svg-pan-zoom&quot;], function(svgPanZoom) {</span>
+<span class="s2">                    svgPanZoom(&#39;.refgraph&#39;, {&#39;minZoom&#39;: 0.1});</span>
+<span class="s2">                });</span>
+<span class="s2">            &lt;/script&gt; </span>
+<span class="s2">        &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="nb">open</span><span class="p">(</span>
+                <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span>
+                <span class="s2">&quot;resources&quot;</span> <span class="o">/</span> <span class="s2">&quot;svg-pan-zoom.min.js&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span>
+        <span class="p">)))</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="getcolors"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.getcolors">[docs]</a><span class="k">def</span> <span class="nf">getcolors</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Generate colors&quot;&quot;&quot;</span>
+    <span class="n">kelly_colors</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;D6.1&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">140</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;D6.2&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">216</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">101</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;D6.4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">199</span><span class="p">,</span> <span class="mi">234</span><span class="p">,</span> <span class="mi">229</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;D6.5&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">172</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;D6.6&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">94</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;D6.3&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">232</span><span class="p">,</span> <span class="mi">195</span><span class="p">)),</span>
+
+        <span class="p">(</span><span class="s1">&#39;vivid_yellow&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;strong_purple&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">117</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;vivid_orange&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;very_light_blue&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">166</span><span class="p">,</span> <span class="mi">189</span><span class="p">,</span> <span class="mi">215</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;vivid_red&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">193</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;grayish_yellow&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">206</span><span class="p">,</span> <span class="mi">162</span><span class="p">,</span> <span class="mi">98</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;medium_gray&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">129</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">102</span><span class="p">)),</span>
+
+        <span class="c1"># these aren&#39;t good for people with defective color vision:</span>
+        <span class="p">(</span><span class="s1">&#39;vivid_green&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">125</span><span class="p">,</span> <span class="mi">52</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;strong_purplish_pink&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">142</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;strong_blue&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">138</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;strong_yellowish_pink&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">122</span><span class="p">,</span> <span class="mi">92</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;strong_violet&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">83</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">122</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;vivid_orange_yellow&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">142</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;strong_purplish_red&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">179</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">81</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;vivid_greenish_yellow&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">244</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;strong_reddish_brown&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">127</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">13</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;vivid_yellowish_green&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">147</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;deep_yellowish_brown&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">89</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">21</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;vivid_reddish_orange&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">241</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">19</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;dark_olive_green&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">22</span><span class="p">))])</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">kelly_colors</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">color</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: repeating colors&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getsvgcolors"><a class="viewcode-back" href="../../snowballing/graph.html#snowballing.graph.getsvgcolors">[docs]</a><span class="k">def</span> <span class="nf">getsvgcolors</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Generate pairs of colors&quot;&quot;&quot;</span>
+    <span class="n">textcolors</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([</span>
+        <span class="p">((</span><span class="mi">140</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+        <span class="p">((</span><span class="mi">216</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span> <span class="s2">&quot;black&quot;</span><span class="p">),</span>
+        <span class="p">((</span><span class="mi">199</span><span class="p">,</span> <span class="mi">234</span><span class="p">,</span> <span class="mi">229</span><span class="p">),</span> <span class="s2">&quot;black&quot;</span><span class="p">),</span>
+        <span class="p">((</span><span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">172</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+        <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">94</span><span class="p">),</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+        <span class="p">((</span><span class="mi">246</span><span class="p">,</span> <span class="mi">232</span><span class="p">,</span> <span class="mi">195</span><span class="p">),</span> <span class="s2">&quot;black&quot;</span><span class="p">),</span>
+    <span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">getcolors</span><span class="p">():</span>
+        <span class="k">yield</span> <span class="p">(</span>
+            <span class="s2">&quot;#</span><span class="si">{:02X}{:02X}{:02X}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">),</span>
+            <span class="n">textcolors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snowballing.models &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>snowballing.models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snowballing.models</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains classes for defining the database and producing the </span>
+<span class="sd">citation graph&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">svgwrite</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">dbindex</span><span class="p">,</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">text_y</span><span class="p">,</span> <span class="n">adjust_point</span><span class="p">,</span> <span class="n">Point</span>
+
+
+<span class="k">class</span> <span class="nc">Title</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent a Title object for svgwrite&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+
+
+<span class="k">class</span> <span class="nc">WithTitle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Graph object with title&quot;&quot;&quot;</span>
+    <span class="n">ignore</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">generate_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prepend</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate title text with all attributes from the object</span>
+
+<span class="sd">        Ignores attributes that start with `_`, or attributes in the </span>
+<span class="sd">        :attr:`~ignore` set</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; obj = WithTitle()</span>
+<span class="sd">            &gt;&gt;&gt; obj.attr = &#39;x&#39;</span>
+<span class="sd">            &gt;&gt;&gt; obj.attr2 = &#39;y&#39;</span>
+<span class="sd">            &gt;&gt;&gt; obj._ignored = &#39;z&#39;</span>
+<span class="sd">            &gt;&gt;&gt; print(obj.generate_title(prepend=&quot;&quot;))</span>
+<span class="sd">            attr: x</span>
+<span class="sd">            attr2: y</span>
+<span class="sd">            &gt;&gt;&gt; obj.ignore.add(&#39;attr&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; print(obj.generate_title(prepend=&quot;&quot;))</span>
+<span class="sd">            attr2: y</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignore</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">prepend</span> <span class="o">+</span> <span class="n">result</span> <span class="k">if</span> <span class="n">result</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Place</span><span class="p">(</span><span class="n">WithTitle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent a publication Place</span>
+
+<span class="sd">    It has the following attributes:</span>
+
+<span class="sd">    * :attr:`~acronym` -- place acronym (e.g., &#39;IPAW&#39;)</span>
+<span class="sd">    </span>
+<span class="sd">      * Surround it with &lt;&gt;, if the place has no acronym or you do not know it</span>
+<span class="sd">        (e.g., &#39;&lt;ImaginaryAcronym&gt;&#39;)</span>
+
+<span class="sd">    * :attr:`~name` -- full name of the place (e.g., &#39;International Provenance</span>
+<span class="sd">      and Annotation Workshop&#39;)</span>
+
+<span class="sd">    * :attr:`~type` -- place acronym (e.g., &#39;IPAW&#39;)</span>
+
+<span class="sd">    Other attributes are optional and can be used to include extra information</span>
+<span class="sd">    about the place.</span>
+<span class="sd">    Note however that it has the following reversed attributes:</span>
+
+<span class="sd">    * :attr:`~ignore` -- set that specifies ignore attributes in titles </span>
+<span class="sd">      (:class:`~WithTitle`)</span>
+
+<span class="sd">    * :meth:`~draw` -- method that draws the place</span>
+<span class="sd">    </span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; ipaw = Place(&#39;IPAW&#39;, </span>
+<span class="sd">        ...              &#39;International Provenance and Annotation Workshop&#39;,</span>
+<span class="sd">        ...              &#39;conference&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; ipaw.acronym</span>
+<span class="sd">        &#39;IPAW&#39;</span>
+<span class="sd">        &gt;&gt;&gt; ipaw.name</span>
+<span class="sd">        &#39;International Provenance and Annotation Workshop&#39;</span>
+<span class="sd">        &gt;&gt;&gt; ipaw.type</span>
+<span class="sd">        &#39;conference&#39;</span>
+
+<span class="sd">        Places are considered equal if they have the same name</span>
+<span class="sd">        &gt;&gt;&gt; ipaw2 = Place(&#39;I&#39;, &#39;International Provenance and Annotation Workshop&#39;,</span>
+<span class="sd">        ...              &#39;journal&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; ipaw == ipaw2</span>
+<span class="sd">        True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acronym</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">acronym</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">acronym</span> <span class="o">=</span> <span class="n">acronym</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            
+            
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dwg</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Draws place in a given position &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acronym</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span>
+            <span class="n">text_anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span><span class="p">,</span>
+            <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
+        <span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">set_desc</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_title</span><span class="p">(</span><span class="n">prepend</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)))</span>
+        <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acronym</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Work"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Work">[docs]</a><span class="k">class</span> <span class="nc">Work</span><span class="p">(</span><span class="n">WithTitle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Work represents papers in the snowballing</span>
+<span class="sd"> </span>
+<span class="sd">    It has the following attributes:</span>
+
+<span class="sd">    * :attr:`~year` -- year of publivation (int)</span>
+<span class="sd">      </span>
+<span class="sd">      * Convention: use 0 if it is not required (website), or 9999 if it is not</span>
+<span class="sd">        informed</span>
+
+<span class="sd">    * :attr:`~name` -- paper title</span>
+
+<span class="sd">    * :attr:`~authors` -- paper authors</span>
+
+<span class="sd">      * For exporting properly to BibTeX, I suggest using the format &#39;LastName1,</span>
+<span class="sd">        FirstName1 and LastName2, FirstName2 and LastName3, FirstName3 ...&#39;</span>
+
+<span class="sd">    * :attr:`~display` -- display label for graphs</span>
+<span class="sd">        </span>
+<span class="sd">    * :attr:`~metakey` -- variable name</span>
+
+<span class="sd">      * It is automatically collected from the database. It it does not exist,</span>
+<span class="sd">        call :func:`snowvalling.operations.reload` again.</span>
+
+<span class="sd">    * :attr:`~file` -- filename of the work (optional)</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~due` -- reason for work not being related (optional)</span>
+
+<span class="sd">    * :attr:`~notes` -- use it to append a string to year in BibTeX (optional)</span>
+
+<span class="sd">      * For example::</span>
+
+<span class="sd">            work.year = 2014</span>
+<span class="sd">            work.notes = &quot;in press&quot;</span>
+<span class="sd">            </span>
+<span class="sd">      * Produces: 2014 [in press]</span>
+<span class="sd">        </span>
+<span class="sd">    * :attr:`~snowball` -- forward snowballing date (optional)</span>
+
+<span class="sd">    * :attr:`~citation_file` -- citation filename (without .py)</span>
+<span class="sd">          </span>
+<span class="sd">      * Indicates where are the citations of this work</span>
+<span class="sd">        </span>
+
+<span class="sd">    * :attr:`~alias` -- tuple with (year, title, authors) (optional)</span>
+
+<span class="sd">      * Represents the same work in google scholar </span>
+<span class="sd">          </span>
+<span class="sd">          * The tuple can have two elements if the authors match: (year, title)</span>
+<span class="sd">          </span>
+<span class="sd">          * Use year = 0, if the citation on google scholar doesn&#39;t have the </span>
+<span class="sd">            year information</span>
+<span class="sd">        </span>
+<span class="sd">    * :attr:`~aliases` -- list of alias attributes (optional)</span>
+
+<span class="sd">    * :attr:`~scholar` -- url of the work in google scholar (optional)</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~scholar_ok` -- status of the work according to a google scholar </span>
+<span class="sd">      curation (optional)</span>
+
+<span class="sd">      * True means that we already merged google scholar&#39;s bibtex to the work</span>
+<span class="sd">      </span>
+<span class="sd">      * False means that we didn&#39;t</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~tracking` indicates if we set an alert for the work (optional)</span>
+<span class="sd">    </span>
+<span class="sd">      * Note: the alert is manual. This tool does not set the alert.</span>
+<span class="sd">        You can use whatever value you want for it</span>
+
+
+<span class="sd">    Other attributes are optional and can be used to include extra information</span>
+<span class="sd">    about the work.</span>
+
+
+<span class="sd">    Note however that it has the following reserved attributes:</span>
+
+<span class="sd">    * :attr:`~category` -- work status in the snowballing</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~tyear` -- year object for drawing</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~ignore` -- set that specifies ignore attributes in titles </span>
+<span class="sd">      (:class:`~WithTitle`)</span>
+
+<span class="sd">    * :meth:`~draw` -- method that draws the work</span>
+
+<span class="sd">    * :attr:`~_x` -- x position for drawing the work</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_y` -- y position for drawing the work</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_r` -- radius for circular node drawing</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_i` -- column index for drawing the work</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_year_index` -- row index for drawing the work</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_letters` -- max amount of letters for drawing</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_shape` -- shape of node (circle vs rectangle)</span>
+
+
+<span class="sd">    Works are considered equal if they have the same place, name and year</span>
+<span class="sd">        </span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; IPAW = Place(&#39;IPAW&#39;, &#39;IPAW&#39;, &#39;conference&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a = Work(</span>
+<span class="sd">        ...     2014, &quot;noWorkflow: capturing and analyzing provenance of scripts&quot;,</span>
+<span class="sd">        ...     display=&quot;noWorkflow&quot;,</span>
+<span class="sd">        ...     authors=&quot;Murta, Leonardo and Braganholo, Vanessa and Chirigati, &quot;</span>
+<span class="sd">        ...             &quot;Fernando and Koop, David and Freire, Juliana&quot;,</span>
+<span class="sd">        ...     place=IPAW,</span>
+<span class="sd">        ...     local=&quot;Cologne, Germany&quot;,</span>
+<span class="sd">        ...     file=&quot;Murta2014a.pdf&quot;,</span>
+<span class="sd">        ...     pp=&quot;71--83&quot;,</span>
+<span class="sd">        ...     entrytype=&quot;inproceedings&quot;,</span>
+<span class="sd">        ...     citation_file=&quot;noworkflow2014&quot;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a.year</span>
+<span class="sd">        2014</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a.name</span>
+<span class="sd">        &#39;noWorkflow: capturing and analyzing provenance of scripts&#39;</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a.pp</span>
+<span class="sd">        &#39;71--83&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;work&quot;</span>
+    <span class="n">ignore</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;_x&quot;</span><span class="p">,</span> <span class="s2">&quot;_y&quot;</span><span class="p">,</span> <span class="s2">&quot;_i&quot;</span><span class="p">,</span> <span class="s2">&quot;_year_index&quot;</span><span class="p">,</span> <span class="s2">&quot;_r&quot;</span><span class="p">,</span> <span class="s2">&quot;_letters&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span>
+    <span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">authors</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authors</span> <span class="o">=</span> <span class="n">authors</span>
+        
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_r</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_year_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_letters</span> <span class="o">=</span> <span class="mi">5</span>
+        
+        <span class="k">if</span> <span class="n">display</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">display</span>
+        
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">year</span> 
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="Work.generate_title"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Work.generate_title">[docs]</a>    <span class="k">def</span> <span class="nf">generate_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prepend</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The title of a work is its BibTeX&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">work_to_bibtex</span>
+        <span class="k">return</span> <span class="n">prepend</span> <span class="o">+</span> <span class="n">work_to_bibtex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Work.draw"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Work.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dwg</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">draw_place</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_circle</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw work&quot;&quot;&quot;</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fill_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fill_color</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span>
+        <span class="n">fill</span><span class="p">,</span> <span class="n">text_fill</span> <span class="o">=</span> <span class="n">fill_color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">==</span> <span class="s2">&quot;circle&quot;</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
+                <span class="n">position</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">,</span> <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
+            <span class="p">)</span>
+            <span class="n">shape_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circle_text</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">)</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span>
+                <span class="n">position</span> <span class="o">-</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">r2</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">,</span> <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
+            <span class="p">)</span>
+            <span class="n">shape_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_square_text</span>
+
+        <span class="n">textstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_letters</span><span class="p">]</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">),</span>
+            <span class="n">fill</span><span class="o">=</span><span class="n">text_fill</span><span class="p">,</span>
+            <span class="n">text_anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span><span class="p">,</span>
+            <span class="n">alignment_baseline</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;font-size:12px;font-family:monospace&quot;</span><span class="p">,</span>
+            <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;wrap&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">text_y</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape_text</span><span class="p">)),</span> <span class="n">shape_text</span><span class="p">):</span>
+            <span class="c1">#print(y, line)</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">svgwrite</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">TSpan</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="n">y</span><span class="p">)))</span>
+
+        
+        <span class="n">shape</span><span class="o">.</span><span class="n">set_desc</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Title</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_title</span><span class="p">()</span>
+        <span class="p">))</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">set_desc</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Title</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_title</span><span class="p">()</span>
+        <span class="p">))</span>
+        
+        
+        <span class="k">if</span> <span class="n">draw_place</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">place</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">dwg</span><span class="p">,</span> <span class="n">position</span> <span class="o">-</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span> <span class="o">+</span> <span class="mi">4</span><span class="p">))</span>
+        
+        <span class="n">link</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">link_type</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_link</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+                <span class="n">link</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">Hyperlink</span><span class="p">(</span><span class="s2">&quot;files/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;link&quot;</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">:</span>
+                <span class="n">link</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">Hyperlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;scholar&quot;</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;scholar&quot;</span><span class="p">):</span>
+                <span class="n">link</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">Hyperlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scholar</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">link</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+            <span class="n">dwg</span> <span class="o">=</span> <span class="n">link</span>
+        
+        <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Site"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Site">[docs]</a><span class="k">class</span> <span class="nc">Site</span><span class="p">(</span><span class="n">Work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent a site reference</span>
+
+<span class="sd">    It does not have an year, but it requires following attributes:</span>
+
+<span class="sd">    * :attr:`~name` -- website name</span>
+
+<span class="sd">    * :attr:`~link` -- website link</span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; site = Site(&quot;GitHub&quot;, &quot;http://www.github.com&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; site.name</span>
+<span class="sd">        &#39;GitHub&#39;</span>
+<span class="sd">        &gt;&gt;&gt; site.link</span>
+<span class="sd">        &#39;http://www.github.com&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;site&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.common_places</span> <span class="k">import</span> <span class="n">Web</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Site</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="n">link</span><span class="p">,</span> <span class="n">place</span><span class="o">=</span><span class="n">Web</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Email"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Email">[docs]</a><span class="k">class</span> <span class="nc">Email</span><span class="p">(</span><span class="n">Work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent an email reference</span>
+
+<span class="sd">    It requires the following attributes:</span>
+
+<span class="sd">    * :attr:`~year` -- year it was received</span>
+
+<span class="sd">    * :attr:`~authors` -- email author</span>
+
+<span class="sd">    * :attr:`~name` -- email subject</span>
+
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; email = Email(2017, &quot;Pimentel, Joao&quot;, &quot;noWorkflow model&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; email.year</span>
+<span class="sd">        2017</span>
+<span class="sd">        &gt;&gt;&gt; email.authors</span>
+<span class="sd">        &#39;Pimentel, Joao&#39;</span>
+<span class="sd">        &gt;&gt;&gt; email.name</span>
+<span class="sd">        &#39;noWorkflow model&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;site&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">authors</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.common_places</span> <span class="k">import</span> <span class="n">Web</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Email</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">authors</span><span class="o">=</span><span class="n">authors</span><span class="p">,</span> <span class="n">place</span><span class="o">=</span><span class="n">Web</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Year"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Year">[docs]</a><span class="k">class</span> <span class="nc">Year</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent a year in the citation graph</span>
+
+<span class="sd">    It has the following attributes:</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~year` --  int</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~next_year` --  tuple with year object and index</span>
+<span class="sd">    </span>
+<span class="sd">      * year = -1 indicates that there is no next year</span>
+
+<span class="sd">    * :attr:`~previous_year` --  tuple with year object and index</span>
+<span class="sd">      * previous = -1 indicates that there is no previous year</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~works` --  list of works in the year</span>
+
+
+<span class="sd">    It has the following reversed attributes</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_i` --  column index for drawing the year</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_dist` --  distance between year columns</span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`~_r` -- extra margin</span>
+
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; y2017 = Year(2017, (-1, 0), [])</span>
+<span class="sd">        &gt;&gt;&gt; y2017.year</span>
+<span class="sd">        2017</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">previous</span><span class="p">,</span> <span class="n">works</span><span class="p">,</span> <span class="n">i</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_year</span> <span class="o">=</span> <span class="n">previous</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_year</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">works</span> <span class="o">=</span> <span class="n">works</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span> <span class="o">=</span> <span class="n">dist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_r</span> <span class="o">=</span> <span class="n">r</span>
+    
+<div class="viewcode-block" id="Year.draw"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Year.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dwg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw year in the position&quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span>
+        <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">svgwrite</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">text_anchor</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;font-size:20px&quot;</span>
+        <span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="Citation"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Citation">[docs]</a><span class="k">class</span> <span class="nc">Citation</span><span class="p">(</span><span class="n">WithTitle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent a citation for the work</span>
+
+<span class="sd">    Attributes:</span>
+
+<span class="sd">    * :attr:`~work` -- the work that cites</span>
+
+<span class="sd">    * :attr:`~citation` -- the work that is cited</span>
+
+<span class="sd">    Other attributes are optional and can be used to include extra information</span>
+<span class="sd">    about the citation.</span>
+
+
+<span class="sd">    Note however that it has the following reserved attributes:</span>
+
+<span class="sd">    * :attr:`~citations_file` -- file where the citation is defined</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ignore</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;work&quot;</span><span class="p">,</span> <span class="s2">&quot;citation&quot;</span><span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">citation</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">inspect</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_citations_file</span> <span class="o">=</span> <span class="n">dbindex</span><span class="o">.</span><span class="n">last_citation_file</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">work</span> <span class="o">=</span> <span class="n">work</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="n">citation</span>
+        
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_belzier_gen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">rotate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create belzier line points</span>
+<span class="sd">        Usage: </span>
+<span class="sd">        ... svgwrite.path.Path(</span>
+<span class="sd">        ...      &quot;M{0} C{1} {2} {3}&quot;.format(*belzier_gen(work, ref, False)</span>
+<span class="sd">        ...  ), stroke=&quot;black&quot;, fill=&quot;white&quot;, fill_opacity=0)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">work_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+        <span class="n">ref_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">work_point</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">work</span><span class="o">.</span><span class="n">_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">rotate</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">work_point</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">work</span><span class="o">.</span><span class="n">_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">rotate</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">ref_point</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ref</span><span class="o">.</span><span class="n">_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">rotate</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">ref_point</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">ref</span><span class="o">.</span><span class="n">_r</span> <span class="o">-</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">rotate</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_line_gen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">ref</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create line points</span>
+<span class="sd">        </span>
+<span class="sd">        Usage::</span>
+<span class="sd">        </span>
+<span class="sd">            svgwrite.shapes.Line(*self._line_gen(work, ref), stroke=&quot;black&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">point0</span> <span class="o">=</span> <span class="n">adjust_point</span><span class="p">(</span>
+            <span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">_r</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">_shape</span>
+        <span class="p">)</span>
+        <span class="k">yield</span> <span class="n">point0</span>
+        <span class="k">yield</span> <span class="n">adjust_point</span><span class="p">(</span><span class="o">*</span><span class="n">point0</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_r</span> <span class="o">+</span> <span class="mi">7</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Citation.draw"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Citation.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dwg</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">years</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">draw_place</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw citation line&quot;&quot;&quot;</span>
+        <span class="n">work</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">citation</span>
+        <span class="k">if</span> <span class="n">work</span> <span class="o">==</span> <span class="n">ref</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;tyear&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="s2">&quot;tyear&quot;</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">work</span><span class="o">.</span><span class="n">tyear</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">years</span> <span class="ow">or</span> <span class="n">ref</span><span class="o">.</span><span class="n">tyear</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">work</span><span class="o">.</span><span class="n">_i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rows</span> <span class="ow">or</span> <span class="n">ref</span><span class="o">.</span><span class="n">_i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">dwg</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="s2">&quot;hoverable&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_x</span> <span class="o">-</span> <span class="n">work</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">work</span><span class="o">.</span><span class="n">_dist_x</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_y</span> <span class="o">-</span> <span class="n">work</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">work</span><span class="o">.</span><span class="n">_dist_y</span><span class="p">:</span>
+            <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">work</span><span class="o">.</span><span class="n">_x</span> <span class="o">&lt;</span> <span class="n">ref</span><span class="o">.</span><span class="n">_x</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_line_gen</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">ref</span><span class="p">),</span> <span class="n">stroke_opacity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+            <span class="n">line</span><span class="p">[</span><span class="s2">&quot;marker-end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">marker</span><span class="o">.</span><span class="n">get_funciri</span><span class="p">()</span>
+            <span class="n">line</span><span class="o">.</span><span class="n">set_desc</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Title</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{0.display}{0.year}</span><span class="s2"> -&gt; </span><span class="si">{1.display}{1.year}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_title</span><span class="p">()</span>
+            <span class="p">))</span>
+            <span class="n">group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">space_x</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">_dist_x</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">work</span><span class="o">.</span><span class="n">_r</span>
+            <span class="n">space_y</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">_dist_y</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">work</span><span class="o">.</span><span class="n">_r</span>
+            <span class="k">if</span> <span class="n">draw_place</span><span class="p">:</span>
+                <span class="n">space_y</span> <span class="o">-=</span> <span class="mi">16</span>
+            <span class="n">work_year</span> <span class="o">=</span> <span class="n">years</span><span class="p">[</span><span class="n">work</span><span class="o">.</span><span class="n">tyear</span><span class="p">]</span>
+            <span class="n">ref_year</span> <span class="o">=</span> <span class="n">years</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">tyear</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">work</span><span class="o">.</span><span class="n">_x</span> <span class="o">&lt;</span> <span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">:</span>
+                <span class="n">closest_work_year</span> <span class="o">=</span> <span class="n">years</span><span class="p">[</span><span class="n">work_year</span><span class="o">.</span><span class="n">next_year</span><span class="p">]</span>
+                <span class="n">closest_ref_year</span> <span class="o">=</span> <span class="n">years</span><span class="p">[</span><span class="n">ref_year</span><span class="o">.</span><span class="n">previous_year</span><span class="p">]</span>
+                <span class="n">pS</span><span class="p">,</span> <span class="n">pE</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_r</span> <span class="o">+</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">pSM</span><span class="p">,</span> <span class="n">pEM</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">space_x</span> <span class="o">+</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">signx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">closest_work_year</span> <span class="o">=</span> <span class="n">years</span><span class="p">[</span><span class="n">work_year</span><span class="o">.</span><span class="n">previous_year</span><span class="p">]</span>
+                <span class="n">closest_ref_year</span> <span class="o">=</span> <span class="n">years</span><span class="p">[</span><span class="n">ref_year</span><span class="o">.</span><span class="n">next_year</span><span class="p">]</span>
+                <span class="n">pS</span><span class="p">,</span> <span class="n">pE</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">work</span><span class="o">.</span><span class="n">_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">((</span><span class="n">ref</span><span class="o">.</span><span class="n">_r</span> <span class="o">+</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">pSM</span><span class="p">,</span> <span class="n">pEM</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">space_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">signx</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">total_work</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">work_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_work_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span>
+            <span class="n">total_ref</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_ref_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span>
+            
+            <span class="n">delta_work</span> <span class="o">=</span> <span class="p">(</span><span class="n">space_x</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_work</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">delta_ref_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">space_y</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_ref</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">dist_midwork</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">+</span> <span class="n">delta_work</span> <span class="o">*</span> <span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">dist_midref_x</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_ref_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span> <span class="o">+</span> <span class="n">delta_ref_x</span> <span class="o">*</span> <span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            
+            <span class="n">total_ref_y</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span><span class="p">])</span>
+            <span class="n">delta_ref_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">space_y</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_ref_y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">dist_midref_y</span> <span class="o">=</span> <span class="n">delta_ref_y</span> <span class="o">*</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span><span class="p">])</span> <span class="o">-</span> <span class="n">ref</span><span class="o">.</span><span class="n">_year_index</span><span class="p">))</span>
+            
+            <span class="n">signy</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">work</span><span class="o">.</span><span class="n">_y</span> <span class="o">&lt;</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">source_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">pS</span><span class="p">]</span>
+            <span class="n">source_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">pSM</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="n">dist_midwork</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">work</span><span class="o">.</span><span class="n">_x</span> <span class="o">!=</span> <span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">:</span>
+                <span class="n">position_in_row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+                <span class="n">next_position</span> <span class="o">=</span> <span class="n">position_in_row</span> <span class="o">+</span> <span class="n">signx</span>
+                <span class="n">operation</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">ge</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">le</span><span class="p">][</span><span class="n">signx</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">next_position</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span><span class="p">]))</span> <span class="ow">or</span> <span class="n">operation</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span><span class="p">][</span><span class="n">next_position</span><span class="p">]</span><span class="o">.</span><span class="n">tyear</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">tyear</span><span class="p">):</span>
+                    <span class="n">target_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">pE</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">target_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_r</span> <span class="o">+</span> <span class="mi">7</span><span class="p">)]</span>
+                    <span class="n">target_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dist_midref_y</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">target_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_r</span> <span class="o">+</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">0</span><span class="p">)]</span>
+            <span class="n">target_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">source_points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">target_points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+
+            <span class="n">points</span> <span class="o">=</span> <span class="n">source_points</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">target_points</span><span class="p">))</span>            
+            <span class="n">line</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">Polyline</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">stroke_opacity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">pointer_events</span><span class="o">=</span><span class="s2">&quot;stroke&quot;</span><span class="p">)</span>
+            <span class="n">line</span><span class="o">.</span><span class="n">set_desc</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Title</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0.display}{0.year}</span><span class="s2"> -&gt; </span><span class="si">{1.display}{1.year}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_title</span><span class="p">()))</span>
+            <span class="n">group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            
+            <span class="n">line</span><span class="p">[</span><span class="s2">&quot;marker-end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">marker</span><span class="o">.</span><span class="n">get_funciri</span><span class="p">()</span>
+        <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">group</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Database"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database">[docs]</a><span class="k">class</span> <span class="nc">Database</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent a database with all elements that can be accessed&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Database.filter"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter database by type&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">v</span>
+
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">v</span></div>
+
+<div class="viewcode-block" id="Database.clear"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear type from database&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+                <span class="nb">delattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">type</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="Database.clear_work"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database.clear_work">[docs]</a>    <span class="k">def</span> <span class="nf">clear_work</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear all work&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="n">Work</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Database.clear_places"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database.clear_places">[docs]</a>    <span class="k">def</span> <span class="nf">clear_places</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear all places&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="n">Place</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Database.clear_citations"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database.clear_citations">[docs]</a>    <span class="k">def</span> <span class="nf">clear_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear citations&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="n">Citation</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Database.work"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database.work">[docs]</a>    <span class="k">def</span> <span class="nf">work</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate all work&quot;&quot;&quot;</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Work</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Database.places"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database.places">[docs]</a>    <span class="k">def</span> <span class="nf">places</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate all places&quot;&quot;&quot;</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Place</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Database.citations"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Database.citations">[docs]</a>    <span class="k">def</span> <span class="nf">citations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gerenete all citations&quot;&quot;&quot;</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Citation</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">element</span>
+        <span class="k">elif</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">v</span></div>
+
+
+<span class="k">for</span> <span class="p">(</span><span class="n">cls_name</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">CLASSES</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">cls_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+        <span class="nb">locals</span><span class="p">()[</span><span class="n">cls_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">cls_name</span><span class="p">,</span> <span class="p">(</span><span class="n">Work</span><span class="p">,),</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">locals</span><span class="p">()[</span><span class="n">cls_name</span><span class="p">]</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">category</span>
+
+<span class="n">DB</span> <span class="o">=</span> <span class="n">Database</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

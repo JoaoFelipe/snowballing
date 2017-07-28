@@ -1,0 +1,681 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dbmanager.py &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../index.html"/>
+        <link rel="next" title="graph.py" href="graph.html"/>
+        <link rel="prev" title="dbindex.py" href="dbindex.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">dbmanager.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#relevant-functions">Relevant functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#insert">insert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-attribute">set_attribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rename-work">rename_work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#insert-work">insert_work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#insert-citation">insert_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-target-citation">remove_target_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-source-citation">remove_source_citation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#other-functions">Other Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rename-lines">rename_lines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rename-citation">rename_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#citation-operation">citation_operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#work-operation">work_operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-lines">save_lines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-file">read_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#is-assign-to-name">is_assign_to_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#is-call-statement">is_call_statement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#operation-classes">Operation classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#replaceoperation">ReplaceOperation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deloperation">DelOperation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#addkeywordoperation">AddKeywordOperation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#insertoperation">InsertOperation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#detectoperation">DetectOperation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visitor-classes">Visitor classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#editvisitor">EditVisitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bodyvisitor">BodyVisitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#citationvisitor">CitationVisitor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>dbmanager.py</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snowballing/dbmanager.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-snowballing.dbmanager">
+<span id="dbmanager-py"></span><h1>dbmanager.py<a class="headerlink" href="#module-snowballing.dbmanager" title="Permalink to this headline">¶</a></h1>
+<p>This module contains operations to manipulate the database</p>
+<p>Warning: since it involves manipulating source code, some operations may not be 
+very reliable.</p>
+<p>Additionaly, we currently do not have tests for this file.
+Thus, my suggestion is to use only the <a class="reference internal" href="#snowballing.dbmanager.insert" title="snowballing.dbmanager.insert"><code class="xref py py-meth docutils literal"><span class="pre">insert()</span></code></a> and <a class="reference internal" href="#snowballing.dbmanager.set_attribute" title="snowballing.dbmanager.set_attribute"><code class="xref py py-meth docutils literal"><span class="pre">set_attribute()</span></code></a> functions.
+These functions were heavily used during my snowballing.</p>
+<p>For other operations, such as removing citations/work, I recommend editting 
+files manually.</p>
+<div class="section" id="relevant-functions">
+<h2>Relevant functions<a class="headerlink" href="#relevant-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="insert">
+<h3>insert<a class="headerlink" href="#insert" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><em>text</em>, <em>citations=None</em>, <em>ratio=0.9</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert text that might contain works and citations.</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>text</cite> &#8211; code with work and citations</li>
+</ul>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>citations</cite> &#8211; citations filename</li>
+<li><cite>ratio</cite> &#8211; comparison threshold for existing work</li>
+<li><cite>dry_run</cite> &#8211; do not apply changes to the database</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">insert</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">pimentel2016a = DB(WorkSnowball(</span>
+<span class="s1">    2016, &quot;Tracking and analyzing the evolution of provenance from scripts&quot;,</span>
+<span class="s1">    display=&quot;noworkflow a&quot;,</span>
+<span class="s1">    authors=&quot;Pimentel, João Felipe and Freire, Juliana and Braganholo, Vanessa and Murta, Leonardo&quot;,</span>
+<span class="s1">    place=IPAW,</span>
+<span class="s1">    pp=&quot;16--28&quot;,</span>
+<span class="s1">    entrytype=&quot;inproceedings&quot;,</span>
+<span class="s1">))</span>
+
+<span class="s1">DB(Citation(</span>
+<span class="s1">    pimentel2016a, murta2014a, ref=&quot;[14]&quot;,</span>
+<span class="s1">    contexts=[</span>
+<span class="s1">    ],</span>
+<span class="s1">))</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">citations</span><span class="o">=</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="set-attribute">
+<h3>set_attribute<a class="headerlink" href="#set-attribute" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.set_attribute">
+<code class="descname">set_attribute</code><span class="sig-paren">(</span><em>varname</em>, <em>field</em>, <em>value</em>, <em>year=None</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#set_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.set_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set attribute for work</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>varname</cite> &#8211; work variable name</li>
+<li><cite>field</cite> &#8211; work attribute name</li>
+<li><cite>value</cite> &#8211; new value for attribute</li>
+</ul>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>year</cite> &#8211; limit work search for specific year</li>
+<li><cite>dry_run</cite> &#8211; do not apply changes to the database</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">set_attribute</span><span class="p">(</span><span class="s1">&#39;murta2014a&#39;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;now&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="rename-work">
+<h3>rename_work<a class="headerlink" href="#rename-work" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.rename_work">
+<code class="descname">rename_work</code><span class="sig-paren">(</span><em>original_name</em>, <em>new_name</em>, <em>year=None</em>, <em>new_year=None</em>, <em>citations=True</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#rename_work"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.rename_work" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename work</p>
+</dd></dl>
+
+</div>
+<div class="section" id="insert-work">
+<h3>insert_work<a class="headerlink" href="#insert-work" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.insert_work">
+<code class="descname">insert_work</code><span class="sig-paren">(</span><em>varname</em>, <em>name</em>, <em>text</em>, <em>year=None</em>, <em>ratio=0.9</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#insert_work"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.insert_work" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert work by <cite>:text</cite> in file <cite>:name</cite></p>
+</dd></dl>
+
+</div>
+<div class="section" id="insert-citation">
+<h3>insert_citation<a class="headerlink" href="#insert-citation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.insert_citation">
+<code class="descname">insert_citation</code><span class="sig-paren">(</span><em>name</em>, <em>text</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#insert_citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.insert_citation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert citation by <cite>:text</cite> in file <cite>:name</cite></p>
+</dd></dl>
+
+</div>
+<div class="section" id="remove-target-citation">
+<h3>remove_target_citation<a class="headerlink" href="#remove-target-citation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.remove_target_citation">
+<code class="descname">remove_target_citation</code><span class="sig-paren">(</span><em>name</em>, <em>varname</em>, <em>year=None</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#remove_target_citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.remove_target_citation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove citation where the cited is <cite>:varname</cite></p>
+</dd></dl>
+
+</div>
+<div class="section" id="remove-source-citation">
+<h3>remove_source_citation<a class="headerlink" href="#remove-source-citation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.remove_source_citation">
+<code class="descname">remove_source_citation</code><span class="sig-paren">(</span><em>name</em>, <em>varname</em>, <em>year=None</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#remove_source_citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.remove_source_citation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove citation where the citer is <cite>:varname</cite></p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="other-functions">
+<h2>Other Functions<a class="headerlink" href="#other-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="rename-lines">
+<h3>rename_lines<a class="headerlink" href="#rename-lines" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.rename_lines">
+<code class="descname">rename_lines</code><span class="sig-paren">(</span><em>filename</em>, <em>lines</em>, <em>sep</em>, <em>original_name</em>, <em>new_name</em>, <em>year=None</em>, <em>new_year=None</em>, <em>citations=True</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#rename_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.rename_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename work in year and citation files</p>
+</dd></dl>
+
+</div>
+<div class="section" id="rename-citation">
+<h3>rename_citation<a class="headerlink" href="#rename-citation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.rename_citation">
+<code class="descname">rename_citation</code><span class="sig-paren">(</span><em>name</em>, <em>original_varname</em>, <em>new_varname</em>, <em>year=None</em>, <em>new_year=None</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#rename_citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.rename_citation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename citation varname</p>
+</dd></dl>
+
+</div>
+<div class="section" id="citation-operation">
+<h3>citation_operation<a class="headerlink" href="#citation-operation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.citation_operation">
+<code class="descname">citation_operation</code><span class="sig-paren">(</span><em>filename</em>, <em>lines</em>, <em>varname</em>, <em>year</em>, <em>operation</em>, <em>value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#citation_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.citation_operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <cite>:operation</cite> for <cite>:varname</cite> in a citation file <cite>:filename</cite></p>
+</dd></dl>
+
+</div>
+<div class="section" id="work-operation">
+<h3>work_operation<a class="headerlink" href="#work-operation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.work_operation">
+<code class="descname">work_operation</code><span class="sig-paren">(</span><em>filename</em>, <em>lines</em>, <em>varname</em>, <em>operation</em>, <em>value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#work_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.work_operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <cite>:operation</cite> for <cite>:varname</cite> in a year file <cite>:filename</cite></p>
+</dd></dl>
+
+</div>
+<div class="section" id="save-lines">
+<h3>save_lines<a class="headerlink" href="#save-lines" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.save_lines">
+<code class="descname">save_lines</code><span class="sig-paren">(</span><em>filename</em>, <em>lines</em>, <em>sep='\n'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#save_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.save_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write python file with utf-8</p>
+</dd></dl>
+
+</div>
+<div class="section" id="read-file">
+<h3>read_file<a class="headerlink" href="#read-file" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.read_file">
+<code class="descname">read_file</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read python file with the right codec</p>
+</dd></dl>
+
+</div>
+<div class="section" id="is-assign-to-name">
+<h3>is_assign_to_name<a class="headerlink" href="#is-assign-to-name" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.is_assign_to_name">
+<code class="descname">is_assign_to_name</code><span class="sig-paren">(</span><em>stmt</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#is_assign_to_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.is_assign_to_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if stmt is an assignment to name</p>
+</dd></dl>
+
+</div>
+<div class="section" id="is-call-statement">
+<h3>is_call_statement<a class="headerlink" href="#is-call-statement" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.dbmanager.is_call_statement">
+<code class="descname">is_call_statement</code><span class="sig-paren">(</span><em>stmt</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#is_call_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.is_call_statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if stmt is a call expr</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="operation-classes">
+<h2>Operation classes<a class="headerlink" href="#operation-classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="replaceoperation">
+<h3>ReplaceOperation<a class="headerlink" href="#replaceoperation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.dbmanager.ReplaceOperation">
+<em class="property">class </em><code class="descname">ReplaceOperation</code><span class="sig-paren">(</span><em>target</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#ReplaceOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.ReplaceOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Operation for replacing <cite>.target</cite> lines by <cite>:value</cite></p>
+<dl class="method">
+<dt id="snowballing.dbmanager.ReplaceOperation.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>lines</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#ReplaceOperation.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.ReplaceOperation.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace <cite>lines</cite> of <cite>:target</cite> by <cite>:value</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="deloperation">
+<h3>DelOperation<a class="headerlink" href="#deloperation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.dbmanager.DelOperation">
+<em class="property">class </em><code class="descname">DelOperation</code><span class="sig-paren">(</span><em>keyword</em>, <em>delete_lines=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#DelOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.DelOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Operation for removing <cite>.keyword</cite></p>
+<dl class="method">
+<dt id="snowballing.dbmanager.DelOperation.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>lines</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#DelOperation.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.DelOperation.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove <cite>.keyword</cite> from <cite>:lines</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="addkeywordoperation">
+<h3>AddKeywordOperation<a class="headerlink" href="#addkeywordoperation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.dbmanager.AddKeywordOperation">
+<em class="property">class </em><code class="descname">AddKeywordOperation</code><span class="sig-paren">(</span><em>attribute</em>, <em>last_line</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#AddKeywordOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.AddKeywordOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Operation for adding <cite>:attribute</cite></p>
+<dl class="method">
+<dt id="snowballing.dbmanager.AddKeywordOperation.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>lines</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#AddKeywordOperation.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.AddKeywordOperation.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add <cite>.attribute</cite> = <cite>:value</cite> into <cite>:lines</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="insertoperation">
+<h3>InsertOperation<a class="headerlink" href="#insertoperation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.dbmanager.InsertOperation">
+<em class="property">class </em><code class="descname">InsertOperation</code><span class="sig-paren">(</span><em>last_line</em>, <em>last=False</em>, <em>add_line=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#InsertOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.InsertOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Operation for inserting values in a given line</p>
+<dl class="method">
+<dt id="snowballing.dbmanager.InsertOperation.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>lines</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#InsertOperation.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.InsertOperation.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert <cite>:value</cite> at line <cite>.last_line</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="detectoperation">
+<h3>DetectOperation<a class="headerlink" href="#detectoperation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.dbmanager.DetectOperation">
+<em class="property">class </em><code class="descname">DetectOperation</code><a class="reference internal" href="../_modules/snowballing/dbmanager.html#DetectOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.DetectOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Operation for detecting elements</p>
+<dl class="method">
+<dt id="snowballing.dbmanager.DetectOperation.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>lines</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#DetectOperation.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.DetectOperation.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect elements</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="visitor-classes">
+<h2>Visitor classes<a class="headerlink" href="#visitor-classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="editvisitor">
+<h3>EditVisitor<a class="headerlink" href="#editvisitor" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.dbmanager.EditVisitor">
+<em class="property">class </em><code class="descname">EditVisitor</code><span class="sig-paren">(</span><em>lines</em>, <em>varname</em>, <em>operation='rename'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#EditVisitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.EditVisitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ast.NodeVisitor</span></code></p>
+<p>Visitor for editing attributes of a Work identified by <cite>.varname</cite></p>
+<dl class="method">
+<dt id="snowballing.dbmanager.EditVisitor.add_keyword">
+<code class="descname">add_keyword</code><span class="sig-paren">(</span><em>attribute</em>, <em>last_line</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#EditVisitor.add_keyword"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.EditVisitor.add_keyword" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate an operation to add keyword</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.EditVisitor.remove_keyword">
+<code class="descname">remove_keyword</code><span class="sig-paren">(</span><em>keyword</em>, <em>remove_lines</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#EditVisitor.remove_keyword"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.EditVisitor.remove_keyword" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate an operation to remove a keyword</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.EditVisitor.replace">
+<code class="descname">replace</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#EditVisitor.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.EditVisitor.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate a replace operation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.EditVisitor.visit_Assign">
+<code class="descname">visit_Assign</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#EditVisitor.visit_Assign"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.EditVisitor.visit_Assign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visits assign and check if it represents the desired <cite>.varname</cite></p>
+<p>Then, instantiate and apply the desired <cite>.operation</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="bodyvisitor">
+<h3>BodyVisitor<a class="headerlink" href="#bodyvisitor" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.dbmanager.BodyVisitor">
+<em class="property">class </em><code class="descname">BodyVisitor</code><span class="sig-paren">(</span><em>lines</em>, <em>varname</em>, <em>operation='delete'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#BodyVisitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.BodyVisitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ast.NodeVisitor</span></code></p>
+<p>Visit body of year file to find <cite>.varname</cite> and apply <cite>.operation</cite></p>
+<dl class="method">
+<dt id="snowballing.dbmanager.BodyVisitor.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><em>line</em>, <em>last</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#BodyVisitor.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.BodyVisitor.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate an operation to insert code</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.BodyVisitor.process_body">
+<code class="descname">process_body</code><span class="sig-paren">(</span><em>body</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#BodyVisitor.process_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.BodyVisitor.process_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds desired varnames in body and instantiate operation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.BodyVisitor.remove_stmt">
+<code class="descname">remove_stmt</code><span class="sig-paren">(</span><em>stmt</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#BodyVisitor.remove_stmt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.BodyVisitor.remove_stmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate an operation to remove the stmt</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.BodyVisitor.visit_Interactive">
+<code class="descname">visit_Interactive</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#BodyVisitor.visit_Interactive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.BodyVisitor.visit_Interactive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process body of Interactive node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.BodyVisitor.visit_Module">
+<code class="descname">visit_Module</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#BodyVisitor.visit_Module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.BodyVisitor.visit_Module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process body of Module node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.BodyVisitor.visit_Suite">
+<code class="descname">visit_Suite</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#BodyVisitor.visit_Suite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.BodyVisitor.visit_Suite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes body of Suite node</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="citationvisitor">
+<h3>CitationVisitor<a class="headerlink" href="#citationvisitor" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.dbmanager.CitationVisitor">
+<em class="property">class </em><code class="descname">CitationVisitor</code><span class="sig-paren">(</span><em>lines</em>, <em>varname</em>, <em>year</em>, <em>operation='remove import'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#CitationVisitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.CitationVisitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ast.NodeVisitor</span></code></p>
+<p>Visit body of citation file to apply operation</p>
+<dl class="method">
+<dt id="snowballing.dbmanager.CitationVisitor.process_body">
+<code class="descname">process_body</code><span class="sig-paren">(</span><em>body</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#CitationVisitor.process_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.CitationVisitor.process_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find citation/import and applies the desired <cite>.operation</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.CitationVisitor.visit_Interactive">
+<code class="descname">visit_Interactive</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#CitationVisitor.visit_Interactive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.CitationVisitor.visit_Interactive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process body of Interactive node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.CitationVisitor.visit_Module">
+<code class="descname">visit_Module</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#CitationVisitor.visit_Module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.CitationVisitor.visit_Module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process body of Module node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.dbmanager.CitationVisitor.visit_Suite">
+<code class="descname">visit_Suite</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbmanager.html#CitationVisitor.visit_Suite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbmanager.CitationVisitor.visit_Suite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes body of Suite node</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="graph.html" class="btn btn-neutral float-right" title="graph.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dbindex.html" class="btn btn-neutral" title="dbindex.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

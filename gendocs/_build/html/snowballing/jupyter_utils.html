@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>jupyter_utils.py &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../index.html"/>
+        <link rel="next" title="models.py" href="models.html"/>
+        <link rel="prev" title="graph.py" href="graph.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">jupyter_utils.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#display-cell">display_cell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#idisplay">idisplay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#find-line">find_line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#invoke-editor">invoke_editor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-button">new_button</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#work-button">work_button</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>jupyter_utils.py</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snowballing/jupyter_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-snowballing.jupyter_utils">
+<span id="jupyter-utils-py"></span><h1>jupyter_utils.py<a class="headerlink" href="#module-snowballing.jupyter_utils" title="Permalink to this headline">¶</a></h1>
+<p>This module provides useful jupyter widgets</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="display-cell">
+<h3>display_cell<a class="headerlink" href="#display-cell" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.jupyter_utils.display_cell">
+<code class="descname">display_cell</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/jupyter_utils.html#display_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.jupyter_utils.display_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove cells that start with &#8220;# Temp&#8221; and add a new one</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>text</cite> &#8211; new cell content</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="idisplay">
+<h3>idisplay<a class="headerlink" href="#idisplay" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.jupyter_utils.idisplay">
+<code class="descname">idisplay</code><span class="sig-paren">(</span><em>*args</em>, <em>label=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/jupyter_utils.html#idisplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.jupyter_utils.idisplay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display multiple values using ipywidget HBox</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>*args</cite> &#8211; list of values</li>
+</ul>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>label</cite> &#8211; create a Label widget instead of a Text widget, if value is
+not a widget</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="find-line">
+<h3>find_line<a class="headerlink" href="#find-line" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.jupyter_utils.find_line">
+<code class="descname">find_line</code><span class="sig-paren">(</span><em>work</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/jupyter_utils.html#find_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.jupyter_utils.find_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find work position in file</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>work</cite> &#8211; work object</li>
+</ul>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">find_line</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">)</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="invoke-editor">
+<h3>invoke_editor<a class="headerlink" href="#invoke-editor" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.jupyter_utils.invoke_editor">
+<code class="descname">invoke_editor</code><span class="sig-paren">(</span><em>work</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/jupyter_utils.html#invoke_editor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.jupyter_utils.invoke_editor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open work in a given line with the configured editor</p>
+</dd></dl>
+
+</div>
+<div class="section" id="new-button">
+<h3>new_button<a class="headerlink" href="#new-button" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.jupyter_utils.new_button">
+<code class="descname">new_button</code><span class="sig-paren">(</span><em>description</em>, <em>function</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/jupyter_utils.html#new_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.jupyter_utils.new_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new Button widget and set its on_click callback</p>
+</dd></dl>
+
+</div>
+<div class="section" id="work-button">
+<h3>work_button<a class="headerlink" href="#work-button" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.jupyter_utils.work_button">
+<code class="descname">work_button</code><span class="sig-paren">(</span><em>work</em>, <em>description=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/jupyter_utils.html#work_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.jupyter_utils.work_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a button for the work with a link to the editor</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>work</cite> &#8211; the work object</li>
+</ul>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>description</cite> &#8211; button label. It uses the work varname if it is not 
+specified</li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="models.html" class="btn btn-neutral float-right" title="models.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="graph.html" class="btn btn-neutral" title="graph.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

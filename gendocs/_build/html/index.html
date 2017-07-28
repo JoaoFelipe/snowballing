@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Snowballing &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="#"/>
+        <link rel="next" title="Getting started" href="start.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Snowballing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="snowballing">
+<h1>Snowballing<a class="headerlink" href="#snowballing" title="Permalink to this headline">¶</a></h1>
+<p>This project provides tools for perfoming a liberature review through
+snowballing. It includes Jupyter Notebook widgets that assist the
+backward and forward steps of literature snowballing, notebooks that
+assist in inserting citations in the database, and notebooks for
+analyzing the snowballing and producing citation graphs, publication
+place histograms, and a summarization of the snowballing steps.</p>
+<p>This package was tested on Python 3.6 using Windows, but it should
+support Python &gt; 3.5 in any operating system. Please, open an issue if
+it is not the case.</p>
+<div class="section" id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h2>
+<p>Do not hesitate to contact me:</p>
+<ul class="simple">
+<li>João Felipe Pimentel <a class="reference external" href="mailto:joaofelipenp&#37;&#52;&#48;gmail&#46;com">joaofelipenp<span>&#64;</span>gmail<span>&#46;</span>com</a></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/approaches.html">approaches.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/approaches.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/approaches.html#group">Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/approaches.html#groupunrelated">GroupUnrelated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/approaches.html#item">Item</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/approaches.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/approaches.html#name">name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/approaches.html#get-approaches">get_approaches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/approaches.html#wcite">wcite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/approaches.html#wlatex-name">wlatex_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/approaches.html#wcitea">wcitea</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/common_places.html">common_places.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/common_places.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/common_places.html#conference">conference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/common_places.html#journal">journal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/common_places.html#magazine">magazine</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/dbindex.html">dbindex.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/dbindex.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#citation-file">citation_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#year-file">year_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#places-file">places_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#this-file">this_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#discover-year">discover_year</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#increment-char">increment_char</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#increment-str">increment_str</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#parse-varname">parse_varname</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/dbmanager.html">dbmanager.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/dbmanager.html#relevant-functions">Relevant functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#insert">insert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#set-attribute">set_attribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#rename-work">rename_work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#insert-work">insert_work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#insert-citation">insert_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#remove-target-citation">remove_target_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#remove-source-citation">remove_source_citation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/dbmanager.html#other-functions">Other Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#rename-lines">rename_lines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#rename-citation">rename_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#citation-operation">citation_operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#work-operation">work_operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#save-lines">save_lines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#read-file">read_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#is-assign-to-name">is_assign_to_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#is-call-statement">is_call_statement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/dbmanager.html#operation-classes">Operation classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#replaceoperation">ReplaceOperation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#deloperation">DelOperation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#addkeywordoperation">AddKeywordOperation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#insertoperation">InsertOperation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#detectoperation">DetectOperation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/dbmanager.html#visitor-classes">Visitor classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#editvisitor">EditVisitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#bodyvisitor">BodyVisitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/dbmanager.html#citationvisitor">CitationVisitor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/graph.html">graph.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/graph.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/graph.html#graph">Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/graph.html#graphconfig">GraphConfig</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/graph.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/graph.html#create-graph">create_graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/graph.html#set-positions">set_positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/graph.html#getcolors">getcolors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/graph.html#getsvgcolors">getsvgcolors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/jupyter_utils.html">jupyter_utils.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/jupyter_utils.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#display-cell">display_cell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#idisplay">idisplay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#find-line">find_line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#invoke-editor">invoke_editor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#new-button">new_button</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#work-button">work_button</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/models.html">models.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/models.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/models.html#work">Work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/models.html#site">Site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/models.html#email">Email</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/models.html#citation">Citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/models.html#year">Year</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/models.html#database">Database</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/operations.html">operations.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/operations.html#database">Database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#reload">reload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#work-by-varname">work_by_varname</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find">find</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#load-work-map-all-years">load_work_map_all_years</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#load-work">load_work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#load-citations">load_citations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#load-places-vars">load_places_vars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#load-work-map">load_work_map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#citation-text">citation_text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find-citation">find_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find-global-local-citation">find_global_local_citation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/operations.html#bibtex">BibTeX</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#work-to-bibtex-entry">work_to_bibtex_entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#work-to-bibtex">work_to_bibtex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#match-bibtex-to-work">match_bibtex_to_work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#compare-paper-to-work">compare_paper_to_work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find-work-by-info">find_work_by_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#bibtex-to-info">bibtex_to_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#set-display">set_display</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#set-pyref">set_pyref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#set-place">set_place</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#extract-info">extract_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#info-to-code">info_to_code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/snowballing.html">snowballing.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/snowballing.html#widgets">Widgets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#converter">Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#articlenavigator">ArticleNavigator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#backwardsnowballing">BackwardSnowballing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#forwardsnowballing">ForwardSnowballing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#scholarupdate">ScholarUpdate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/snowballing.html#analysis">Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#create-provenance">create_provenance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#log-to-provn">log_to_provn</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#snowballing">snowballing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#step">Step</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/utils.html">utils.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/utils.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#match-any">match_any</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#compare-str">compare_str</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#setitem">setitem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#consume">consume</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#import-submodules">import_submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#adjust-point">adjust_point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#multiline-wrap">multiline_wrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#lines-len-in-circle">lines_len_in_circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#text-y">text_y</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/utils.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#multiline">MultiLine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#point">Point</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="start.html" class="btn btn-neutral float-right" title="Getting started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

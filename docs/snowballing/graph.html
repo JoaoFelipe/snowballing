@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>graph.py &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../index.html"/>
+        <link rel="next" title="jupyter_utils.py" href="jupyter_utils.html"/>
+        <link rel="prev" title="dbmanager.py" href="dbmanager.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">graph.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#graph">Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graphconfig">GraphConfig</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-graph">create_graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-positions">set_positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getcolors">getcolors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getsvgcolors">getsvgcolors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>graph.py</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snowballing/graph.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-snowballing.graph">
+<span id="graph-py"></span><h1>graph.py<a class="headerlink" href="#module-snowballing.graph" title="Permalink to this headline">¶</a></h1>
+<p>This module produces citation graphs</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="graph">
+<h3>Graph<a class="headerlink" href="#graph" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.graph.Graph">
+<em class="property">class </em><code class="descname">Graph</code><span class="sig-paren">(</span><em>name='graph'</em>, <em>delayed=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">ipywidgets.widgets.widget_box.Box</span></code></p>
+<p>Graph widget class for creating interactive graphs</p>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>name</cite> &#8211; graph name</li>
+<li><cite>delayed</cite> &#8211; use a draw button instead of updating on every change</li>
+<li><cite>**kwargs</cite> &#8211; default configurations for the graph according to 
+GraphConfig attributes and category names</li>
+</ul>
+<dl class="method">
+<dt id="snowballing.graph.Graph.create_category">
+<code class="descname">create_category</code><span class="sig-paren">(</span><em>name</em>, <em>attr</em>, <em>value</em>, <em>color</em>, <em>font_color</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.create_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.create_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create category widget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.create_widgets">
+<code class="descname">create_widgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.create_widgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.create_widgets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create custom categories</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.delayed_draw">
+<code class="descname">delayed_draw</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.delayed_draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.delayed_draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.display">
+<code class="descname">display</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display interactive graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.filter_work">
+<code class="descname">filter_work</code><span class="sig-paren">(</span><em>work</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.filter_work"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.filter_work" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter work</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.graph">
+<code class="descname">graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.slider">
+<code class="descname">slider</code><span class="sig-paren">(</span><em>description</em>, <em>attribute</em>, <em>min</em>, <em>max</em>, <em>step</em>, <em>default</em>, <em>fn=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.slider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.slider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates slider</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.update_r_widget">
+<code class="descname">update_r_widget</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.update_r_widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.update_r_widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for updating r_widget value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.update_widget">
+<code class="descname">update_widget</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.update_widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.update_widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for generic widgets</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.visible_classes">
+<code class="descname">visible_classes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.visible_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.visible_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate classes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.work_colors">
+<code class="descname">work_colors</code><span class="sig-paren">(</span><em>work</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.work_colors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.work_colors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return colors for work</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.graph.Graph.work_key">
+<code class="descname">work_key</code><span class="sig-paren">(</span><em>work</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#Graph.work_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.Graph.work_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return work category</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="graphconfig">
+<h3>GraphConfig<a class="headerlink" href="#graphconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.graph.GraphConfig">
+<em class="property">class </em><code class="descname">GraphConfig</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#GraphConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.GraphConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Configure graph</p>
+<dl class="attribute">
+<dt id="snowballing.graph.GraphConfig.max_by_year">
+<code class="descname">max_by_year</code><a class="headerlink" href="#snowballing.graph.GraphConfig.max_by_year" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-graph">
+<h3>create_graph<a class="headerlink" href="#create-graph" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.graph.create_graph">
+<code class="descname">create_graph</code><span class="sig-paren">(</span><em>name</em>, <em>work_list</em>, <em>references</em>, <em>graph_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#create_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.create_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create citation graph</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>name</cite> &#8211; file name</li>
+<li><cite>work_list</cite> &#8211; list of work</li>
+<li><cite>references</cite> &#8211; list of citations</li>
+</ul>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>graph_config</cite> &#8211; GraphConfig object with style configurations</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="set-positions">
+<h3>set_positions<a class="headerlink" href="#set-positions" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.graph.set_positions">
+<code class="descname">set_positions</code><span class="sig-paren">(</span><em>work_list</em>, <em>graph_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#set_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.set_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set positions for each work</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>work_list</cite> &#8211; list of work</li>
+</ul>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>graph_config</cite> &#8211; GraphConfig object with style configurations</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="getcolors">
+<h3>getcolors<a class="headerlink" href="#getcolors" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.graph.getcolors">
+<code class="descname">getcolors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#getcolors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.getcolors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate colors</p>
+</dd></dl>
+
+</div>
+<div class="section" id="getsvgcolors">
+<h3>getsvgcolors<a class="headerlink" href="#getsvgcolors" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.graph.getsvgcolors">
+<code class="descname">getsvgcolors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/graph.html#getsvgcolors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.graph.getsvgcolors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate pairs of colors</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="jupyter_utils.html" class="btn btn-neutral float-right" title="jupyter_utils.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dbmanager.html" class="btn btn-neutral" title="dbmanager.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>approaches.py &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../index.html"/>
+        <link rel="next" title="common_places.py" href="common_places.html"/>
+        <link rel="prev" title="Getting started" href="../start.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">approaches.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#group">Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#groupunrelated">GroupUnrelated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#item">Item</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-approaches">get_approaches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wcite">wcite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wlatex-name">wlatex_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wcitea">wcitea</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>approaches.py</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snowballing/approaches.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-snowballing.approaches">
+<span id="approaches-py"></span><h1>approaches.py<a class="headerlink" href="#module-snowballing.approaches" title="Permalink to this headline">¶</a></h1>
+<p>This module provides classes and functions for grouping work into approach
+Groups</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="group">
+<h3>Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.approaches.Group">
+<em class="property">class </em><code class="descname">Group</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Represent an Approach or a Group of work.</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>args</cite> &#8211; list of work that represents the group</li>
+<li><cite>kwargs</cite> &#8211; map of attributes to be applied for the group and its works<ul>
+<li>Exception: the keyword <cite>dont_cite=</cite> also represents a list of works that
+belong to the group</li>
+</ul>
+</li>
+</ul>
+<p>Expected attributes:</p>
+<ul class="simple">
+<li>_cite: cite group by authors<ul>
+<li>True indicates that the approach must be referenced by its authors</li>
+<li>False indicates that the approach can referenced by name</li>
+</ul>
+</li>
+<li>_meta: list of dicts with attributes for comparing approaches<ul>
+<li>A single approach can have more than one meta dict</li>
+<li>It is possible to use the distinct meta dicts to describe different
+aspects</li>
+</ul>
+</li>
+<li>_about: HTML describing the approach</li>
+</ul>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pimentel2015a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;pimentel2015a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pimentel2015a</span><span class="o">.</span><span class="n">display</span> <span class="o">==</span> <span class="s2">&quot;now&quot;</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">APPROACHES</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">APPROACHES</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">murta2014a</span><span class="p">,</span> <span class="n">pimentel2015a</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">display</span><span class="o">=</span><span class="s2">&quot;now&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">_cite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">_meta</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">scripts</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span>    <span class="p">)]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">display</span>
+<span class="go">&#39;now&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pimentel2015a</span><span class="o">.</span><span class="n">display</span> <span class="o">==</span> <span class="s2">&quot;now&quot;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">APPROACHES</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="groupunrelated">
+<h3>GroupUnrelated<a class="headerlink" href="#groupunrelated" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.approaches.GroupUnrelated">
+<em class="property">class </em><code class="descname">GroupUnrelated</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#GroupUnrelated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.GroupUnrelated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.approaches.Group" title="snowballing.approaches.Group"><code class="xref py py-class docutils literal"><span class="pre">snowballing.approaches.Group</span></code></a></p>
+<p>Represent an unrelated group of approaches</p>
+<p>It does not add the approach into the APPROACHES list.</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pimentel2015a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;pimentel2015a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pimentel2015a</span><span class="o">.</span><span class="n">display</span> <span class="o">==</span> <span class="s2">&quot;now&quot;</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">APPROACHES</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">APPROACHES</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">GroupUnrelated</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">murta2014a</span><span class="p">,</span> <span class="n">pimentel2015a</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">display</span><span class="o">=</span><span class="s2">&quot;now&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">display</span>
+<span class="go">&#39;now&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pimentel2015a</span><span class="o">.</span><span class="n">display</span> <span class="o">==</span> <span class="s2">&quot;now&quot;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">APPROACHES</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="item">
+<h3>Item<a class="headerlink" href="#item" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.approaches.Item">
+<em class="property">class </em><code class="descname">Item</code><span class="sig-paren">(</span><em>value</em>, <em>_star=None</em>, <em>_bool=True</em>, <em>_examples=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.Item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Constant Item that supports additional descriptions</p>
+<dl class="method">
+<dt id="snowballing.approaches.Item.star">
+<code class="descname">star</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#Item.star"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.Item.star" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add description to constant</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.approaches.Item.such_as">
+<code class="descname">such_as</code><span class="sig-paren">(</span><em>examples</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#Item.such_as"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.Item.such_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exemplify constant</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.approaches.Item.text">
+<code class="descname">text</code><a class="headerlink" href="#snowballing.approaches.Item.text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return text representation for constant, considering star</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="name">
+<h3>name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.approaches.name">
+<code class="descname">name</code><span class="sig-paren">(</span><em>approach</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return approach name. Removes double spaces in display</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">snowballing.operations</span> <span class="k">import</span> <span class="n">reload</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[[</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">]]</span> <span class="o">=</span> <span class="n">get_approaches</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">&#39;noWorkflow&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="get-approaches">
+<h3>get_approaches<a class="headerlink" href="#get-approaches" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.approaches.get_approaches">
+<code class="descname">get_approaches</code><span class="sig-paren">(</span><em>condition=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#get_approaches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.get_approaches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return pairs of approaches and meta dicts</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">snowballing.operations</span> <span class="k">import</span> <span class="n">reload</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">get_approaches</span><span class="p">())</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="wcite">
+<h3>wcite<a class="headerlink" href="#wcite" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.approaches.wcite">
+<code class="descname">wcite</code><span class="sig-paren">(</span><em>approach</em>, <em>works</em>, <em>extra=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#wcite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.wcite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a latex cite command with all work in an approach</p>
+</dd></dl>
+
+</div>
+<div class="section" id="wlatex-name">
+<h3>wlatex_name<a class="headerlink" href="#wlatex-name" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.approaches.wlatex_name">
+<code class="descname">wlatex_name</code><span class="sig-paren">(</span><em>approach</em>, <em>works</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#wlatex_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.wlatex_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return approach name or latex citation according to attribute _cite</p>
+</dd></dl>
+
+</div>
+<div class="section" id="wcitea">
+<h3>wcitea<a class="headerlink" href="#wcitea" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.approaches.wcitea">
+<code class="descname">wcitea</code><span class="sig-paren">(</span><em>approach</em>, <em>works</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/approaches.html#wcitea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.approaches.wcitea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return approach name followed by latex citation</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="common_places.html" class="btn btn-neutral float-right" title="common_places.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../start.html" class="btn btn-neutral" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

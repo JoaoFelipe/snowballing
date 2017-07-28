@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scholar.py &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../index.html"/>
+        <link rel="next" title="selenium_scholar.py" href="selenium_scholar.html"/>
+        <link rel="prev" title="operations.py" href="operations.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">operations.py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>scholar.py</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snowballing/scholar.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-snowballing.scholar">
+<span id="scholar-py"></span><h1>scholar.py<a class="headerlink" href="#module-snowballing.scholar" title="Permalink to this headline">¶</a></h1>
+<p>This module provides classes for querying Google Scholar and parsing
+returned results. It currently <em>only</em> processes the first results
+page. It is not a recursive crawler.</p>
+<dl class="class">
+<dt id="snowballing.scholar.ClusterScholarQuery">
+<em class="property">class </em><code class="descname">ClusterScholarQuery</code><span class="sig-paren">(</span><em>cluster=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ClusterScholarQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ClusterScholarQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.scholar.ScholarQuery" title="snowballing.scholar.ScholarQuery"><code class="xref py py-class docutils literal"><span class="pre">snowballing.scholar.ScholarQuery</span></code></a></p>
+<p>This version just pulls up an article cluster whose ID we already
+know about.</p>
+<dl class="attribute">
+<dt id="snowballing.scholar.ClusterScholarQuery.SCHOLAR_CLUSTER_URL">
+<code class="descname">SCHOLAR_CLUSTER_URL</code><em class="property"> = 'http://scholar.google.com/scholar?cluster=%(cluster)s&amp;num=%(num)s'</em><a class="headerlink" href="#snowballing.scholar.ClusterScholarQuery.SCHOLAR_CLUSTER_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ClusterScholarQuery.get_url">
+<code class="descname">get_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ClusterScholarQuery.get_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ClusterScholarQuery.get_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ClusterScholarQuery.set_cluster">
+<code class="descname">set_cluster</code><span class="sig-paren">(</span><em>cluster</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ClusterScholarQuery.set_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ClusterScholarQuery.set_cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets search to a Google Scholar results cluster ID.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="snowballing.scholar.Error">
+<em class="property">exception </em><code class="descname">Error</code><a class="reference internal" href="../_modules/snowballing/scholar.html#Error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.Error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Base class for any Scholar error.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="snowballing.scholar.FormatError">
+<em class="property">exception </em><code class="descname">FormatError</code><a class="reference internal" href="../_modules/snowballing/scholar.html#FormatError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.FormatError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.scholar.Error" title="snowballing.scholar.Error"><code class="xref py py-class docutils literal"><span class="pre">snowballing.scholar.Error</span></code></a></p>
+<p>A query argument or setting was formatted incorrectly.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="snowballing.scholar.QueryArgumentError">
+<em class="property">exception </em><code class="descname">QueryArgumentError</code><a class="reference internal" href="../_modules/snowballing/scholar.html#QueryArgumentError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.QueryArgumentError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.scholar.Error" title="snowballing.scholar.Error"><code class="xref py py-class docutils literal"><span class="pre">snowballing.scholar.Error</span></code></a></p>
+<p>A query did not have a suitable set of arguments.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarArticle">
+<em class="property">class </em><code class="descname">ScholarArticle</code><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A class representing articles listed on Google Scholar.  The class
+provides basic dictionary-like behavior.</p>
+<dl class="method">
+<dt id="snowballing.scholar.ScholarArticle.as_citation">
+<code class="descname">as_citation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticle.as_citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticle.as_citation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports the article in a standard citation format. This works only
+if you have configured the querier to retrieve a particular
+citation export format. (See ScholarSettings.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarArticle.as_csv">
+<code class="descname">as_csv</code><span class="sig-paren">(</span><em>header=False</em>, <em>sep='|'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticle.as_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticle.as_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarArticle.as_txt">
+<code class="descname">as_txt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticle.as_txt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticle.as_txt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarArticle.set_citation_data">
+<code class="descname">set_citation_data</code><span class="sig-paren">(</span><em>citation_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticle.set_citation_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticle.set_citation_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarArticleParser">
+<em class="property">class </em><code class="descname">ScholarArticleParser</code><span class="sig-paren">(</span><em>site=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticleParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticleParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>ScholarArticleParser can parse HTML document strings obtained from
+Google Scholar. This is a base class; concrete implementations
+adapting to tweaks made by Google over time follow below.</p>
+<dl class="method">
+<dt id="snowballing.scholar.ScholarArticleParser.handle_article">
+<code class="descname">handle_article</code><span class="sig-paren">(</span><em>art</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticleParser.handle_article"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticleParser.handle_article" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parser invokes this callback on each article parsed
+successfully.  In this base class, the callback does nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarArticleParser.handle_num_results">
+<code class="descname">handle_num_results</code><span class="sig-paren">(</span><em>num_results</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticleParser.handle_num_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticleParser.handle_num_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parser invokes this callback if it determines the overall
+number of results, as reported on the parsed results page. The
+base class implementation does nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarArticleParser.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><em>html</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticleParser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticleParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method initiates parsing of HTML content, cleans resulting
+content as needed, and notifies the parser instance of
+resulting instances via the handle_article callback.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarArticleParser120201">
+<em class="property">class </em><code class="descname">ScholarArticleParser120201</code><span class="sig-paren">(</span><em>site=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticleParser120201"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticleParser120201" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.scholar.ScholarArticleParser" title="snowballing.scholar.ScholarArticleParser"><code class="xref py py-class docutils literal"><span class="pre">snowballing.scholar.ScholarArticleParser</span></code></a></p>
+<p>This class reflects update to the Scholar results page layout that
+Google recently.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarArticleParser120726">
+<em class="property">class </em><code class="descname">ScholarArticleParser120726</code><span class="sig-paren">(</span><em>site=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarArticleParser120726"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarArticleParser120726" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.scholar.ScholarArticleParser" title="snowballing.scholar.ScholarArticleParser"><code class="xref py py-class docutils literal"><span class="pre">snowballing.scholar.ScholarArticleParser</span></code></a></p>
+<p>This class reflects update to the Scholar results page layout that
+Google made 07/26/12.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarConf">
+<em class="property">class </em><code class="descname">ScholarConf</code><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarConf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarConf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Helper class for global settings.</p>
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarConf.COOKIE_JAR_FILE">
+<code class="descname">COOKIE_JAR_FILE</code><em class="property"> = None</em><a class="headerlink" href="#snowballing.scholar.ScholarConf.COOKIE_JAR_FILE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarConf.LOG_LEVEL">
+<code class="descname">LOG_LEVEL</code><em class="property"> = 3</em><a class="headerlink" href="#snowballing.scholar.ScholarConf.LOG_LEVEL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarConf.MAX_PAGE_RESULTS">
+<code class="descname">MAX_PAGE_RESULTS</code><em class="property"> = 20</em><a class="headerlink" href="#snowballing.scholar.ScholarConf.MAX_PAGE_RESULTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarConf.SCHOLAR_SITE">
+<code class="descname">SCHOLAR_SITE</code><em class="property"> = 'http://scholar.google.com'</em><a class="headerlink" href="#snowballing.scholar.ScholarConf.SCHOLAR_SITE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarConf.USER_AGENT">
+<code class="descname">USER_AGENT</code><em class="property"> = 'Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0'</em><a class="headerlink" href="#snowballing.scholar.ScholarConf.USER_AGENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarConf.VERSION">
+<code class="descname">VERSION</code><em class="property"> = '2.10'</em><a class="headerlink" href="#snowballing.scholar.ScholarConf.VERSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarQuerier">
+<em class="property">class </em><code class="descname">ScholarQuerier</code><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>ScholarQuerier instances can conduct a search on Google Scholar
+with subsequent parsing of the resulting HTML content.  The
+articles found are collected in the articles member, a list of
+ScholarArticle instances.</p>
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarQuerier.GET_SETTINGS_URL">
+<code class="descname">GET_SETTINGS_URL</code><em class="property"> = 'http://scholar.google.com/scholar_settings?sciifh=1&amp;hl=en&amp;as_sdt=0,5'</em><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.GET_SETTINGS_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarQuerier.Parser">
+<em class="property">class </em><code class="descname">Parser</code><span class="sig-paren">(</span><em>querier</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.Parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.scholar.ScholarArticleParser120726" title="snowballing.scholar.ScholarArticleParser120726"><code class="xref py py-class docutils literal"><span class="pre">snowballing.scholar.ScholarArticleParser120726</span></code></a></p>
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.Parser.handle_article">
+<code class="descname">handle_article</code><span class="sig-paren">(</span><em>art</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.Parser.handle_article"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.Parser.handle_article" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.Parser.handle_num_results">
+<code class="descname">handle_num_results</code><span class="sig-paren">(</span><em>num_results</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.Parser.handle_num_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.Parser.handle_num_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarQuerier.SET_SETTINGS_URL">
+<code class="descclassname">ScholarQuerier.</code><code class="descname">SET_SETTINGS_URL</code><em class="property"> = 'http://scholar.google.com/scholar_setprefs?q=&amp;scisig=%(scisig)s&amp;inststart=0&amp;as_sdt=1,5&amp;as_sdtp=&amp;num=%(num)s&amp;scis1=%(scis)s%(scisf)s&amp;hl=en&amp;lang=all&amp;instq=&amp;inst=569367360547434339&amp;save='</em><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.SET_SETTINGS_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.add_article">
+<code class="descclassname">ScholarQuerier.</code><code class="descname">add_article</code><span class="sig-paren">(</span><em>art</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.add_article"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.add_article" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.apply_settings">
+<code class="descclassname">ScholarQuerier.</code><code class="descname">apply_settings</code><span class="sig-paren">(</span><em>settings</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.apply_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.apply_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies settings as provided by a ScholarSettings instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.clear_articles">
+<code class="descclassname">ScholarQuerier.</code><code class="descname">clear_articles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.clear_articles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.clear_articles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears any existing articles stored from previous queries.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.get_citation_data">
+<code class="descclassname">ScholarQuerier.</code><code class="descname">get_citation_data</code><span class="sig-paren">(</span><em>article</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.get_citation_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.get_citation_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an article, retrieves citation link. Note, this requires that
+you adjusted the settings to tell Google Scholar to actually
+provide this information, <em>prior</em> to retrieving the article.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.parse">
+<code class="descclassname">ScholarQuerier.</code><code class="descname">parse</code><span class="sig-paren">(</span><em>html</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method allows parsing of provided HTML content.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.save_cookies">
+<code class="descclassname">ScholarQuerier.</code><code class="descname">save_cookies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.save_cookies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.save_cookies" title="Permalink to this definition">¶</a></dt>
+<dd><p>This stores the latest cookies we&#8217;re using to disk, for reuse in a
+later session.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuerier.send_query">
+<code class="descclassname">ScholarQuerier.</code><code class="descname">send_query</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.send_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.send_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method initiates a search query (a ScholarQuery instance)
+with subsequent parsing of the response.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarQuery">
+<em class="property">class </em><code class="descname">ScholarQuery</code><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The base class for any kind of results query we send to Scholar.</p>
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuery.get_url">
+<code class="descname">get_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuery.get_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuery.get_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a complete, submittable URL string for this particular
+query instance. The URL and its arguments will vary depending
+on the query.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarQuery.set_num_page_results">
+<code class="descname">set_num_page_results</code><span class="sig-paren">(</span><em>num_page_results</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuery.set_num_page_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuery.set_num_page_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarSettings">
+<em class="property">class </em><code class="descname">ScholarSettings</code><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarSettings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This class lets you adjust the Scholar settings for your
+session. It&#8217;s intended to mirror the features tunable in the
+Scholar Settings pane, but right now it&#8217;s a bit basic.</p>
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarSettings.CITFORM_BIBTEX">
+<code class="descname">CITFORM_BIBTEX</code><em class="property"> = 4</em><a class="headerlink" href="#snowballing.scholar.ScholarSettings.CITFORM_BIBTEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarSettings.CITFORM_ENDNOTE">
+<code class="descname">CITFORM_ENDNOTE</code><em class="property"> = 3</em><a class="headerlink" href="#snowballing.scholar.ScholarSettings.CITFORM_ENDNOTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarSettings.CITFORM_NONE">
+<code class="descname">CITFORM_NONE</code><em class="property"> = 0</em><a class="headerlink" href="#snowballing.scholar.ScholarSettings.CITFORM_NONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarSettings.CITFORM_REFMAN">
+<code class="descname">CITFORM_REFMAN</code><em class="property"> = 2</em><a class="headerlink" href="#snowballing.scholar.ScholarSettings.CITFORM_REFMAN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarSettings.CITFORM_REFWORKS">
+<code class="descname">CITFORM_REFWORKS</code><em class="property"> = 1</em><a class="headerlink" href="#snowballing.scholar.ScholarSettings.CITFORM_REFWORKS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarSettings.is_configured">
+<code class="descname">is_configured</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarSettings.is_configured"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarSettings.is_configured" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarSettings.set_citation_format">
+<code class="descname">set_citation_format</code><span class="sig-paren">(</span><em>citform</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarSettings.set_citation_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarSettings.set_citation_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.ScholarSettings.set_per_page_results">
+<code class="descname">set_per_page_results</code><span class="sig-paren">(</span><em>per_page_results</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarSettings.set_per_page_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarSettings.set_per_page_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.ScholarUtils">
+<em class="property">class </em><code class="descname">ScholarUtils</code><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A wrapper for various utensils that come in handy.</p>
+<dl class="attribute">
+<dt id="snowballing.scholar.ScholarUtils.LOG_LEVELS">
+<code class="descname">LOG_LEVELS</code><em class="property"> = {'error': 1, 'warn': 2, 'info': 3, 'debug': 4}</em><a class="headerlink" href="#snowballing.scholar.ScholarUtils.LOG_LEVELS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="snowballing.scholar.ScholarUtils.ensure_int">
+<em class="property">static </em><code class="descname">ensure_int</code><span class="sig-paren">(</span><em>arg</em>, <em>msg=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarUtils.ensure_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarUtils.ensure_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="snowballing.scholar.ScholarUtils.log">
+<em class="property">static </em><code class="descname">log</code><span class="sig-paren">(</span><em>level</em>, <em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarUtils.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarUtils.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="snowballing.scholar.SearchScholarQuery">
+<em class="property">class </em><code class="descname">SearchScholarQuery</code><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.scholar.ScholarQuery" title="snowballing.scholar.ScholarQuery"><code class="xref py py-class docutils literal"><span class="pre">snowballing.scholar.ScholarQuery</span></code></a></p>
+<p>This version represents the search query parameters the user can
+configure on the Scholar website, in the advanced search options.</p>
+<dl class="attribute">
+<dt id="snowballing.scholar.SearchScholarQuery.SCHOLAR_QUERY_URL">
+<code class="descname">SCHOLAR_QUERY_URL</code><em class="property"> = 'http://scholar.google.com/scholar?as_q=%(words)s&amp;as_epq=%(phrase)s&amp;as_oq=%(words_some)s&amp;as_eq=%(words_none)s&amp;as_occt=%(scope)s&amp;as_sauthors=%(authors)s&amp;as_publication=%(pub)s&amp;as_ylo=%(ylo)s&amp;as_yhi=%(yhi)s&amp;as_sdt=%(patents)s%%2C5&amp;as_vis=%(citations)s&amp;btnG=&amp;hl=en&amp;num=%(num)s'</em><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.SCHOLAR_QUERY_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.get_url">
+<code class="descname">get_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.get_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.get_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_author">
+<code class="descname">set_author</code><span class="sig-paren">(</span><em>author</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_author"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_author" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets names that must be on the result&#8217;s author list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_include_citations">
+<code class="descname">set_include_citations</code><span class="sig-paren">(</span><em>yesorno</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_include_citations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_include_citations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_include_patents">
+<code class="descname">set_include_patents</code><span class="sig-paren">(</span><em>yesorno</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_include_patents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_include_patents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_phrase">
+<code class="descname">set_phrase</code><span class="sig-paren">(</span><em>phrase</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_phrase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_phrase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets phrase that must be found in the result exactly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_pub">
+<code class="descname">set_pub</code><span class="sig-paren">(</span><em>pub</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_pub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_pub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the publication in which the result must be found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_scope">
+<code class="descname">set_scope</code><span class="sig-paren">(</span><em>title_only</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_scope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_scope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets Boolean indicating whether to search entire article or title
+only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_timeframe">
+<code class="descname">set_timeframe</code><span class="sig-paren">(</span><em>start=None</em>, <em>end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_timeframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_timeframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets timeframe (in years as integer) in which result must have
+appeared. It&#8217;s fine to specify just start or end, or both.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_words">
+<code class="descname">set_words</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets words that <em>all</em> must be found in the result.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_words_none">
+<code class="descname">set_words_none</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_words_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_words_none" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets words of which <em>none</em> must be found in the result.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.scholar.SearchScholarQuery.set_words_some">
+<code class="descname">set_words_some</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#SearchScholarQuery.set_words_some"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.SearchScholarQuery.set_words_some" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets words of which <em>at least one</em> must be found in result.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="snowballing.scholar.citation_export">
+<code class="descname">citation_export</code><span class="sig-paren">(</span><em>querier</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#citation_export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.citation_export" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="snowballing.scholar.csv">
+<code class="descname">csv</code><span class="sig-paren">(</span><em>querier</em>, <em>header=False</em>, <em>sep='|'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="snowballing.scholar.encode">
+<code class="descname">encode</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.encode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="snowballing.scholar.main">
+<code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="snowballing.scholar.txt">
+<code class="descname">txt</code><span class="sig-paren">(</span><em>querier</em>, <em>with_globals</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#txt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.txt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="selenium_scholar.html" class="btn btn-neutral float-right" title="selenium_scholar.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="operations.html" class="btn btn-neutral" title="operations.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

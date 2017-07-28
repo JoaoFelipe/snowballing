@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snowballing.jupyter_utils &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>snowballing.jupyter_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snowballing.jupyter_utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module provides useful jupyter widgets&quot;&quot;&quot;</span> 
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">DOMWidget</span><span class="p">,</span> <span class="n">HBox</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Javascript</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.py3compat</span> <span class="k">import</span> <span class="n">str_to_bytes</span><span class="p">,</span> <span class="n">bytes_to_str</span>
+
+<span class="kn">from</span> <span class="nn">.dbindex</span> <span class="k">import</span> <span class="n">year_file</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">config</span>
+
+
+<div class="viewcode-block" id="display_cell"><a class="viewcode-back" href="../../snowballing/jupyter_utils.html#snowballing.jupyter_utils.display_cell">[docs]</a><span class="k">def</span> <span class="nf">display_cell</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove cells that start with &quot;# Temp&quot; and add a new one</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    * `text` -- new cell content</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">encoded_code</span> <span class="o">=</span> <span class="n">bytes_to_str</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">str_to_bytes</span><span class="p">(</span><span class="n">text</span><span class="p">)))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        $(&#39;span:contains(&quot;# Temp&quot;)&#39;).closest(&#39;.cell&#39;).remove();</span>
+<span class="s2">        var code = IPython.notebook.insert_cell_</span><span class="si">{0}</span><span class="s2">(&#39;code&#39;);</span>
+<span class="s2">        code.set_text(atob(&quot;</span><span class="si">{1}</span><span class="s2">&quot;));</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;below&#39;</span><span class="p">,</span> <span class="n">encoded_code</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="idisplay"><a class="viewcode-back" href="../../snowballing/jupyter_utils.html#snowballing.jupyter_utils.idisplay">[docs]</a><span class="k">def</span> <span class="nf">idisplay</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display multiple values using ipywidget HBox</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    * `*args` -- list of values</span>
+
+<span class="sd">    Keyword arguments:</span>
+
+<span class="sd">    * `label` -- create a Label widget instead of a Text widget, if value is</span>
+<span class="sd">      not a widget</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_widget</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">Label</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">label</span> <span class="k">else</span> <span class="n">Text</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">arg</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">DOMWidget</span><span class="p">)</span> <span class="k">else</span> <span class="n">new_widget</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span>
+    <span class="p">]</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HBox</span><span class="p">(</span><span class="n">args</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="find_line"><a class="viewcode-back" href="../../snowballing/jupyter_utils.html#snowballing.jupyter_utils.find_line">[docs]</a><span class="k">def</span> <span class="nf">find_line</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find work position in file </span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    * `work` -- work object</span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; find_line(murta2014a)</span>
+<span class="sd">        6</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">year_file</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">index</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;(^</span><span class="si">{}</span><span class="se">\\</span><span class="s1">s=)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">metakey</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">line</span><span class="p">)</span>
+        <span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span></div>
+  
+
+<div class="viewcode-block" id="invoke_editor"><a class="viewcode-back" href="../../snowballing/jupyter_utils.html#snowballing.jupyter_utils.invoke_editor">[docs]</a><span class="k">def</span> <span class="nf">invoke_editor</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Open work in a given line with the configured editor&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">TEXT_EDITOR</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">LINE_PARAMS</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;You must set the config.TEXT_EDITOR and config.LINE_PARAMS to use this function&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">TEXT_EDITOR</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">LINE_PARAMS</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">year_path</span><span class="o">=</span><span class="n">year_file</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">),</span>
+            <span class="n">line</span><span class="o">=</span><span class="n">find_line</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+        <span class="p">),</span>
+    <span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="new_button"><a class="viewcode-back" href="../../snowballing/jupyter_utils.html#snowballing.jupyter_utils.new_button">[docs]</a><span class="k">def</span> <span class="nf">new_button</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a new Button widget and set its on_click callback&quot;&quot;&quot;</span>
+    <span class="n">button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+    <span class="n">button</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">button</span></div>
+
+
+<div class="viewcode-block" id="work_button"><a class="viewcode-back" href="../../snowballing/jupyter_utils.html#snowballing.jupyter_utils.work_button">[docs]</a><span class="k">def</span> <span class="nf">work_button</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a button for the work with a link to the editor</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    * `work` -- the work object</span>
+
+<span class="sd">    Keyword arguments:</span>
+
+<span class="sd">    * `description` -- button label. It uses the work varname if it is not </span>
+<span class="sd">      specified</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="n">invoke_editor</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">new_button</span><span class="p">(</span><span class="n">description</span> <span class="ow">or</span> <span class="n">work</span><span class="o">.</span><span class="n">metakey</span><span class="p">,</span> <span class="n">click</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snowballing.approaches &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>snowballing.approaches</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snowballing.approaches</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module provides classes and functions for grouping work into approach</span>
+<span class="sd">Groups&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span>
+
+<span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.Group">[docs]</a><span class="k">class</span> <span class="nc">Group</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Represent an Approach or a Group of work.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">    </span>
+<span class="sd">    * `args` -- list of work that represents the group</span>
+<span class="sd">    </span>
+<span class="sd">    * `kwargs` -- map of attributes to be applied for the group and its works</span>
+<span class="sd">      </span>
+<span class="sd">      * Exception: the keyword `dont_cite=` also represents a list of works that</span>
+<span class="sd">        belong to the group </span>
+
+
+<span class="sd">    Expected attributes:</span>
+
+<span class="sd">    * _cite: cite group by authors</span>
+
+<span class="sd">      * True indicates that the approach must be referenced by its authors</span>
+<span class="sd">      * False indicates that the approach can referenced by name </span>
+<span class="sd">    </span>
+<span class="sd">    * _meta: list of dicts with attributes for comparing approaches</span>
+<span class="sd">      </span>
+<span class="sd">      * A single approach can have more than one meta dict</span>
+<span class="sd">      * It is possible to use the distinct meta dicts to describe different</span>
+<span class="sd">        aspects</span>
+<span class="sd">    </span>
+<span class="sd">    * _about: HTML describing the approach</span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; pimentel2015a = work_by_varname(&quot;pimentel2015a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; pimentel2015a.display == &quot;now&quot;</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; APPROACHES.clear()</span>
+<span class="sd">        &gt;&gt;&gt; len(APPROACHES)</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; group = Group(</span>
+<span class="sd">        ...     murta2014a, pimentel2015a,</span>
+<span class="sd">        ...     display=&quot;now&quot;,</span>
+<span class="sd">        ...     _cite=True,</span>
+<span class="sd">        ...     _meta=[dict(</span>
+<span class="sd">        ...       scripts=True</span>
+<span class="sd">        ...     )]</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; group.display</span>
+<span class="sd">        &#39;now&#39;</span>
+<span class="sd">        &gt;&gt;&gt; pimentel2015a.display == &quot;now&quot;</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; len(APPROACHES)</span>
+<span class="sd">        1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_category</span> <span class="o">=</span> <span class="s2">&quot;Related&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">work</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;dont_cite&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">work</span> <span class="o">+=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dont_cite&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dont_cite</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dont_cite&#39;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dont_cite&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="s1">&#39;force_&#39;</span> <span class="o">+</span> <span class="n">key</span><span class="p">):</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">==</span> <span class="s2">&quot;Related&quot;</span><span class="p">:</span>
+            <span class="n">APPROACHES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GroupUnrelated"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.GroupUnrelated">[docs]</a><span class="k">class</span> <span class="nc">GroupUnrelated</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent an unrelated group of approaches </span>
+<span class="sd">    </span>
+<span class="sd">    It does not add the approach into the APPROACHES list.</span>
+<span class="sd">    </span>
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; pimentel2015a = work_by_varname(&quot;pimentel2015a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; pimentel2015a.display == &quot;now&quot;</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; APPROACHES.clear()</span>
+<span class="sd">        &gt;&gt;&gt; len(APPROACHES)</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; group = GroupUnrelated(</span>
+<span class="sd">        ...     murta2014a, pimentel2015a,</span>
+<span class="sd">        ...     display=&quot;now&quot;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; group.display</span>
+<span class="sd">        &#39;now&#39;</span>
+<span class="sd">        &gt;&gt;&gt; pimentel2015a.display == &quot;now&quot;</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; len(APPROACHES)</span>
+<span class="sd">        0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_category</span> <span class="o">=</span> <span class="s2">&quot;Unrelated&quot;</span></div>
+
+
+<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.Item">[docs]</a><span class="k">class</span> <span class="nc">Item</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constant Item that supports additional descriptions&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">_star</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">_examples</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_star</span> <span class="o">=</span> <span class="n">_star</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bool</span> <span class="o">=</span> <span class="n">_bool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span> <span class="o">=</span> <span class="n">_examples</span>
+
+<div class="viewcode-block" id="Item.star"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.Item.star">[docs]</a>    <span class="k">def</span> <span class="nf">star</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add description to constant&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">_star</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">_bool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bool</span><span class="p">,</span> <span class="n">_examples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Item.such_as"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.Item.such_as">[docs]</a>    <span class="k">def</span> <span class="nf">such_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">examples</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Exemplify constant&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">_star</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_star</span><span class="p">,</span> <span class="n">_bool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bool</span><span class="p">,</span> <span class="n">_examples</span><span class="o">=</span><span class="n">examples</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Item</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bool</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return text representation for constant, considering star&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_star</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="name"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.name">[docs]</a><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">approach</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return approach name. Removes double spaces in display </span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; from snowballing.operations import reload</span>
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; [[a, m]] = get_approaches()</span>
+<span class="sd">        &gt;&gt;&gt; name(a)</span>
+<span class="sd">        &#39;noWorkflow&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">approach</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_approaches"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.get_approaches">[docs]</a><span class="k">def</span> <span class="nf">get_approaches</span><span class="p">(</span><span class="n">condition</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return pairs of approaches and meta dicts </span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; from snowballing.operations import reload</span>
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; len(get_approaches())</span>
+<span class="sd">        1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">condition</span><span class="p">:</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">approach</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="n">reload</span><span class="p">()</span>
+
+    <span class="n">all_approaches</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">approach</span> <span class="ow">in</span> <span class="n">APPROACHES</span>
+        <span class="k">for</span> <span class="n">meta</span> <span class="ow">in</span> <span class="n">approach</span><span class="o">.</span><span class="n">_meta</span>
+        <span class="k">if</span> <span class="n">condition</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">all_approaches</span></div>
+
+
+<div class="viewcode-block" id="wcite"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.wcite">[docs]</a><span class="k">def</span> <span class="nf">wcite</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a latex cite command with all work in an approach&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39; </span><span class="se">\\</span><span class="s1">cite</span><span class="si">{}</span><span class="s1">{{</span><span class="si">{}</span><span class="s1">}}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">extra</span><span class="p">,</span>
+        <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="n">works</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> 
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">approach</span><span class="o">.</span><span class="n">work</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">works</span>
+            <span class="k">if</span> <span class="s2">&quot;snowball&quot;</span> <span class="ow">in</span> <span class="n">w</span><span class="o">.</span><span class="n">category</span>
+        <span class="p">])</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="wlatex_name"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.wlatex_name">[docs]</a><span class="k">def</span> <span class="nf">wlatex_name</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return approach name or latex citation according to attribute _cite&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">approach</span><span class="o">.</span><span class="n">_cite</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">(</span><span class="n">approach</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wcite</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="wcitea"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.wcitea">[docs]</a><span class="k">def</span> <span class="nf">wcitea</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return approach name followed by latex citation&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">approach</span><span class="o">.</span><span class="n">_cite</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">(</span><span class="n">approach</span><span class="p">)</span> <span class="o">+</span> <span class="n">wcite</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wcite</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

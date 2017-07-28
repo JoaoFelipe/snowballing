@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snowballing.common_places &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>snowballing.common_places</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snowballing.common_places</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module includes common places in the database and provides functions</span>
+<span class="sd">for creating other places</span>
+
+<span class="sd">It includes the following common places in the database:</span>
+
+<span class="sd">* Book -- represents books</span>
+<span class="sd">* Lang -- represents places in foreign language</span>
+<span class="sd">* Patent -- represents patents</span>
+<span class="sd">* Standard -- represents standards</span>
+<span class="sd">* TechReport -- represents technical reports</span>
+<span class="sd">* Thesis -- represents thesis</span>
+<span class="sd">* Unpublished -- represents work that were not published</span>
+<span class="sd">* Web -- represents websites</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="k">import</span> <span class="n">Place</span><span class="p">,</span> <span class="n">DB</span>
+
+
+<div class="viewcode-block" id="conference"><a class="viewcode-back" href="../../snowballing/common_places.html#snowballing.common_places.conference">[docs]</a><span class="k">def</span> <span class="nf">conference</span><span class="p">(</span><span class="n">acrom</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a place with &#39;Conference&#39; type&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="n">acrom</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Conference&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="journal"><a class="viewcode-back" href="../../snowballing/common_places.html#snowballing.common_places.journal">[docs]</a><span class="k">def</span> <span class="nf">journal</span><span class="p">(</span><span class="n">acrom</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a place with &#39;Journal&#39; type&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="n">acrom</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Journal&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="magazine"><a class="viewcode-back" href="../../snowballing/common_places.html#snowballing.common_places.magazine">[docs]</a><span class="k">def</span> <span class="nf">magazine</span><span class="p">(</span><span class="n">acrom</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a place with &#39;Magazine&#39; type&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="n">acrom</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Magazine&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+<span class="n">Book</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="s2">&quot;Book&quot;</span><span class="p">,</span> <span class="s2">&quot;Book&quot;</span><span class="p">,</span> <span class="s2">&quot;Book&quot;</span><span class="p">))</span>
+<span class="n">Lang</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="s2">&quot;Lang&quot;</span><span class="p">,</span> <span class="s2">&quot;Lang&quot;</span><span class="p">,</span> <span class="s2">&quot;Lang&quot;</span><span class="p">))</span>
+<span class="n">Patent</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="s2">&quot;Patent&quot;</span><span class="p">,</span> <span class="s2">&quot;Patent&quot;</span><span class="p">,</span> <span class="s2">&quot;Patent&quot;</span><span class="p">))</span>
+<span class="n">Standard</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="s2">&quot;Standard&quot;</span><span class="p">,</span> <span class="s2">&quot;Standard&quot;</span><span class="p">,</span> <span class="s2">&quot;Standard&quot;</span><span class="p">))</span>
+<span class="n">TechReport</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="s2">&quot;Tech Report&quot;</span><span class="p">,</span> <span class="s2">&quot;Tech Report&quot;</span><span class="p">,</span> <span class="s2">&quot;Tech Report&quot;</span><span class="p">))</span>
+<span class="n">Thesis</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="s2">&quot;Thesis&quot;</span><span class="p">,</span> <span class="s2">&quot;Thesis&quot;</span><span class="p">,</span> <span class="s2">&quot;Thesis&quot;</span><span class="p">))</span>
+<span class="n">Unpublished</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="s2">&quot;Unpublished&quot;</span><span class="p">,</span> <span class="s2">&quot;Unpublished&quot;</span><span class="p">,</span> <span class="s2">&quot;Unpublished&quot;</span><span class="p">))</span>
+<span class="n">Web</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">Place</span><span class="p">(</span><span class="s2">&quot;Web&quot;</span><span class="p">,</span> <span class="s2">&quot;Web&quot;</span><span class="p">,</span> <span class="s2">&quot;Web&quot;</span><span class="p">))</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

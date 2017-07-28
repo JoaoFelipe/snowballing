@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>utils.py &mdash; snowballing 0.1.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="snowballing 0.1.7 documentation" href="../index.html"/>
+        <link rel="next" title="Contributing" href="../contributing.html"/>
+        <link rel="prev" title="snowballing.py" href="snowballing.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">utils.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#match-any">match_any</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compare-str">compare_str</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setitem">setitem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consume">consume</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#import-submodules">import_submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adjust-point">adjust_point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiline-wrap">multiline_wrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lines-len-in-circle">lines_len_in_circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#text-y">text_y</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multiline">MultiLine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#point">Point</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>utils.py</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snowballing/utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-snowballing.utils">
+<span id="utils-py"></span><h1>utils.py<a class="headerlink" href="#module-snowballing.utils" title="Permalink to this headline">¶</a></h1>
+<p>This module contains helper utility functions</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="match-any">
+<h3>match_any<a class="headerlink" href="#match-any" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.match_any">
+<code class="descname">match_any</code><span class="sig-paren">(</span><em>string</em>, <em>regexes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#match_any"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.match_any" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if string matches any regex in list</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">match_any</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">])</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">match_any</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">match_any</span><span class="p">(</span><span class="s2">&quot;_a&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">])</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">match_any</span><span class="p">(</span><span class="s2">&quot;_a&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;_.*&quot;</span><span class="p">])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="compare-str">
+<h3>compare_str<a class="headerlink" href="#compare-str" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.compare_str">
+<code class="descname">compare_str</code><span class="sig-paren">(</span><em>first</em>, <em>second</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#compare_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.compare_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare strings and return matching ratio</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">compare_str</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">,</span> <span class="s1">&#39;abed&#39;</span><span class="p">)</span>
+<span class="go">0.75</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="setitem">
+<h3>setitem<a class="headerlink" href="#setitem" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.setitem">
+<code class="descname">setitem</code><span class="sig-paren">(</span><em>info</em>, <em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#setitem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.setitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set item in dict info if value is not None</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">setitem</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;def&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span>
+<span class="go">{&#39;def&#39;: 2}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">setitem</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span>
+<span class="go">{&#39;def&#39;: 2}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="consume">
+<h3>consume<a class="headerlink" href="#consume" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.consume">
+<code class="descname">consume</code><span class="sig-paren">(</span><em>info</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#consume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.consume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consumes key from dict</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>info</cite> &#8211; dict</li>
+<li><cite>key</cite> &#8211; key</li>
+</ul>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;abc&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;def&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span>
+<span class="go">{&#39;def&#39;: 2}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="import-submodules">
+<h3>import_submodules<a class="headerlink" href="#import-submodules" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.import_submodules">
+<code class="descname">import_submodules</code><span class="sig-paren">(</span><em>package</em>, <em>recursive=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#import_submodules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.import_submodules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import all submodules of a module, recursively, including subpackages</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>package</cite> &#8211; package (name or actual module)</li>
+</ul>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>recursive</cite> &#8211; import modules recursively</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="adjust-point">
+<h3>adjust_point<a class="headerlink" href="#adjust-point" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.adjust_point">
+<code class="descname">adjust_point</code><span class="sig-paren">(</span><em>x0</em>, <em>y0</em>, <em>x1</em>, <em>y1</em>, <em>dt</em>, <em>shape='circle'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#adjust_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.adjust_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the point in (x1, y1) that should be connected to (x0, y0) 
+according to the radius (or distance to center) <em>dt</em></p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adjust_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">(0, 5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adjust_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">(5, 0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">adjust_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># 45 degree angle, sin == cos</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="multiline-wrap">
+<h3>multiline_wrap<a class="headerlink" href="#multiline-wrap" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.multiline_wrap">
+<code class="descname">multiline_wrap</code><span class="sig-paren">(</span><em>text, widths=[10, 10, 10, 10, 10]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#multiline_wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.multiline_wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap text in multiple lines according to pre-specified widths</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">multiline_wrap</span><span class="p">(</span><span class="s1">&#39;ab cd ef gh&#39;</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">[&#39;ab cd&#39;, &#39;ef&#39;, &#39;gh&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="lines-len-in-circle">
+<h3>lines_len_in_circle<a class="headerlink" href="#lines-len-in-circle" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.lines_len_in_circle">
+<code class="descname">lines_len_in_circle</code><span class="sig-paren">(</span><em>r</em>, <em>font_size=12</em>, <em>letter_width=7.2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#lines_len_in_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.lines_len_in_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the amount of chars that fits each line in a circle according to
+its radius <em>r</em></p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lines_len_in_circle</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="go">[2, 5, 2]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="text-y">
+<h3>text_y<a class="headerlink" href="#text-y" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.utils.text_y">
+<code class="descname">text_y</code><span class="sig-paren">(</span><em>lines</em>, <em>font_size=12</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#text_y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.text_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of lines positions according to how many lines are available</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text_y</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">[0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_y</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">[0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_y</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">[-6, 6]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_y</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">[-12, 0, 12]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_y</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">[-18, -6, 6, 18]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_y</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">[-24, -12, 0, 12, 24]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_y</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">[-30, -18, -6, 6, 18, 30]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_y</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">[-36, -24, -12, 0, 12, 24, 36]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="multiline">
+<h3>MultiLine<a class="headerlink" href="#multiline" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.utils.MultiLine">
+<em class="property">class </em><code class="descname">MultiLine</code><span class="sig-paren">(</span><em>widths</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#MultiLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.MultiLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">textwrap.TextWrapper</span></code></p>
+<p>MultiLine wrapper that considers different widths for each line</p>
+</dd></dl>
+
+</div>
+<div class="section" id="point">
+<h3>Point<a class="headerlink" href="#point" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.utils.Point">
+<em class="property">class </em><code class="descname">Point</code><a class="reference internal" href="../_modules/snowballing/utils.html#Point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.utils.Point" title="snowballing.utils.Point"><code class="xref py py-class docutils literal"><span class="pre">snowballing.utils.Point</span></code></a></p>
+<p>Represent a point with two coordinates with operations</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">x</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">y</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="snowballing.utils.Point.rotate">
+<code class="descname">rotate</code><span class="sig-paren">(</span><em>should_rotate=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/utils.html#Point.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.utils.Point.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Swap coordinates</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">rotate</span><span class="p">()</span>
+<span class="go">Point(x=2, y=1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="snowballing.html" class="btn btn-neutral" title="snowballing.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
