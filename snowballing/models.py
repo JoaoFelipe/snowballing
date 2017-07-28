@@ -1,0 +1,579 @@
+""" models contains classes for defining the database and producing the 
+citation graph """
+
+import inspect
+import svgwrite
+import operator
+import os
+
+from . import dbindex, config
+from .utils import text_y, adjust_point, Point
+
+
+class Title(object):
+    """ Represents a Title object for svgwrite """
+
+    def __init__(self, text):
+        self.text = text
+
+    def __str__(self):
+        return self.text
+
+
+class WithTitle(object):
+    """ Graph object with title """
+    ignore = set()
+    
+    def generate_title(self, prepend="\n\n"):
+        """ Generates title text with all attributes from the object
+        Ignores attributes that start with _, or attributes in the .ignore set
+
+        Doctest
+        >>> obj = WithTitle()
+        >>> obj.attr = 'x'
+        >>> obj.attr2 = 'y'
+        >>> obj._ignored = 'z'
+        >>> print(obj.generate_title(prepend=""))
+        attr: x
+        attr2: y
+        >>> obj.ignore.add('attr')
+        >>> print(obj.generate_title(prepend=""))
+        attr2: y
+        """
+        result = "\n".join(
+            "{}: {}".format(attr, str(value))
+            for attr, value in self.__dict__.items()
+            if not attr.startswith("_")
+            if not attr in self.ignore
+            if value is not None
+        )
+        return prepend + result if result else ""
+
+
+class Place(WithTitle):
+    """ Place represents the place that the work are published into 
+
+    It has the following attributes:
+        .acronym: Place acronym (e.g., 'IPAW')
+        .name: Full name of the place
+          (e.g., 'International Provenance and Annotation Workshop')
+        .type: Type of place (e.g., 'conference')
+
+    Other attributes are optional and can be used to include extra information
+    about the place.
+    Note however that it has the following reversed attributes
+        .ignore: set that specifies ignore attributes in titles (WithTitle)
+        .draw: method that draws the place
+    
+
+    Doctest
+    >>> ipaw = Place('IPAW', 'International Provenance and Annotation Workshop',
+    ...              'conference')
+    >>> ipaw.acronym
+    'IPAW'
+    >>> ipaw.name
+    'International Provenance and Annotation Workshop'
+    >>> ipaw.type
+    'conference'
+
+    Places are considered equal if they have the same name
+    >>> ipaw2 = Place('I', 'International Provenance and Annotation Workshop',
+    ...              'journal')
+    >>> ipaw == ipaw2
+    True
+    """
+
+    def __init__(self, acronym, name="", *args, **kwargs):
+        if name == "":
+            name = acronym
+
+        self.acronym = acronym
+        self.name = name
+        
+        if args:
+            self.type = args[0]
+        
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+            
+            
+    def draw(self, dwg, position):
+        """ Draws place in a given position """
+        text = svgwrite.text.Text(
+            self.acronym, position,
+            text_anchor="middle",
+            fill="black"
+        )
+        text.set_desc(title=Title(self.generate_title(prepend="")))
+        dwg.add(text)
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.acronym
+
+    def __hash__(self):
+        return hash(self.name)
+
+
+class Work(WithTitle):
+    """ Work represents papers in the snowballing
+ 
+    It has the following attributes:
+        .year: year of publication (int)
+          Convention: Use 0 if it is not informed
+        .name: paper title
+        .authors: paper authors
+        .display: display label for graphs
+        .metakey: variable name (automatically collected from database)
+        .file: filename of the work (optional)
+        .due: reason for it not being selected
+        .notes: use it to append a string to year in BIBTEX
+          For example: 
+            work.year = 2014
+            work.notes = "in press"
+            Bibtex: 2014 [in press]
+        .snowball: forward snowballing date
+        .citation_file: citation filename (without .py)
+          Indicates where are the citations of this work
+        .alias: tuple with (year, title, authors) that represents the same work in google scholar (optional)
+          The tuple can have two elements if the authors match: (year, title)
+          Use year = 0, if the citation on google scholar doesn't have the year information
+        .aliases: list of alias attributes
+        .scholar: url of the work in google scholar
+        .scholar_ok: status of the work according to a google scholar curation
+          True means that we already merged google scholar's bibtex to the work
+          False means that we didn't
+        .tracking: indicates if we set an alert for the work
+          Note: the alert is manual. This tools does not set the alert
+          Options: 'alert', 'impossible'
+
+    Other attributes are optional and can be used to include extra information
+    about the work.
+
+    Note however that it has the following reserved attributes
+        .category: work status in the snowballing
+        .tyear: year object for drawing
+        .ignore: set that specifies ignore attributes in titles (WithTitle)
+        .draw: method that draws the place
+        ._x: x position for drawing the work
+        ._y: y position for drawing the work
+        ._r: radius for circular node drawing
+        ._i: column index for drawing the work
+        ._year_index: row index for drawing the work
+        ._letters: max amount of letters for drawing
+        ._shape: shape of node (circle vs rectangle)
+    
+
+    Doctest
+    >>> IPAW = Place('IPAW', 'IPAW', 'conference')
+    >>> murta2014a = Work(
+    ...     2014, "noWorkflow: capturing and analyzing provenance of scripts",
+    ...     display="noWorkflow",
+    ...     authors="Murta, Leonardo and Braganholo, Vanessa and Chirigati, "
+    ...             "Fernando and Koop, David and Freire, Juliana",
+    ...     place=IPAW,
+    ...     local="Cologne, Germany",
+    ...     file="Murta2014a.pdf",
+    ...     pp="71--83",
+    ...     entrytype="inproceedings",
+    ...     citation_file="noworkflow2014",
+    ... )
+    >>> murta2014a.year
+    2014
+    >>> murta2014a.name
+    'noWorkflow: capturing and analyzing provenance of scripts'
+    >>> murta2014a.pp
+    '71--83'
+
+    Works are considered equal if they have the same place, name and year
+    """
+
+    category = "work"
+    ignore = {
+        "_x", "_y", "_i", "_year_index", "_r", "_letters",
+        "display", "name", "authors", "year"
+    }
+    
+    def __init__(self, year, name, authors="", display=None, **kwargs):
+        self.name = name
+        self.year = year
+        self.authors = authors
+        
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        
+        self._x = 0
+        self._y = 0
+        self._i = -1
+        self._r = 20
+        self._year_index = -1
+        self._letters = 5
+        
+        if display is None:
+            display = self.name
+        self.display = display
+        
+    def __eq__(self, other):
+        if getattr(self, "place", None) != getattr(other, "place", None):
+            return False
+        return (
+            self.name == other.name and
+            self.year == other.year 
+        )
+
+    def __hash__(self):
+        return hash((self.name,  self.year))
+    
+    def __repr__(self):
+        return self.name
+
+    def generate_title(self, prepend="\n\n"):
+        """ The title of a work is its bibtex """
+        from .operations import work_to_bibtex
+        return prepend + work_to_bibtex(self, name=None)
+
+    def draw(self, dwg, fill_color=None, draw_place=False, use_circle=False):
+        """ Draws work"""
+        position = Point(self._x, self._y)
+        if fill_color is None:
+            fill_color = lambda x: "white", "black"
+        fill, text_fill = fill_color(self)
+        if self._shape == "circle":
+            shape = svgwrite.shapes.Circle(
+                position, self._r, fill=fill, stroke="black"
+            )
+            shape_text = self._circle_text
+        else:
+            r2 = Point(self._r, self._r)
+            shape = svgwrite.shapes.Rect(
+                position - r2, r2 + r2, fill=fill, stroke="black"
+            )
+            shape_text = self._square_text
+
+        textstr = self.display[:self._letters]
+        text = svgwrite.text.Text(
+            "",(self._x, self._y),
+            fill=text_fill,
+            text_anchor="middle",
+            alignment_baseline="middle",
+            style="font-size:12px;font-family:monospace",
+            class_="wrap"
+        )
+        for y, line in zip(text_y(len(shape_text)), shape_text):
+            #print(y, line)
+            text.add(svgwrite.text.TSpan(line, (self._x, self._y + y)))
+
+        
+        shape.set_desc(title=Title(
+            "{}\n{}".format(self.name, self.authors) + self.generate_title()
+        ))
+        text.set_desc(title=Title(
+            "{}\n{}".format(self.name, self.authors) + self.generate_title()
+        ))
+        
+        
+        if draw_place and hasattr(self, "place") and self.place is not None:
+            self.place.draw(dwg, position - Point(0, self._r + 4))
+        
+        link = None
+        for link_type in reversed(self._link):
+            if link_type == "file" and self.file:
+                link = svgwrite.container.Hyperlink("files/" + self.file)
+            if link_type == "link" and hasattr(self, "link") and self.link:
+                link = svgwrite.container.Hyperlink(self.link)
+            if link_type == "scholar" and hasattr(self, "scholar"):
+                link = svgwrite.container.Hyperlink(self.scholar)
+        if link is not None:
+            dwg.add(link)
+            dwg = link
+        
+        dwg.add(shape)
+        dwg.add(text)
+
+
+class Site(Work):
+    """ Represents a site reference.
+
+    It does not have an year, but it requires following attributes:
+        .name
+        .link
+
+    Doctest
+    >>> site = Site("GitHub", "http://www.github.com")
+    >>> site.name
+    'GitHub'
+    >>> site.link
+    'http://www.github.com'
+    """
+
+    category = "site"
+
+    def __init__(self, name, link, **kwargs):
+        from .common_places import Web
+        super(Site, self).__init__(0, name, link=link, place=Web, **kwargs)
+
+
+class Email(Work):
+    """ Represents an email reference.
+
+    It requires the following attributes
+        .year
+        .authors
+        .name: subject
+
+    Doctest
+    >>> email = Email(2017, "Pimentel, Joao", "noWorkflow model")
+    >>> email.year
+    2017
+    >>> email.authors
+    'Pimentel, Joao'
+    >>> email.name
+    'noWorkflow model'
+    """
+    category = "site"
+
+    def __init__(self, year, authors, subject, **kwargs):
+        from .common_places import Web
+        super(Email, self).__init__(year, subject, authors=authors, place=Web, **kwargs)
+
+
+class Year(object):
+    """ Represents a year in the citation graph
+
+    It has the following attributes:
+        .year: int
+        .next_year: tuple with year object and index
+            year = -1 indicates that there is no next year
+        .previous_year: tuple with year object and index
+            previous = -1 indicates that there is no previous year
+        .works: list of works in the year
+
+    It has the following reversed attributes
+        ._i: column index for drawing the year
+        ._dist: distance between year columns
+        ._r: extra margin
+
+    Doctest
+    >>> y2017 = Year(2017, (-1, 0), [])
+    >>> y2017.year
+    2017
+    """
+
+    def __init__(self, year, previous, works, i=-1, dist=60, r=20):
+        self.previous_year = previous
+        self.next_year = (-1, 0)
+        self.works = works
+        self.year = year
+        self._i = i
+        self._dist = dist
+        self._r = r
+    
+    def draw(self, dwg):
+        """ Draws year in the position """
+        x = self._i * self._dist + self._r
+        dwg.add(svgwrite.text.Text(
+            self.year[0], (x, 20),
+            text_anchor="middle",
+            style="font-size:20px"
+        ))
+
+
+class Citation(WithTitle):
+    """ Represents a citation for the work
+
+    Attributes:
+        .work: the work that cites
+        .citation: the work that is cited
+
+    Other attributes are optional and can be used to include extra information
+    about the citation.
+    Note however that it has the following reserved attributes
+        .citations_file: file where the citation is defined
+    """
+    ignore = {"work", "citation"}
+    
+    def __init__(self, work, citation, **kwargs):
+        import inspect
+        import os
+
+        self._citations_file = dbindex.last_citation_file
+        
+        self.work = work
+        self.citation = citation
+        
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        
+    def _belzier_gen(self, work, ref, rotate):
+        """ Creates belzier line points
+        Usage: 
+        ... svgwrite.path.Path(
+        ...      "M{0} C{1} {2} {3}".format(*belzier_gen(work, ref, False)
+        ...  ), stroke="black", fill="white", fill_opacity=0)
+        """
+        work_point = Point(work._x, work._y)
+        ref_point = Point(ref._x, ref._y)
+        yield work_point + Point(-work._r, 0).rotate(rotate)
+        yield work_point + Point(-2 * work._r, 0).rotate(rotate)
+        yield ref_point + Point(-2 * ref._r, 0).rotate(rotate)
+        yield ref_point + Point(-ref._r - 7, 0).rotate(rotate)
+
+    def _line_gen(self, work, ref):
+        """ Creates line points
+        Usage
+        .... svgwrite.shapes.Line(*self._line_gen(work, ref), stroke="black")
+        """
+        point0 = adjust_point(
+            ref._x, ref._y, work._x, work._y, work._r, work._shape
+        )
+        yield point0
+        yield adjust_point(*point0, ref._x, ref._y, ref._r + 7, ref._shape)
+
+    def draw(self, dwg, marker, years, rows, draw_place=False):
+        """ Draws citation line """
+        work, ref = self.work, self.citation
+        if work == ref:
+            return
+        if not hasattr(work, "tyear") or not hasattr(ref, "tyear"):
+            return
+        if work.tyear not in years or ref.tyear not in years:
+            return
+        if work._i not in rows or ref._i not in rows:
+            return
+        group = dwg.g(class_="hoverable")
+        if abs(ref._x - work._x) <= work._dist_x and abs(ref._y - work._y) <= work._dist_y:
+            sign = 1 if work._x < ref._x else -1
+            line = svgwrite.shapes.Line(*self._line_gen(work, ref), stroke_opacity=0.3, stroke="black")
+            line["marker-end"] = marker.get_funciri()
+            line.set_desc(title=Title(
+                "{0.display}{0.year} -> {1.display}{1.year}".format(work, ref)
+                + self.generate_title()
+            ))
+            group.add(line)
+        else:
+            space_x = work._dist_x - 2 * work._r
+            space_y = work._dist_y - 2 * work._r
+            if draw_place:
+                space_y -= 16
+            work_year = years[work.tyear]
+            ref_year = years[ref.tyear]
+            if work._x < ref._x:
+                closest_work_year = years[work_year.next_year]
+                closest_ref_year = years[ref_year.previous_year]
+                pS, pE = Point(work._r, 0), Point(-(ref._r + 7), 0)
+                pSM, pEM = Point(0, 0), Point(-space_x + 7, 0)
+                signx = -1
+            else:
+                closest_work_year = years[work_year.previous_year]
+                closest_ref_year = years[ref_year.next_year]
+                pS, pE = Point(-work._r, 0), Point((ref._r + 7), 0)
+                pSM, pEM = Point(-space_x, 0), Point(0, 0)
+                signx = 1
+            total_work = len(work_year.works) + len(closest_work_year.works)
+            total_ref = len(ref_year.works) + len(closest_ref_year.works)
+            
+            delta_work = (space_x - 7) / float(total_work + 1)
+            delta_ref_x = (space_y - 7) / float(total_ref + 1)
+            dist_midwork = 7 + delta_work * (work._i + 1)
+            dist_midref_x = 7 + len(closest_ref_year.works) + delta_ref_x * (ref._i + 1)
+            
+            total_ref_y = len(rows[ref._i])
+            delta_ref_y = (space_y - 7) / float(total_ref_y + 1)
+            dist_midref_y = delta_ref_y * ((len(rows[ref._i]) - ref._year_index))
+            
+            signy = 1 if work._y < ref._y else -1
+            source_points = [Point(work._x, work._y) + pS]
+            source_points.append(source_points[0] + pSM + Point(dist_midwork, 0))
+            if work._x != ref._x:
+                position_in_row = rows[ref._i].index(ref)
+                next_position = position_in_row + signx
+                operation = [0, operator.ge, operator.le][signx]
+                if next_position in (-1, len(rows[ref._i])) or operation(rows[ref._i][next_position].tyear, work.tyear):
+                    target_points = [Point(ref._x, ref._y) + pE]
+                else:
+                    target_points = [Point(ref._x, ref._y) + Point(0, ref._r + 7)]
+                    target_points.append(target_points[0] + Point(0, dist_midref_y))
+            else:
+                target_points = [Point(ref._x, ref._y) + Point(-(ref._r + 7), 0)]
+            target_points.append(Point(source_points[-1].x, target_points[-1].y))
+
+            points = source_points + list(reversed(target_points))            
+            line = svgwrite.shapes.Polyline(points, stroke_opacity=0.3, stroke="black", fill="none", pointer_events="stroke")
+            line.set_desc(title=Title("{0.display}{0.year} -> {1.display}{1.year}".format(work, ref) + self.generate_title()))
+            group.add(line)
+            
+            line["marker-end"] = marker.get_funciri()
+        dwg.add(group)
+
+
+class Database(object):
+    """ Represents a database with all elements that can be accessed """
+
+    def __init__(self):
+        self._elements = []
+
+    def filter(self, type):
+        """ Filters database by type """
+        for k, v in self.__dict__.items():
+            if not k.startswith("_") and isinstance(v, type):
+                yield v
+
+        for v in self._elements:
+            if isinstance(v, type):
+                yield v
+
+    def clear(self, type):
+        """ Clears type from database """
+        for k, v in self.__dict__.items():
+            if not k.startswith("_") and isinstance(v, type):
+                delattr(self, k)
+
+        self._elements = [v for v in self._elements if not isinstance(v, type)]
+
+    def clear_work(self):
+        """ Clears all work """
+        self.clear(Work)
+
+    def clear_places(self):
+        """ Clears all places """
+        self.clear(Place)
+
+    def clear_citations(self):
+        """ Clears citations """
+        self.clear(Citation)
+
+    def work(self):
+        """ Generates all work """
+        yield from self.filter(Work)
+
+    def places(self):
+        """ Generates all places """
+        yield from self.filter(Place)
+
+    def citations(self):
+        """ Gerenetes all citations """
+        yield from self.filter(Citation)
+
+    def __call__(self, *args, **kwargs):
+        if args:
+            element = args[0]
+            self._elements.append(element)
+            return element
+        elif kwargs:
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+                return v
+
+
+for (cls_name, category, *_) in config.CLASSES:
+    if cls_name not in locals():
+        locals()[cls_name] = type(cls_name, (Work,), {"category": category})
+    else:
+        locals()[cls_name].category = category
+
+DB = Database()

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg baseProfile="full" height="118" version="1.1" width="228" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><marker id="id1" markerHeight="10" markerWidth="7" orient="auto" refY="5"><path d="M0,10 L7,5 0,0" fill="black" stroke="black" /></marker></defs><a target="_blank" xlink:href="http://scholar.google.com/scholar?cites=5458343950729529273&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=en"><rect fill="#6DCE9E" height="42" stroke="black" width="42" x="0" y="38"><title>noWorkflow: capturing and analyzing provenance of scripts
+Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana
+
+@inproceedings{murta2014a,
+  address = {Cologne, Germany},
+  author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
+  booktitle = {International Provenance and Annotation Workshop},
+  pages = {71--83},
+  publisher = {Springer},
+  title = {no{W}orkflow: capturing and analyzing provenance of scripts},
+  year = {2014}
+}
+
+</title></rect><text alignment-baseline="middle" class="wrap" fill="white" style="font-size:12px;font-family:monospace" text-anchor="middle" x="21" y="59"><title>noWorkflow: capturing and analyzing provenance of scripts
+Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana
+
+@inproceedings{murta2014a,
+  address = {Cologne, Germany},
+  author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},
+  booktitle = {International Provenance and Annotation Workshop},
+  pages = {71--83},
+  publisher = {Springer},
+  title = {no{W}orkflow: capturing and analyzing provenance of scripts},
+  year = {2014}
+}
+
+</title><tspan x="21" y="53">noWor</tspan><tspan x="21" y="65">kflow</tspan></text></a><a target="_blank" xlink:href="http://scholar.google.com/scholar?cites=4219830629708722478&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=en"><rect fill="#68BDF6" height="42" stroke="black" width="42" x="76" y="38"><title>Collecting and analyzing provenance on interactive notebooks: when IPython meets noWorkflow
+Pimentel, Jo&#227;o Felipe Nicolaci and Braganholo, Vanessa and Murta, Leonardo and Freire, Juliana
+
+@inproceedings{pimentel2015a,
+  address = {Edinburgh, Scotland},
+  author = {Pimentel, Jo{\~a}o Felipe Nicolaci and Braganholo, Vanessa and Murta, Leonardo and Freire, Juliana},
+  booktitle = {Workshop on the Theory and Practice of Provenance},
+  pages = {1--6},
+  title = {{C}ollecting and analyzing provenance on interactive notebooks: when {I}Python meets no{W}orkflow},
+  year = {2015}
+}
+
+</title></rect><text alignment-baseline="middle" class="wrap" fill="white" style="font-size:12px;font-family:monospace" text-anchor="middle" x="97" y="59"><title>Collecting and analyzing provenance on interactive notebooks: when IPython meets noWorkflow
+Pimentel, Jo&#227;o Felipe Nicolaci and Braganholo, Vanessa and Murta, Leonardo and Freire, Juliana
+
+@inproceedings{pimentel2015a,
+  address = {Edinburgh, Scotland},
+  author = {Pimentel, Jo{\~a}o Felipe Nicolaci and Braganholo, Vanessa and Murta, Leonardo and Freire, Juliana},
+  booktitle = {Workshop on the Theory and Practice of Provenance},
+  pages = {1--6},
+  title = {{C}ollecting and analyzing provenance on interactive notebooks: when {I}Python meets no{W}orkflow},
+  year = {2015}
+}
+
+</title><tspan x="97" y="53">nowor</tspan><tspan x="97" y="65">kflow</tspan></text></a><g class="hoverable"><line marker-end="url(#id1)" stroke="black" stroke-opacity="0.3" x1="76" x2="49" y1="59" y2="59"><title>noworkflow2015 -&gt; noWorkflow2014
+
+ref: 
+contexts: []</title></line></g><text style="font-size:20px" text-anchor="middle" x="21" y="20">2014</text><text style="font-size:20px" text-anchor="middle" x="97" y="20">2015</text></svg>

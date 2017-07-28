@@ -1,0 +1,14 @@
+document
+  default <http://example.org/>
+
+  activity(start, -, -)
+  entity(s0, [type="Set", length="1"])
+  wasGeneratedBy(g0; s0, start, -)
+
+  activity(backward1, -, -, [found="1", related="0"])
+  used(u0; backward1, s0, -)
+
+  activity(forward1, -, -, [found="1", related="0"])
+  used(u1; forward1, s0, -)
+
+endDocument

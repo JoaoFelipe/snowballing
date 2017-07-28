@@ -1,0 +1,13 @@
+# Include the license file
+include LICENSE
+
+# Include the README files
+include README.rst
+include README.md
+
+
+# Include the example directory
+recursive-include example *
+
+# Include the resources directory
+recursive-include resources *
