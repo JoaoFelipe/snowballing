@@ -5,6 +5,8 @@ This project provides tools for perfoming a liberature review through snowballin
 
 This package was tested on Python 3.6 using Windows, but it should support Python > 3.5 in any operating system. Please, open an issue if it is not the case.
 
+Please, find the project documentation at [https://joaofelipe.github.io/snowballing](https://joaofelipe.github.io/snowballing)
+
 Getting started
 ------------------
 
