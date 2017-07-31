@@ -1,6 +1,5 @@
 from pathlib import Path
 from snowballing import config
-from . import places, work, citations, groups
 
 ### Database path. Do not change it unless you know what you are doing
 config.DATABASE_DIR = Path(__file__).parent.resolve()
@@ -132,6 +131,8 @@ config.FORM_TEXT_FIELDS = [
 ]
 
 ### Module setting. Do not change it
+from . import places, work, citations, groups
+
 config.MODULES["places"] = places
 config.MODULES["work"] = work
 config.MODULES["citations"] = citations
