@@ -1,13 +1,13 @@
 """This module contains operations to manipulate the database
 
-Warning: since it involves manipulating source code, some operations may not be 
+Warning: since it involves manipulating source code, some operations may not be
 very reliable.
 
 Additionaly, we currently do not have tests for this file.
 Thus, my suggestion is to use only the :meth:`~insert` and :meth:`~set_attribute` functions.
 These functions were heavily used during my snowballing.
 
-For other operations, such as removing citations/work, I recommend editting 
+For other operations, such as removing citations/work, I recommend editting
 files manually.
 """
 
@@ -31,11 +31,11 @@ class ReplaceOperation(object):
         self.first_col = target.first_col
         self.last_line = target.last_line - 1
         self.last_col = target.last_col
-    
+
     def apply(self, lines, value):
         """Replace `lines` of `:target` by `:value`"""
         lines[self.first_line] = (
-            lines[self.first_line][:self.first_col] + value 
+            lines[self.first_line][:self.first_col] + value
             + lines[self.last_line][self.last_col:]
         )
         for line in range(self.last_line, self.first_line, -1):
@@ -47,8 +47,7 @@ class DelOperation(object):
     def __init__(self, keyword, delete_lines=False):
         self.keyword = keyword
         self.delete_lines = delete_lines
-        
-        
+
     def apply(self, lines, value):
         """Remove `.keyword` from `:lines`"""
         replace = ReplaceOperation(self.keyword)
@@ -64,7 +63,7 @@ class AddKeywordOperation(object):
     def __init__(self, attribute, last_line):
         self.last_line = last_line
         self.attribute = attribute
-        
+
     def apply(self, lines, value):
         """Add `.attribute` = `:value` into `:lines`"""
         lines.insert(
@@ -81,13 +80,13 @@ class InsertOperation(object):
         self.last_line = last_line - 1
         self.last = last
         self.add_line = add_line
-        
+
     def apply(self, lines, value):
         """Insert `:value` at line `.last_line`"""
         new_entry = value.split("\n")
         if self.add_line:
             new_entry.append("")
-    
+
         line = self.last_line
         if self.last:
             if lines[-1]:
@@ -98,12 +97,12 @@ class InsertOperation(object):
 
 class DetectOperation(object):
     """Operation for detecting elements"""
-    
+
     def __init__(self):
         self.work_list = []
         self.citations = []
         self.imports = []
-        
+
     def apply(self, lines, value):
         """Detect elements"""
         value["work_list"] = self.work_list
@@ -114,7 +113,7 @@ class DetectOperation(object):
 def is_assign_to_name(stmt):
     """Check if stmt is an assignment to name"""
     return (
-        isinstance(stmt, ast.Assign) and 
+        isinstance(stmt, ast.Assign) and
         isinstance(stmt.targets[0], ast.Name)
     )
 
@@ -135,17 +134,17 @@ class EditVisitor(ast.NodeVisitor):
         self.result = None
         self.old = ""
         self.lines = lines
-    
+
     def replace(self, node):
         """Instantiate a replace operation"""
         self.result = ReplaceOperation(node)
         self.old = pyposast.extract_code(self.lines, node)
-    
+
     def add_keyword(self, attribute, last_line):
         """Instantiate an operation to add keyword"""
         self.result = AddKeywordOperation(attribute, last_line)
         self.old = ""
-    
+
     def remove_keyword(self, keyword, remove_lines):
         """Instantiate an operation to remove a keyword"""
         if not remove_lines:
@@ -156,10 +155,10 @@ class EditVisitor(ast.NodeVisitor):
         self.result = DelOperation(keyword.value, remove_lines)
         self.old = keyword.arg + "=" + pyposast.extract_code(
             self.lines, keyword.value)
-    
+
     def visit_Assign(self, node):
         """Visits assign and check if it represents the desired `.varname`
-        
+
         Then, instantiate and apply the desired `.operation`
         """
         for target in node.targets:
@@ -195,28 +194,28 @@ class EditVisitor(ast.NodeVisitor):
                                 (len(lines[keyword.first_line]) == 1 and
                                  len(lines[keyword.last_line]) == 1)
                             )
-       
+
 
 class BodyVisitor(ast.NodeVisitor):
     """Visit body of year file to find `.varname` and apply `.operation`"""
-    
+
     def __init__(self, lines, varname, operation="delete"):
         self.varname = varname
         self.operation = operation
         self.result = None
         self.lines = lines
         self.old = ""
-    
+
     def remove_stmt(self, stmt):
         """Instantiate an operation to remove the stmt"""
         self.result = DelOperation(stmt, True)
         self.old = pyposast.extract_code(self.lines, stmt)
-        
+
     def insert(self, line, last):
         """Instantiate an operation to insert code"""
         self.result = InsertOperation(line, last)
         self.old = ""
-    
+
     def process_body(self, body):
         """Finds desired varnames in body and instantiate operation"""
         oper = self.operation
@@ -233,7 +232,7 @@ class BodyVisitor(ast.NodeVisitor):
                     break
                 elif self.operation == "detect":
                     self.result.work_list.append((
-                        stmt.targets[0].id, 
+                        stmt.targets[0].id,
                         stmt.value.args[0].args[1].s,
                         pyposast.extract_code(lines, stmt),
                         stmt.value.args[0].args[0].n,
@@ -247,15 +246,15 @@ class BodyVisitor(ast.NodeVisitor):
                 ))
         if body and self.operation == "insert" and not self.result:
             self.insert(stmt.last_line, True)
-    
+
     def visit_Interactive(self, node):
         """Process body of Interactive node"""
         self.process_body(node.body)
-        
+
     def visit_Module(self, node):
         """Process body of Module node"""
         self.process_body(node.body)
-        
+
     def visit_Suite(self, node):
         """Processes body of Suite node"""
         self.process_body(node.body)
@@ -263,7 +262,7 @@ class BodyVisitor(ast.NodeVisitor):
 
 class CitationVisitor(ast.NodeVisitor):
     """Visit body of citation file to apply operation"""
-    
+
     def __init__(self, lines, varname, year, operation="remove import"):
         self.varname = varname
         self.year = int(year)
@@ -271,7 +270,7 @@ class CitationVisitor(ast.NodeVisitor):
         self.result = None
         self.old = ""
         self.lines = lines
-        
+
     def process_body(self, body):
         """Find citation/import and applies the desired `.operation`"""
         if self.operation in ("find", "detect"):
@@ -327,15 +326,15 @@ class CitationVisitor(ast.NodeVisitor):
 
         if self.operation == "insert import" and not self.result:
             self.result = InsertOperation(last_line + 1, True, add_line=True)
-          
+
     def visit_Interactive(self, node):
         """Process body of Interactive node"""
         self.process_body(node.body)
-        
+
     def visit_Module(self, node):
         """Process body of Module node"""
         self.process_body(node.body)
-        
+
     def visit_Suite(self, node):
         """Processes body of Suite node"""
         self.process_body(node.body)
@@ -419,7 +418,7 @@ def remove_source_citation(name, varname, year=None, dry_run=False):
     year = discover_year(varname, year)
     filename = citation_file(name)
     lines, sep = read_file(filename)
-    
+
     targets = []
     doing = True
     while doing:
@@ -429,7 +428,7 @@ def remove_source_citation(name, varname, year=None, dry_run=False):
         tyear = re.search(r"\d\d\d\d", target)
         if tyear:
             targets.append((target, int(tyear.group(0))))
-    
+
     print("-Remove Import:", varname)
     citation_operation(filename, lines, varname, year, "remove import")
     for target in targets:
@@ -449,7 +448,7 @@ def remove_target_citation(name, varname, year=None, dry_run=False):
     year = discover_year(varname, year)
     filename = citation_file(name)
     lines, sep = read_file(filename)
-    
+
     sources = []
     doing = True
     while doing:
@@ -459,7 +458,7 @@ def remove_target_citation(name, varname, year=None, dry_run=False):
         syear = re.search(r"\d\d\d\d", source)
         if syear:
             sources.append((source, int(syear.group(0))))
-        
+
     print("-Remove Import:", varname)
     citation_operation(filename, lines, varname, year, "remove import")
     for source in sources:
@@ -588,7 +587,7 @@ def rename_lines(filename, lines, sep, original_name, new_name, year=None, new_y
             print("\n".join(["y{}".format(new_year), "", ""] + rlines))
     else:
         work_operation(filename, lines, new_name, "insert", visitor.old)
-    
+
     for citation in work_citations:
         rlines = rename_citation(citation, original_name, new_name, year=year, new_year=new_year, dry_run=dry_run)
         if dry_run:
@@ -599,7 +598,7 @@ def rename_lines(filename, lines, sep, original_name, new_name, year=None, new_y
 
 
 def set_attribute(varname, field, value, year=None, dry_run=False):
-    """Set attribute for work 
+    """Set attribute for work
 
     Arguments:
 
@@ -646,9 +645,9 @@ def insert(text, citations=None, ratio=0.9, dry_run=False):
     * `ratio` -- comparison threshold for existing work
 
     * `dry_run` -- do not apply changes to the database
-    
+
     Example::
-    
+
         insert('''
         pimentel2016a = DB(WorkSnowball(
             2016, "Tracking and analyzing the evolution of provenance from scripts",
@@ -658,7 +657,7 @@ def insert(text, citations=None, ratio=0.9, dry_run=False):
             pp="16--28",
             entrytype="inproceedings",
         ))
-        
+
         DB(Citation(
             pimentel2016a, murta2014a, ref="[14]",
             contexts=[
@@ -670,7 +669,7 @@ def insert(text, citations=None, ratio=0.9, dry_run=False):
     result = {}
     lines = text.split("\n")
     work_operation("", lines, "", "detect", result)
-    
+
     newnames = {}
     for work in result["work_list"]:
         newnames[work[0]] = insert_work(*work, ratio=ratio, dry_run=dry_run)[0]

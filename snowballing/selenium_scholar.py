@@ -1,5 +1,5 @@
 """
-This module provides classes for querying Google Scholar using selenium and 
+This module provides classes for querying Google Scholar using selenium and
 parsing returned results. It currently *only* processes the first results
 page. It is not a recursive crawler.
 """
@@ -81,14 +81,14 @@ def click(parent, selector):
 class URLQuery(ScholarQuery):
     """ Represents a Google Scholar query using a generic query
     We use it to navigate on the citations """
-    
+
     def __init__(self, url, start=None):
         ScholarQuery.__init__(self)
         self.start = start
-        
+
         self.url = url
 
-        
+
     def get_url(self):
         url = self.url
         if self.start is not None:
@@ -99,14 +99,14 @@ class URLQuery(ScholarQuery):
 
 class Result(object):
     """ Represents a result with articles """
-    
+
     def __init__(self, query, html):
         self.articles = []
         self.query = query
         self.html = html
         self.next_page = None
         self.prev_page = None
-        
+
     def set_navigation(self, driver, name, text):
         try:
             link = driver.find_element_by_link_text(text)
@@ -117,11 +117,11 @@ class Result(object):
 
 class AddArticleTask(object):
     """ Task that adds an article to the result """
-    
+
     def __init__(self, result, article):
         self.article = article
         self.result = result
-        
+
     def get_citation_data(self, querier):
         """
         Given an article, retrieves citation link. Note, this requires that
@@ -148,7 +148,7 @@ class AddArticleTask(object):
 
         self.article.set_citation_data(data)
         return True
-        
+
     def apply(self, querier):
         if len(self.result.articles) < getattr(self.result.query, 'num_results', 10000):
             self.get_citation_data(querier)
@@ -181,24 +181,24 @@ class ParseTask(ScholarArticleParser120726):
 
 class QueryTask(object):
     """ Task that queries the scholar """
-    
+
     def __init__(self, query):
         self.query = query
-        
+
     def apply(self, querier):
         html = querier.get_response(url=self.query.get_url(),
                                     log_msg='dump of query response HTML',
                                     err_msg='results retrieval failed',
                                     condition=(By.ID, "gs_ab"))
-        
+
         if html is None:
             querier.tasks.appendleft(self)
             raise Error("Connection error")
-            
+
         querier.result = Result(self.query, html)
         querier.result.set_navigation(querier.driver, "next_page", "Next")
         querier.result.set_navigation(querier.driver, "prev_page", "Previous")
-        
+
         querier.tasks.appendleft(ParseTask(querier.result))
 
 
@@ -207,9 +207,9 @@ class SearchScholarQuery(ScholarQuery):
     This version represents the search query parameters the user can
     configure on the Scholar website, in the advanced search options.
     """
-    
+
     SCHOLAR_QUERY_URL = ScholarConf.SCHOLAR_SITE + '/scholar?'
-    
+
     def __init__(self):
         ScholarQuery.__init__(self)
         self._add_attribute_type('num_results', 'Results', 0)
@@ -305,7 +305,7 @@ class SearchScholarQuery(ScholarQuery):
             ("as_sdt", ('0' if self.include_patents else '1') + "%2C5"),
             ("as_vis", '0' if self.include_citations else '1'),
         ]
-        
+
         args = "&".join(
             "{}={}".format(key, quote(encode(value))) for key, value in urlargs
          #   if value
@@ -329,7 +329,7 @@ def check_captcha(driver, condition):
         print("If you filled in the browser, type '<ok>' here.")
         inp = input("Captcha: ")
         if inp == "<ok>":
-            break 
+            break
         captcha[0].send_keys(inp)
         captcha[0].send_keys(Keys.RETURN)
         try:
@@ -350,27 +350,27 @@ class ScholarSettingsTask(object):
     CITFORM_REFMAN = 2
     CITFORM_ENDNOTE = 3
     CITFORM_BIBTEX = 4
-    
+
     COLLECTIONS_ARTICLES_ONLY = 0
     COLLECTIONS_ARTICLES_AND_PATENTS = 1
     COLLECTIONS_CASE_LAW = 2
-    
+
     SETTINGS_URL = (
-    	ScholarConf.SCHOLAR_SITE + 
+    	ScholarConf.SCHOLAR_SITE +
     	'/scholar_settings?hl=en&as_sdt=0,5&sciodt=0,5'
     )
-    
+
     def __init__(self, pages=10, citform=0, new_window=False, collections=1):
         self.is_configured = False
         self.citform = citform
         self.per_page_results = pages
         self.new_window = new_window
         self.collections = 1
-        
+
     @property
     def citform(self):
         return self._citform
-        
+
     @citform.setter
     def citform(self, value):
         value = ScholarUtils.ensure_int(value)
@@ -379,11 +379,11 @@ class ScholarSettingsTask(object):
         if value != 0:
             self.is_configured = True
         self._citform = value
-            
+
     @property
     def per_page_results(self):
         return self._per_page_results
-        
+
     @per_page_results.setter
     def per_page_results(self, value):
         value = ScholarUtils.ensure_int(value, 'page results must be integer')
@@ -392,21 +392,21 @@ class ScholarSettingsTask(object):
         if value != 10:
             self.is_configured = True
         self._per_page_results = value
-        
+
     @property
     def new_window(self):
         return self._new_window
-        
+
     @new_window.setter
     def new_window(self, value):
         if value:
             self._is_configured = True
         self._new_window = value
-        
+
     @property
     def collections(self):
         return self._collections
-        
+
     @collections.setter
     def collections(self, value):
         value = ScholarUtils.ensure_int(value)
@@ -415,18 +415,18 @@ class ScholarSettingsTask(object):
         if value != 1:
             self._is_configured = True
         self._collections = value
-    
+
     def apply(self, querier):
         driver = querier.driver
         if not self.is_configured:
             return
         driver.get(ScholarSettingsTask.SETTINGS_URL)
         check_captcha(driver, (By.ID, "gs_num-bd"))
-        
+
 
         results_per_page = click(driver, "#gs_num-bd")
         twenty_results = click(
-        	results_per_page.parent, 
+        	results_per_page.parent,
         	'li[data-v="{}"]'.format(self.per_page_results)
         )
         if self.citform != 0:
@@ -436,16 +436,16 @@ class ScholarSettingsTask(object):
             )
         else:
             dont_show = click(driver, "#scis0")
-            
+
         if self.new_window:
             new_window = click(driver, "#gs_nw")
-            
+
         case_laws = click(driver, "#as_sdt2")
         if self.collections < 3:
             articles = click(driver, "#as_sdt1")
         if self.collections == 1:
             patents = click(driver, "#as_sdtp")
-            
+
         save_button = click(driver, '.gs_btn_act[name="save"]')
         ScholarUtils.log('info', 'settings applied')
 
@@ -464,21 +464,21 @@ class SeleniumScholarQuerier(object):
         self.driver = driver or webdriver.Firefox()
         self.tasks = deque()
         self.last_request = time.time() - ScholarConf.DELTA_TIME - 1
-        
+
     def continue_tasks(self):
         while self.tasks:
             task = self.tasks.popleft()
             task.apply(self)
         if self.result:
             self.articles = self.result.articles
-        
+
     def apply_settings(self, *args, **kwargs):
         """Applies settings"""
         settings = ScholarSettingsTask(*args, **kwargs)
         self.tasks.append(settings)
         self.continue_tasks()
         return self
-        
+
     def send_query(self, query):
         """Initiates a search query (a ScholarQuery instance)"""
         self.tasks.append(QueryTask(query))
@@ -506,7 +506,7 @@ class SeleniumScholarQuerier(object):
                 -ScholarConf.DELTA_VARIATION, ScholarConf.DELTA_VARIATION
             )
             check_captcha(self.driver, condition)
-        
+
             html = self.driver.page_source
 
             ScholarUtils.log('debug', log_msg)

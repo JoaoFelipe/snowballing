@@ -8,13 +8,13 @@ class Group:
     """Represent an Approach or a Group of work.
 
     Arguments:
-    
+
     * `args` -- list of work that represents the group
-    
+
     * `kwargs` -- map of attributes to be applied for the group and its works
-      
+
       * Exception: the keyword `dont_cite=` also represents a list of works that
-        belong to the group 
+        belong to the group
 
 
     Expected attributes:
@@ -22,14 +22,14 @@ class Group:
     * _cite: cite group by authors
 
       * True indicates that the approach must be referenced by its authors
-      * False indicates that the approach can referenced by name 
-    
+      * False indicates that the approach can referenced by name
+
     * _meta: list of dicts with attributes for comparing approaches
-      
+
       * A single approach can have more than one meta dict
       * It is possible to use the distinct meta dicts to describe different
         aspects
-    
+
     * _about: HTML describing the approach
 
     Doctest:
@@ -79,10 +79,10 @@ class Group:
 
 
 class GroupUnrelated(Group):
-    """Represent an unrelated group of approaches 
-    
+    """Represent an unrelated group of approaches
+
     It does not add the approach into the APPROACHES list.
-    
+
     Doctest:
 
     .. doctest::
@@ -143,7 +143,7 @@ class Item:
         if self._star is None:
             return str(self.value)
         return str(self._star)
-    
+
     def __repr__(self):
         if self._examples:
             return "{} ({})".format(self.text, ', '.join(map(str, self._examples)))
@@ -154,7 +154,7 @@ class Item:
 
 
 def name(approach):
-    """Return approach name. Removes double spaces in display 
+    """Return approach name. Removes double spaces in display
 
     Doctest:
 
@@ -170,7 +170,7 @@ def name(approach):
 
 
 def get_approaches(condition=None):
-    """Return pairs of approaches and meta dicts 
+    """Return pairs of approaches and meta dicts
 
     Doctest:
 
@@ -200,7 +200,7 @@ def wcite(approach, works, extra=""):
     return ' \\cite{}{{{}}}'.format(
         extra,
         ', '.join([
-            works[w]['ID'] 
+            works[w]['ID']
             for w in approach.work
             if w in works
             if "snowball" in w.category

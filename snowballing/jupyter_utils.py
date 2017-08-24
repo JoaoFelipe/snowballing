@@ -1,4 +1,4 @@
-"""This module provides useful jupyter widgets""" 
+"""This module provides useful jupyter widgets"""
 import base64
 import os
 import subprocess
@@ -50,7 +50,7 @@ def idisplay(*args, label=True):
 
 
 def find_line(work):
-    """Find work position in file 
+    """Find work position in file
 
     Arguments:
 
@@ -73,7 +73,7 @@ def find_line(work):
             for index, line in enumerate(f)
             if re.findall('(^{}\\s=)'.format(work.metakey).encode(), line)
         ][0] + 1
-  
+
 
 def invoke_editor(work):
     """Open work in a given line with the configured editor"""
@@ -105,10 +105,10 @@ def work_button(work, description=None):
 
     Keyword arguments:
 
-    * `description` -- button label. It uses the work varname if it is not 
+    * `description` -- button label. It uses the work varname if it is not
       specified
     """
     def click(w):
         invoke_editor(work)
-    
+
     return new_button(description or work.metakey, click)

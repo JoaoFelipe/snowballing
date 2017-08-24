@@ -1,4 +1,4 @@
-"""This module contains classes for defining the database and producing the 
+"""This module contains classes for defining the database and producing the
 citation graph"""
 
 import inspect
@@ -23,11 +23,11 @@ class Title(object):
 class WithTitle(object):
     """Graph object with title"""
     ignore = set()
-    
+
     def generate_title(self, prepend="\n\n"):
         """Generate title text with all attributes from the object
 
-        Ignores attributes that start with `_`, or attributes in the 
+        Ignores attributes that start with `_`, or attributes in the
         :attr:`~ignore` set
 
         Doctest:
@@ -61,7 +61,7 @@ class Place(WithTitle):
     It has the following attributes:
 
     * :attr:`~acronym` -- place acronym (e.g., 'IPAW')
-    
+
       * Surround it with <>, if the place has no acronym or you do not know it
         (e.g., '<ImaginaryAcronym>')
 
@@ -74,17 +74,17 @@ class Place(WithTitle):
     about the place.
     Note however that it has the following reversed attributes:
 
-    * :attr:`~ignore` -- set that specifies ignore attributes in titles 
+    * :attr:`~ignore` -- set that specifies ignore attributes in titles
       (:class:`~WithTitle`)
 
     * :meth:`~draw` -- method that draws the place
-    
+
 
     Doctest:
 
     .. doctest::
 
-        >>> ipaw = Place('IPAW', 
+        >>> ipaw = Place('IPAW',
         ...              'International Provenance and Annotation Workshop',
         ...              'conference')
         >>> ipaw.acronym
@@ -107,14 +107,14 @@ class Place(WithTitle):
 
         self.acronym = acronym
         self.name = name
-        
+
         if args:
             self.type = args[0]
-        
+
         for key, value in kwargs.items():
             setattr(self, key, value)
-            
-            
+
+
     def draw(self, dwg, position):
         """ Draws place in a given position """
         text = svgwrite.text.Text(
@@ -140,11 +140,11 @@ class Place(WithTitle):
 
 class Work(WithTitle):
     """Work represents papers in the snowballing
- 
+
     It has the following attributes:
 
     * :attr:`~year` -- year of publivation (int)
-      
+
       * Convention: use 0 if it is not required (website), or 9999 if it is not
         informed
 
@@ -156,14 +156,14 @@ class Work(WithTitle):
         FirstName1 and LastName2, FirstName2 and LastName3, FirstName3 ...'
 
     * :attr:`~display` -- display label for graphs
-        
+
     * :attr:`~metakey` -- variable name
 
       * It is automatically collected from the database. It it does not exist,
         call :func:`snowvalling.operations.reload` again.
 
     * :attr:`~file` -- filename of the work (optional)
-    
+
     * :attr:`~due` -- reason for work not being related (optional)
 
     * :attr:`~notes` -- use it to append a string to year in BibTeX (optional)
@@ -172,38 +172,38 @@ class Work(WithTitle):
 
             work.year = 2014
             work.notes = "in press"
-            
+
       * Produces: 2014 [in press]
-        
+
     * :attr:`~snowball` -- forward snowballing date (optional)
 
     * :attr:`~citation_file` -- citation filename (without .py)
-          
+
       * Indicates where are the citations of this work
-        
+
 
     * :attr:`~alias` -- tuple with (year, title, authors) (optional)
 
-      * Represents the same work in google scholar 
-          
+      * Represents the same work in google scholar
+
           * The tuple can have two elements if the authors match: (year, title)
-          
-          * Use year = 0, if the citation on google scholar doesn't have the 
+
+          * Use year = 0, if the citation on google scholar doesn't have the
             year information
-        
+
     * :attr:`~aliases` -- list of alias attributes (optional)
 
     * :attr:`~scholar` -- url of the work in google scholar (optional)
-    
-    * :attr:`~scholar_ok` -- status of the work according to a google scholar 
+
+    * :attr:`~scholar_ok` -- status of the work according to a google scholar
       curation (optional)
 
       * True means that we already merged google scholar's bibtex to the work
-      
+
       * False means that we didn't
-    
+
     * :attr:`~tracking` indicates if we set an alert for the work (optional)
-    
+
       * Note: the alert is manual. This tool does not set the alert.
         You can use whatever value you want for it
 
@@ -215,31 +215,31 @@ class Work(WithTitle):
     Note however that it has the following reserved attributes:
 
     * :attr:`~category` -- work status in the snowballing
-    
+
     * :attr:`~tyear` -- year object for drawing
-    
-    * :attr:`~ignore` -- set that specifies ignore attributes in titles 
+
+    * :attr:`~ignore` -- set that specifies ignore attributes in titles
       (:class:`~WithTitle`)
 
     * :meth:`~draw` -- method that draws the work
 
     * :attr:`~_x` -- x position for drawing the work
-    
+
     * :attr:`~_y` -- y position for drawing the work
-    
+
     * :attr:`~_r` -- radius for circular node drawing
-    
+
     * :attr:`~_i` -- column index for drawing the work
-    
+
     * :attr:`~_year_index` -- row index for drawing the work
-    
+
     * :attr:`~_letters` -- max amount of letters for drawing
-    
+
     * :attr:`~_shape` -- shape of node (circle vs rectangle)
 
 
     Works are considered equal if they have the same place, name and year
-        
+
 
     Doctest:
 
@@ -271,37 +271,37 @@ class Work(WithTitle):
         "_x", "_y", "_i", "_year_index", "_r", "_letters",
         "display", "name", "authors", "year"
     }
-    
+
     def __init__(self, year, name, authors="", display=None, **kwargs):
         self.name = name
         self.year = year
         self.authors = authors
-        
+
         for key, value in kwargs.items():
             setattr(self, key, value)
-        
+
         self._x = 0
         self._y = 0
         self._i = -1
         self._r = 20
         self._year_index = -1
         self._letters = 5
-        
+
         if display is None:
             display = self.name
         self.display = display
-        
+
     def __eq__(self, other):
         if getattr(self, "place", None) != getattr(other, "place", None):
             return False
         return (
             self.name == other.name and
-            self.year == other.year 
+            self.year == other.year
         )
 
     def __hash__(self):
         return hash((self.name,  self.year))
-    
+
     def __repr__(self):
         return self.name
 
@@ -341,18 +341,18 @@ class Work(WithTitle):
             #print(y, line)
             text.add(svgwrite.text.TSpan(line, (self._x, self._y + y)))
 
-        
+
         shape.set_desc(title=Title(
             "{}\n{}".format(self.name, self.authors) + self.generate_title()
         ))
         text.set_desc(title=Title(
             "{}\n{}".format(self.name, self.authors) + self.generate_title()
         ))
-        
-        
+
+
         if draw_place and hasattr(self, "place") and self.place is not None:
             self.place.draw(dwg, position - Point(0, self._r + 4))
-        
+
         link = None
         for link_type in reversed(self._link):
             if link_type == "file" and self.file:
@@ -364,7 +364,7 @@ class Work(WithTitle):
         if link is not None:
             dwg.add(link)
             dwg = link
-        
+
         dwg.add(shape)
         dwg.add(text)
 
@@ -431,25 +431,25 @@ class Year(object):
     """Represent a year in the citation graph
 
     It has the following attributes:
-    
+
     * :attr:`~year` --  int
-    
+
     * :attr:`~next_year` --  tuple with year object and index
-    
+
       * year = -1 indicates that there is no next year
 
     * :attr:`~previous_year` --  tuple with year object and index
       * previous = -1 indicates that there is no previous year
-    
+
     * :attr:`~works` --  list of works in the year
 
 
     It has the following reversed attributes
-    
+
     * :attr:`~_i` --  column index for drawing the year
-    
+
     * :attr:`~_dist` --  distance between year columns
-    
+
     * :attr:`~_r` -- extra margin
 
 
@@ -470,7 +470,7 @@ class Year(object):
         self._i = i
         self._dist = dist
         self._r = r
-    
+
     def draw(self, dwg):
         """Draw year in the position"""
         x = self._i * self._dist + self._r
@@ -499,22 +499,22 @@ class Citation(WithTitle):
     * :attr:`~citations_file` -- file where the citation is defined
     """
     ignore = {"work", "citation"}
-    
+
     def __init__(self, work, citation, **kwargs):
         import inspect
         import os
 
         self._citations_file = dbindex.last_citation_file
-        
+
         self.work = work
         self.citation = citation
-        
+
         for key, value in kwargs.items():
             setattr(self, key, value)
-        
+
     def _belzier_gen(self, work, ref, rotate):
         """Create belzier line points
-        Usage: 
+        Usage:
         ... svgwrite.path.Path(
         ...      "M{0} C{1} {2} {3}".format(*belzier_gen(work, ref, False)
         ...  ), stroke="black", fill="white", fill_opacity=0)
@@ -528,9 +528,9 @@ class Citation(WithTitle):
 
     def _line_gen(self, work, ref):
         """Create line points
-        
+
         Usage::
-        
+
             svgwrite.shapes.Line(*self._line_gen(work, ref), stroke="black")
         """
         point0 = adjust_point(
@@ -581,16 +581,16 @@ class Citation(WithTitle):
                 signx = 1
             total_work = len(work_year.works) + len(closest_work_year.works)
             total_ref = len(ref_year.works) + len(closest_ref_year.works)
-            
+
             delta_work = (space_x - 7) / float(total_work + 1)
             delta_ref_x = (space_y - 7) / float(total_ref + 1)
             dist_midwork = 7 + delta_work * (work._i + 1)
             dist_midref_x = 7 + len(closest_ref_year.works) + delta_ref_x * (ref._i + 1)
-            
+
             total_ref_y = len(rows[ref._i])
             delta_ref_y = (space_y - 7) / float(total_ref_y + 1)
             dist_midref_y = delta_ref_y * ((len(rows[ref._i]) - ref._year_index))
-            
+
             signy = 1 if work._y < ref._y else -1
             source_points = [Point(work._x, work._y) + pS]
             source_points.append(source_points[0] + pSM + Point(dist_midwork, 0))
@@ -607,11 +607,11 @@ class Citation(WithTitle):
                 target_points = [Point(ref._x, ref._y) + Point(-(ref._r + 7), 0)]
             target_points.append(Point(source_points[-1].x, target_points[-1].y))
 
-            points = source_points + list(reversed(target_points))            
+            points = source_points + list(reversed(target_points))
             line = svgwrite.shapes.Polyline(points, stroke_opacity=0.3, stroke="black", fill="none", pointer_events="stroke")
             line.set_desc(title=Title("{0.display}{0.year} -> {1.display}{1.year}".format(work, ref) + self.generate_title()))
             group.add(line)
-            
+
             line["marker-end"] = marker.get_funciri()
         dwg.add(group)
 
