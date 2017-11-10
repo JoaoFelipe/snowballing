@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>snowballing.operations &mdash; snowballing 0.1.8 documentation</title>
+  <title>snowballing.operations &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../../index.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
@@ -171,7 +172,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for snowballing.operations</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;This module contains functions to :meth:`~reload` the database, load work and </span>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains functions to :meth:`~reload` the database, load work and</span>
 <span class="sd">citations from there, and operate BibTeX&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">importlib</span>
@@ -212,8 +213,8 @@
 
 
 <div class="viewcode-block" id="load_places_vars"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.load_places_vars">[docs]</a><span class="k">def</span> <span class="nf">load_places_vars</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Load all places from the database </span>
-<span class="sd">    </span>
+    <span class="sd">&quot;&quot;&quot;Load all places from the database</span>
+
 <span class="sd">    It generates tuples with variable name and Place object</span>
 
 <span class="sd">    Doctest:</span>
@@ -253,7 +254,7 @@
 
 
 <div class="viewcode-block" id="work_by_varname"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.work_by_varname">[docs]</a><span class="k">def</span> <span class="nf">work_by_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Load work by varname </span>
+    <span class="sd">&quot;&quot;&quot;Load work by varname</span>
 
 <span class="sd">    Doctest:</span>
 
@@ -274,7 +275,7 @@
 
 
 <div class="viewcode-block" id="load_work_map_all_years"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.load_work_map_all_years">[docs]</a><span class="k">def</span> <span class="nf">load_work_map_all_years</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Load all work from all years </span>
+    <span class="sd">&quot;&quot;&quot;Load all work from all years</span>
 
 <span class="sd">    Doctest:</span>
 
@@ -313,7 +314,7 @@
 
 
 <div class="viewcode-block" id="reload"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.reload">[docs]</a><span class="k">def</span> <span class="nf">reload</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Reload all the database </span>
+    <span class="sd">&quot;&quot;&quot;Reload all the database</span>
 
 <span class="sd">    Doctest:</span>
 
@@ -349,30 +350,30 @@
 
 
 <div class="viewcode-block" id="bibtex_to_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.bibtex_to_info">[docs]</a><span class="k">def</span> <span class="nf">bibtex_to_info</span><span class="p">(</span><span class="n">citation</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert BibTeX dict from bibtexparse to info dict for adding a db entry </span>
+    <span class="sd">&quot;&quot;&quot;Convert BibTeX dict from bibtexparse to info dict for adding a db entry</span>
 
 <span class="sd">    It has the following conversions:</span>
 
 <span class="sd">    * title -&gt; name (required)</span>
-<span class="sd">    </span>
+
 <span class="sd">    * author -&gt; authors (required)</span>
-<span class="sd">        </span>
+
 <span class="sd">    * year -&gt; year (0 if not specified)</span>
-<span class="sd">            </span>
+
 <span class="sd">      * If there is &#39;[in press]&#39;, creates &#39;note&#39; with &#39;in press&#39;</span>
-<span class="sd">    </span>
+
 <span class="sd">    * journal/booktitle -&gt; place1 (&#39;&#39; if not specified)</span>
-<span class="sd">            </span>
+
 <span class="sd">      * If &#39;place1&#39; matches a place in the database, creates also &#39;place&#39;</span>
-<span class="sd">    </span>
+
 <span class="sd">    * pages -&gt; pp</span>
-<span class="sd">    </span>
+
 <span class="sd">    * ENTRYTYPE -&gt; entrytype</span>
 
 <span class="sd">    Also creates the following fields:</span>
-<span class="sd">    </span>
+
 <span class="sd">    * display -- Last name of first author</span>
-<span class="sd">    </span>
+
 <span class="sd">    * pyref -- {display}{year}{letter}</span>
 
 
@@ -398,7 +399,7 @@
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">))</span>
     <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">))</span>
-    
+
     <span class="k">if</span> <span class="s2">&quot;[in press]&quot;</span> <span class="ow">in</span> <span class="n">citation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;note&quot;</span><span class="p">,</span> <span class="s2">&quot;in press&quot;</span><span class="p">)</span>
         <span class="n">citation</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citation</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span>
@@ -460,7 +461,7 @@
 
 
 <div class="viewcode-block" id="set_pyref"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.set_pyref">[docs]</a><span class="k">def</span> <span class="nf">set_pyref</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">check_existence</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set pyref of info. Finds the next available letter in the database </span>
+    <span class="sd">&quot;&quot;&quot;Set pyref of info. Finds the next available letter in the database</span>
 
 <span class="sd">    Doctest:</span>
 
@@ -486,7 +487,7 @@
 
 
 <div class="viewcode-block" id="set_place"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.set_place">[docs]</a><span class="k">def</span> <span class="nf">set_place</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">check_existence</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set place of info </span>
+    <span class="sd">&quot;&quot;&quot;Set place of info</span>
 
 <span class="sd">    It reorders common patterns:</span>
 
@@ -497,7 +498,7 @@
 
 <span class="sd">    Then, it removes numbers and it tries to match places in the database.</span>
 
-<span class="sd">    It considers a match if the matching ratio for the place name </span>
+<span class="sd">    It considers a match if the matching ratio for the place name</span>
 <span class="sd">    is &gt;= config.SIMILARITY_RATIO (0.8).</span>
 
 <span class="sd">    It also considers a match if the acronym matches.</span>
@@ -528,7 +529,7 @@
     <span class="n">place</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.*) (International Convention on)&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\2 \1&quot;</span><span class="p">,</span> <span class="n">place</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
     <span class="n">place</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.*) (International Symposium on)&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\2 \1&quot;</span><span class="p">,</span> <span class="n">place</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
     <span class="n">place</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">place</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()])</span>
-    
+
     <span class="n">maxmatch</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
         <span class="p">(</span><span class="nb">max</span><span class="p">(</span>
             <span class="n">compare_str</span><span class="p">(</span><span class="n">place</span><span class="p">,</span> <span class="n">varvalue</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
@@ -586,12 +587,12 @@
     <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">article</span><span class="o">.</span><span class="n">div</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span></div>
 
-   
+
 <div class="viewcode-block" id="info_to_code"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.info_to_code">[docs]</a><span class="k">def</span> <span class="nf">info_to_code</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert info dict into code </span>
+    <span class="sd">&quot;&quot;&quot;Convert info dict into code</span>
 
 <span class="sd">    Required attributes:</span>
-<span class="sd">    </span>
+
 <span class="sd">    * pyref</span>
 <span class="sd">    * display</span>
 <span class="sd">    * year</span>
@@ -699,7 +700,7 @@
 
     <span class="n">other</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">        &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">=&quot;</span><span class="si">{}</span><span class="s1">&quot;,&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\&quot;&#39;</span><span class="p">))</span>
                           <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-        
+
     <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    </span><span class="si">{pyref}</span><span class="s2"> = DB(</span><span class="si">{work_type}</span><span class="s2">(</span>
 <span class="s2">        </span><span class="si">{year}</span><span class="s2">, &quot;</span><span class="si">{name}</span><span class="s2">&quot;,</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
@@ -720,7 +721,7 @@
     <span class="sd">&quot;&quot;&quot;Create code for citation</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">    </span>
+
 <span class="sd">    * `workref` -- work varname that is cited (by default)</span>
 
 <span class="sd">    * `cited` -- work info dict that cites the work (by default)</span>
@@ -785,16 +786,16 @@
 
 
 <span class="sd">    Returns: work, letter</span>
-<span class="sd">    </span>
+
 <span class="sd">    *  If it doesn&#39;t match, work is None</span>
-<span class="sd">    </span>
+
 <span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
 
 <span class="sd">        &gt;&gt;&gt; reload()</span>
 <span class="sd">        &gt;&gt;&gt; work = work_by_varname(&#39;murta2014a&#39;)</span>
-<span class="sd">        </span>
+
 <span class="sd">        Fail:</span>
 
 <span class="sd">        &gt;&gt;&gt; paper = {&#39;pyref&#39;: &#39;pimentel2017a&#39;, &#39;authors&#39;: &#39;Pimentel, Joao&#39;, &#39;name&#39;: &#39;Other&#39;, &#39;year&#39;: 2017}</span>
@@ -874,13 +875,13 @@
 <span class="sd">    Limits search for specific year (or all years, if year is 0)</span>
 
 <span class="sd">    Generates &#39;place&#39; based on &#39;entrytype&#39;</span>
-<span class="sd">    </span>
+
 <span class="sd">    Converts &#39;school&#39; -&gt; &#39;local&#39;</span>
-<span class="sd">    </span>
+
 <span class="sd">    Tries to get varname from &#39;ID&#39; in case the bibtex were generated from our db</span>
-<span class="sd">    </span>
+
 <span class="sd">    If it finds the work, it returns it</span>
-<span class="sd">    </span>
+
 <span class="sd">    Otherwise, it updates pyref and display to include a valid letter</span>
 
 
@@ -933,12 +934,12 @@
         <span class="n">work</span><span class="p">,</span> <span class="n">letter</span> <span class="o">=</span> <span class="n">compare_paper_to_work</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">paper</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">work</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">work</span>
-        
+
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">worklist</span><span class="p">:</span>
         <span class="n">work</span><span class="p">,</span> <span class="n">letter</span> <span class="o">=</span> <span class="n">compare_paper_to_work</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">paper</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">work</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">work</span>
-        
+
 
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pyrefs</span><span class="p">:</span>
         <span class="k">if</span> <span class="s2">&quot;pyref&quot;</span> <span class="ow">in</span> <span class="n">paper</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]):</span>
@@ -987,8 +988,8 @@
 
 <div class="viewcode-block" id="find_global_local_citation"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.find_global_local_citation">[docs]</a><span class="k">def</span> <span class="nf">find_global_local_citation</span><span class="p">(</span><span class="n">citer</span><span class="p">,</span> <span class="n">cited</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find citations locally and globally for the works</span>
-<span class="sd">    </span>
-<span class="sd">    We use it to check if there is citation redefinition </span>
+
+<span class="sd">    We use it to check if there is citation redefinition</span>
 
 <span class="sd">    Doctest:</span>
 
@@ -1112,7 +1113,7 @@
 
 
 <div class="viewcode-block" id="work_to_bibtex"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.work_to_bibtex">[docs]</a><span class="k">def</span> <span class="nf">work_to_bibtex</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert work to bibtex text </span>
+    <span class="sd">&quot;&quot;&quot;Convert work to bibtex text</span>
 
 <span class="sd">    Doctest:</span>
 
@@ -1176,7 +1177,7 @@
 
 <div class="viewcode-block" id="match_bibtex_to_work"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.match_bibtex_to_work">[docs]</a><span class="k">def</span> <span class="nf">match_bibtex_to_work</span><span class="p">(</span><span class="n">bibtex_str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find works by bibtex entries</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns a list of matches: (entry, work)</span>
 
 <span class="sd">    Doctest:</span>
@@ -1204,7 +1205,7 @@
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
         <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span>
-        <span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">find_work_by_info</span><span class="p">(</span><span class="n">bibtex_to_info</span><span class="p">(</span><span class="n">copy</span><span class="p">(</span><span class="n">entry</span><span class="p">))))</span> 
+        <span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">find_work_by_info</span><span class="p">(</span><span class="n">bibtex_to_info</span><span class="p">(</span><span class="n">copy</span><span class="p">(</span><span class="n">entry</span><span class="p">))))</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span>
     <span class="p">]</span></div>
 
@@ -1256,7 +1257,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

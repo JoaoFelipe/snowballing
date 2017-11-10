@@ -53,33 +53,3 @@ ScholarUpdate
     :undoc-members:
     :show-inheritance:
 
-
-------------------
-Analysis
-------------------
-
-create_provenance
------------------------------
-
-.. autofunction:: snowballing.snowballing.create_provenance
-
-
-log_to_provn
------------------------------
-
-.. autofunction:: snowballing.snowballing.log_to_provn
-
-
-snowballing
------------------------------
-
-.. autofunction:: snowballing.snowballing.snowballing
-
-
-Step
------------------------------
-
-.. autoclass:: snowballing.snowballing.Step
-    :members:
-    :undoc-members:
-    :show-inheritance:

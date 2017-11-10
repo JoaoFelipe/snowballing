@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>snowballing.models &mdash; snowballing 0.1.8 documentation</title>
+  <title>snowballing.models &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../../index.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
@@ -171,7 +172,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for snowballing.models</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;This module contains classes for defining the database and producing the </span>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains classes for defining the database and producing the</span>
 <span class="sd">citation graph&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">inspect</span>
@@ -196,11 +197,11 @@
 <span class="k">class</span> <span class="nc">WithTitle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Graph object with title&quot;&quot;&quot;</span>
     <span class="n">ignore</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    
+
     <span class="k">def</span> <span class="nf">generate_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prepend</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate title text with all attributes from the object</span>
 
-<span class="sd">        Ignores attributes that start with `_`, or attributes in the </span>
+<span class="sd">        Ignores attributes that start with `_`, or attributes in the</span>
 <span class="sd">        :attr:`~ignore` set</span>
 
 <span class="sd">        Doctest:</span>
@@ -234,7 +235,7 @@
 <span class="sd">    It has the following attributes:</span>
 
 <span class="sd">    * :attr:`~acronym` -- place acronym (e.g., &#39;IPAW&#39;)</span>
-<span class="sd">    </span>
+
 <span class="sd">      * Surround it with &lt;&gt;, if the place has no acronym or you do not know it</span>
 <span class="sd">        (e.g., &#39;&lt;ImaginaryAcronym&gt;&#39;)</span>
 
@@ -247,17 +248,17 @@
 <span class="sd">    about the place.</span>
 <span class="sd">    Note however that it has the following reversed attributes:</span>
 
-<span class="sd">    * :attr:`~ignore` -- set that specifies ignore attributes in titles </span>
+<span class="sd">    * :attr:`~ignore` -- set that specifies ignore attributes in titles</span>
 <span class="sd">      (:class:`~WithTitle`)</span>
 
 <span class="sd">    * :meth:`~draw` -- method that draws the place</span>
-<span class="sd">    </span>
+
 
 <span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
 
-<span class="sd">        &gt;&gt;&gt; ipaw = Place(&#39;IPAW&#39;, </span>
+<span class="sd">        &gt;&gt;&gt; ipaw = Place(&#39;IPAW&#39;,</span>
 <span class="sd">        ...              &#39;International Provenance and Annotation Workshop&#39;,</span>
 <span class="sd">        ...              &#39;conference&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; ipaw.acronym</span>
@@ -280,14 +281,14 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">acronym</span> <span class="o">=</span> <span class="n">acronym</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        
+
         <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        
+
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-            
-            
+
+
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dwg</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Draws place in a given position &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
@@ -313,11 +314,11 @@
 
 <div class="viewcode-block" id="Work"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Work">[docs]</a><span class="k">class</span> <span class="nc">Work</span><span class="p">(</span><span class="n">WithTitle</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Work represents papers in the snowballing</span>
-<span class="sd"> </span>
+
 <span class="sd">    It has the following attributes:</span>
 
 <span class="sd">    * :attr:`~year` -- year of publivation (int)</span>
-<span class="sd">      </span>
+
 <span class="sd">      * Convention: use 0 if it is not required (website), or 9999 if it is not</span>
 <span class="sd">        informed</span>
 
@@ -329,14 +330,14 @@
 <span class="sd">        FirstName1 and LastName2, FirstName2 and LastName3, FirstName3 ...&#39;</span>
 
 <span class="sd">    * :attr:`~display` -- display label for graphs</span>
-<span class="sd">        </span>
+
 <span class="sd">    * :attr:`~metakey` -- variable name</span>
 
 <span class="sd">      * It is automatically collected from the database. It it does not exist,</span>
 <span class="sd">        call :func:`snowvalling.operations.reload` again.</span>
 
 <span class="sd">    * :attr:`~file` -- filename of the work (optional)</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~due` -- reason for work not being related (optional)</span>
 
 <span class="sd">    * :attr:`~notes` -- use it to append a string to year in BibTeX (optional)</span>
@@ -345,38 +346,38 @@
 
 <span class="sd">            work.year = 2014</span>
 <span class="sd">            work.notes = &quot;in press&quot;</span>
-<span class="sd">            </span>
+
 <span class="sd">      * Produces: 2014 [in press]</span>
-<span class="sd">        </span>
+
 <span class="sd">    * :attr:`~snowball` -- forward snowballing date (optional)</span>
 
 <span class="sd">    * :attr:`~citation_file` -- citation filename (without .py)</span>
-<span class="sd">          </span>
+
 <span class="sd">      * Indicates where are the citations of this work</span>
-<span class="sd">        </span>
+
 
 <span class="sd">    * :attr:`~alias` -- tuple with (year, title, authors) (optional)</span>
 
-<span class="sd">      * Represents the same work in google scholar </span>
-<span class="sd">          </span>
+<span class="sd">      * Represents the same work in google scholar</span>
+
 <span class="sd">          * The tuple can have two elements if the authors match: (year, title)</span>
-<span class="sd">          </span>
-<span class="sd">          * Use year = 0, if the citation on google scholar doesn&#39;t have the </span>
+
+<span class="sd">          * Use year = 0, if the citation on google scholar doesn&#39;t have the</span>
 <span class="sd">            year information</span>
-<span class="sd">        </span>
+
 <span class="sd">    * :attr:`~aliases` -- list of alias attributes (optional)</span>
 
 <span class="sd">    * :attr:`~scholar` -- url of the work in google scholar (optional)</span>
-<span class="sd">    </span>
-<span class="sd">    * :attr:`~scholar_ok` -- status of the work according to a google scholar </span>
+
+<span class="sd">    * :attr:`~scholar_ok` -- status of the work according to a google scholar</span>
 <span class="sd">      curation (optional)</span>
 
 <span class="sd">      * True means that we already merged google scholar&#39;s bibtex to the work</span>
-<span class="sd">      </span>
+
 <span class="sd">      * False means that we didn&#39;t</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~tracking` indicates if we set an alert for the work (optional)</span>
-<span class="sd">    </span>
+
 <span class="sd">      * Note: the alert is manual. This tool does not set the alert.</span>
 <span class="sd">        You can use whatever value you want for it</span>
 
@@ -388,31 +389,31 @@
 <span class="sd">    Note however that it has the following reserved attributes:</span>
 
 <span class="sd">    * :attr:`~category` -- work status in the snowballing</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~tyear` -- year object for drawing</span>
-<span class="sd">    </span>
-<span class="sd">    * :attr:`~ignore` -- set that specifies ignore attributes in titles </span>
+
+<span class="sd">    * :attr:`~ignore` -- set that specifies ignore attributes in titles</span>
 <span class="sd">      (:class:`~WithTitle`)</span>
 
 <span class="sd">    * :meth:`~draw` -- method that draws the work</span>
 
 <span class="sd">    * :attr:`~_x` -- x position for drawing the work</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_y` -- y position for drawing the work</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_r` -- radius for circular node drawing</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_i` -- column index for drawing the work</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_year_index` -- row index for drawing the work</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_letters` -- max amount of letters for drawing</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_shape` -- shape of node (circle vs rectangle)</span>
 
 
 <span class="sd">    Works are considered equal if they have the same place, name and year</span>
-<span class="sd">        </span>
+
 
 <span class="sd">    Doctest:</span>
 
@@ -444,37 +445,37 @@
         <span class="s2">&quot;_x&quot;</span><span class="p">,</span> <span class="s2">&quot;_y&quot;</span><span class="p">,</span> <span class="s2">&quot;_i&quot;</span><span class="p">,</span> <span class="s2">&quot;_year_index&quot;</span><span class="p">,</span> <span class="s2">&quot;_r&quot;</span><span class="p">,</span> <span class="s2">&quot;_letters&quot;</span><span class="p">,</span>
         <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span>
     <span class="p">}</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">authors</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">authors</span> <span class="o">=</span> <span class="n">authors</span>
-        
+
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_r</span> <span class="o">=</span> <span class="mi">20</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_year_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_letters</span> <span class="o">=</span> <span class="mi">5</span>
-        
+
         <span class="k">if</span> <span class="n">display</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">display</span>
-        
+
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">year</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">year</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">))</span>
-    
+
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
@@ -514,18 +515,18 @@
             <span class="c1">#print(y, line)</span>
             <span class="n">text</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">svgwrite</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">TSpan</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="n">y</span><span class="p">)))</span>
 
-        
+
         <span class="n">shape</span><span class="o">.</span><span class="n">set_desc</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Title</span><span class="p">(</span>
             <span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_title</span><span class="p">()</span>
         <span class="p">))</span>
         <span class="n">text</span><span class="o">.</span><span class="n">set_desc</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Title</span><span class="p">(</span>
             <span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_title</span><span class="p">()</span>
         <span class="p">))</span>
-        
-        
+
+
         <span class="k">if</span> <span class="n">draw_place</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">place</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">dwg</span><span class="p">,</span> <span class="n">position</span> <span class="o">-</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span> <span class="o">+</span> <span class="mi">4</span><span class="p">))</span>
-        
+
         <span class="n">link</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">link_type</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_link</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
@@ -537,7 +538,7 @@
         <span class="k">if</span> <span class="n">link</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
             <span class="n">dwg</span> <span class="o">=</span> <span class="n">link</span>
-        
+
         <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div></div>
 
@@ -604,25 +605,25 @@
     <span class="sd">&quot;&quot;&quot;Represent a year in the citation graph</span>
 
 <span class="sd">    It has the following attributes:</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~year` --  int</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~next_year` --  tuple with year object and index</span>
-<span class="sd">    </span>
+
 <span class="sd">      * year = -1 indicates that there is no next year</span>
 
 <span class="sd">    * :attr:`~previous_year` --  tuple with year object and index</span>
 <span class="sd">      * previous = -1 indicates that there is no previous year</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~works` --  list of works in the year</span>
 
 
 <span class="sd">    It has the following reversed attributes</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_i` --  column index for drawing the year</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_dist` --  distance between year columns</span>
-<span class="sd">    </span>
+
 <span class="sd">    * :attr:`~_r` -- extra margin</span>
 
 
@@ -643,7 +644,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="n">i</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span> <span class="o">=</span> <span class="n">dist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_r</span> <span class="o">=</span> <span class="n">r</span>
-    
+
 <div class="viewcode-block" id="Year.draw"><a class="viewcode-back" href="../../snowballing/models.html#snowballing.models.Year.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dwg</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw year in the position&quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span>
@@ -672,22 +673,22 @@
 <span class="sd">    * :attr:`~citations_file` -- file where the citation is defined</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ignore</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;work&quot;</span><span class="p">,</span> <span class="s2">&quot;citation&quot;</span><span class="p">}</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">citation</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">inspect</span>
         <span class="kn">import</span> <span class="nn">os</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_citations_file</span> <span class="o">=</span> <span class="n">dbindex</span><span class="o">.</span><span class="n">last_citation_file</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">work</span> <span class="o">=</span> <span class="n">work</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="n">citation</span>
-        
+
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        
+
     <span class="k">def</span> <span class="nf">_belzier_gen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">rotate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create belzier line points</span>
-<span class="sd">        Usage: </span>
+<span class="sd">        Usage:</span>
 <span class="sd">        ... svgwrite.path.Path(</span>
 <span class="sd">        ...      &quot;M{0} C{1} {2} {3}&quot;.format(*belzier_gen(work, ref, False)</span>
 <span class="sd">        ...  ), stroke=&quot;black&quot;, fill=&quot;white&quot;, fill_opacity=0)</span>
@@ -701,9 +702,9 @@
 
     <span class="k">def</span> <span class="nf">_line_gen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">ref</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create line points</span>
-<span class="sd">        </span>
+
 <span class="sd">        Usage::</span>
-<span class="sd">        </span>
+
 <span class="sd">            svgwrite.shapes.Line(*self._line_gen(work, ref), stroke=&quot;black&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">point0</span> <span class="o">=</span> <span class="n">adjust_point</span><span class="p">(</span>
@@ -754,16 +755,16 @@
                 <span class="n">signx</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">total_work</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">work_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_work_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span>
             <span class="n">total_ref</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_ref_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span>
-            
+
             <span class="n">delta_work</span> <span class="o">=</span> <span class="p">(</span><span class="n">space_x</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_work</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">delta_ref_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">space_y</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_ref</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">dist_midwork</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">+</span> <span class="n">delta_work</span> <span class="o">*</span> <span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">dist_midref_x</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_ref_year</span><span class="o">.</span><span class="n">works</span><span class="p">)</span> <span class="o">+</span> <span class="n">delta_ref_x</span> <span class="o">*</span> <span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-            
+
             <span class="n">total_ref_y</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span><span class="p">])</span>
             <span class="n">delta_ref_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">space_y</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_ref_y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">dist_midref_y</span> <span class="o">=</span> <span class="n">delta_ref_y</span> <span class="o">*</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">_i</span><span class="p">])</span> <span class="o">-</span> <span class="n">ref</span><span class="o">.</span><span class="n">_year_index</span><span class="p">))</span>
-            
+
             <span class="n">signy</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">work</span><span class="o">.</span><span class="n">_y</span> <span class="o">&lt;</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
             <span class="n">source_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">pS</span><span class="p">]</span>
             <span class="n">source_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">pSM</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="n">dist_midwork</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -780,11 +781,11 @@
                 <span class="n">target_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span> <span class="o">+</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">_r</span> <span class="o">+</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">0</span><span class="p">)]</span>
             <span class="n">target_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">source_points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">target_points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
 
-            <span class="n">points</span> <span class="o">=</span> <span class="n">source_points</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">target_points</span><span class="p">))</span>            
+            <span class="n">points</span> <span class="o">=</span> <span class="n">source_points</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">target_points</span><span class="p">))</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">svgwrite</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">Polyline</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">stroke_opacity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">pointer_events</span><span class="o">=</span><span class="s2">&quot;stroke&quot;</span><span class="p">)</span>
             <span class="n">line</span><span class="o">.</span><span class="n">set_desc</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Title</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0.display}{0.year}</span><span class="s2"> -&gt; </span><span class="si">{1.display}{1.year}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_title</span><span class="p">()))</span>
             <span class="n">group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-            
+
             <span class="n">line</span><span class="p">[</span><span class="s2">&quot;marker-end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">marker</span><span class="o">.</span><span class="n">get_funciri</span><span class="p">()</span>
         <span class="n">dwg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">group</span><span class="p">)</span></div></div>
 
@@ -891,7 +892,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

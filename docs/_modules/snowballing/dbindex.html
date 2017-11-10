@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>snowballing.dbindex &mdash; snowballing 0.1.8 documentation</title>
+  <title>snowballing.dbindex &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../../index.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
@@ -171,7 +172,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for snowballing.dbindex</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;This module includes helper functions to identify the location of database </span>
+<span></span><span class="sd">&quot;&quot;&quot;This module includes helper functions to identify the location of database</span>
 <span class="sd">files and extract information from the convention we use for varnames</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -196,7 +197,7 @@
 <span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
-<span class="sd">    </span>
+
 <span class="sd">        &gt;&gt;&gt; from pathlib import Path</span>
 <span class="sd">        &gt;&gt;&gt; [citation_file(&#39;noworkflow2014&#39;)]  # doctest: +ELLIPSIS</span>
 <span class="sd">        [.../citations/noworkflow2014.py&#39;)]</span>
@@ -208,7 +209,7 @@
     <span class="sd">&quot;&quot;&quot;Return the database file for a specific year</span>
 
 <span class="sd">    This file includes Paper&#39;s metadata</span>
-<span class="sd">    </span>
+
 <span class="sd">    Arguments:</span>
 
 <span class="sd">    * `year` -- desired year</span>
@@ -225,8 +226,8 @@
 
 
 <div class="viewcode-block" id="places_file"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.places_file">[docs]</a><span class="k">def</span> <span class="nf">places_file</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Return the places file </span>
-<span class="sd">    </span>
+    <span class="sd">&quot;&quot;&quot;Return the places file</span>
+
 <span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
@@ -240,17 +241,17 @@
 
 <div class="viewcode-block" id="this_file"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.this_file">[docs]</a><span class="k">def</span> <span class="nf">this_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extract filename without python extension</span>
-<span class="sd">    </span>
+
 <span class="sd">    It is used on citation files in the database to identify them</span>
 
 <span class="sd">    Arguments:</span>
 
-<span class="sd">    * `filename` -- python filename (usually __file__) </span>
+<span class="sd">    * `filename` -- python filename (usually __file__)</span>
 
 <span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
-<span class="sd">    </span>
+
 <span class="sd">        &gt;&gt;&gt; this_file(__file__)</span>
 <span class="sd">        &#39;dbindex&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -259,7 +260,7 @@
 
 <div class="viewcode-block" id="discover_year"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.discover_year">[docs]</a><span class="k">def</span> <span class="nf">discover_year</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fail_raise</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Discover year from varname or year argument</span>
-<span class="sd">    </span>
+
 <span class="sd">    Arguments:</span>
 
 <span class="sd">    * varname -- work variable name (e.g., &#39;murta2014a&#39;)</span>
@@ -268,7 +269,7 @@
 
 <span class="sd">    * `year` -- if it is defined, bypass varname extraction and return it</span>
 
-<span class="sd">    * `fail_raise` -- if it fails to extract from varname, it may raise an </span>
+<span class="sd">    * `fail_raise` -- if it fails to extract from varname, it may raise an</span>
 <span class="sd">      exception according this argument</span>
 
 
@@ -322,9 +323,9 @@
 
 <div class="viewcode-block" id="increment_str"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.increment_str">[docs]</a><span class="k">def</span> <span class="nf">increment_str</span><span class="p">(</span><span class="n">varname</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Increment letter from varname</span>
-<span class="sd">    </span>
+
 <span class="sd">    If it reaches the &#39;z&#39;, adds a new &#39;a&#39; letter and restarts the process</span>
-<span class="sd">    </span>
+
 <span class="sd">    Arguments:</span>
 
 <span class="sd">    * `varname` -- variable name (e.g., &#39;murta2014a&#39;)</span>
@@ -332,7 +333,7 @@
 <span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
-<span class="sd">    </span>
+
 <span class="sd">        &gt;&gt;&gt; increment_str(&#39;murta2014&#39;)</span>
 <span class="sd">        &#39;murta2014a&#39;</span>
 <span class="sd">        &gt;&gt;&gt; increment_str(&#39;murta2014a&#39;)</span>
@@ -355,9 +356,9 @@
 
 <div class="viewcode-block" id="parse_varname"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.parse_varname">[docs]</a><span class="k">def</span> <span class="nf">parse_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">group_index</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parse the varname convention to extract its parts</span>
-<span class="sd">    </span>
+
 <span class="sd">    The convention is (last name of first author)(year)(sequential letter)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Arguments:</span>
 
 <span class="sd">    * `varname` -- variable name for extraction (e.g., &#39;murta2014a&#39;)</span>
@@ -365,16 +366,16 @@
 <span class="sd">      * If the varname doesn&#39;t match the convention, returns None</span>
 
 <span class="sd">    * `group_index` -- indicates which part should be extracted</span>
-<span class="sd">      </span>
+
 <span class="sd">      * 0 = all the varname</span>
-<span class="sd">      </span>
+
 <span class="sd">      * 1 = last name of first author</span>
-<span class="sd">      </span>
+
 <span class="sd">      * 2 = year</span>
-<span class="sd">    </span>
+
 <span class="sd">      * 3 = sequential letter</span>
 
-<span class="sd">    Doctest:    </span>
+<span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
 
@@ -392,7 +393,7 @@
 <span class="sd">        True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span>
-        <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;(.*)(\d\d\d\d)(.*)&#39;</span><span class="p">,</span> <span class="n">varname</span><span class="p">),</span> 
+        <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;(.*)(\d\d\d\d)(.*)&#39;</span><span class="p">,</span> <span class="n">varname</span><span class="p">),</span>
         <span class="s1">&#39;group&#39;</span><span class="p">,</span>
         <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">None</span>
     <span class="p">)(</span><span class="n">group_index</span><span class="p">)</span></div>
@@ -432,7 +433,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

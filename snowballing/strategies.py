@@ -474,7 +474,7 @@ class Strategy(object):
         S(B, F)*::
 
                 f - s1           f - s4
-              /        \       /        \
+              /        \       /        \\
             s0           U - s3           U - s6
               \        /       \        /
                 b - s2           b - s5
@@ -509,7 +509,7 @@ class Strategy(object):
         S(B*, F*)::
 
                 f - s1 <-f- s2
-              /                \
+              /                \\
             s0                   U - s5
               \                /
                 b - s3 <-b- s4

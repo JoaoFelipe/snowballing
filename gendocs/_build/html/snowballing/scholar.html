@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>scholar.py &mdash; snowballing 0.1.8 documentation</title>
+  <title>scholar.py &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../index.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../index.html"/>
         <link rel="next" title="selenium_scholar.py" href="selenium_scholar.html"/>
         <link rel="prev" title="operations.py" href="operations.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -105,6 +105,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -368,29 +369,29 @@ ScholarArticle instances.</p>
 
 <dl class="attribute">
 <dt id="snowballing.scholar.ScholarQuerier.SET_SETTINGS_URL">
-<code class="descclassname">ScholarQuerier.</code><code class="descname">SET_SETTINGS_URL</code><em class="property"> = 'http://scholar.google.com/scholar_setprefs?q=&amp;scisig=%(scisig)s&amp;inststart=0&amp;as_sdt=1,5&amp;as_sdtp=&amp;num=%(num)s&amp;scis1=%(scis)s%(scisf)s&amp;hl=en&amp;lang=all&amp;instq=&amp;inst=569367360547434339&amp;save='</em><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.SET_SETTINGS_URL" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SET_SETTINGS_URL</code><em class="property"> = 'http://scholar.google.com/scholar_setprefs?q=&amp;scisig=%(scisig)s&amp;inststart=0&amp;as_sdt=1,5&amp;as_sdtp=&amp;num=%(num)s&amp;scis1=%(scis)s%(scisf)s&amp;hl=en&amp;lang=all&amp;instq=&amp;inst=569367360547434339&amp;save='</em><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.SET_SETTINGS_URL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="snowballing.scholar.ScholarQuerier.add_article">
-<code class="descclassname">ScholarQuerier.</code><code class="descname">add_article</code><span class="sig-paren">(</span><em>art</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.add_article"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.add_article" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_article</code><span class="sig-paren">(</span><em>art</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.add_article"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.add_article" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="snowballing.scholar.ScholarQuerier.apply_settings">
-<code class="descclassname">ScholarQuerier.</code><code class="descname">apply_settings</code><span class="sig-paren">(</span><em>settings</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.apply_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.apply_settings" title="Permalink to this definition">¶</a></dt>
+<code class="descname">apply_settings</code><span class="sig-paren">(</span><em>settings</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.apply_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.apply_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies settings as provided by a ScholarSettings instance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="snowballing.scholar.ScholarQuerier.clear_articles">
-<code class="descclassname">ScholarQuerier.</code><code class="descname">clear_articles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.clear_articles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.clear_articles" title="Permalink to this definition">¶</a></dt>
+<code class="descname">clear_articles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.clear_articles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.clear_articles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears any existing articles stored from previous queries.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="snowballing.scholar.ScholarQuerier.get_citation_data">
-<code class="descclassname">ScholarQuerier.</code><code class="descname">get_citation_data</code><span class="sig-paren">(</span><em>article</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.get_citation_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.get_citation_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_citation_data</code><span class="sig-paren">(</span><em>article</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.get_citation_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.get_citation_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given an article, retrieves citation link. Note, this requires that
 you adjusted the settings to tell Google Scholar to actually
 provide this information, <em>prior</em> to retrieving the article.</p>
@@ -398,20 +399,20 @@ provide this information, <em>prior</em> to retrieving the article.</p>
 
 <dl class="method">
 <dt id="snowballing.scholar.ScholarQuerier.parse">
-<code class="descclassname">ScholarQuerier.</code><code class="descname">parse</code><span class="sig-paren">(</span><em>html</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.parse" title="Permalink to this definition">¶</a></dt>
+<code class="descname">parse</code><span class="sig-paren">(</span><em>html</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method allows parsing of provided HTML content.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="snowballing.scholar.ScholarQuerier.save_cookies">
-<code class="descclassname">ScholarQuerier.</code><code class="descname">save_cookies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.save_cookies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.save_cookies" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_cookies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.save_cookies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.save_cookies" title="Permalink to this definition">¶</a></dt>
 <dd><p>This stores the latest cookies we&#8217;re using to disk, for reuse in a
 later session.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="snowballing.scholar.ScholarQuerier.send_query">
-<code class="descclassname">ScholarQuerier.</code><code class="descname">send_query</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.send_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.send_query" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send_query</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/scholar.html#ScholarQuerier.send_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.scholar.ScholarQuerier.send_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method initiates a search query (a ScholarQuery instance)
 with subsequent parsing of the response.</p>
 </dd></dl>
@@ -658,7 +659,7 @@ appeared. It&#8217;s fine to specify just start or end, or both.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

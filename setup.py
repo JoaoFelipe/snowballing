@@ -12,7 +12,7 @@ except (IOError, ImportError):
 
 setup(
     name="Snowballing",
-    version="0.1.10",
+    version="0.2.0",
     url="https://github.com/JoaoFelipe/snowballing",
     description="Provides tools for literature snowballing",
     long_description=long_description,

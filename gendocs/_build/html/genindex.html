@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; snowballing 0.1.8 documentation</title>
+  <title>Index &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
         <link rel="index" title="Index"
               href="#"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="index.html"/> 
+    <link rel="top" title="snowballing 0.2.0 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="snowballing/scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -251,16 +252,24 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.backward">backward() (Strategy method)</a>
+</li>
       <li><a href="snowballing/snowballing.html#snowballing.snowballing.BackwardSnowballing">BackwardSnowballing (class in snowballing.snowballing)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.bb">bb() (Strategy method)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.bbff">bbff() (Strategy method)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.bfbf">bfbf() (Strategy method)</a>
 </li>
       <li><a href="snowballing/snowballing.html#snowballing.snowballing.Converter.bibtex">bibtex() (Converter method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/operations.html#snowballing.operations.bibtex_to_info">bibtex_to_info() (in module snowballing.operations)</a>
 </li>
       <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor">BodyVisitor (class in snowballing.dbmanager)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.browser">browser() (ArticleNavigator method)</a>
 
       <ul>
@@ -385,8 +394,6 @@
 </li>
       <li><a href="snowballing/graph.html#snowballing.graph.create_graph">create_graph() (in module snowballing.graph)</a>
 </li>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.create_provenance">create_provenance() (in module snowballing.snowballing)</a>
-</li>
       <li><a href="snowballing/graph.html#snowballing.graph.Graph.create_widgets">create_widgets() (Graph method)</a>
 </li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.csv">csv() (in module snowballing.scholar)</a>
@@ -403,15 +410,23 @@
 </li>
       <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.DelOperation">DelOperation (class in snowballing.dbmanager)</a>
 </li>
-      <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.DetectOperation">DetectOperation (class in snowballing.dbmanager)</a>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.delta_related">delta_related (State attribute)</a>
 </li>
-      <li><a href="snowballing/dbindex.html#snowballing.dbindex.discover_year">discover_year() (in module snowballing.dbindex)</a>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.delta_visited">delta_visited (State attribute)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.derive">derive() (State method)</a>
+</li>
+      <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.DetectOperation">DetectOperation (class in snowballing.dbmanager)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/dbindex.html#snowballing.dbindex.discover_year">discover_year() (in module snowballing.dbindex)</a>
+</li>
       <li><a href="snowballing/graph.html#snowballing.graph.Graph.display">display() (Graph method)</a>
 </li>
       <li><a href="snowballing/jupyter_utils.html#snowballing.jupyter_utils.display_cell">display_cell() (in module snowballing.jupyter_utils)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.dot">dot (State attribute)</a>
 </li>
       <li><a href="snowballing/models.html#snowballing.models.Citation.draw">draw() (Citation method)</a>
 
@@ -449,16 +464,22 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.fbfb">fbfb() (Strategy method)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.ff">ff() (Strategy method)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.ffbb">ffbb() (Strategy method)</a>
+</li>
       <li><a href="snowballing/models.html#snowballing.models.Database.filter">filter() (Database method)</a>
 </li>
       <li><a href="snowballing/graph.html#snowballing.graph.Graph.filter_work">filter_work() (Graph method)</a>
 </li>
       <li><a href="snowballing/operations.html#snowballing.operations.find">find() (in module snowballing.operations)</a>
 </li>
-      <li><a href="snowballing/operations.html#snowballing.operations.find_citation">find_citation() (in module snowballing.operations)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/operations.html#snowballing.operations.find_citation">find_citation() (in module snowballing.operations)</a>
+</li>
       <li><a href="snowballing/operations.html#snowballing.operations.find_global_local_citation">find_global_local_citation() (in module snowballing.operations)</a>
 </li>
       <li><a href="snowballing/jupyter_utils.html#snowballing.jupyter_utils.find_line">find_line() (in module snowballing.jupyter_utils)</a>
@@ -466,6 +487,8 @@
       <li><a href="snowballing/operations.html#snowballing.operations.find_work_by_info">find_work_by_info() (in module snowballing.operations)</a>
 </li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.FormatError">FormatError</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.forward">forward() (Strategy method)</a>
 </li>
       <li><a href="snowballing/snowballing.html#snowballing.snowballing.ForwardSnowballing">ForwardSnowballing (class in snowballing.snowballing)</a>
 </li>
@@ -601,6 +624,8 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.last_id">last_id (State attribute)</a>
+</li>
       <li><a href="snowballing/utils.html#snowballing.utils.lines_len_in_circle">lines_len_in_circle() (in module snowballing.utils)</a>
 </li>
       <li><a href="snowballing/operations.html#snowballing.operations.load_citations">load_citations() (in module snowballing.operations)</a>
@@ -609,19 +634,19 @@
 </li>
       <li><a href="snowballing/operations.html#snowballing.operations.load_work">load_work() (in module snowballing.operations)</a>
 </li>
-      <li><a href="snowballing/operations.html#snowballing.operations.load_work_map">load_work_map() (in module snowballing.operations)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/operations.html#snowballing.operations.load_work_map">load_work_map() (in module snowballing.operations)</a>
+</li>
       <li><a href="snowballing/operations.html#snowballing.operations.load_work_map_all_years">load_work_map_all_years() (in module snowballing.operations)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.log">log (State attribute)</a>
 </li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.ScholarUtils.log">log() (ScholarUtils static method)</a>
 </li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.ScholarConf.LOG_LEVEL">LOG_LEVEL (ScholarConf attribute)</a>
 </li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.ScholarUtils.LOG_LEVELS">LOG_LEVELS (ScholarUtils attribute)</a>
-</li>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.log_to_provn">log_to_provn() (in module snowballing.snowballing)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -653,17 +678,19 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.Step.name">name (Step attribute)</a>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Step.name">name (Step attribute)</a>
 </li>
       <li><a href="snowballing/approaches.html#snowballing.approaches.name">name() (in module snowballing.approaches)</a>
 </li>
       <li><a href="snowballing/jupyter_utils.html#snowballing.jupyter_utils.new_button">new_button() (in module snowballing.jupyter_utils)</a>
 </li>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.Step.new_references">new_references (Step attribute)</a>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.new_name">new_name() (snowballing.strategies.State class method)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Step.new_references">new_references (Step attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.Step.new_related">new_related (Step attribute)</a>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Step.new_related">new_related (Step attribute)</a>
 </li>
       <li><a href="snowballing/selenium_scholar.html#snowballing.selenium_scholar.ScholarSettingsTask.new_window">new_window (ScholarSettingsTask attribute)</a>
 </li>
@@ -695,10 +722,10 @@
 </li>
       <li><a href="snowballing/models.html#snowballing.models.Database.places">places() (Database method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/dbindex.html#snowballing.dbindex.places_file">places_file() (in module snowballing.dbindex)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/utils.html#snowballing.utils.Point">Point (class in snowballing.utils)</a>
 </li>
       <li><a href="snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.previous_article">previous_article() (ArticleNavigator method)</a>
@@ -715,6 +742,8 @@
         <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.CitationVisitor.process_body">(CitationVisitor method)</a>
 </li>
       </ul></li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.provn">provn (State attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -775,9 +804,15 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.s2bbff2u">s2bbff2u() (Strategy method)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.s2ffbb2u">s2ffbb2u() (Strategy method)</a>
+</li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.ScholarQuerier.save_cookies">save_cookies() (ScholarQuerier method)</a>
 </li>
       <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.save_lines">save_lines() (in module snowballing.dbmanager)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.sbfu">sbfu() (Strategy method)</a>
 </li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.ClusterScholarQuery.SCHOLAR_CLUSTER_URL">SCHOLAR_CLUSTER_URL (ClusterScholarQuery attribute)</a>
 </li>
@@ -851,10 +886,10 @@
 </li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.ScholarSettings.set_per_page_results">set_per_page_results() (ScholarSettings method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/scholar.html#snowballing.scholar.SearchScholarQuery.set_phrase">set_phrase() (SearchScholarQuery method)</a>, <a href="snowballing/selenium_scholar.html#snowballing.selenium_scholar.SearchScholarQuery.set_phrase">[1]</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/operations.html#snowballing.operations.set_place">set_place() (in module snowballing.operations)</a>
 </li>
       <li><a href="snowballing/graph.html#snowballing.graph.set_positions">set_positions() (in module snowballing.graph)</a>
@@ -881,6 +916,8 @@
 </li>
       <li><a href="snowballing/selenium_scholar.html#snowballing.selenium_scholar.ScholarSettingsTask.SETTINGS_URL">SETTINGS_URL (ScholarSettingsTask attribute)</a>
 </li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy.sfbu">sfbu() (Strategy method)</a>
+</li>
       <li><a href="snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.show">show() (ArticleNavigator method)</a>
 
       <ul>
@@ -894,8 +931,6 @@
       <li><a href="snowballing/models.html#snowballing.models.Site">Site (class in snowballing.models)</a>
 </li>
       <li><a href="snowballing/graph.html#snowballing.graph.Graph.slider">slider() (Graph method)</a>
-</li>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.snowballing">snowballing() (in module snowballing.snowballing)</a>
 </li>
       <li><a href="snowballing/approaches.html#module-snowballing.approaches">snowballing.approaches (module)</a>
 </li>
@@ -921,11 +956,19 @@
 </li>
       <li><a href="snowballing/snowballing.html#module-snowballing.snowballing">snowballing.snowballing (module)</a>
 </li>
+      <li><a href="snowballing/strategies.html#module-snowballing.strategies">snowballing.strategies (module)</a>
+</li>
       <li><a href="snowballing/utils.html#module-snowballing.utils">snowballing.utils (module)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Step.source">source (Step attribute)</a>
 </li>
       <li><a href="snowballing/approaches.html#snowballing.approaches.Item.star">star() (Item method)</a>
 </li>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.Step">Step (class in snowballing.snowballing)</a>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State">State (class in snowballing.strategies)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Step">Step (class in snowballing.strategies)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Strategy">Strategy (class in snowballing.strategies)</a>
 </li>
       <li><a href="snowballing/approaches.html#snowballing.approaches.Item.such_as">such_as() (Item method)</a>
 </li>
@@ -935,6 +978,8 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Step.target">target (Step attribute)</a>
+</li>
       <li><a href="snowballing/approaches.html#snowballing.approaches.Item.text">text (Item attribute)</a>
 </li>
       <li><a href="snowballing/snowballing.html#snowballing.snowballing.Converter.text">text() (Converter method)</a>
@@ -945,9 +990,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/dbindex.html#snowballing.dbindex.this_file">this_file() (in module snowballing.dbindex)</a>
 </li>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.Step.total_related">total_related (Step attribute)</a>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.to_step">to_step() (State method)</a>
 </li>
-      <li><a href="snowballing/snowballing.html#snowballing.snowballing.Step.total_visited">total_visited (Step attribute)</a>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Step.total_related">total_related (Step attribute)</a>
+</li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.Step.total_visited">total_visited (Step attribute)</a>
 </li>
       <li><a href="snowballing/scholar.html#snowballing.scholar.txt">txt() (in module snowballing.scholar)</a>
 </li>
@@ -957,6 +1004,8 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.union">union() (snowballing.strategies.State class method)</a>
+</li>
       <li><a href="snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.update_info">update_info() (ArticleNavigator method)</a>
 </li>
       <li><a href="snowballing/graph.html#snowballing.graph.Graph.update_r_widget">update_r_widget() (Graph method)</a>
@@ -981,16 +1030,18 @@
 </li>
       <li><a href="snowballing/graph.html#snowballing.graph.Graph.visible_classes">visible_classes() (Graph method)</a>
 </li>
+      <li><a href="snowballing/strategies.html#snowballing.strategies.State.visit">visit() (State method)</a>
+</li>
       <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.EditVisitor.visit_Assign">visit_Assign() (EditVisitor method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor.visit_Interactive">visit_Interactive() (BodyVisitor method)</a>
 
       <ul>
         <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.CitationVisitor.visit_Interactive">(CitationVisitor method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor.visit_Module">visit_Module() (BodyVisitor method)</a>
 
       <ul>
@@ -1094,7 +1145,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
