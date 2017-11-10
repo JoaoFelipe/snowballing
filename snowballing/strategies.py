@@ -37,16 +37,20 @@ class State(object):
         new_state.previous = ([self], operation)
         return new_state
 
-    def to_step(self):
+    def to_step(self, previous=None):
         """Convert SeedSet to Step"""
-        if not self.previous:
+        previous = previous or self.previous
+        if not previous:
             operation, last_name = "start", ""
+            prev_visited = prev_related = set()
         else:
-            seeds, operation = self.previous
+            seeds, operation = previous
             last_name = "|".join(x.name for x in seeds)
+            prev_visited = reduce(lambda x, y: x | y.visited, seeds, set())
+            prev_related = reduce(lambda x, y: x | y.related, seeds, set())
         return Step(
             operation,
-            len(self.delta_visited), len(self.delta_related),
+            len(self.visited - prev_visited), len(self.related - prev_related),
             len(self.visited), len(self.related),
             last_name, self.name
         )
@@ -84,21 +88,20 @@ class State(object):
             <BLANKLINE>
               entity(s2, [type="Set", visited="3", related="1"])
               activity(backward2, -, -, [found="1", related="0"])
-              used(u0; backward2, s0, -)
+              used(u0; backward2, s1, -)
               wasGeneratedBy(g0; s2, backward2, -)
               wasDerivedFrom(s2, s1, backward2, g0, u0, [prov:type="prov:Revision"])
             <BLANKLINE>
               entity(s1, [type="Set", visited="2", related="1"])
               activity(forward1, -, -, [found="1", related="0"])
-              used(u1; forward1, s1, -)
+              used(u1; forward1, s0, -)
               wasGeneratedBy(g1; s1, forward1, -)
               wasDerivedFrom(s1, s0, forward1, g1, u1, [prov:type="prov:Revision"])
             <BLANKLINE>
               entity(s0, [type="Set", visited="1", related="1"])
               activity(start, -, -)
-              wasGeneratedBy(g0; s0, start, -)
+              wasGeneratedBy(g2; s0, start, -)
             <BLANKLINE>
-
             endDocument
         """
         result = ["document", "  default <http://example.org/>", ""]
@@ -160,17 +163,17 @@ class State(object):
             >>> print(Strategy({murta2014a}).fbfb().dot)
             digraph G {
               rankdir="RL";
-
-              s2 [label="s2\nvisited: 3\nrelated: 1"];
-              s2 -> s1 [label="backward\nfound: 1\nrelated: 0"];
-
-              s1 [label="s1\nvisited: 2\nrelated: 1"];
-              s1 -> s0 [label="forward\nfound: 1\nrelated: 0"];
-
-              s0 [label="s0\nvisited: 1\nrelated: 1"];
-
+            <BLANKLINE>
+              s2 [label="s2\\nvisited: 3\\nrelated: 1"];
+              s2 -> s1 [label="backward\\nfound: 1\\nrelated: 0"];
+            <BLANKLINE>
+              s1 [label="s1\\nvisited: 2\\nrelated: 1"];
+              s1 -> s0 [label="forward\\nfound: 1\\nrelated: 0"];
+            <BLANKLINE>
+              s0 [label="s0\\nvisited: 1\\nrelated: 1"];
+            <BLANKLINE>
             }
-
+            >>> None
         """
         result = ["digraph G {", '  rankdir="RL";', ""]
         actions = Counter()
@@ -375,7 +378,6 @@ class Strategy(object):
         """
         return self._repeat([self.backward, self.forward], 2, state)
 
-
     def bb(self, state=None):
         """Apply sequences of backward
 
@@ -485,7 +487,7 @@ class Strategy(object):
             >>> from .operations import reload, work_by_varname
             >>> reload()
             >>> murta2014a = work_by_varname("murta2014a")
-            >>> state = Strategy({murta2014a}).sfbu()
+            >>> state = Strategy({murta2014a}).sbfu()
             >>> len(state.related)
             1
             >>> len(state.visited)
@@ -498,6 +500,8 @@ class Strategy(object):
             state = State.union(fstate, bstate)
             if not fstate.delta_related and not bstate.delta_related:
                 return state
+
+    sfbu = sbfu
 
     def s2bbff2u(self, state=None):
         """Apply all forward and all backward in parallel. Then join
@@ -528,3 +532,5 @@ class Strategy(object):
         fstate = self.ff(state)
         bstate = self.bb(state)
         return State.union(fstate, bstate)
+
+    s2ffbb2u = s2bbff2u
