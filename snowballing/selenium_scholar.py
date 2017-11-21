@@ -421,30 +421,30 @@ class ScholarSettingsTask(object):
         if not self.is_configured:
             return
         driver.get(ScholarSettingsTask.SETTINGS_URL)
-        check_captcha(driver, (By.ID, "gs_num-bd"))
+        check_captcha(driver, (By.ID, "gs_num-b"))
 
 
-        results_per_page = click(driver, "#gs_num-bd")
+        results_per_page = click(driver, "#gs_num-b")
         twenty_results = click(
         	results_per_page.parent,
-        	'li[data-v="{}"]'.format(self.per_page_results)
+        	'a[data-v="{}"]'.format(self.per_page_results)
         )
         if self.citform != 0:
-            cittype = click(driver, "#gs_scisf-bd")
+            cittype = click(driver, "#gs_settings_import-b")
             bibtex = click(
-            	cittype.parent, 'li[data-v="{}"]'.format(self.citform)
+            	cittype.parent, 'a[data-v="{}"]'.format(self.citform)
             )
         else:
-            dont_show = click(driver, "#scis0")
+            dont_show = click(driver, "#gs_settings_import_none")
 
         if self.new_window:
             new_window = click(driver, "#gs_nw")
 
-        case_laws = click(driver, "#as_sdt2")
+        case_laws = click(driver, "#gs_settings_sdt2")
         if self.collections < 3:
-            articles = click(driver, "#as_sdt1")
+            articles = click(driver, "#gs_settings_sdt1")
         if self.collections == 1:
-            patents = click(driver, "#as_sdtp")
+            patents = click(driver, "#gs_settings_sdtp")
 
         save_button = click(driver, '.gs_btn_act[name="save"]')
         ScholarUtils.log('info', 'settings applied')
