@@ -318,13 +318,15 @@ class Work(WithTitle):
         fill, text_fill = fill_color(self)
         if self._shape == "circle":
             shape = svgwrite.shapes.Circle(
-                position, self._r, fill=fill, stroke="black"
+                position, self._r, fill=fill, stroke="black",
+                id=self.metakey, **{"class":self.metakey}
             )
             shape_text = self._circle_text
         else:
             r2 = Point(self._r, self._r)
             shape = svgwrite.shapes.Rect(
-                position - r2, r2 + r2, fill=fill, stroke="black"
+                position - r2, r2 + r2, fill=fill, stroke="black",
+                id=self.metakey, **{"class":self.metakey}
             )
             shape_text = self._square_text
 
