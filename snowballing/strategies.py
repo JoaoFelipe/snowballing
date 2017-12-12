@@ -25,6 +25,21 @@ class State(object):
         self.filter_function = filter_function
         self.last_visited_size = len(self.visited)
 
+    def find(self, goal):
+        """Find state by name"""
+        stack = [self]
+        visited = {id(self)}
+        while stack:
+            current = stack.pop()
+            if goal == current.name:
+                return current
+            antecessors = current.previous[0] if current.previous else []
+            for previous in antecessors:
+                if id(previous) not in visited:
+                    visited.add(id(previous))
+                    stack.append(previous)
+        return None
+
     def visit(self, work):
         """Visit work"""
         self.visited.add(work)
