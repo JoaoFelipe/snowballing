@@ -203,10 +203,15 @@ class State(object):
             if current.previous:
                 operation = current.previous[1]
                 for element in current.previous[0]:
-                    result.append('  {} -> {} [label="{}\\nfound: {}\\nrelated: {}"];'.format(
-                        current.name, element.name, operation,
-                        len(current.delta_visited), len(current.delta_related)
-                    ))
+                    if operation == "union":
+                        result.append('  {} -> {} [label="{}"];'.format(
+                            current.name, element.name, operation
+                        ))
+                    else:
+                        result.append('  {} -> {} [label="{}\\nfound: {}\\nrelated: {}"];'.format(
+                            current.name, element.name, operation,
+                            len(current.delta_visited), len(current.delta_related)
+                        ))
                     if id(element) not in visited:
                         stack.append(element)
                         visited.add(id(element))
