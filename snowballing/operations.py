@@ -1047,3 +1047,46 @@ def find(text):
                 break
         if match:
             yield work
+
+
+class Metakey(object):
+    """Convert work or list of work to metakey
+
+    .. doctest::
+
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> murta2014a @ Metakey()
+        'murta2014a'
+        >>> [murta2014a] @ Metakey()
+        ['murta2014a']
+
+    """
+    def __rmatmul__(self, x):
+        if hasattr(x, '__iter__'):
+            return [y @ self for y in x]
+        return x.metakey
+
+
+class MetakeyTitle(object):
+    """Convert work or list of work to metakey - title
+
+    .. doctest::
+
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> murta2014a @ MetakeyTitle()
+        'murta2014a - noWorkflow: capturing and analyzing provenance of scripts'
+        >>> [murta2014a] @ MetakeyTitle()
+        ['murta2014a - noWorkflow: capturing and analyzing provenance of scripts']
+
+    """
+    
+    def __rmatmul__(self, x):
+        if hasattr(x, '__iter__'):
+            return [y @ self for y in x]
+        return "{0.metakey} - {0.name}".format(x)
+
+
+metakey = Metakey()
+metakey_title = MetakeyTitle()

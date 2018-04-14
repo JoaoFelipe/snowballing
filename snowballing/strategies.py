@@ -25,6 +25,21 @@ class State(object):
         self.filter_function = filter_function
         self.last_visited_size = len(self.visited)
 
+    def find(self, goal):
+        """Find state by name"""
+        stack = [self]
+        visited = {id(self)}
+        while stack:
+            current = stack.pop()
+            if goal == current.name:
+                return current
+            antecessors = current.previous[0] if current.previous else []
+            for previous in antecessors:
+                if id(previous) not in visited:
+                    visited.add(id(previous))
+                    stack.append(previous)
+        return None
+
     def visit(self, work):
         """Visit work"""
         self.visited.add(work)
@@ -188,10 +203,15 @@ class State(object):
             if current.previous:
                 operation = current.previous[1]
                 for element in current.previous[0]:
-                    result.append('  {} -> {} [label="{}\\nfound: {}\\nrelated: {}"];'.format(
-                        current.name, element.name, operation,
-                        len(current.delta_visited), len(current.delta_related)
-                    ))
+                    if operation == "union":
+                        result.append('  {} -> {} [label="{}"];'.format(
+                            current.name, element.name, operation
+                        ))
+                    else:
+                        result.append('  {} -> {} [label="{}\\nfound: {}\\nrelated: {}"];'.format(
+                            current.name, element.name, operation,
+                            len(current.delta_visited), len(current.delta_related)
+                        ))
                     if id(element) not in visited:
                         stack.append(element)
                         visited.add(id(element))
