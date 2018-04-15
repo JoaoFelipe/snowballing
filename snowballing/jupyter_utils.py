@@ -6,7 +6,7 @@ import warnings
 
 from ipywidgets import DOMWidget, HBox, Label, Text, Button
 from IPython.display import display, Javascript
-from IPython.utils.py3compat import str_to_bytes, bytes_to_str
+from urllib.parse import quote
 
 from .dbindex import year_file
 from . import config
@@ -20,11 +20,11 @@ def display_cell(text):
     * `text` -- new cell content
 
     """
-    encoded_code = bytes_to_str(base64.b64encode(str_to_bytes(text)))
+    encoded_code = base64.b64encode(quote(text.encode()).encode()).decode()
     display(Javascript("""
         $('span:contains("# Temp")').closest('.cell').remove();
         var code = IPython.notebook.insert_cell_{0}('code');
-        code.set_text(atob("{1}"));
+        code.set_text(decodeURIComponent(window.atob("{1}")));
     """.format('below', encoded_code)))
 
 

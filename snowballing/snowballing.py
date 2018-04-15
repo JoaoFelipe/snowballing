@@ -305,6 +305,21 @@ class ArticleNavigator:
         self.set_articles(articles)
         self.erase_article_form()
 
+    def show_article_html(self, div):
+        display(HTML("""
+            <style>
+            .gs_or_svg {
+                position: relative;
+                width: 29px;
+                height: 16px;
+                vertical-align: text-bottom;
+                fill: none;
+                stroke: #1a0dab;
+            }
+            </style>
+        """))
+        display(HTML(repr(div)))
+
     def create_custom_text(self, tup):
         """Create custom text based on config.FORM_TEXT_FIELDS tuple"""
         text = Text(value="", description=tup[0])
@@ -454,7 +469,7 @@ class ArticleNavigator:
             if self.to_display:
                 display("\n".join(self.to_display))
             if 'div' in article:
-                display(HTML(repr(article['div'])))
+                self.show_article_html(article['div'])
             elif 'name' in article:
                 print(article['name'])
         self.to_display = []
@@ -477,7 +492,7 @@ class ArticleNavigator:
 
         if nwork:
             for key, value in info.items():
-                if key in {'pyref', 'place1', '_work_type'}:
+                if key in {'pyref', 'place1', '_work_type', 'excerpt'}:
                     continue
                 if not hasattr(nwork, key):
                     text += "\nset_attribute('{}', '{}', '{}');".format(
@@ -489,7 +504,7 @@ class ArticleNavigator:
             if self.to_display:
                 display("\n".join(self.to_display))
             if 'div' in article:
-                display(HTML(repr(article['div'])))
+                self.show_article_html(article['div'])
             elif 'name' in article:
                 print(article['name'])
             display(HTML("<input value='{}.pdf' style='width: 100%'></input>".format(info['pyref'])))
@@ -510,7 +525,7 @@ class ArticleNavigator:
         article, _, _ = self.articles[self.selector_widget.value]
         with self.output_widget:
             if 'div' in article:
-                display(HTML(repr(article['div'])))
+                self.show_article_html(article['div'])
             else:
                 print(article['name'])
         for article, nwork, info in self.valid_articles([article], show=True):
