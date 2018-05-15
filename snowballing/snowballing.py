@@ -17,7 +17,7 @@ from bibtexparser.bparser import BibTexParser
 from bibtexparser.customization import convert_to_unicode
 from IPython.utils.py3compat import str_to_bytes, bytes_to_str
 from IPython.display import clear_output, display, HTML, Javascript
-from ipywidgets import HBox, VBox, IntSlider, ToggleButton, Text
+from ipywidgets import HBox, VBox, IntSlider, ToggleButton, Text, Layout
 from ipywidgets import Dropdown, Button, Tab, Label, Textarea, Output
 
 from .jupyter_utils import display_cell
@@ -808,3 +808,104 @@ class ScholarUpdate:
         """ Displays widget """
         self.show()
         display(self.view)
+
+class SearchScholar:
+    """Search Scholar and Navigate on article list for insertion"""
+
+    def __init__(self, querier, debug=False):
+        from snowballing.selenium_scholar import URLQuery
+        reload()
+        self.querier = querier
+
+        self.query = None
+        self.search_text_widget = Text(value="", layout=Layout(width="99%"))
+        self.do_search_widget = Button(description='Search', icon='fa-search')
+
+        self.navigator = ArticleNavigator(force_citation_file=False)
+        self.next_page_widget = Button(description='Next Page', icon='fa-arrow-right')
+        self.reload_widget = Button(description='Reload', icon='fa-refresh')
+        self.previous_page_widget = Button(description='Previous Page', icon='fa-arrow-left')
+        self.debug_widget = ToggleButton(value=debug, description="Debug")
+        self.page_number_widget = Label(value="")
+        self.next_page_widget.on_click(self.next_page)
+        self.reload_widget.on_click(self.reload)
+        self.previous_page_widget.on_click(self.previous_page)
+        self.do_search_widget.on_click(self.search)
+        self.search_text_widget.on_submit(self.search)
+
+
+        self.tab_widget = Tab([
+            VBox([
+                HBox([
+                    self.previous_page_widget,
+                    self.reload_widget,
+                    self.next_page_widget,
+                    self.debug_widget,
+                    self.page_number_widget
+                ]),
+                self.navigator.output_widget,
+
+            ]),
+            self.navigator.view
+        ])
+        self.view = VBox([
+            self.search_text_widget,
+            self.do_search_widget,
+            self.tab_widget
+        ])
+
+        self.tab_widget.set_title(0, "Page")
+        self.tab_widget.set_title(1, "Article")
+
+    def search(self, b):
+        from .selenium_scholar import SearchScholarQuery
+        self.query = SearchScholarQuery()
+        self.query.set_scope(False)
+        self.query.set_words(self.search_text_widget.value)
+        #self.query.set_num_page_results(20)
+        self.reload(b)
+
+    def next_page(self, b):
+        """ Gets next page from scholar """
+        self.query = self.querier.result.next_page
+        self.reload(b)
+
+    def previous_page(self, b):
+        """ Gets previous page from scholar """
+        self.query = self.querier.result.prev_page
+        self.reload(b)
+
+    def reload(self, b, show=True):
+        """ Reloads page """
+        self.navigator.output_widget.clear_output()
+        if self.debug_widget.value:
+            ScholarConf.LOG_LEVEL = 3
+        else:
+            ScholarConf.LOG_LEVEL = 2
+        reload()
+        with self.navigator.output_widget:
+            self.querier.tasks.clear()
+            self.querier.send_query(self.query)
+            self.page_number_widget.value = parse_qs(urlparse(
+                self.query.get_url()).query
+            ).get('start', ['0'])[0]
+
+            self.navigator.set_articles(map(extract_info, self.querier.result.articles))
+            self.navigator.show()
+            manager.tab_widget.selected_index = 1
+
+        self.next_page_widget.disabled = self.querier.result.next_page is None
+        self.previous_page_widget.disabled = self.querier.result.prev_page is None
+
+    def browser(self):
+        """ Presents widget """
+        with self.navigator.output_widget:
+            print("Search and press 'Reload Article'")
+        return self.view
+
+    def _ipython_display_(self):
+        """ Displays widget """
+        with self.navigator.output_widget:
+            print("Search and press 'Reload Article'")
+        display(self.view)
+
