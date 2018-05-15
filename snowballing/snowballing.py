@@ -892,7 +892,7 @@ class SearchScholar:
 
             self.navigator.set_articles(map(extract_info, self.querier.result.articles))
             self.navigator.show()
-            manager.tab_widget.selected_index = 1
+            self.tab_widget.selected_index = 1
 
         self.next_page_widget.disabled = self.querier.result.next_page is None
         self.previous_page_widget.disabled = self.querier.result.prev_page is None
