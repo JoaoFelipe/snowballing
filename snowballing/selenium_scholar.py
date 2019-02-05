@@ -60,7 +60,7 @@ ScholarConf.DELTA_VARIATION = 0.5
 
 
 def get_scholar_url(work):
-    """ Gets scholar url from work """
+    """Get scholar url from work"""
     scholar_url = list(urlparse(work.scholar))
     scholar_url[0] = "http"
     scholar_url[1] = "scholar.google.com"
@@ -72,15 +72,15 @@ def get_scholar_url(work):
 
 
 def click(parent, selector):
-    """ Clicks on selector """
+    """Click on selector"""
     element = parent.find_element_by_css_selector(selector)
     element.click()
     return element
 
 
 class URLQuery(ScholarQuery):
-    """ Represents a Google Scholar query using a generic query
-    We use it to navigate on the citations """
+    """Represent a Google Scholar query using a generic query
+    We use it to navigate on the citations"""
     
     def __init__(self, url, start=None):
         ScholarQuery.__init__(self)
@@ -98,7 +98,7 @@ class URLQuery(ScholarQuery):
 
 
 class Result(object):
-    """ Represents a result with articles """
+    """Represent a result with articles"""
     
     def __init__(self, query, html):
         self.articles = []
@@ -116,7 +116,7 @@ class Result(object):
 
 
 class AddArticleTask(object):
-    """ Task that adds an article to the result """
+    """Task that adds an article to the result"""
     
     def __init__(self, result, article):
         self.article = article
@@ -156,7 +156,7 @@ class AddArticleTask(object):
 
 
 class ParseTask(ScholarArticleParser120726):
-    """ Task that parsers articles """
+    """Task that parsers articles"""
 
     def __init__(self, result):
         ScholarArticleParser120726.__init__(self)
@@ -178,9 +178,8 @@ class ParseTask(ScholarArticleParser120726):
             self.querier.tasks.appendleft(AddArticleTask(self.result, art))
 
 
-
 class QueryTask(object):
-    """ Task that queries the scholar """
+    """Task that queries the scholar"""
     
     def __init__(self, query):
         self.query = query
@@ -314,12 +313,12 @@ class SearchScholarQuery(ScholarQuery):
 
 
 def wait_for(driver, condition, delay=5):
-    """ Wait for an element appear during :delay seconds """
+    """Wait for an element appear during :delay seconds """
     WebDriverWait(driver, delay).until(EC.visibility_of_element_located(condition))
 
 
 def check_captcha(driver, condition):
-    """ Check if it expects a captcha """
+    """Check if it expects a captcha"""
     captcha = driver.find_elements_by_css_selector("#captcha")
     captcha += driver.find_elements_by_css_selector("#gs_captcha_f")
     captcha += driver.find_elements_by_css_selector("#g-recaptcha")
