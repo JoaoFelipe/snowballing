@@ -316,17 +316,18 @@ class Work(WithTitle):
         if fill_color is None:
             fill_color = lambda x: "white", "black"
         fill, text_fill = fill_color(self)
+        metakey = getattr(self, 'metakey', "work{}".format(id(self)))
         if self._shape == "circle":
             shape = svgwrite.shapes.Circle(
                 position, self._r, fill=fill, stroke="black",
-                id=self.metakey, **{"class":self.metakey}
+                id=metakey, **{"class":metakey}
             )
             shape_text = self._circle_text
         else:
             r2 = Point(self._r, self._r)
             shape = svgwrite.shapes.Rect(
                 position - r2, r2 + r2, fill=fill, stroke="black",
-                id=self.metakey, **{"class":self.metakey}
+                id=metakey, **{"class":metakey}
             )
             shape_text = self._square_text
 
