@@ -1,0 +1,775 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snowballing.strategies &mdash; snowballing 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>snowballing.strategies</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snowballing.strategies</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module provides functions to describe the snowballing strategies&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">deque</span><span class="p">,</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">snowballing.operations</span> <span class="k">import</span> <span class="n">load_citations</span><span class="p">,</span> <span class="n">reload</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">reduce</span>
+
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span> <span class="k">as</span> <span class="n">P</span>
+
+<span class="n">Step</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Step&quot;</span><span class="p">,</span> <span class="s2">&quot;name new_references new_related total_visited total_related source target&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="State"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State">[docs]</a><span class="k">class</span> <span class="nc">State</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Snowballing state&quot;&quot;&quot;</span>
+
+    <span class="n">last_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visited</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">related</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">related</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">related</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_function</span> <span class="o">=</span> <span class="n">filter_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_visited_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+
+<div class="viewcode-block" id="State.visit"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.visit">[docs]</a>    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Visit work&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_function</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">work</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="State.derive"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.derive">[docs]</a>    <span class="k">def</span> <span class="nf">derive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a derived state&quot;&quot;&quot;</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">new_state</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="p">([</span><span class="bp">self</span><span class="p">],</span> <span class="n">operation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_state</span></div>
+
+<div class="viewcode-block" id="State.to_step"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.to_step">[docs]</a>    <span class="k">def</span> <span class="nf">to_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SeedSet to Step&quot;&quot;&quot;</span>
+        <span class="n">previous</span> <span class="o">=</span> <span class="n">previous</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">previous</span><span class="p">:</span>
+            <span class="n">operation</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">prev_visited</span> <span class="o">=</span> <span class="n">prev_related</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">seeds</span><span class="p">,</span> <span class="n">operation</span> <span class="o">=</span> <span class="n">previous</span>
+            <span class="n">last_name</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seeds</span><span class="p">)</span>
+            <span class="n">prev_visited</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">|</span> <span class="n">y</span><span class="o">.</span><span class="n">visited</span><span class="p">,</span> <span class="n">seeds</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+            <span class="n">prev_related</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">|</span> <span class="n">y</span><span class="o">.</span><span class="n">related</span><span class="p">,</span> <span class="n">seeds</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">Step</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visited</span> <span class="o">-</span> <span class="n">prev_visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">related</span> <span class="o">-</span> <span class="n">prev_related</span><span class="p">),</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="p">),</span>
+            <span class="n">last_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates log list&quot;&quot;&quot;</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="p">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)}</span>
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">appendleft</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">to_step</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+                        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">provn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert state provenance into provn</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; print(Strategy({murta2014a}).fbfb().provn)</span>
+<span class="sd">            document</span>
+<span class="sd">              default &lt;http://example.org/&gt;</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">              entity(s2, [type=&quot;Set&quot;, visited=&quot;3&quot;, related=&quot;1&quot;])</span>
+<span class="sd">              activity(backward2, -, -, [found=&quot;1&quot;, related=&quot;0&quot;])</span>
+<span class="sd">              used(u0; backward2, s1, -)</span>
+<span class="sd">              wasGeneratedBy(g0; s2, backward2, -)</span>
+<span class="sd">              wasDerivedFrom(s2, s1, backward2, g0, u0, [prov:type=&quot;prov:Revision&quot;])</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">              entity(s1, [type=&quot;Set&quot;, visited=&quot;2&quot;, related=&quot;1&quot;])</span>
+<span class="sd">              activity(forward1, -, -, [found=&quot;1&quot;, related=&quot;0&quot;])</span>
+<span class="sd">              used(u1; forward1, s0, -)</span>
+<span class="sd">              wasGeneratedBy(g1; s1, forward1, -)</span>
+<span class="sd">              wasDerivedFrom(s1, s0, forward1, g1, u1, [prov:type=&quot;prov:Revision&quot;])</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">              entity(s0, [type=&quot;Set&quot;, visited=&quot;1&quot;, related=&quot;1&quot;])</span>
+<span class="sd">              activity(start, -, -)</span>
+<span class="sd">              wasGeneratedBy(g2; s0, start, -)</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">            endDocument</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;document&quot;</span><span class="p">,</span> <span class="s2">&quot;  default &lt;http://example.org/&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+        <span class="n">actions</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="p">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)}</span>
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  entity(</span><span class="si">{}</span><span class="s1">, [type=&quot;Set&quot;, visited=&quot;</span><span class="si">{}</span><span class="s1">&quot;, related=&quot;</span><span class="si">{}</span><span class="s1">&quot;])&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+            <span class="p">))</span>
+            <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">activity_id</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  activity(</span><span class="si">{}</span><span class="s1">, -, -, [found=&quot;</span><span class="si">{}</span><span class="s1">&quot;, related=&quot;</span><span class="si">{}</span><span class="s1">&quot;])&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">activity_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">delta_visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">delta_related</span><span class="p">)</span>
+                <span class="p">))</span>
+
+                <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">used_id</span> <span class="o">=</span> <span class="s2">&quot;u</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actions</span><span class="p">[</span><span class="s2">&quot;used&quot;</span><span class="p">])</span>
+                    <span class="n">actions</span><span class="p">[</span><span class="s2">&quot;used&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  used(</span><span class="si">{}</span><span class="s1">; </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, -)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">used_id</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                    <span class="n">generated_id</span> <span class="o">=</span> <span class="s2">&quot;g</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">])</span>
+                    <span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  wasGeneratedBy(</span><span class="si">{}</span><span class="s1">; </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, -)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">generated_id</span><span class="p">,</span> <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  wasDerivedFrom(</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, [prov:type=&quot;prov:Revision&quot;])&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">,</span> <span class="n">generated_id</span><span class="p">,</span> <span class="n">used_id</span>
+                    <span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+                        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">generated_id</span> <span class="o">=</span> <span class="s2">&quot;g</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">])</span>
+                <span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  activity(start, -, -)&quot;</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  wasGeneratedBy(</span><span class="si">{}</span><span class="s1">; </span><span class="si">{}</span><span class="s1">, start, -)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">generated_id</span><span class="p">,</span> <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;endDocument&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert state provenance into dot</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; print(Strategy({murta2014a}).fbfb().dot)</span>
+<span class="sd">            digraph G {</span>
+<span class="sd">              rankdir=&quot;RL&quot;;</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">              s2 [label=&quot;s2\\nvisited: 3\\nrelated: 1&quot;];</span>
+<span class="sd">              s2 -&gt; s1 [label=&quot;backward\\nfound: 1\\nrelated: 0&quot;];</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">              s1 [label=&quot;s1\\nvisited: 2\\nrelated: 1&quot;];</span>
+<span class="sd">              s1 -&gt; s0 [label=&quot;forward\\nfound: 1\\nrelated: 0&quot;];</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">              s0 [label=&quot;s0\\nvisited: 1\\nrelated: 1&quot;];</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">            }</span>
+<span class="sd">            &gt;&gt;&gt; None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;digraph G {&quot;</span><span class="p">,</span> <span class="s1">&#39;  rankdir=&quot;RL&quot;;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+        <span class="n">actions</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="p">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)}</span>
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{0}</span><span class="s1"> [label=&quot;</span><span class="si">{0}</span><span class="se">\\</span><span class="s1">nvisited: </span><span class="si">{1}</span><span class="se">\\</span><span class="s1">nrelated: </span><span class="si">{2}</span><span class="s1">&quot;];&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+            <span class="p">))</span>
+            <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span>
+                <span class="n">operation</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{}</span><span class="s1"> -&gt; </span><span class="si">{}</span><span class="s1"> [label=&quot;</span><span class="si">{}</span><span class="se">\\</span><span class="s1">nfound: </span><span class="si">{}</span><span class="se">\\</span><span class="s1">nrelated: </span><span class="si">{}</span><span class="s1">&quot;];&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">delta_visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">delta_related</span><span class="p">)</span>
+                    <span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+                        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">delta_related</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compares number of related&quot;&quot;&quot;</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">|</span> <span class="n">y</span><span class="o">.</span><span class="n">related</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">related</span> <span class="o">-</span> <span class="n">last</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">delta_visited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compares number of related&quot;&quot;&quot;</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">|</span> <span class="n">y</span><span class="o">.</span><span class="n">visited</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">visited</span> <span class="o">-</span> <span class="n">last</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Frontier generator. Generates related&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">work</span>
+
+    <span class="k">def</span> <span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_frontier</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_frontier</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_ipython_display_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span>
+        <span class="n">bundle</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">dot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dot</span>
+        <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;text/vnd.graphviz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;nt&#39;</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;creationflags&quot;</span><span class="p">:</span> <span class="mh">0x08000000</span><span class="p">}</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;dot&#39;</span><span class="p">,</span> <span class="s1">&#39;-T&#39;</span><span class="p">,</span> <span class="s2">&quot;svg&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">dot</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;image/svg+xml&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">os</span><span class="o">.</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+        <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;text/plain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">))</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">bundle</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="State.new_name"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.new_name">[docs]</a>    <span class="k">def</span> <span class="nf">new_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate new name for SeedSet&quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">last_id</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="s2">&quot;s</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">last_id</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="State.union"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.union">[docs]</a>    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;union&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a joined state&quot;&quot;&quot;</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">derive</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">new_state</span><span class="o">.</span><span class="n">visited</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">second</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+        <span class="n">new_state</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">second</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+        <span class="n">new_state</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">second</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_state</span></div></div>
+
+
+<div class="viewcode-block" id="Strategy"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy">[docs]</a><span class="k">class</span> <span class="nc">Strategy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base Strategy class</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    * `initial_set` -- start set of the snowballing</span>
+
+<span class="sd">    Keyword arguments:</span>
+
+<span class="sd">    * `filter_function` -- function for filtering results</span>
+
+<span class="sd">      * By default it selects work with category == &#39;snowball&#39;</span>
+
+<span class="sd">    * `visited` -- visited set of the start start</span>
+
+<span class="sd">      * By default it is the initial_set</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">filter_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visited</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">filter_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filter_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;snowball&quot;</span>
+
+        <span class="n">reload</span><span class="p">()</span>
+        <span class="n">State</span><span class="o">.</span><span class="n">last_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span><span class="n">visited</span> <span class="ow">or</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">filter_function</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rev_ref</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cit</span> <span class="ow">in</span> <span class="n">load_citations</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">[</span><span class="n">cit</span><span class="o">.</span><span class="n">work</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cit</span><span class="o">.</span><span class="n">citation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rev_ref</span><span class="p">[</span><span class="n">cit</span><span class="o">.</span><span class="n">citation</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cit</span><span class="o">.</span><span class="n">work</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Strategy.backward"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Follow backward references on frontier</span>
+
+<span class="sd">        Returns new frontier and target set name&quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">state</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">derive</span><span class="p">(</span><span class="s2">&quot;backward&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cited</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">[</span><span class="n">work</span><span class="p">]:</span>
+                <span class="n">new_state</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">cited</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_state</span></div>
+
+<div class="viewcode-block" id="Strategy.forward"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Follow forward references on frontier</span>
+
+<span class="sd">        Returns new frontier and target set name&quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">state</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">derive</span><span class="p">(</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">citer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rev_ref</span><span class="p">[</span><span class="n">work</span><span class="p">]:</span>
+                <span class="n">new_state</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">citer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_state</span></div>
+
+    <span class="k">def</span> <span class="nf">_repeat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">max_count</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alternates functions in order&quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">state</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">delta_related</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">max_count</span> <span class="o">+</span> <span class="n">first</span><span class="p">:</span>
+                    <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">break</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">state</span>
+
+<div class="viewcode-block" id="Strategy.fbfb"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.fbfb">[docs]</a>    <span class="k">def</span> <span class="nf">fbfb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alternates forward and backward</span>
+
+<span class="sd">        (FB)*::</span>
+
+<span class="sd">            s0 &lt;-f- s1 &lt;-b- s2 &lt;-f- s3 &lt;-b- s4</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; state = Strategy({murta2014a}).fbfb()</span>
+<span class="sd">            &gt;&gt;&gt; len(state.related)</span>
+<span class="sd">            1</span>
+<span class="sd">            &gt;&gt;&gt; len(state.visited)</span>
+<span class="sd">            3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repeat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Strategy.bfbf"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.bfbf">[docs]</a>    <span class="k">def</span> <span class="nf">bfbf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alternates backward and forward</span>
+
+<span class="sd">        (BF)*::</span>
+
+<span class="sd">            s0 &lt;-b- s1 &lt;-f- s2 &lt;-b- s3 &lt;-f- s4</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; state = Strategy({murta2014a}).fbfb()</span>
+<span class="sd">            &gt;&gt;&gt; len(state.related)</span>
+<span class="sd">            1</span>
+<span class="sd">            &gt;&gt;&gt; len(state.visited)</span>
+<span class="sd">            3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repeat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Strategy.bb"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.bb">[docs]</a>    <span class="k">def</span> <span class="nf">bb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply sequences of backward</span>
+
+<span class="sd">        B*::</span>
+
+<span class="sd">            s0 &lt;-b- s1 &lt;-b- s2</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; state = Strategy({murta2014a}).bb()</span>
+<span class="sd">            &gt;&gt;&gt; len(state.related)</span>
+<span class="sd">            1</span>
+<span class="sd">            &gt;&gt;&gt; len(state.visited)</span>
+<span class="sd">            2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repeat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Strategy.ff"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.ff">[docs]</a>    <span class="k">def</span> <span class="nf">ff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply sequences of forward</span>
+
+<span class="sd">        F*::</span>
+
+<span class="sd">            s0 &lt;-f- s1 &lt;-f- s2</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; state = Strategy({murta2014a}).ff()</span>
+<span class="sd">            &gt;&gt;&gt; len(state.related)</span>
+<span class="sd">            1</span>
+<span class="sd">            &gt;&gt;&gt; len(state.visited)</span>
+<span class="sd">            2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repeat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Strategy.bbff"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.bbff">[docs]</a>    <span class="k">def</span> <span class="nf">bbff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply sequences of backward. Then apply sequences of forward</span>
+
+<span class="sd">        B*F*::</span>
+
+<span class="sd">            s0 &lt;-b- s1 &lt;-b- s2 &lt;-f- s3 &lt;-f- s4</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; state = Strategy({murta2014a}).bbff()</span>
+<span class="sd">            &gt;&gt;&gt; len(state.related)</span>
+<span class="sd">            1</span>
+<span class="sd">            &gt;&gt;&gt; len(state.visited)</span>
+<span class="sd">            3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bb</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Strategy.ffbb"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.ffbb">[docs]</a>    <span class="k">def</span> <span class="nf">ffbb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply sequences of forward. Then apply sequences of backward</span>
+
+<span class="sd">        F*B*::</span>
+
+<span class="sd">            s0 &lt;-f- s1 &lt;-f- s2 &lt;-b- s3 &lt;-b- s4</span>
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; state = Strategy({murta2014a}).ffbb()</span>
+<span class="sd">            &gt;&gt;&gt; len(state.related)</span>
+<span class="sd">            1</span>
+<span class="sd">            &gt;&gt;&gt; len(state.visited)</span>
+<span class="sd">            3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bb</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Strategy.sbfu"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.sbfu">[docs]</a>    <span class="k">def</span> <span class="nf">sbfu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply forward and backward in parallel once, join results and repeat</span>
+
+<span class="sd">        S(B, F)*::</span>
+
+<span class="sd">                f - s1           f - s4</span>
+<span class="sd">              /        \       /        \\</span>
+<span class="sd">            s0           U - s3           U - s6</span>
+<span class="sd">              \        /       \        /</span>
+<span class="sd">                b - s2           b - s5</span>
+
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; state = Strategy({murta2014a}).sbfu()</span>
+<span class="sd">            &gt;&gt;&gt; len(state.related)</span>
+<span class="sd">            1</span>
+<span class="sd">            &gt;&gt;&gt; len(state.visited)</span>
+<span class="sd">            3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">state</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">fstate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+            <span class="n">bstate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">fstate</span><span class="p">,</span> <span class="n">bstate</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">fstate</span><span class="o">.</span><span class="n">delta_related</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bstate</span><span class="o">.</span><span class="n">delta_related</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">state</span></div>
+
+    <span class="n">sfbu</span> <span class="o">=</span> <span class="n">sbfu</span>
+
+<div class="viewcode-block" id="Strategy.s2bbff2u"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.Strategy.s2bbff2u">[docs]</a>    <span class="k">def</span> <span class="nf">s2bbff2u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply all forward and all backward in parallel. Then join</span>
+
+<span class="sd">        S(B*, F*)::</span>
+
+<span class="sd">                f - s1 &lt;-f- s2</span>
+<span class="sd">              /                \\</span>
+<span class="sd">            s0                   U - s5</span>
+<span class="sd">              \                /</span>
+<span class="sd">                b - s3 &lt;-b- s4</span>
+
+
+<span class="sd">        Doctest:</span>
+
+<span class="sd">        .. doctest::</span>
+
+<span class="sd">            &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">            &gt;&gt;&gt; reload()</span>
+<span class="sd">            &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; state = Strategy({murta2014a}).s2ffbb2u()</span>
+<span class="sd">            &gt;&gt;&gt; len(state.related)</span>
+<span class="sd">            1</span>
+<span class="sd">            &gt;&gt;&gt; len(state.visited)</span>
+<span class="sd">            3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">state</span>
+        <span class="n">fstate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">bstate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bb</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">State</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">fstate</span><span class="p">,</span> <span class="n">bstate</span><span class="p">)</span></div>
+
+    <span class="n">s2ffbb2u</span> <span class="o">=</span> <span class="n">s2bbff2u</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

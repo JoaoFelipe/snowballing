@@ -52,13 +52,13 @@ WORK_FIELDS = [
 
 # Regexes that starts with ^ and ends with $
 BIBTEX_IGNORE_FIELDS = [
-    "excerpt", "month", "bookname", "url", "ID", 
+    "excerpt", "month", "bookname", "url", "ID",
 
     # Tool
     "_.*", "force_.*", "file.*", "category", "alias", "aliases", "scholar_ok",
     "scholar", "cluster_id", "scholar_id", "display", "metakey", "due", "tyear",
     "citation_file", "notes", "tracking", "snowball", "request", "draw",
-    "may_be_related_to", "ignore", "generate_title", "note", 
+    "may_be_related_to", "ignore", "generate_title", "note",
 ]
 
 # Map Work to BibTeX

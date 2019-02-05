@@ -1,4 +1,4 @@
-"""This module includes helper functions to identify the location of database 
+"""This module includes helper functions to identify the location of database
 files and extract information from the convention we use for varnames
 """
 
@@ -23,7 +23,7 @@ def citation_file(name):
     Doctest:
 
     .. doctest::
-    
+
         >>> from pathlib import Path
         >>> [citation_file('noworkflow2014')]  # doctest: +ELLIPSIS
         [.../citations/noworkflow2014.py')]
@@ -35,7 +35,7 @@ def year_file(year):
     """Return the database file for a specific year
 
     This file includes Paper's metadata
-    
+
     Arguments:
 
     * `year` -- desired year
@@ -52,8 +52,8 @@ def year_file(year):
 
 
 def places_file():
-    """Return the places file 
-    
+    """Return the places file
+
     Doctest:
 
     .. doctest::
@@ -67,17 +67,17 @@ def places_file():
 
 def this_file(filename):
     """Extract filename without python extension
-    
+
     It is used on citation files in the database to identify them
 
     Arguments:
 
-    * `filename` -- python filename (usually __file__) 
+    * `filename` -- python filename (usually __file__)
 
     Doctest:
 
     .. doctest::
-    
+
         >>> this_file(__file__)
         'dbindex'
     """
@@ -86,7 +86,7 @@ def this_file(filename):
 
 def discover_year(varname, year=None, fail_raise=True):
     """Discover year from varname or year argument
-    
+
     Arguments:
 
     * varname -- work variable name (e.g., 'murta2014a')
@@ -95,7 +95,7 @@ def discover_year(varname, year=None, fail_raise=True):
 
     * `year` -- if it is defined, bypass varname extraction and return it
 
-    * `fail_raise` -- if it fails to extract from varname, it may raise an 
+    * `fail_raise` -- if it fails to extract from varname, it may raise an
       exception according this argument
 
 
@@ -149,9 +149,9 @@ def increment_char(letter):
 
 def increment_str(varname):
     """Increment letter from varname
-    
+
     If it reaches the 'z', adds a new 'a' letter and restarts the process
-    
+
     Arguments:
 
     * `varname` -- variable name (e.g., 'murta2014a')
@@ -159,7 +159,7 @@ def increment_str(varname):
     Doctest:
 
     .. doctest::
-    
+
         >>> increment_str('murta2014')
         'murta2014a'
         >>> increment_str('murta2014a')
@@ -182,9 +182,9 @@ def increment_str(varname):
 
 def parse_varname(varname, group_index):
     """Parse the varname convention to extract its parts
-    
+
     The convention is (last name of first author)(year)(sequential letter)
-    
+
     Arguments:
 
     * `varname` -- variable name for extraction (e.g., 'murta2014a')
@@ -192,16 +192,16 @@ def parse_varname(varname, group_index):
       * If the varname doesn't match the convention, returns None
 
     * `group_index` -- indicates which part should be extracted
-      
+
       * 0 = all the varname
-      
+
       * 1 = last name of first author
-      
+
       * 2 = year
-    
+
       * 3 = sequential letter
 
-    Doctest:    
+    Doctest:
 
     .. doctest::
 
@@ -219,7 +219,7 @@ def parse_varname(varname, group_index):
         True
     """
     return getattr(
-        re.search('(.*)(\d\d\d\d)(.*)', varname), 
+        re.search('(.*)(\d\d\d\d)(.*)', varname),
         'group',
         lambda x: None
     )(group_index)

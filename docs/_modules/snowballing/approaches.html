@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>snowballing.approaches &mdash; snowballing 0.1.8 documentation</title>
+  <title>snowballing.approaches &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../../index.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
@@ -181,13 +182,13 @@
     <span class="sd">&quot;&quot;&quot;Represent an Approach or a Group of work.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">    </span>
+
 <span class="sd">    * `args` -- list of work that represents the group</span>
-<span class="sd">    </span>
+
 <span class="sd">    * `kwargs` -- map of attributes to be applied for the group and its works</span>
-<span class="sd">      </span>
+
 <span class="sd">      * Exception: the keyword `dont_cite=` also represents a list of works that</span>
-<span class="sd">        belong to the group </span>
+<span class="sd">        belong to the group</span>
 
 
 <span class="sd">    Expected attributes:</span>
@@ -195,14 +196,14 @@
 <span class="sd">    * _cite: cite group by authors</span>
 
 <span class="sd">      * True indicates that the approach must be referenced by its authors</span>
-<span class="sd">      * False indicates that the approach can referenced by name </span>
-<span class="sd">    </span>
+<span class="sd">      * False indicates that the approach can referenced by name</span>
+
 <span class="sd">    * _meta: list of dicts with attributes for comparing approaches</span>
-<span class="sd">      </span>
+
 <span class="sd">      * A single approach can have more than one meta dict</span>
 <span class="sd">      * It is possible to use the distinct meta dicts to describe different</span>
 <span class="sd">        aspects</span>
-<span class="sd">    </span>
+
 <span class="sd">    * _about: HTML describing the approach</span>
 
 <span class="sd">    Doctest:</span>
@@ -252,10 +253,10 @@
 
 
 <div class="viewcode-block" id="GroupUnrelated"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.GroupUnrelated">[docs]</a><span class="k">class</span> <span class="nc">GroupUnrelated</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represent an unrelated group of approaches </span>
-<span class="sd">    </span>
+    <span class="sd">&quot;&quot;&quot;Represent an unrelated group of approaches</span>
+
 <span class="sd">    It does not add the approach into the APPROACHES list.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
@@ -316,7 +317,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_star</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">)))</span>
@@ -327,7 +328,7 @@
 
 
 <div class="viewcode-block" id="name"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.name">[docs]</a><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">approach</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return approach name. Removes double spaces in display </span>
+    <span class="sd">&quot;&quot;&quot;Return approach name. Removes double spaces in display</span>
 
 <span class="sd">    Doctest:</span>
 
@@ -343,7 +344,7 @@
 
 
 <div class="viewcode-block" id="get_approaches"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.get_approaches">[docs]</a><span class="k">def</span> <span class="nf">get_approaches</span><span class="p">(</span><span class="n">condition</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return pairs of approaches and meta dicts </span>
+    <span class="sd">&quot;&quot;&quot;Return pairs of approaches and meta dicts</span>
 
 <span class="sd">    Doctest:</span>
 
@@ -373,7 +374,7 @@
     <span class="k">return</span> <span class="s1">&#39; </span><span class="se">\\</span><span class="s1">cite</span><span class="si">{}</span><span class="s1">{{</span><span class="si">{}</span><span class="s1">}}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">extra</span><span class="p">,</span>
         <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-            <span class="n">works</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> 
+            <span class="n">works</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">approach</span><span class="o">.</span><span class="n">work</span>
             <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">works</span>
             <span class="k">if</span> <span class="s2">&quot;snowball&quot;</span> <span class="ow">in</span> <span class="n">w</span><span class="o">.</span><span class="n">category</span>
@@ -429,7 +430,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

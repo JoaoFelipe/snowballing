@@ -1,4 +1,4 @@
-"""This module contains functions to :meth:`~reload` the database, load work and 
+"""This module contains functions to :meth:`~reload` the database, load work and
 citations from there, and operate BibTeX"""
 
 import importlib
@@ -39,8 +39,8 @@ def load_citations():
 
 
 def load_places_vars():
-    """Load all places from the database 
-    
+    """Load all places from the database
+
     It generates tuples with variable name and Place object
 
     Doctest:
@@ -80,7 +80,7 @@ def load_work_map(year):
 
 
 def work_by_varname(varname, year=None):
-    """Load work by varname 
+    """Load work by varname
 
     Doctest:
 
@@ -101,7 +101,7 @@ def work_by_varname(varname, year=None):
 
 
 def load_work_map_all_years():
-    """Load all work from all years 
+    """Load all work from all years
 
     Doctest:
 
@@ -140,7 +140,7 @@ def _reload_work():
 
 
 def reload():
-    """Reload all the database 
+    """Reload all the database
 
     Doctest:
 
@@ -176,30 +176,30 @@ def reload():
 
 
 def bibtex_to_info(citation):
-    """Convert BibTeX dict from bibtexparse to info dict for adding a db entry 
+    """Convert BibTeX dict from bibtexparse to info dict for adding a db entry
 
     It has the following conversions:
 
     * title -> name (required)
-    
+
     * author -> authors (required)
-        
+
     * year -> year (0 if not specified)
-            
+
       * If there is '[in press]', creates 'note' with 'in press'
-    
+
     * journal/booktitle -> place1 ('' if not specified)
-            
+
       * If 'place1' matches a place in the database, creates also 'place'
-    
+
     * pages -> pp
-    
+
     * ENTRYTYPE -> entrytype
 
     Also creates the following fields:
-    
+
     * display -- Last name of first author
-    
+
     * pyref -- {display}{year}{letter}
 
 
@@ -225,7 +225,7 @@ def bibtex_to_info(citation):
     result = {}
     setitem(result, "name", consume(citation, "title"))
     setitem(result, "authors", consume(citation, "author"))
-    
+
     if "[in press]" in citation.get("year", ""):
         setitem(result, "note", "in press")
         citation["year"] = citation["year"][:4]
@@ -287,7 +287,7 @@ def set_display(info, check_existence=False):
 
 
 def set_pyref(info, check_existence=False):
-    """Set pyref of info. Finds the next available letter in the database 
+    """Set pyref of info. Finds the next available letter in the database
 
     Doctest:
 
@@ -313,7 +313,7 @@ def set_pyref(info, check_existence=False):
 
 
 def set_place(info, check_existence=False):
-    """Set place of info 
+    """Set place of info
 
     It reorders common patterns:
 
@@ -324,7 +324,7 @@ def set_place(info, check_existence=False):
 
     Then, it removes numbers and it tries to match places in the database.
 
-    It considers a match if the matching ratio for the place name 
+    It considers a match if the matching ratio for the place name
     is >= config.SIMILARITY_RATIO (0.8).
 
     It also considers a match if the acronym matches.
@@ -355,7 +355,7 @@ def set_place(info, check_existence=False):
     place = re.sub(r"(.*) (International Convention on)", r"\2 \1", place, flags=re.I)
     place = re.sub(r"(.*) (International Symposium on)", r"\2 \1", place, flags=re.I)
     place = ''.join([i for i in place if not i.isdigit()])
-    
+
     maxmatch = max(
         (max(
             compare_str(place, varvalue.name),
@@ -413,12 +413,12 @@ def extract_info(article):
     setitem(result, "div", article.div)
     return result
 
-   
+
 def info_to_code(article):
-    """Convert info dict into code 
+    """Convert info dict into code
 
     Required attributes:
-    
+
     * pyref
     * display
     * year
@@ -526,7 +526,7 @@ def info_to_code(article):
 
     other += "\n        ".join('{}="{}",'.format(key, value.replace('"', r'\"'))
                           for key, value in info.items())
-        
+
     result = """
     {pyref} = DB({work_type}(
         {year}, "{name}",\n""".format(**locals())
@@ -547,7 +547,7 @@ def citation_text(workref, cited, ref="", backward=False):
     """Create code for citation
 
     Arguments:
-    
+
     * `workref` -- work varname that is cited (by default)
 
     * `cited` -- work info dict that cites the work (by default)
@@ -612,16 +612,16 @@ def compare_paper_to_work(letter, key, work, paper):
 
 
     Returns: work, letter
-    
+
     *  If it doesn't match, work is None
-    
+
     Doctest:
 
     .. doctest::
 
         >>> reload()
         >>> work = work_by_varname('murta2014a')
-        
+
         Fail:
 
         >>> paper = {'pyref': 'pimentel2017a', 'authors': 'Pimentel, Joao', 'name': 'Other', 'year': 2017}
@@ -701,13 +701,13 @@ def find_work_by_info(paper, pyrefs=None):
     Limits search for specific year (or all years, if year is 0)
 
     Generates 'place' based on 'entrytype'
-    
+
     Converts 'school' -> 'local'
-    
+
     Tries to get varname from 'ID' in case the bibtex were generated from our db
-    
+
     If it finds the work, it returns it
-    
+
     Otherwise, it updates pyref and display to include a valid letter
 
 
@@ -760,12 +760,12 @@ def find_work_by_info(paper, pyrefs=None):
         work, letter = compare_paper_to_work(letter, key, work, paper)
         if work:
             return work
-        
+
     for key, work in worklist:
         work, letter = compare_paper_to_work(letter, key, work, paper)
         if work:
             return work
-        
+
 
     for key in pyrefs:
         if "pyref" in paper and key.startswith(paper["pyref"]):
@@ -814,8 +814,8 @@ def find_citation(citer, cited):
 
 def find_global_local_citation(citer, cited, file=None):
     """Find citations locally and globally for the works
-    
-    We use it to check if there is citation redefinition 
+
+    We use it to check if there is citation redefinition
 
     Doctest:
 
@@ -939,7 +939,7 @@ def work_to_bibtex_entry(work, name=None, homogeneize=True, acronym=False):
 
 
 def work_to_bibtex(work, name=None, acronym=False):
-    """Convert work to bibtex text 
+    """Convert work to bibtex text
 
     Doctest:
 
@@ -1003,7 +1003,7 @@ def work_to_bibtex(work, name=None, acronym=False):
 
 def match_bibtex_to_work(bibtex_str):
     """Find works by bibtex entries
-    
+
     Returns a list of matches: (entry, work)
 
     Doctest:
@@ -1031,7 +1031,7 @@ def match_bibtex_to_work(bibtex_str):
     for entry in entries:
         entry['title'] = entry['title'].replace('{', '').replace('}', '')
     return [
-        (entry, find_work_by_info(bibtex_to_info(copy(entry)))) 
+        (entry, find_work_by_info(bibtex_to_info(copy(entry))))
         for entry in entries
     ]
 
@@ -1047,3 +1047,46 @@ def find(text):
                 break
         if match:
             yield work
+
+
+class Metakey(object):
+    """Convert work or list of work to metakey
+
+    .. doctest::
+
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> murta2014a @ Metakey()
+        'murta2014a'
+        >>> [murta2014a] @ Metakey()
+        ['murta2014a']
+
+    """
+    def __rmatmul__(self, x):
+        if hasattr(x, '__iter__'):
+            return [y @ self for y in x]
+        return x.metakey
+
+
+class MetakeyTitle(object):
+    """Convert work or list of work to metakey - title
+
+    .. doctest::
+
+        >>> reload()
+        >>> murta2014a = work_by_varname("murta2014a")
+        >>> murta2014a @ MetakeyTitle()
+        'murta2014a - noWorkflow: capturing and analyzing provenance of scripts'
+        >>> [murta2014a] @ MetakeyTitle()
+        ['murta2014a - noWorkflow: capturing and analyzing provenance of scripts']
+
+    """
+    
+    def __rmatmul__(self, x):
+        if hasattr(x, '__iter__'):
+            return [y @ self for y in x]
+        return "{0.metakey} - {0.name}".format(x)
+
+
+metakey = Metakey()
+metakey_title = MetakeyTitle()

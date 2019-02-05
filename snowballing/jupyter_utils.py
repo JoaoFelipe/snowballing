@@ -1,4 +1,4 @@
-"""This module provides useful jupyter widgets""" 
+"""This module provides useful jupyter widgets"""
 import base64
 import os
 import subprocess
@@ -6,7 +6,7 @@ import warnings
 
 from ipywidgets import DOMWidget, HBox, Label, Text, Button
 from IPython.display import display, Javascript
-from IPython.utils.py3compat import str_to_bytes, bytes_to_str
+from urllib.parse import quote
 
 from .dbindex import year_file
 from . import config
@@ -20,11 +20,11 @@ def display_cell(text):
     * `text` -- new cell content
 
     """
-    encoded_code = bytes_to_str(base64.b64encode(str_to_bytes(text)))
+    encoded_code = base64.b64encode(quote(text.encode()).encode()).decode()
     display(Javascript("""
         $('span:contains("# Temp")').closest('.cell').remove();
         var code = IPython.notebook.insert_cell_{0}('code');
-        code.set_text(atob("{1}"));
+        code.set_text(decodeURIComponent(window.atob("{1}")));
     """.format('below', encoded_code)))
 
 
@@ -50,7 +50,7 @@ def idisplay(*args, label=True):
 
 
 def find_line(work):
-    """Find work position in file 
+    """Find work position in file
 
     Arguments:
 
@@ -73,7 +73,7 @@ def find_line(work):
             for index, line in enumerate(f)
             if re.findall('(^{}\\s=)'.format(work.metakey).encode(), line)
         ][0] + 1
-  
+
 
 def invoke_editor(work):
     """Open work in a given line with the configured editor"""
@@ -105,10 +105,10 @@ def work_button(work, description=None):
 
     Keyword arguments:
 
-    * `description` -- button label. It uses the work varname if it is not 
+    * `description` -- button label. It uses the work varname if it is not
       specified
     """
     def click(w):
         invoke_editor(work)
-    
+
     return new_button(description or work.metakey, click)

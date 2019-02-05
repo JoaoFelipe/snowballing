@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>snowballing.dbmanager &mdash; snowballing 0.1.8 documentation</title>
+  <title>snowballing.dbmanager &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../../index.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
@@ -173,14 +174,14 @@
   <h1>Source code for snowballing.dbmanager</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;This module contains operations to manipulate the database</span>
 
-<span class="sd">Warning: since it involves manipulating source code, some operations may not be </span>
+<span class="sd">Warning: since it involves manipulating source code, some operations may not be</span>
 <span class="sd">very reliable.</span>
 
 <span class="sd">Additionaly, we currently do not have tests for this file.</span>
 <span class="sd">Thus, my suggestion is to use only the :meth:`~insert` and :meth:`~set_attribute` functions.</span>
 <span class="sd">These functions were heavily used during my snowballing.</span>
 
-<span class="sd">For other operations, such as removing citations/work, I recommend editting </span>
+<span class="sd">For other operations, such as removing citations/work, I recommend editting</span>
 <span class="sd">files manually.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -204,11 +205,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">first_col</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">first_col</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_line</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">last_line</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_col</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">last_col</span>
-    
+
 <div class="viewcode-block" id="ReplaceOperation.apply"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.ReplaceOperation.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replace `lines` of `:target` by `:value`&quot;&quot;&quot;</span>
         <span class="n">lines</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">first_line</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">lines</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">first_line</span><span class="p">][:</span><span class="bp">self</span><span class="o">.</span><span class="n">first_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">value</span> 
+            <span class="n">lines</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">first_line</span><span class="p">][:</span><span class="bp">self</span><span class="o">.</span><span class="n">first_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">value</span>
             <span class="o">+</span> <span class="n">lines</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">last_line</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">last_col</span><span class="p">:]</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_line</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
@@ -220,8 +221,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">delete_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">keyword</span> <span class="o">=</span> <span class="n">keyword</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delete_lines</span> <span class="o">=</span> <span class="n">delete_lines</span>
-        
-        
+
 <div class="viewcode-block" id="DelOperation.apply"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.DelOperation.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove `.keyword` from `:lines`&quot;&quot;&quot;</span>
         <span class="n">replace</span> <span class="o">=</span> <span class="n">ReplaceOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyword</span><span class="p">)</span>
@@ -237,7 +237,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">last_line</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_line</span> <span class="o">=</span> <span class="n">last_line</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">attribute</span>
-        
+
 <div class="viewcode-block" id="AddKeywordOperation.apply"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.AddKeywordOperation.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add `.attribute` = `:value` into `:lines`&quot;&quot;&quot;</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
@@ -254,13 +254,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">last_line</span> <span class="o">=</span> <span class="n">last_line</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="n">last</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_line</span> <span class="o">=</span> <span class="n">add_line</span>
-        
+
 <div class="viewcode-block" id="InsertOperation.apply"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.InsertOperation.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Insert `:value` at line `.last_line`&quot;&quot;&quot;</span>
         <span class="n">new_entry</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_line</span><span class="p">:</span>
             <span class="n">new_entry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-    
+
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_line</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
@@ -271,12 +271,12 @@
 
 <div class="viewcode-block" id="DetectOperation"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.DetectOperation">[docs]</a><span class="k">class</span> <span class="nc">DetectOperation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Operation for detecting elements&quot;&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">work_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">citations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imports</span> <span class="o">=</span> <span class="p">[]</span>
-        
+
 <div class="viewcode-block" id="DetectOperation.apply"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.DetectOperation.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect elements&quot;&quot;&quot;</span>
         <span class="n">value</span><span class="p">[</span><span class="s2">&quot;work_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_list</span>
@@ -287,7 +287,7 @@
 <div class="viewcode-block" id="is_assign_to_name"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.is_assign_to_name">[docs]</a><span class="k">def</span> <span class="nf">is_assign_to_name</span><span class="p">(</span><span class="n">stmt</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check if stmt is an assignment to name&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">)</span> <span class="ow">and</span> 
+        <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">)</span> <span class="ow">and</span>
         <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span>
     <span class="p">)</span></div>
 
@@ -308,17 +308,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="n">lines</span>
-    
+
 <div class="viewcode-block" id="EditVisitor.replace"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.EditVisitor.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate a replace operation&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">ReplaceOperation</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="n">pyposast</span><span class="o">.</span><span class="n">extract_code</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="EditVisitor.add_keyword"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.EditVisitor.add_keyword">[docs]</a>    <span class="k">def</span> <span class="nf">add_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">last_line</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate an operation to add keyword&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">AddKeywordOperation</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="n">last_line</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
-    
+
 <div class="viewcode-block" id="EditVisitor.remove_keyword"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.EditVisitor.remove_keyword">[docs]</a>    <span class="k">def</span> <span class="nf">remove_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">remove_lines</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate an operation to remove a keyword&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">remove_lines</span><span class="p">:</span>
@@ -329,10 +329,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">DelOperation</span><span class="p">(</span><span class="n">keyword</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">remove_lines</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">arg</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">+</span> <span class="n">pyposast</span><span class="o">.</span><span class="n">extract_code</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">,</span> <span class="n">keyword</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="EditVisitor.visit_Assign"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.EditVisitor.visit_Assign">[docs]</a>    <span class="k">def</span> <span class="nf">visit_Assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Visits assign and check if it represents the desired `.varname`</span>
-<span class="sd">        </span>
+
 <span class="sd">        Then, instantiate and apply the desired `.operation`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
@@ -368,28 +368,28 @@
                                 <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">keyword</span><span class="o">.</span><span class="n">first_line</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span>
                                  <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">keyword</span><span class="o">.</span><span class="n">last_line</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
                             <span class="p">)</span></div></div>
-       
+
 
 <div class="viewcode-block" id="BodyVisitor"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor">[docs]</a><span class="k">class</span> <span class="nc">BodyVisitor</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeVisitor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Visit body of year file to find `.varname` and apply `.operation`&quot;&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;delete&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">varname</span> <span class="o">=</span> <span class="n">varname</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="n">operation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="n">lines</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    
+
 <div class="viewcode-block" id="BodyVisitor.remove_stmt"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor.remove_stmt">[docs]</a>    <span class="k">def</span> <span class="nf">remove_stmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stmt</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate an operation to remove the stmt&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">DelOperation</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="n">pyposast</span><span class="o">.</span><span class="n">extract_code</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">,</span> <span class="n">stmt</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="BodyVisitor.insert"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate an operation to insert code&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">InsertOperation</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
-    
+
 <div class="viewcode-block" id="BodyVisitor.process_body"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor.process_body">[docs]</a>    <span class="k">def</span> <span class="nf">process_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Finds desired varnames in body and instantiate operation&quot;&quot;&quot;</span>
         <span class="n">oper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span>
@@ -406,7 +406,7 @@
                     <span class="k">break</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;detect&quot;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">work_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
-                        <span class="n">stmt</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> 
+                        <span class="n">stmt</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                         <span class="n">stmt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
                         <span class="n">pyposast</span><span class="o">.</span><span class="n">extract_code</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">stmt</span><span class="p">),</span>
                         <span class="n">stmt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
@@ -420,15 +420,15 @@
                 <span class="p">))</span>
         <span class="k">if</span> <span class="n">body</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;insert&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">last_line</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="BodyVisitor.visit_Interactive"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor.visit_Interactive">[docs]</a>    <span class="k">def</span> <span class="nf">visit_Interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Process body of Interactive node&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process_body</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="BodyVisitor.visit_Module"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor.visit_Module">[docs]</a>    <span class="k">def</span> <span class="nf">visit_Module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Process body of Module node&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process_body</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="BodyVisitor.visit_Suite"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.BodyVisitor.visit_Suite">[docs]</a>    <span class="k">def</span> <span class="nf">visit_Suite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Processes body of Suite node&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process_body</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span></div></div>
@@ -436,7 +436,7 @@
 
 <div class="viewcode-block" id="CitationVisitor"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.CitationVisitor">[docs]</a><span class="k">class</span> <span class="nc">CitationVisitor</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeVisitor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Visit body of citation file to apply operation&quot;&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;remove import&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">varname</span> <span class="o">=</span> <span class="n">varname</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
@@ -444,7 +444,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="n">lines</span>
-        
+
 <div class="viewcode-block" id="CitationVisitor.process_body"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.CitationVisitor.process_body">[docs]</a>    <span class="k">def</span> <span class="nf">process_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find citation/import and applies the desired `.operation`&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;find&quot;</span><span class="p">,</span> <span class="s2">&quot;detect&quot;</span><span class="p">):</span>
@@ -500,15 +500,15 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;insert import&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">InsertOperation</span><span class="p">(</span><span class="n">last_line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">add_line</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-          
+
 <div class="viewcode-block" id="CitationVisitor.visit_Interactive"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.CitationVisitor.visit_Interactive">[docs]</a>    <span class="k">def</span> <span class="nf">visit_Interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Process body of Interactive node&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process_body</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="CitationVisitor.visit_Module"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.CitationVisitor.visit_Module">[docs]</a>    <span class="k">def</span> <span class="nf">visit_Module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Process body of Module node&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process_body</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="CitationVisitor.visit_Suite"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.CitationVisitor.visit_Suite">[docs]</a>    <span class="k">def</span> <span class="nf">visit_Suite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Processes body of Suite node&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process_body</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span></div></div>
@@ -592,7 +592,7 @@
     <span class="n">year</span> <span class="o">=</span> <span class="n">discover_year</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="n">citation_file</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="n">lines</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    
+
     <span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">doing</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">while</span> <span class="n">doing</span><span class="p">:</span>
@@ -602,7 +602,7 @@
         <span class="n">tyear</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d\d\d\d&quot;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tyear</span><span class="p">:</span>
             <span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">target</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">tyear</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))))</span>
-    
+
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-Remove Import:&quot;</span><span class="p">,</span> <span class="n">varname</span><span class="p">)</span>
     <span class="n">citation_operation</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="s2">&quot;remove import&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
@@ -622,7 +622,7 @@
     <span class="n">year</span> <span class="o">=</span> <span class="n">discover_year</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="n">citation_file</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="n">lines</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    
+
     <span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">doing</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">while</span> <span class="n">doing</span><span class="p">:</span>
@@ -632,7 +632,7 @@
         <span class="n">syear</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d\d\d\d&quot;</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">syear</span><span class="p">:</span>
             <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">source</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">syear</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))))</span>
-        
+
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-Remove Import:&quot;</span><span class="p">,</span> <span class="n">varname</span><span class="p">)</span>
     <span class="n">citation_operation</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="s2">&quot;remove import&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span>
@@ -761,7 +761,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;y</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_year</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">rlines</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">work_operation</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="s2">&quot;insert&quot;</span><span class="p">,</span> <span class="n">visitor</span><span class="o">.</span><span class="n">old</span><span class="p">)</span>
-    
+
     <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">work_citations</span><span class="p">:</span>
         <span class="n">rlines</span> <span class="o">=</span> <span class="n">rename_citation</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">original_name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">new_year</span><span class="o">=</span><span class="n">new_year</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dry_run</span><span class="p">:</span>
@@ -772,7 +772,7 @@
 
 
 <div class="viewcode-block" id="set_attribute"><a class="viewcode-back" href="../../snowballing/dbmanager.html#snowballing.dbmanager.set_attribute">[docs]</a><span class="k">def</span> <span class="nf">set_attribute</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set attribute for work </span>
+    <span class="sd">&quot;&quot;&quot;Set attribute for work</span>
 
 <span class="sd">    Arguments:</span>
 
@@ -819,9 +819,9 @@
 <span class="sd">    * `ratio` -- comparison threshold for existing work</span>
 
 <span class="sd">    * `dry_run` -- do not apply changes to the database</span>
-<span class="sd">    </span>
+
 <span class="sd">    Example::</span>
-<span class="sd">    </span>
+
 <span class="sd">        insert(&#39;&#39;&#39;</span>
 <span class="sd">        pimentel2016a = DB(WorkSnowball(</span>
 <span class="sd">            2016, &quot;Tracking and analyzing the evolution of provenance from scripts&quot;,</span>
@@ -831,7 +831,7 @@
 <span class="sd">            pp=&quot;16--28&quot;,</span>
 <span class="sd">            entrytype=&quot;inproceedings&quot;,</span>
 <span class="sd">        ))</span>
-<span class="sd">        </span>
+
 <span class="sd">        DB(Citation(</span>
 <span class="sd">            pimentel2016a, murta2014a, ref=&quot;[14]&quot;,</span>
 <span class="sd">            contexts=[</span>
@@ -843,7 +843,7 @@
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">work_operation</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;detect&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
-    
+
     <span class="n">newnames</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;work_list&quot;</span><span class="p">]:</span>
         <span class="n">newnames</span><span class="p">[</span><span class="n">work</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">insert_work</span><span class="p">(</span><span class="o">*</span><span class="n">work</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="n">ratio</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -890,7 +890,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

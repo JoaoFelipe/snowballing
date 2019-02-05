@@ -8,7 +8,7 @@ from itertools import groupby
 from pathlib import Path
 from textwrap import dedent
 
-from ipywidgets import Text, ToggleButton, IntSlider, VBox, HBox, Box, Button
+from ipywidgets import Text, ToggleButton, IntSlider, VBox, HBox, Box, Button, Output
 from ipywidgets import ColorPicker
 
 from IPython.display import SVG, clear_output
@@ -54,7 +54,7 @@ def set_positions(work_list, graph_config=None):
     """Set positions for each work
 
     Arguments:
-    
+
     * `work_list` -- list of work
 
     Keyword arguments:
@@ -100,12 +100,12 @@ def set_positions(work_list, graph_config=None):
             work._year_index = len(rows[work._i])
             rows[work._i].append(work)
         years[tyear] = Year(
-            tyear, prev, by_year[tyear], i, 
+            tyear, prev, by_year[tyear], i,
             dist=graph_config.dist_x, r=graph_config.margin_left
         )
         prev = tyear
         max_in_one_year = max(max_in_one_year, len(by_year[tyear]))
-        
+
     return years, rows, max_in_one_year
 
 
@@ -154,20 +154,20 @@ def create_graph(name, work_list, references, graph_config=None):
         years[tyear].draw(dwg)
         tyear = years[tyear].next_year
 
-    from xml.etree.ElementTree import tostring 
+    from xml.etree.ElementTree import tostring
     dwg.tostring = lambda self=dwg: tostring(self.get_xml()).decode("utf-8")
     dwg.save()
     return dwg
 
 
-class Graph(Box):
+class Graph(VBox):
     """Graph widget class for creating interactive graphs
 
     Keyword arguments:
 
     * `name` -- graph name
     * `delayed` -- use a draw button instead of updating on every change
-    * `**kwargs` -- default configurations for the graph according to 
+    * `**kwargs` -- default configurations for the graph according to
       GraphConfig attributes and category names
     """
 
@@ -179,15 +179,15 @@ class Graph(Box):
         self._svg_name = ""
         self._initial = kwargs
         self.delayed = delayed
-        
+
         self.graph_name = name
         self.toggle_widgets = OrderedDict()
         self.color_widgets = OrderedDict()
         self.font_color_widgets = OrderedDict()
-        
+
         self.filter_in_widget = Text(description="Filter In", value=kwargs.get("filter_in", ""))
         self.filter_out_widget = Text(description="Filter Out", value=kwargs.get("filter_out", ""))
-        
+
         self.r_widget = self.slider("R", "r", 5, 70, 1, 21, fn=self.update_r_widget)
         self.margin_widget = self.slider("Margin", "margin", 5, 170, 1, 59)
         self.margin_left_widget = self.slider("M. Left", "margin_left", 5, 170, 1, 21)
@@ -195,12 +195,14 @@ class Graph(Box):
         self.dist_y_widget = self.slider("Dist. Y", "dist_y", 5, 170, 1, 76)
         self.letters_widget = self.slider("Letters", "letters", 1, 40, 1, 7)
         self.by_year_widget = self.slider("By Year", "max_by_year", 0, 50, 1, 5)
-        
+
         self.places_widget = ToggleButton(description="Places",
                                           value=kwargs.get("places", False))
         self.references_widget = ToggleButton(description="References",
                                               value=kwargs.get("references", True))
         self.delayed_widget = Button(description="Draw")
+
+        self.output_widget = Output()
 
 
         self.filter_in_widget.observe(self.update_widget, "value")
@@ -208,31 +210,34 @@ class Graph(Box):
         self.places_widget.observe(self.update_widget, "value")
         self.references_widget.observe(self.update_widget, "value")
         self.delayed_widget.on_click(self.delayed_draw)
-        
+
         self.create_widgets()
-        
+
         self.update_r_widget()
 
         super(Graph, self).__init__([
-            Box(
-                [
-                    self.filter_in_widget, self.filter_out_widget
-                ] + 
-                list(self.toggle_widgets.values()) + 
-                [
-                    HBox([w1, w2])
-                    for w1, w2 in zip(self.color_widgets.values(), self.font_color_widgets.values())
-                ] +
-                [
-                    self.places_widget, self.references_widget
-                ] +
-                ([self.delayed_widget] if delayed else [])
-            ),
-            VBox([
-                self.r_widget, self.margin_widget, self.margin_left_widget,
-                self.dist_x_widget, self.dist_y_widget,
-                self.letters_widget, self.by_year_widget,
-            ])
+            HBox([
+                VBox(
+                    [
+                        self.filter_in_widget, self.filter_out_widget
+                    ] +
+                    list(self.toggle_widgets.values()) +
+                    [
+                        HBox([w1, w2])
+                        for w1, w2 in zip(self.color_widgets.values(), self.font_color_widgets.values())
+                    ] +
+                    [
+                        self.places_widget, self.references_widget
+                    ] +
+                    ([self.delayed_widget] if delayed else [])
+                ),
+                VBox([
+                    self.r_widget, self.margin_widget, self.margin_left_widget,
+                    self.dist_x_widget, self.dist_y_widget,
+                    self.letters_widget, self.by_year_widget,
+                ]),
+            ]),
+            self.output_widget
         ])
         self.layout.display = 'flex'
         self.layout.align_items = 'stretch'
@@ -260,7 +265,7 @@ class Graph(Box):
         """Callback for generic widgets"""
         self._display_stack += 1
         self.display()
-        
+
     def update_r_widget(self, *args):
         """Callback for updating r_widget value"""
         self._display_stack += 1
@@ -280,13 +285,13 @@ class Graph(Box):
         self.letters_widget.value = min(letters_max, self.letters_widget.value)
         self.letters_widget.max = letters_max
         self.display()
-        
+
     def visible_classes(self):
         """Generate classes"""
         for class_ in config.CLASSES:
             if class_[2] in ("display", "hide"):
                 yield class_
-        
+
     def create_category(self, name, attr, value, color, font_color):
         """Create category widget"""
         VIS = ['none', '']
@@ -303,7 +308,7 @@ class Graph(Box):
         wcolor.observe(self.update_widget, "value")
         wfont_color.observe(self.update_widget, "value")
         visibility()
-        
+
     def create_widgets(self):
         """Create custom categories"""
         for class_ in self.visible_classes():
@@ -312,13 +317,13 @@ class Graph(Box):
                 (class_[2] == "display"),
                 class_[3], class_[4],
             )
-            
+
     def graph(self):
         """Create graph"""
         reload()
         work_list = load_work()
         references = load_citations()
-        
+
         self._svg_name = str(Path("output") / (self.graph_name + ".svg"))
         self._display_categories = {
             key for key, widget in self.toggle_widgets.items()
@@ -326,7 +331,7 @@ class Graph(Box):
         }
         self._filter_in = self.filter_in_widget.value.lower()
         self._filter_out = self.filter_out_widget.value.lower()
-        
+
         work_list = list(filter(self.filter_work, work_list))
         ref_list = []
         if self.references_widget.value:
@@ -334,7 +339,7 @@ class Graph(Box):
                 lambda x: self.filter_work(x.citation) and self.filter_work(x.work),
                 references
             ))
-            
+
         graph_config = GraphConfig()
         graph_config.r = self.r_widget.value
         graph_config.margin = self.margin_widget.value
@@ -345,14 +350,14 @@ class Graph(Box):
         graph_config.max_by_year = self.by_year_widget.value
         graph_config.draw_place = self.places_widget.value
         graph_config.fill_color = self.work_colors
-        
+
         create_graph(self._svg_name, work_list, ref_list, graph_config)
         return work_list, ref_list
 
     def work_key(self, work):
         """Return work category"""
         return work.category
-    
+
     def work_colors(self, work):
         """Return colors for work"""
         key = self.work_key(work)
@@ -362,7 +367,7 @@ class Graph(Box):
             self.color_widgets[key].value,
             self.font_color_widgets[key].value
         )
-    
+
     def filter_work(self, work):
         """Filter work"""
         key = self.work_key(work)
@@ -375,7 +380,7 @@ class Graph(Box):
             if self._filter_in in str(getattr(work, attr)).lower():
                 return True
         return False
-        
+
     def display(self, *args):
         """Display interactive graph"""
         if self._display_stack:
@@ -384,40 +389,41 @@ class Graph(Box):
             if self._display_stack:
                 # Skip display if other widgets will invoke display soon
                 return False
-        clear_output()
-        work_list, references = self.graph()
-        display(self._svg_name)
-        svg = SVG(self._svg_name)
-        svg._data = svg._data[:4] + ' class="refgraph"' + svg._data[4:]
-        display(svg)
-        
-        interaction = """
-            $(".hoverable polyline, .hoverable line").mouseenter(
-                function(e) {
-                    //e.stopPropagation();
-                    $(this).css("stroke", "blue");
-                    $(this).css("stroke-width", "3px");
-                }).mouseleave(
-                function() {
-                    $(this).css("stroke", "black");
-                    $(this).css("stroke-width", "inherit");
-                });
-        """
-        display(Javascript(interaction))
-        display(HTML("""
-            <script type="text/javascript">
-                %s
+        self.output_widget.clear_output()
+        with self.output_widget:
+            work_list, references = self.graph()
+            display(self._svg_name)
+            svg = SVG(self._svg_name)
+            svg._data = svg._data[:4] + ' class="refgraph"' + svg._data[4:]
+            display(svg)
 
-                require(["./svg-pan-zoom"], function(svgPanZoom) {
-                    svgPanZoom('.refgraph', {'minZoom': 0.1});
-                });
-            </script> 
-        """ % (
-            open(
-                Path(__file__) / ".." / ".." /
-                "resources" / "svg-pan-zoom.min.js"
-            ).read(),
-        )))
+            interaction = """
+                $(".hoverable polyline, .hoverable line").mouseenter(
+                    function(e) {
+                        //e.stopPropagation();
+                        $(this).css("stroke", "blue");
+                        $(this).css("stroke-width", "3px");
+                    }).mouseleave(
+                    function() {
+                        $(this).css("stroke", "black");
+                        $(this).css("stroke-width", "inherit");
+                    });
+            """
+            display(Javascript(interaction))
+            display(HTML("""
+                <script type="text/javascript">
+                    %s
+
+                    require(["./svg-pan-zoom"], function(svgPanZoom) {
+                        svgPanZoom('.refgraph', {'minZoom': 0.1});
+                    });
+                </script>
+            """ % (
+                open(
+                    Path(__file__) / ".." / ".." /
+                    "resources" / "svg-pan-zoom.min.js"
+                ).read(),
+            )))
 
         return True
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>snowballing.py &mdash; snowballing 0.1.8 documentation</title>
+  <title>snowballing.py &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../index.html"/>
-        <link rel="next" title="utils.py" href="utils.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../index.html"/>
+        <link rel="next" title="strategies.py" href="strategies.html"/>
         <link rel="prev" title="selenium_scholar.py" href="selenium_scholar.html"/> 
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -113,15 +113,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#scholarupdate">ScholarUpdate</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#create-provenance">create_provenance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#log-to-provn">log_to_provn</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#snowballing">snowballing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step">Step</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -210,7 +204,7 @@ and curate the snowballing</p>
 </li>
 <li><p class="first">Text</p>
 <ul class="simple">
-<li>Removes line breaks and diacricts from text. Use it to copy text from 
+<li>Removes line breaks and diacricts from text. Use it to copy text from
 pdf documents</li>
 </ul>
 </li>
@@ -491,159 +485,6 @@ reference</p>
 
 </div>
 </div>
-<div class="section" id="analysis">
-<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="create-provenance">
-<h3>create_provenance<a class="headerlink" href="#create-provenance" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="snowballing.snowballing.create_provenance">
-<code class="descname">create_provenance</code><span class="sig-paren">(</span><em>initial_set</em>, <em>filter_function=None</em>, <em>backward_first=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#create_provenance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.create_provenance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Produce snowballing provenance</p>
-<p>Arguments:</p>
-<ul class="simple">
-<li><cite>initial_set</cite> &#8211; start set of the snowballing</li>
-</ul>
-<p>Keyword arguments:</p>
-<ul class="simple">
-<li><cite>filter_function</cite> &#8211; function for filtering results<ul>
-<li>By default it selects work with category == &#8216;snowball&#8217;</li>
-</ul>
-</li>
-<li><cite>backward_first</cite> &#8211; order of the snowball<ul>
-<li>By default it applies backward snowballing first</li>
-</ul>
-</li>
-</ul>
-<p>Returns: frontier, log, visited</p>
-<p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">frontier</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">visited</span> <span class="o">=</span> <span class="n">create_provenance</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">frontier</span><span class="p">)</span>
-<span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">Step(name=&#39;start&#39;, new_references=1, new_related=1, total_visited=1, total_related=1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">Step(name=&#39;backward&#39;, new_references=1, new_related=0, total_visited=2, total_related=1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="go">Step(name=&#39;forward&#39;, new_references=1, new_related=0, total_visited=3, total_related=1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span>
-<span class="go">3</span>
-
-<span class="go">Forward first:</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">frontier</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">visited</span> <span class="o">=</span> <span class="n">create_provenance</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">},</span> <span class="n">backward_first</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">frontier</span><span class="p">)</span>
-<span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">Step(name=&#39;start&#39;, new_references=1, new_related=1, total_visited=1, total_related=1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">Step(name=&#39;forward&#39;, new_references=1, new_related=0, total_visited=2, total_related=1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="go">Step(name=&#39;backward&#39;, new_references=1, new_related=0, total_visited=3, total_related=1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</div>
-<div class="section" id="log-to-provn">
-<h3>log_to_provn<a class="headerlink" href="#log-to-provn" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="snowballing.snowballing.log_to_provn">
-<code class="descname">log_to_provn</code><span class="sig-paren">(</span><em>log</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#log_to_provn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.log_to_provn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert log of steps (produced by the snowballing function) into provn</p>
-<p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">frontier</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">visited</span> <span class="o">=</span> <span class="n">create_provenance</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">},</span> <span class="n">backward_first</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">log_to_provn</span><span class="p">(</span><span class="n">log</span><span class="p">))</span>
-<span class="go">document</span>
-<span class="go">  default &lt;http://example.org/&gt;</span>
-
-<span class="go">  activity(start, -, -)</span>
-<span class="go">  entity(s0, [type=&quot;Set&quot;, length=&quot;1&quot;])</span>
-<span class="go">  wasGeneratedBy(g0; s0, start, -)</span>
-
-<span class="go">  activity(forward1, -, -, [found=&quot;1&quot;, related=&quot;0&quot;])</span>
-<span class="go">  used(u0; forward1, s0, -)</span>
-
-<span class="go">  activity(backward1, -, -, [found=&quot;1&quot;, related=&quot;0&quot;])</span>
-<span class="go">  used(u1; backward1, s0, -)</span>
-
-<span class="go">endDocument</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</div>
-<div class="section" id="snowballing">
-<h3>snowballing<a class="headerlink" href="#snowballing" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="snowballing.snowballing.snowballing">
-<code class="descname">snowballing</code><span class="sig-paren">(</span><em>initial_set</em>, <em>filter_function=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#snowballing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.snowballing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Context manager for helping producing snowballing provenance</p>
-<p>By default, the filter_function selects work with &#8220;snowball&#8221; category</p>
-<p>Returns backward, forward, log, visited:</p>
-<ul class="simple">
-<li>backward is a function that expands the frontier following backward refs</li>
-<li>forward is a function that expands the frontier following forward refs</li>
-<li>log is a list of steps</li>
-<li>visited is a set of references</li>
-</ul>
-</dd></dl>
-
-</div>
-<div class="section" id="step">
-<h3>Step<a class="headerlink" href="#step" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt id="snowballing.snowballing.Step">
-<em class="property">class </em><code class="descname">Step</code><span class="sig-paren">(</span><em>name</em>, <em>new_references</em>, <em>new_related</em>, <em>total_visited</em>, <em>total_related</em><span class="sig-paren">)</span><a class="headerlink" href="#snowballing.snowballing.Step" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
-<dl class="attribute">
-<dt id="snowballing.snowballing.Step.name">
-<code class="descname">name</code><a class="headerlink" href="#snowballing.snowballing.Step.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="snowballing.snowballing.Step.new_references">
-<code class="descname">new_references</code><a class="headerlink" href="#snowballing.snowballing.Step.new_references" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="snowballing.snowballing.Step.new_related">
-<code class="descname">new_related</code><a class="headerlink" href="#snowballing.snowballing.Step.new_related" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 2</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="snowballing.snowballing.Step.total_related">
-<code class="descname">total_related</code><a class="headerlink" href="#snowballing.snowballing.Step.total_related" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 4</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="snowballing.snowballing.Step.total_visited">
-<code class="descname">total_visited</code><a class="headerlink" href="#snowballing.snowballing.Step.total_visited" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 3</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-</div>
 </div>
 
 
@@ -656,7 +497,7 @@ reference</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="utils.html" class="btn btn-neutral float-right" title="utils.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="strategies.html" class="btn btn-neutral float-right" title="strategies.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="selenium_scholar.html" class="btn btn-neutral" title="selenium_scholar.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -690,7 +531,7 @@ reference</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

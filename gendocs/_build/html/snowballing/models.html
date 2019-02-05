@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>models.py &mdash; snowballing 0.1.8 documentation</title>
+  <title>models.py &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../index.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../index.html"/>
         <link rel="next" title="operations.py" href="operations.html"/>
         <link rel="prev" title="jupyter_utils.py" href="jupyter_utils.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -116,6 +116,7 @@
 <li class="toctree-l1"><a class="reference internal" href="scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -184,7 +185,7 @@
             
   <div class="section" id="module-snowballing.models">
 <span id="models-py"></span><h1>models.py<a class="headerlink" href="#module-snowballing.models" title="Permalink to this headline">¶</a></h1>
-<p>This module contains classes for defining the database and producing the 
+<p>This module contains classes for defining the database and producing the
 citation graph</p>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
@@ -248,7 +249,7 @@ call <code class="xref py py-func docutils literal"><span class="pre">snowvallin
 <blockquote>
 <div><ul class="simple">
 <li>The tuple can have two elements if the authors match: (year, title)</li>
-<li>Use year = 0, if the citation on google scholar doesn&#8217;t have the 
+<li>Use year = 0, if the citation on google scholar doesn&#8217;t have the
 year information</li>
 </ul>
 </div></blockquote>
@@ -259,7 +260,7 @@ year information</li>
 </li>
 <li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">scholar</span></code> &#8211; url of the work in google scholar (optional)</p>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">scholar_ok</span></code> &#8211; status of the work according to a google scholar 
+<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">scholar_ok</span></code> &#8211; status of the work according to a google scholar
 curation (optional)</p>
 <ul class="simple">
 <li>True means that we already merged google scholar&#8217;s bibtex to the work</li>
@@ -279,7 +280,7 @@ about the work.</p>
 <ul class="simple">
 <li><a class="reference internal" href="#snowballing.models.Work.category" title="snowballing.models.Work.category"><code class="xref py py-attr docutils literal"><span class="pre">category</span></code></a> &#8211; work status in the snowballing</li>
 <li><code class="xref py py-attr docutils literal"><span class="pre">tyear</span></code> &#8211; year object for drawing</li>
-<li><a class="reference internal" href="#snowballing.models.Work.ignore" title="snowballing.models.Work.ignore"><code class="xref py py-attr docutils literal"><span class="pre">ignore</span></code></a> &#8211; set that specifies ignore attributes in titles 
+<li><a class="reference internal" href="#snowballing.models.Work.ignore" title="snowballing.models.Work.ignore"><code class="xref py py-attr docutils literal"><span class="pre">ignore</span></code></a> &#8211; set that specifies ignore attributes in titles
 (<code class="xref py py-class docutils literal"><span class="pre">WithTitle</span></code>)</li>
 <li><a class="reference internal" href="#snowballing.models.Work.draw" title="snowballing.models.Work.draw"><code class="xref py py-meth docutils literal"><span class="pre">draw()</span></code></a> &#8211; method that draws the work</li>
 <li><code class="xref py py-attr docutils literal"><span class="pre">_x</span></code> &#8211; x position for drawing the work</li>
@@ -332,7 +333,7 @@ about the work.</p>
 
 <dl class="attribute">
 <dt id="snowballing.models.Work.ignore">
-<code class="descname">ignore</code><em class="property"> = {'_year_index', '_x', '_r', 'name', '_i', 'display', '_letters', 'year', 'authors', '_y'}</em><a class="headerlink" href="#snowballing.models.Work.ignore" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ignore</code><em class="property"> = {'name', '_x', '_i', 'display', 'year', '_year_index', 'authors', '_letters', '_y', '_r'}</em><a class="headerlink" href="#snowballing.models.Work.ignore" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -573,7 +574,7 @@ about the citation.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

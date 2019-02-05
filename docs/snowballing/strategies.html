@@ -1,0 +1,701 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>strategies.py &mdash; snowballing 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../index.html"/>
+        <link rel="next" title="utils.py" href="utils.html"/>
+        <link rel="prev" title="snowballing.py" href="snowballing.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">strategies.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#strategy">Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#state">State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step">Step</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snowballing</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>strategies.py</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/snowballing/strategies.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-snowballing.strategies">
+<span id="strategies-py"></span><h1>strategies.py<a class="headerlink" href="#module-snowballing.strategies" title="Permalink to this headline">¶</a></h1>
+<p>This module provides functions to describe the snowballing strategies</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="strategy">
+<h3>Strategy<a class="headerlink" href="#strategy" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.strategies.Strategy">
+<em class="property">class </em><code class="descname">Strategy</code><span class="sig-paren">(</span><em>initial_set</em>, <em>filter_function=None</em>, <em>visited=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base Strategy class</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>initial_set</cite> &#8211; start set of the snowballing</li>
+</ul>
+<p>Keyword arguments:</p>
+<ul class="simple">
+<li><cite>filter_function</cite> &#8211; function for filtering results<ul>
+<li>By default it selects work with category == &#8216;snowball&#8217;</li>
+</ul>
+</li>
+<li><cite>visited</cite> &#8211; visited set of the start start<ul>
+<li>By default it is the initial_set</li>
+</ul>
+</li>
+</ul>
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Follow backward references on frontier</p>
+<p>Returns new frontier and target set name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.bb">
+<code class="descname">bb</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.bb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.bb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply sequences of backward</p>
+<p>B*:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s0</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s1</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s2</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">bb</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.bbff">
+<code class="descname">bbff</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.bbff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.bbff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply sequences of backward. Then apply sequences of forward</p>
+<p>B*F*:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s0</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s1</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s2</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s3</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s4</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">bbff</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.bfbf">
+<code class="descname">bfbf</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.bfbf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.bfbf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alternates backward and forward</p>
+<p>(BF)*:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s0</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s1</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s2</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s3</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s4</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">fbfb</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.fbfb">
+<code class="descname">fbfb</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.fbfb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.fbfb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alternates forward and backward</p>
+<p>(FB)*:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s0</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s1</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s2</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s3</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s4</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">fbfb</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.ff">
+<code class="descname">ff</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.ff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.ff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply sequences of forward</p>
+<p>F*:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s0</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s1</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s2</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">ff</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.ffbb">
+<code class="descname">ffbb</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.ffbb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.ffbb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply sequences of forward. Then apply sequences of backward</p>
+<p>F*B*:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s0</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s1</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s2</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s3</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s4</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">ffbb</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Follow forward references on frontier</p>
+<p>Returns new frontier and target set name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.s2bbff2u">
+<code class="descname">s2bbff2u</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.s2bbff2u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.s2bbff2u" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply all forward and all backward in parallel. Then join</p>
+<p>S(B*, F*):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">f</span> <span class="o">-</span> <span class="n">s1</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s2</span>
+  <span class="o">/</span>                \
+<span class="n">s0</span>                   <span class="n">U</span> <span class="o">-</span> <span class="n">s5</span>
+  \                <span class="o">/</span>
+    <span class="n">b</span> <span class="o">-</span> <span class="n">s3</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s4</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">s2ffbb2u</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.s2ffbb2u">
+<code class="descname">s2ffbb2u</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#snowballing.strategies.Strategy.s2ffbb2u" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply all forward and all backward in parallel. Then join</p>
+<p>S(B*, F*):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">f</span> <span class="o">-</span> <span class="n">s1</span> <span class="o">&lt;-</span><span class="n">f</span><span class="o">-</span> <span class="n">s2</span>
+  <span class="o">/</span>                \
+<span class="n">s0</span>                   <span class="n">U</span> <span class="o">-</span> <span class="n">s5</span>
+  \                <span class="o">/</span>
+    <span class="n">b</span> <span class="o">-</span> <span class="n">s3</span> <span class="o">&lt;-</span><span class="n">b</span><span class="o">-</span> <span class="n">s4</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">s2ffbb2u</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.sbfu">
+<code class="descname">sbfu</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#Strategy.sbfu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.Strategy.sbfu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply forward and backward in parallel once, join results and repeat</p>
+<p>S(B, F)*:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">f</span> <span class="o">-</span> <span class="n">s1</span>           <span class="n">f</span> <span class="o">-</span> <span class="n">s4</span>
+  <span class="o">/</span>        \       <span class="o">/</span>        \
+<span class="n">s0</span>           <span class="n">U</span> <span class="o">-</span> <span class="n">s3</span>           <span class="n">U</span> <span class="o">-</span> <span class="n">s6</span>
+  \        <span class="o">/</span>       \        <span class="o">/</span>
+    <span class="n">b</span> <span class="o">-</span> <span class="n">s2</span>           <span class="n">b</span> <span class="o">-</span> <span class="n">s5</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">sbfu</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.Strategy.sfbu">
+<code class="descname">sfbu</code><span class="sig-paren">(</span><em>state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#snowballing.strategies.Strategy.sfbu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply forward and backward in parallel once, join results and repeat</p>
+<p>S(B, F)*:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">f</span> <span class="o">-</span> <span class="n">s1</span>           <span class="n">f</span> <span class="o">-</span> <span class="n">s4</span>
+  <span class="o">/</span>        \       <span class="o">/</span>        \
+<span class="n">s0</span>           <span class="n">U</span> <span class="o">-</span> <span class="n">s3</span>           <span class="n">U</span> <span class="o">-</span> <span class="n">s6</span>
+  \        <span class="o">/</span>       \        <span class="o">/</span>
+    <span class="n">b</span> <span class="o">-</span> <span class="n">s2</span>           <span class="n">b</span> <span class="o">-</span> <span class="n">s5</span>
+</pre></div>
+</div>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">sbfu</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">related</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="state">
+<h3>State<a class="headerlink" href="#state" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.strategies.State">
+<em class="property">class </em><code class="descname">State</code><span class="sig-paren">(</span><em>visited=None</em>, <em>related=None</em>, <em>filter_function=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#State"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Snowballing state</p>
+<dl class="attribute">
+<dt id="snowballing.strategies.State.delta_related">
+<code class="descname">delta_related</code><a class="headerlink" href="#snowballing.strategies.State.delta_related" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares number of related</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.State.delta_visited">
+<code class="descname">delta_visited</code><a class="headerlink" href="#snowballing.strategies.State.delta_visited" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares number of related</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.State.derive">
+<code class="descname">derive</code><span class="sig-paren">(</span><em>operation</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#State.derive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.State.derive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a derived state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.State.dot">
+<code class="descname">dot</code><a class="headerlink" href="#snowballing.strategies.State.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert state provenance into dot</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">fbfb</span><span class="p">()</span><span class="o">.</span><span class="n">dot</span><span class="p">)</span>
+<span class="go">digraph G {</span>
+<span class="go">  rankdir=&quot;RL&quot;;</span>
+
+<span class="go">  s2 [label=&quot;s2\nvisited: 3\nrelated: 1&quot;];</span>
+<span class="go">  s2 -&gt; s1 [label=&quot;backward\nfound: 1\nrelated: 0&quot;];</span>
+
+<span class="go">  s1 [label=&quot;s1\nvisited: 2\nrelated: 1&quot;];</span>
+<span class="go">  s1 -&gt; s0 [label=&quot;forward\nfound: 1\nrelated: 0&quot;];</span>
+
+<span class="go">  s0 [label=&quot;s0\nvisited: 1\nrelated: 1&quot;];</span>
+
+<span class="go">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">None</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.State.last_id">
+<code class="descname">last_id</code><em class="property"> = -1</em><a class="headerlink" href="#snowballing.strategies.State.last_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.State.log">
+<code class="descname">log</code><a class="headerlink" href="#snowballing.strategies.State.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates log list</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="snowballing.strategies.State.new_name">
+<em class="property">classmethod </em><code class="descname">new_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#State.new_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.State.new_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate new name for SeedSet</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.State.provn">
+<code class="descname">provn</code><a class="headerlink" href="#snowballing.strategies.State.provn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert state provenance into provn</p>
+<p>Doctest:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Strategy</span><span class="p">({</span><span class="n">murta2014a</span><span class="p">})</span><span class="o">.</span><span class="n">fbfb</span><span class="p">()</span><span class="o">.</span><span class="n">provn</span><span class="p">)</span>
+<span class="go">document</span>
+<span class="go">  default &lt;http://example.org/&gt;</span>
+
+<span class="go">  entity(s2, [type=&quot;Set&quot;, visited=&quot;3&quot;, related=&quot;1&quot;])</span>
+<span class="go">  activity(backward2, -, -, [found=&quot;1&quot;, related=&quot;0&quot;])</span>
+<span class="go">  used(u0; backward2, s1, -)</span>
+<span class="go">  wasGeneratedBy(g0; s2, backward2, -)</span>
+<span class="go">  wasDerivedFrom(s2, s1, backward2, g0, u0, [prov:type=&quot;prov:Revision&quot;])</span>
+
+<span class="go">  entity(s1, [type=&quot;Set&quot;, visited=&quot;2&quot;, related=&quot;1&quot;])</span>
+<span class="go">  activity(forward1, -, -, [found=&quot;1&quot;, related=&quot;0&quot;])</span>
+<span class="go">  used(u1; forward1, s0, -)</span>
+<span class="go">  wasGeneratedBy(g1; s1, forward1, -)</span>
+<span class="go">  wasDerivedFrom(s1, s0, forward1, g1, u1, [prov:type=&quot;prov:Revision&quot;])</span>
+
+<span class="go">  entity(s0, [type=&quot;Set&quot;, visited=&quot;1&quot;, related=&quot;1&quot;])</span>
+<span class="go">  activity(start, -, -)</span>
+<span class="go">  wasGeneratedBy(g2; s0, start, -)</span>
+
+<span class="go">endDocument</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.State.to_step">
+<code class="descname">to_step</code><span class="sig-paren">(</span><em>previous=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#State.to_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.State.to_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SeedSet to Step</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="snowballing.strategies.State.union">
+<em class="property">classmethod </em><code class="descname">union</code><span class="sig-paren">(</span><em>first</em>, <em>second</em>, <em>operation='union'</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#State.union"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.State.union" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a joined state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.strategies.State.visit">
+<code class="descname">visit</code><span class="sig-paren">(</span><em>work</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/strategies.html#State.visit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.strategies.State.visit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visit work</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="step">
+<h3>Step<a class="headerlink" href="#step" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.strategies.Step">
+<em class="property">class </em><code class="descname">Step</code><span class="sig-paren">(</span><em>name</em>, <em>new_references</em>, <em>new_related</em>, <em>total_visited</em>, <em>total_related</em>, <em>source</em>, <em>target</em><span class="sig-paren">)</span><a class="headerlink" href="#snowballing.strategies.Step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dl class="attribute">
+<dt id="snowballing.strategies.Step.name">
+<code class="descname">name</code><a class="headerlink" href="#snowballing.strategies.Step.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.Step.new_references">
+<code class="descname">new_references</code><a class="headerlink" href="#snowballing.strategies.Step.new_references" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.Step.new_related">
+<code class="descname">new_related</code><a class="headerlink" href="#snowballing.strategies.Step.new_related" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.Step.source">
+<code class="descname">source</code><a class="headerlink" href="#snowballing.strategies.Step.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.Step.target">
+<code class="descname">target</code><a class="headerlink" href="#snowballing.strategies.Step.target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 6</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.Step.total_related">
+<code class="descname">total_related</code><a class="headerlink" href="#snowballing.strategies.Step.total_related" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="snowballing.strategies.Step.total_visited">
+<code class="descname">total_visited</code><a class="headerlink" href="#snowballing.strategies.Step.total_visited" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="utils.html" class="btn btn-neutral float-right" title="utils.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="snowballing.html" class="btn btn-neutral" title="snowballing.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Joao Felipe Pimentel.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

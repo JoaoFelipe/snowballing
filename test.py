@@ -2,7 +2,7 @@
 import doctest
 import unittest
 from snowballing import dbindex, utils, models, config, operations, snowballing
-from snowballing import jupyter_utils, approaches
+from snowballing import jupyter_utils, approaches, strategies
 from pathlib import Path
 from example import database
 
@@ -16,6 +16,7 @@ suites.append(doctest.DocTestSuite(operations, optionflags=flags))
 suites.append(doctest.DocTestSuite(snowballing, optionflags=flags))
 suites.append(doctest.DocTestSuite(jupyter_utils, optionflags=flags))
 suites.append(doctest.DocTestSuite(approaches, optionflags=flags))
+suites.append(doctest.DocTestSuite(strategies, optionflags=flags))
 
 def load_tests(loader, tests, pattern):
     """Create test suite"""

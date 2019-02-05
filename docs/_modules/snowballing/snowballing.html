@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>snowballing.snowballing &mdash; snowballing 0.1.8 documentation</title>
+  <title>snowballing.snowballing &mdash; snowballing 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.1.8 documentation" href="../../index.html"/>
+    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
@@ -191,7 +192,7 @@
 <span class="kn">from</span> <span class="nn">IPython.utils.py3compat</span> <span class="k">import</span> <span class="n">str_to_bytes</span><span class="p">,</span> <span class="n">bytes_to_str</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">clear_output</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">Javascript</span>
 <span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">HBox</span><span class="p">,</span> <span class="n">VBox</span><span class="p">,</span> <span class="n">IntSlider</span><span class="p">,</span> <span class="n">ToggleButton</span><span class="p">,</span> <span class="n">Text</span>
-<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">Dropdown</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Tab</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Textarea</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">Dropdown</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Tab</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Textarea</span><span class="p">,</span> <span class="n">Output</span>
 
 <span class="kn">from</span> <span class="nn">.jupyter_utils</span> <span class="k">import</span> <span class="n">display_cell</span>
 <span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">consume</span><span class="p">,</span> <span class="n">find_work_by_info</span><span class="p">,</span> <span class="n">find_global_local_citation</span>
@@ -203,249 +204,30 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">config</span>
 
-<span class="n">Step</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Step&quot;</span><span class="p">,</span> <span class="s2">&quot;name new_references new_related total_visited total_related&quot;</span><span class="p">)</span>
-
-<span class="nd">@contextmanager</span>
-<div class="viewcode-block" id="snowballing"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.snowballing">[docs]</a><span class="k">def</span> <span class="nf">snowballing</span><span class="p">(</span><span class="n">initial_set</span><span class="p">,</span> <span class="n">filter_function</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Context manager for helping producing snowballing provenance</span>
-<span class="sd">    </span>
-<span class="sd">    By default, the filter_function selects work with &quot;snowball&quot; category</span>
-<span class="sd">    </span>
-<span class="sd">    Returns backward, forward, log, visited:</span>
-
-<span class="sd">    * backward is a function that expands the frontier following backward refs</span>
-<span class="sd">    </span>
-<span class="sd">    * forward is a function that expands the frontier following forward refs</span>
-<span class="sd">    </span>
-<span class="sd">    * log is a list of steps</span>
-<span class="sd">    </span>
-<span class="sd">    * visited is a set of references</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">filter_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">filter_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;snowball&quot;</span>
-
-    <span class="n">reload</span><span class="p">()</span>
-    <span class="n">ref</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-    <span class="n">rev_ref</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">cit</span> <span class="ow">in</span> <span class="n">load_citations</span><span class="p">():</span>
-        <span class="n">ref</span><span class="p">[</span><span class="n">cit</span><span class="o">.</span><span class="n">work</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cit</span><span class="o">.</span><span class="n">citation</span><span class="p">)</span>
-        <span class="n">rev_ref</span><span class="p">[</span><span class="n">cit</span><span class="o">.</span><span class="n">citation</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cit</span><span class="o">.</span><span class="n">work</span><span class="p">)</span>
-        
-    <span class="n">visited</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">initial_set</span><span class="p">)</span>
-    <span class="n">related</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">initial_set</span><span class="p">)</span>
-    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">initial_set</span><span class="p">)</span>
-    <span class="n">log</span> <span class="o">=</span> <span class="p">[</span><span class="n">Step</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)]</span>
-    
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">frontier</span><span class="p">):</span>
-        <span class="n">new_frontier</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="n">last_visited_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">frontier</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">cited</span> <span class="ow">in</span> <span class="n">ref</span><span class="p">[</span><span class="n">work</span><span class="p">]:</span>
-                <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cited</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">filter_function</span><span class="p">(</span><span class="n">cited</span><span class="p">):</span>
-                    <span class="n">new_frontier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cited</span><span class="p">)</span>
-                    <span class="n">related</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cited</span><span class="p">)</span>
-        <span class="n">new_frontier</span> <span class="o">-=</span> <span class="n">frontier</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Step</span><span class="p">(</span>
-            <span class="s2">&quot;backward&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span> <span class="o">-</span> <span class="n">last_visited_size</span><span class="p">,</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">new_frontier</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">related</span><span class="p">)</span>
-        <span class="p">))</span>
-        <span class="k">return</span> <span class="n">new_frontier</span>
-    
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">frontier</span><span class="p">):</span>
-        <span class="n">new_frontier</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="n">last_visited_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">frontier</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">citer</span> <span class="ow">in</span> <span class="n">rev_ref</span><span class="p">[</span><span class="n">work</span><span class="p">]:</span>
-                <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">citer</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">filter_function</span><span class="p">(</span><span class="n">citer</span><span class="p">):</span>
-                    <span class="n">new_frontier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">citer</span><span class="p">)</span>
-                    <span class="n">related</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">citer</span><span class="p">)</span>
-
-        <span class="n">new_frontier</span> <span class="o">-=</span> <span class="n">frontier</span> 
-        <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Step</span><span class="p">(</span>
-            <span class="s2">&quot;forward&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span> <span class="o">-</span> <span class="n">last_visited_size</span><span class="p">,</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">new_frontier</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">related</span><span class="p">)</span>
-        <span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">new_frontier</span>
-    
-    <span class="k">yield</span> <span class="n">backward</span><span class="p">,</span> <span class="n">forward</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">visited</span></div>
-
-
-<div class="viewcode-block" id="create_provenance"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.create_provenance">[docs]</a><span class="k">def</span> <span class="nf">create_provenance</span><span class="p">(</span><span class="n">initial_set</span><span class="p">,</span> <span class="n">filter_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">backward_first</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Produce snowballing provenance</span>
-
-<span class="sd">    Arguments:</span>
-
-<span class="sd">    * `initial_set` -- start set of the snowballing</span>
-
-<span class="sd">    Keyword arguments:</span>
-
-<span class="sd">    * `filter_function` -- function for filtering results</span>
-
-<span class="sd">      * By default it selects work with category == &#39;snowball&#39;</span>
-
-<span class="sd">    * `backward_first` -- order of the snowball</span>
-
-<span class="sd">      * By default it applies backward snowballing first</span>
-
-<span class="sd">    </span>
-<span class="sd">    Returns: frontier, log, visited</span>
-
-
-<span class="sd">    Doctest:</span>
-
-<span class="sd">    .. doctest::</span>
-
-<span class="sd">        &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
-<span class="sd">        &gt;&gt;&gt; reload()</span>
-<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; frontier, log, visited = create_provenance({murta2014a})</span>
-<span class="sd">        &gt;&gt;&gt; len(frontier)</span>
-<span class="sd">        1</span>
-<span class="sd">        &gt;&gt;&gt; len(log)</span>
-<span class="sd">        3</span>
-<span class="sd">        &gt;&gt;&gt; log[0]</span>
-<span class="sd">        Step(name=&#39;start&#39;, new_references=1, new_related=1, total_visited=1, total_related=1)</span>
-<span class="sd">        &gt;&gt;&gt; log[1]</span>
-<span class="sd">        Step(name=&#39;backward&#39;, new_references=1, new_related=0, total_visited=2, total_related=1)</span>
-<span class="sd">        &gt;&gt;&gt; log[2]</span>
-<span class="sd">        Step(name=&#39;forward&#39;, new_references=1, new_related=0, total_visited=3, total_related=1)</span>
-<span class="sd">        &gt;&gt;&gt; len(visited)</span>
-<span class="sd">        3</span>
-
-<span class="sd">        Forward first:</span>
-
-<span class="sd">        &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
-<span class="sd">        &gt;&gt;&gt; reload()</span>
-<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; frontier, log, visited = create_provenance({murta2014a}, backward_first=False)</span>
-<span class="sd">        &gt;&gt;&gt; len(frontier)</span>
-<span class="sd">        1</span>
-<span class="sd">        &gt;&gt;&gt; len(log)</span>
-<span class="sd">        3</span>
-<span class="sd">        &gt;&gt;&gt; log[0]</span>
-<span class="sd">        Step(name=&#39;start&#39;, new_references=1, new_related=1, total_visited=1, total_related=1)</span>
-<span class="sd">        &gt;&gt;&gt; log[1]</span>
-<span class="sd">        Step(name=&#39;forward&#39;, new_references=1, new_related=0, total_visited=2, total_related=1)</span>
-<span class="sd">        &gt;&gt;&gt; log[2]</span>
-<span class="sd">        Step(name=&#39;backward&#39;, new_references=1, new_related=0, total_visited=3, total_related=1)</span>
-<span class="sd">        &gt;&gt;&gt; len(visited)</span>
-<span class="sd">        3</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">frontier</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">initial_set</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">snowballing</span><span class="p">(</span><span class="n">frontier</span><span class="p">,</span> <span class="n">filter_function</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">backward</span><span class="p">,</span> <span class="n">forward</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">visited</span><span class="p">):</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="n">backward</span><span class="p">,</span> <span class="n">forward</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">backward_first</span><span class="p">:</span>
-            <span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="n">forward</span><span class="p">,</span> <span class="n">backward</span><span class="p">]</span>
-        <span class="n">new_frontier</span> <span class="o">=</span> <span class="n">frontier</span>
-        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
-                <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">new_frontier</span> <span class="k">else</span> <span class="mi">0</span>
-                <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="k">break</span>
-                <span class="n">new_frontier</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">frontier</span><span class="p">)</span>
-                <span class="n">frontier</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_frontier</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">frontier</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">visited</span></div>
-
-
-<div class="viewcode-block" id="log_to_provn"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.log_to_provn">[docs]</a><span class="k">def</span> <span class="nf">log_to_provn</span><span class="p">(</span><span class="n">log</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert log of steps (produced by the snowballing function) into provn</span>
-<span class="sd">    </span>
-<span class="sd">    Doctest:</span>
-
-<span class="sd">    .. doctest::</span>
-
-<span class="sd">        &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
-<span class="sd">        &gt;&gt;&gt; reload()</span>
-<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; frontier, log, visited = create_provenance({murta2014a}, backward_first=False)</span>
-<span class="sd">        &gt;&gt;&gt; print(log_to_provn(log))</span>
-<span class="sd">        document</span>
-<span class="sd">          default &lt;http://example.org/&gt;</span>
-<span class="sd">        &lt;BLANKLINE&gt;</span>
-<span class="sd">          activity(start, -, -)</span>
-<span class="sd">          entity(s0, [type=&quot;Set&quot;, length=&quot;1&quot;])</span>
-<span class="sd">          wasGeneratedBy(g0; s0, start, -)</span>
-<span class="sd">        &lt;BLANKLINE&gt;</span>
-<span class="sd">          activity(forward1, -, -, [found=&quot;1&quot;, related=&quot;0&quot;])</span>
-<span class="sd">          used(u0; forward1, s0, -)</span>
-<span class="sd">        &lt;BLANKLINE&gt;</span>
-<span class="sd">          activity(backward1, -, -, [found=&quot;1&quot;, related=&quot;0&quot;])</span>
-<span class="sd">          used(u1; backward1, s0, -)</span>
-<span class="sd">        &lt;BLANKLINE&gt;</span>
-<span class="sd">        endDocument</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">set_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="n">current_set</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;document&quot;</span><span class="p">,</span> <span class="s2">&quot;  default &lt;http://example.org/&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
-    <span class="n">actions</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
-
-    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">log</span><span class="p">:</span>
-        <span class="n">new_set</span> <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="c1"># activity</span>
-        <span class="k">if</span> <span class="n">step</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;start&quot;</span><span class="p">:</span>
-            <span class="n">activity_id</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span>
-            <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">actions</span><span class="p">[</span><span class="n">step</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">activity_id</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">actions</span><span class="p">[</span><span class="n">step</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
-            <span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;, [found=&quot;</span><span class="si">{}</span><span class="s1">&quot;, related=&quot;</span><span class="si">{}</span><span class="s1">&quot;]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">new_references</span><span class="p">,</span> <span class="n">step</span><span class="o">.</span><span class="n">new_related</span><span class="p">)</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  activity(</span><span class="si">{}</span><span class="s2">, -, -</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">activity_id</span><span class="p">,</span> <span class="n">extra</span><span class="p">))</span>
-
-        <span class="c1"># used</span>
-        <span class="k">if</span> <span class="n">set_id</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">used_id</span> <span class="o">=</span> <span class="s2">&quot;u</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actions</span><span class="p">[</span><span class="s2">&quot;used&quot;</span><span class="p">])</span>
-            <span class="n">actions</span><span class="p">[</span><span class="s2">&quot;used&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  used(</span><span class="si">{}</span><span class="s1">; </span><span class="si">{}</span><span class="s1">, s</span><span class="si">{}</span><span class="s1">, -)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">used_id</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">,</span> <span class="n">set_id</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">used_id</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
-
-        <span class="c1"># entity</span>
-        <span class="k">if</span> <span class="n">step</span><span class="o">.</span><span class="n">total_related</span> <span class="o">!=</span> <span class="n">current_set</span><span class="p">:</span>
-            <span class="n">set_id</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">new_set</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">current_set</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">total_related</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  entity(s</span><span class="si">{}</span><span class="s1">, [type=&quot;Set&quot;, length=&quot;</span><span class="si">{}</span><span class="s1">&quot;])&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">set_id</span><span class="p">,</span> <span class="n">current_set</span><span class="p">))</span>
-            <span class="n">generated_id</span> <span class="o">=</span> <span class="s2">&quot;g</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">])</span>
-            <span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  wasGeneratedBy(</span><span class="si">{}</span><span class="s1">; s</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, -)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">generated_id</span><span class="p">,</span> <span class="n">set_id</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">used_id</span> <span class="o">!=</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  wasDerivedFrom(s</span><span class="si">{}</span><span class="s1">, s</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, [prov:type=&quot;prov:Revision&quot;])&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">set_id</span><span class="p">,</span> <span class="n">set_id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">,</span> <span class="n">generated_id</span><span class="p">,</span> <span class="n">used_id</span>
-                <span class="p">))</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-
-    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;endDocument&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="Converter"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.Converter">[docs]</a><span class="k">class</span> <span class="nc">Converter</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Convert texts into other formats </span>
+    <span class="sd">&quot;&quot;&quot;Convert texts into other formats</span>
 
 <span class="sd">    Four modes are available:</span>
 
 <span class="sd">    * BibTeX</span>
-<span class="sd">      </span>
+
 <span class="sd">      * Converts bibtex to a json for inserting the reference</span>
-<span class="sd">   </span>
+
 <span class="sd">    * Text</span>
-<span class="sd">      </span>
-<span class="sd">      * Removes line breaks and diacricts from text. Use it to copy text from </span>
+
+<span class="sd">      * Removes line breaks and diacricts from text. Use it to copy text from</span>
 <span class="sd">        pdf documents</span>
-<span class="sd">    </span>
+
 <span class="sd">    * [N] author name place other year</span>
-<span class="sd">      </span>
+
 <span class="sd">      * Converts references in this format to a json for inserting the</span>
 <span class="sd">        reference</span>
-<span class="sd">    </span>
+
 <span class="sd">      * Consider each space as a line break</span>
-<span class="sd">        </span>
+
 <span class="sd">      * The &quot;other&quot; field can be created using multiple (or 0) lines</span>
-<span class="sd">        </span>
+
 <span class="sd">        * It also can define the attribute names using &#39;attr=value&#39;</span>
 
 <span class="sd">        * For example::</span>
@@ -460,12 +242,12 @@
 
 <span class="sd">              [2]</span>
 <span class="sd">              ...</span>
-<span class="sd">    </span>
+
 <span class="sd">    * Quoted</span>
-<span class="sd">      </span>
+
 <span class="sd">      * Surrounds text with quotation marks and add spaces to fit the citation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_widget</span> <span class="o">=</span> <span class="n">Dropdown</span><span class="p">(</span>
             <span class="n">options</span><span class="o">=</span><span class="p">{</span>
@@ -490,23 +272,24 @@
             <span class="n">HBox</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">button_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_widget</span><span class="p">]),</span>
             <span class="n">HBox</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">frompdf_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">])</span>
         <span class="p">])</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">frompdf_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s2">&quot;500px&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="s2">&quot;500px&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frompdf_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;50%&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;50%&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backup</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ipython</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span>
-        
+
 <div class="viewcode-block" id="Converter.write"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.Converter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Writes right column according to selected mode &quot;&quot;&quot;</span>
         <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_widget</span><span class="o">.</span><span class="n">value</span><span class="p">)(</span><span class="n">b</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="Converter.select"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.Converter.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Selects new mode. Use previous output as input &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frompdf_widget</span><span class="o">.</span><span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frompdf_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">button_widget</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_widget</span><span class="o">.</span><span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;citation&quot;</span><span class="p">,</span> <span class="s2">&quot;bibtex&quot;</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="Converter.quoted"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.Converter.quoted">[docs]</a>    <span class="k">def</span> <span class="nf">quoted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Adds quotes to value. Use it for citation &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -514,7 +297,7 @@
         <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[\r\n]+&#39;</span><span class="p">,</span> <span class="n">inputpdf</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
         <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot;,</span><span class="se">\n</span><span class="s1">        &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">result</span></div>
-        
+
 <div class="viewcode-block" id="Converter.text"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.Converter.text">[docs]</a>    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Removes line breaks and diacricts &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -531,7 +314,7 @@
             <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;. doi:&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">doi=&quot;</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">result</span></div>
-        
+
 <div class="viewcode-block" id="Converter.citation"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.Converter.citation">[docs]</a>    <span class="k">def</span> <span class="nf">citation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Produces a json based on the format [N] author name place other year &quot;&quot;&quot;</span>
         <span class="n">inputpdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frompdf_widget</span><span class="o">.</span><span class="n">value</span>
@@ -540,7 +323,7 @@
         <span class="n">incomplete</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            
+
             <span class="c1"># &#39;[N] author name place other year&#39;</span>
             <span class="n">info</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
             <span class="n">info</span><span class="p">[</span><span class="s1">&#39;citation_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -593,17 +376,21 @@
                 <span class="n">incomplete</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jresult</span><span class="p">)</span> <span class="o">-</span> <span class="n">incomplete</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">jresult</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="Converter.set_variable"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.Converter.set_variable">[docs]</a>    <span class="k">def</span> <span class="nf">set_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Creates variable &#39;article_list&#39; with resulting JSON &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ipython</span><span class="o">.</span><span class="n">user_ns</span><span class="p">[</span><span class="s1">&#39;article_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;Incomplete&quot;</span>
         <span class="p">]</span></div>
-        
+
 <div class="viewcode-block" id="Converter.browser"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.Converter.browser">[docs]</a>    <span class="k">def</span> <span class="nf">browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Presents the widget &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div>
+
+    <span class="k">def</span> <span class="nf">_ipython_display_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Displays widget &quot;&quot;&quot;</span>
+        <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ArticleNavigator"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator">[docs]</a><span class="k">class</span> <span class="nc">ArticleNavigator</span><span class="p">:</span>
@@ -619,7 +406,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">backward</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">to_display</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">custom_widgets</span> <span class="o">=</span> <span class="p">[]</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">next_article_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Next Article&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-caret-right&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_article_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span>
@@ -627,26 +414,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span> <span class="o">=</span> <span class="n">IntSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_article_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Reload Article&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-refresh&#39;</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">file_field_widget</span> <span class="o">=</span> <span class="n">ToggleButton</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;File&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">due_widget</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Due&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">place_widget</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Place&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">year_widget</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Year&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prefix_widget</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Prefix Var&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pdfpage_widget</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;PDFPage&quot;</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">work_type_widget</span> <span class="o">=</span> <span class="n">Dropdown</span><span class="p">(</span>
             <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">CLASSES</span><span class="p">],</span>
             <span class="n">value</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_CLASS</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Type&quot;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">article_number_widget</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span> <span class="o">=</span> <span class="n">Output</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">next_article_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_article</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_article_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">previous_article</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_article_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">due_widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_due</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">place_widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_place</span><span class="p">)</span>
 
@@ -654,13 +442,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">work_type_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_field_widget</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">due_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">place_widget</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">year_widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_widget</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pdfpage_widget</span><span class="p">,</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">pdfpage_widget</span><span class="p">,</span>
         <span class="p">]</span>
 
         <span class="n">hboxes</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">HBox</span><span class="p">([</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">previous_article_widget</span><span class="p">,</span> 
-                <span class="bp">self</span><span class="o">.</span><span class="n">reload_article_widget</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">previous_article_widget</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reload_article_widget</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">next_article_widget</span>
             <span class="p">]),</span>
         <span class="p">]</span>
@@ -683,7 +471,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">article_number_widget</span>
         <span class="p">]))</span>
-        
+
+        <span class="n">hboxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">VBox</span><span class="p">(</span><span class="n">hboxes</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_articles</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span>
@@ -718,13 +508,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">articles</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_article_widget</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">previous_article_widget</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_article_widget</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">article_number_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">articles</span><span class="p">)),</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">articles</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disable_show</span> <span class="o">=</span> <span class="kc">False</span></div>
-        
+
 <div class="viewcode-block" id="ArticleNavigator.erase_article_form"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.erase_article_form">[docs]</a>    <span class="k">def</span> <span class="nf">erase_article_form</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Erases form fields&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">article_number_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -740,7 +530,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pdfpage_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_widgets</span><span class="p">:</span>
             <span class="n">widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
-        
+
 <div class="viewcode-block" id="ArticleNavigator.write_due"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.write_due">[docs]</a>    <span class="k">def</span> <span class="nf">write_due</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write event for due_widget&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">due_widget</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_type_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;Work&quot;</span><span class="p">:</span>
@@ -749,22 +539,22 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">work_type_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;Work&quot;</span></div>
 
 <div class="viewcode-block" id="ArticleNavigator.write_place"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.write_place">[docs]</a>    <span class="k">def</span> <span class="nf">write_place</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Write event for place_widget&quot;&quot;&quot;</span> 
+        <span class="sd">&quot;&quot;&quot;Write event for place_widget&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">place_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;Lang&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_type_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;Work&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">work_type_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;WorkLang&quot;</span></div>
-         
+
 <div class="viewcode-block" id="ArticleNavigator.next_article"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.next_article">[docs]</a>    <span class="k">def</span> <span class="nf">next_article</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Next article click event&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">erase_article_form</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="ArticleNavigator.previous_article"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.previous_article">[docs]</a>    <span class="k">def</span> <span class="nf">previous_article</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Previous article click event&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">erase_article_form</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="ArticleNavigator.valid_articles"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.valid_articles">[docs]</a>    <span class="k">def</span> <span class="nf">valid_articles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">articles</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate valid articles&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">articles</span><span class="p">:</span>
@@ -773,7 +563,7 @@
             <span class="n">info</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
             <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">)</span>
             <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;citation_id&#39;</span><span class="p">)</span>
-            
+
             <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_work_type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Site&#39;</span><span class="p">:</span>
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;pyref&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Site(&quot;</span><span class="si">{name}</span><span class="s1">&quot;, &quot;</span><span class="si">{url}</span><span class="s1">&quot;)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">info</span><span class="p">)</span>
                 <span class="n">nwork</span> <span class="o">=</span> <span class="n">Site</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">])</span>
@@ -786,7 +576,7 @@
                 <span class="n">set_pyref</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">check_existence</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">set_place</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">check_existence</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">nwork</span> <span class="o">=</span> <span class="n">find_work_by_info</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
-            
+
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">article</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span>
                 <span class="k">continue</span>
@@ -806,7 +596,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">local_citation</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">article</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span>
                 <span class="k">continue</span></div>
-                        
+
 <div class="viewcode-block" id="ArticleNavigator.clear"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear cell and output&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable_show</span><span class="p">:</span>
@@ -814,32 +604,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">to_display</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span>
             <span class="sd">&quot;&quot;&quot;$(&#39;span:contains(&quot;# Temp&quot;)&#39;).closest(&#39;.cell&#39;).remove();&quot;&quot;&quot;</span><span class="p">))</span>
-        <span class="n">clear_output</span><span class="p">()</span></div>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="ArticleNavigator.update_info"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.update_info">[docs]</a>    <span class="k">def</span> <span class="nf">update_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update info according to widget&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="n">default</span><span class="p">:</span>
             <span class="n">info</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">value</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
-            
+
 <div class="viewcode-block" id="ArticleNavigator.show_site"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.show_site">[docs]</a>    <span class="k">def</span> <span class="nf">show_site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">article</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Display site citation&quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;# Temp</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;insert(&#39;&#39;&#39;&quot;</span>
         <span class="n">text</span> <span class="o">+=</span> <span class="n">citation_text</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">citation_var</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation_var</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span>
             <span class="n">ref</span><span class="o">=</span><span class="n">article</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;citation_id&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
             <span class="n">backward</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backward</span>
         <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&#39;&#39;&#39;, citations=&#39;</span><span class="si">{}</span><span class="s2">&#39;);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citation_file</span><span class="p">)</span>
         <span class="n">display_cell</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">clear_output</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_display</span><span class="p">:</span>
-            <span class="n">display</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_display</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s1">&#39;div&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
-            <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;div&#39;</span><span class="p">])))</span>
-        <span class="k">elif</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_display</span><span class="p">:</span>
+                <span class="n">display</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_display</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s1">&#39;div&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
+                <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;div&#39;</span><span class="p">])))</span>
+            <span class="k">elif</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">to_display</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="ArticleNavigator.show_article"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.show_article">[docs]</a>    <span class="k">def</span> <span class="nf">show_article</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">article</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
@@ -851,13 +642,13 @@
             <span class="n">text</span> <span class="o">+=</span> <span class="n">info_to_code</span><span class="p">(</span><span class="n">info</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">citation_var</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">+=</span> <span class="n">citation_text</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">citation_var</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">citation_var</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span>
                 <span class="n">ref</span><span class="o">=</span><span class="n">article</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;citation_id&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
                 <span class="n">backward</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backward</span>
             <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="n">citations</span> <span class="o">=</span> <span class="s2">&quot;, citations=&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citation_file</span><span class="p">)</span>
         <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&#39;&#39;&#39;</span><span class="si">{}</span><span class="s2">);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
-        
+
         <span class="k">if</span> <span class="n">nwork</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;pyref&#39;</span><span class="p">,</span> <span class="s1">&#39;place1&#39;</span><span class="p">,</span> <span class="s1">&#39;_work_type&#39;</span><span class="p">}:</span>
@@ -867,18 +658,19 @@
                         <span class="n">info</span><span class="p">[</span><span class="s1">&#39;pyref&#39;</span><span class="p">],</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
                     <span class="p">)</span>
         <span class="n">display_cell</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">clear_output</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_display</span><span class="p">:</span>
-            <span class="n">display</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_display</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s1">&#39;div&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
-            <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;div&#39;</span><span class="p">])))</span>
-        <span class="k">elif</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
-        <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;input value=&#39;</span><span class="si">{}</span><span class="s2">.pdf&#39; style=&#39;width: 100%&#39;&gt;&lt;/input&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;pyref&#39;</span><span class="p">])))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;place&#39;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
-            <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;input value=&#39;</span><span class="si">{}</span><span class="s2">&#39; style=&#39;width: 100%&#39;&gt;&lt;/input&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;place1&#39;</span><span class="p">])))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_display</span><span class="p">:</span>
+                <span class="n">display</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_display</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s1">&#39;div&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
+                <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;div&#39;</span><span class="p">])))</span>
+            <span class="k">elif</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+            <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;input value=&#39;</span><span class="si">{}</span><span class="s2">.pdf&#39; style=&#39;width: 100%&#39;&gt;&lt;/input&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;pyref&#39;</span><span class="p">])))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;place&#39;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+                <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;input value=&#39;</span><span class="si">{}</span><span class="s2">&#39; style=&#39;width: 100%&#39;&gt;&lt;/input&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;place1&#39;</span><span class="p">])))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">to_display</span> <span class="o">=</span> <span class="p">[]</span></div>
-        
+
 <div class="viewcode-block" id="ArticleNavigator.show"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generic display&quot;&quot;&quot;</span>
         <span class="n">_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_info</span>
@@ -890,10 +682,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable_show</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">articles</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">article</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">articles</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">selector_widget</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
-        <span class="k">if</span> <span class="s1">&#39;div&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
-            <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;div&#39;</span><span class="p">])))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;div&#39;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
+                <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;div&#39;</span><span class="p">])))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">article</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_articles</span><span class="p">([</span><span class="n">article</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_work_type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Site&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">show_site</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
@@ -903,22 +696,28 @@
             <span class="n">_up</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;due&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">due_widget</span><span class="p">)</span>
             <span class="n">_up</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;place&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">place_widget</span><span class="p">)</span>
             <span class="n">_up</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;_work_type&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_type_widget</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Work&quot;</span><span class="p">)</span>
-            
+
             <span class="k">if</span> <span class="n">_up</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">year_widget</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_up</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_widget</span><span class="p">):</span>
                 <span class="n">set_pyref</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
             <span class="n">_up</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_field_widget</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.pdf&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">_up</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdfpage_widget</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;#page=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdfpage_widget</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
-            
+
             <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_widgets</span><span class="p">:</span>
                 <span class="n">_up</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">_workattr</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>
 
-            
             <span class="bp">self</span><span class="o">.</span><span class="n">show_article</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span></div>
-            
+
 <div class="viewcode-block" id="ArticleNavigator.browser"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ArticleNavigator.browser">[docs]</a>    <span class="k">def</span> <span class="nf">browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Widget visualization&quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Press &#39;Reload Article&#39;&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div></div>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Press &#39;Reload Article&#39;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div>
+
+    <span class="k">def</span> <span class="nf">_ipython_display_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Displays widget &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Press &#39;Reload Article&#39;&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BackwardSnowballing"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.BackwardSnowballing">[docs]</a><span class="k">class</span> <span class="nc">BackwardSnowballing</span><span class="p">(</span><span class="n">ArticleNavigator</span><span class="p">):</span>
@@ -938,7 +737,7 @@
 
 <div class="viewcode-block" id="ForwardSnowballing"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ForwardSnowballing">[docs]</a><span class="k">class</span> <span class="nc">ForwardSnowballing</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Navigate on article list for insertion with forward citation&quot;&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querier</span><span class="p">,</span> <span class="n">citation_var</span><span class="p">,</span> <span class="n">citation_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">.selenium_scholar</span> <span class="k">import</span> <span class="n">URLQuery</span>
         <span class="n">reload</span><span class="p">()</span>
@@ -947,7 +746,7 @@
         <span class="n">citation_file</span> <span class="o">=</span> <span class="n">citation_file</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;citation_file&quot;</span><span class="p">,</span> <span class="n">citation_var</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span> <span class="o">=</span> <span class="n">ArticleNavigator</span><span class="p">(</span><span class="n">citation_var</span><span class="p">,</span> <span class="n">citation_file</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">force_citation_file</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">URLQuery</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">work</span><span class="o">.</span><span class="n">scholar</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Next Page&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-arrow-right&#39;</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Next Page&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-arrow-right&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Reload&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-refresh&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Previous Page&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-arrow-left&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span> <span class="o">=</span> <span class="n">ToggleButton</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">debug</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Debug&quot;</span><span class="p">)</span>
@@ -955,14 +754,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_page</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">previous_page</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">Tab</span><span class="p">([</span>
-            <span class="n">HBox</span><span class="p">([</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span><span class="p">,</span> 
-                <span class="bp">self</span><span class="o">.</span><span class="n">reload_widget</span><span class="p">,</span> 
-                <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">page_number_widget</span>
+            <span class="n">VBox</span><span class="p">([</span>
+                <span class="n">HBox</span><span class="p">([</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reload_widget</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">page_number_widget</span>
+                <span class="p">]),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">output_widget</span><span class="p">,</span>
             <span class="p">]),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">view</span>
         <span class="p">])</span>
@@ -970,12 +772,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">load</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        
+
 <div class="viewcode-block" id="ForwardSnowballing.next_page"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ForwardSnowballing.next_page">[docs]</a>    <span class="k">def</span> <span class="nf">next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets next page from scholar &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">next_page</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="ForwardSnowballing.previous_page"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ForwardSnowballing.previous_page">[docs]</a>    <span class="k">def</span> <span class="nf">previous_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets previous page from scholar &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">prev_page</span>
@@ -983,54 +785,66 @@
 
 <div class="viewcode-block" id="ForwardSnowballing.reload"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ForwardSnowballing.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reloads page &quot;&quot;&quot;</span>
-        <span class="n">clear_output</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
             <span class="n">ScholarConf</span><span class="o">.</span><span class="n">LOG_LEVEL</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ScholarConf</span><span class="o">.</span><span class="n">LOG_LEVEL</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="n">reload</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">send_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page_number_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">urlparse</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get_url</span><span class="p">())</span><span class="o">.</span><span class="n">query</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">send_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">page_number_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">urlparse</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get_url</span><span class="p">())</span><span class="o">.</span><span class="n">query</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">set_articles</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">extract_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">articles</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">set_articles</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">extract_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">articles</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">next_page</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">prev_page</span> <span class="ow">is</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="ForwardSnowballing.browser"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ForwardSnowballing.browser">[docs]</a>    <span class="k">def</span> <span class="nf">browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Presents widget &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Click on &#39;Article&#39; and press &#39;Reload Article&#39;&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div></div>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Click on &#39;Article&#39; and press &#39;Reload Article&#39;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div>
+
+    <span class="k">def</span> <span class="nf">_ipython_display_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Displays widget &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Click on &#39;Article&#39; and press &#39;Reload Article&#39;&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ScholarUpdate"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ScholarUpdate">[docs]</a><span class="k">class</span> <span class="nc">ScholarUpdate</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Widget for curating database&quot;&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querier</span><span class="p">,</span> <span class="n">worklist</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">reload</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">worklist</span> <span class="o">=</span> <span class="n">worklist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force</span> <span class="o">=</span> <span class="n">force</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">querier</span> <span class="o">=</span> <span class="n">querier</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Next Work&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-arrow-right&#39;</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Next Work&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-arrow-right&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Reload&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-refresh&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Previous Work&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;fa-arrow-left&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span> <span class="o">=</span> <span class="n">ToggleButton</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">debug</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Debug&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">textarea_widget</span> <span class="o">=</span> <span class="n">ToggleButton</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;TextArea&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number_widget</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span> <span class="o">=</span> <span class="n">Output</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_page</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">previous_page</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">textarea_widget</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">HBox</span><span class="p">([</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span><span class="p">,</span> 
-            <span class="bp">self</span><span class="o">.</span><span class="n">reload_widget</span><span class="p">,</span> 
-            <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">textarea_widget</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">page_number_widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">VBox</span><span class="p">([</span>
+            <span class="n">HBox</span><span class="p">([</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reload_widget</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">textarea_widget</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">page_number_widget</span>
+            <span class="p">]),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span>
         <span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">varname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -1038,115 +852,121 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">articles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        
+
 <div class="viewcode-block" id="ScholarUpdate.next_page"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ScholarUpdate.next_page">[docs]</a>    <span class="k">def</span> <span class="nf">next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Go to next page&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">worklist</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
-    
+
 <div class="viewcode-block" id="ScholarUpdate.previous_page"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ScholarUpdate.previous_page">[docs]</a>    <span class="k">def</span> <span class="nf">previous_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Go to previous page&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
-        
+
 <div class="viewcode-block" id="ScholarUpdate.set_index"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ScholarUpdate.set_index">[docs]</a>    <span class="k">def</span> <span class="nf">set_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set page index&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number_widget</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_widget</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">worklist</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_widget</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="mi">0</span></div>
-        
+
 <div class="viewcode-block" id="ScholarUpdate.show"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ScholarUpdate.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Show comparison&quot;&quot;&quot;</span>
-        <span class="n">clear_output</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">articles</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="s2">&quot;&lt;unknown&gt;&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
-            <span class="n">var</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">articles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">articles</span>
-            <span class="n">meta</span> <span class="o">=</span> <span class="n">extract_info</span><span class="p">(</span><span class="n">articles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="s2">&quot;&lt;table&gt;</span><span class="si">{}</span><span class="s2">&lt;/table&gt;&quot;</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s1">&#39;entrytype&#39;</span><span class="p">):</span>
-                <span class="n">work</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">type</span>
-            <span class="n">tool</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;pyref&#39;</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;year_index&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;excerpt&#39;</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">}</span>
-            <span class="k">if</span> <span class="s2">&quot;place&quot;</span> <span class="ow">in</span> <span class="n">meta</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;place1&quot;</span> <span class="ow">in</span> <span class="n">meta</span><span class="p">:</span>
-                <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span>
-            <span class="n">work</span><span class="o">.</span><span class="n">place1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">acronym</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">articles</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="s2">&quot;&lt;unknown&gt;&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+                <span class="n">var</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">articles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">articles</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="n">extract_info</span><span class="p">(</span><span class="n">articles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="s2">&quot;&lt;table&gt;</span><span class="si">{}</span><span class="s2">&lt;/table&gt;&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s1">&#39;entrytype&#39;</span><span class="p">):</span>
+                    <span class="n">work</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">type</span>
+                <span class="n">tool</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;pyref&#39;</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;year_index&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;excerpt&#39;</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">}</span>
+                <span class="k">if</span> <span class="s2">&quot;place&quot;</span> <span class="ow">in</span> <span class="n">meta</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;place1&quot;</span> <span class="ow">in</span> <span class="n">meta</span><span class="p">:</span>
+                    <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span>
+                <span class="n">work</span><span class="o">.</span><span class="n">place1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">acronym</span><span class="p">)</span>
 
-            <span class="n">keys</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">work</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)}</span> <span class="o">-</span> <span class="n">tool</span>
-            <span class="n">meta_keys</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">-</span> <span class="n">tool</span>
-            <span class="n">order</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;entrytype&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
-            <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;</span><span class="si">{}</span><span class="s2">&lt;/th&gt;&lt;th&gt;</span><span class="si">{}</span><span class="s2">&lt;/th&gt;&lt;/tr&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="s2">&quot;Scholar&quot;</span><span class="p">)]</span>
-            <span class="n">sets</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">shared</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">meta_keys</span> <span class="o">&amp;</span> <span class="n">keys</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">order</span><span class="p">)),</span> <span class="n">x</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">shared</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-                <span class="n">add</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;place1&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">):</span> <span class="c1"># Always show. Don&#39;t replace</span>
-                    <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span> <span class="c1"># Show changes</span>
-                    <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">keys</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">work</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)}</span> <span class="o">-</span> <span class="n">tool</span>
+                <span class="n">meta_keys</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">-</span> <span class="n">tool</span>
+                <span class="n">order</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;entrytype&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+                <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;</span><span class="si">{}</span><span class="s2">&lt;/th&gt;&lt;th&gt;</span><span class="si">{}</span><span class="s2">&lt;/th&gt;&lt;/tr&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="s2">&quot;Scholar&quot;</span><span class="p">)]</span>
+                <span class="n">sets</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">shared</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">meta_keys</span> <span class="o">&amp;</span> <span class="n">keys</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">order</span><span class="p">)),</span> <span class="n">x</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">shared</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                    <span class="n">add</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;place1&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">):</span> <span class="c1"># Always show. Don&#39;t replace</span>
+                        <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span> <span class="c1"># Show changes</span>
+                        <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;set_attribute(&#39;</span><span class="si">{}</span><span class="s2">&#39;, &#39;</span><span class="si">{}</span><span class="s2">&#39;, &#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span> <span class="c1"># Always show. Replace</span>
+                        <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">if</span> <span class="n">add</span><span class="p">:</span>
+                        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;tr&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;/tr&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">meta_keys</span> <span class="o">-</span> <span class="n">keys</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;tr&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;/tr&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
                     <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;set_attribute(&#39;</span><span class="si">{}</span><span class="s2">&#39;, &#39;</span><span class="si">{}</span><span class="s2">&#39;, &#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
-                <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span> <span class="c1"># Always show. Replace</span>
-                    <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">if</span> <span class="n">add</span><span class="p">:</span>
-                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;tr&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;/tr&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">meta_keys</span> <span class="o">-</span> <span class="n">keys</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;tr&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;td&gt;</span><span class="si">{}</span><span class="s2">&lt;/td&gt;&lt;/tr&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
-                <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;set_attribute(&#39;</span><span class="si">{}</span><span class="s2">&#39;, &#39;</span><span class="si">{}</span><span class="s2">&#39;, &#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">):</span>
-                <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;set_attribute(&#39;</span><span class="si">{}</span><span class="s2">&#39;, &#39;scholar_ok&#39;, True)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>
-            <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;None&quot;</span><span class="p">)</span>
-            <span class="n">textarea</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">textarea_widget</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                <span class="n">textarea</span> <span class="o">=</span> <span class="s2">&quot;&lt;textarea rows=&#39;</span><span class="si">{}</span><span class="s2">&#39; style=&#39;width: 100%&#39;&gt;</span><span class="si">{}</span><span class="s2">&lt;/textarea&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sets</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">display_cell</span><span class="p">(</span><span class="s2">&quot;# Temp</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sets</span><span class="p">))</span>
-            <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;&lt;br&gt;&quot;</span><span class="o">+</span><span class="n">textarea</span><span class="p">))</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;&lt;error&gt;&#39;</span><span class="p">)</span></div>
-        
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">):</span>
+                    <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;set_attribute(&#39;</span><span class="si">{}</span><span class="s2">&#39;, &#39;scholar_ok&#39;, True)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>
+                <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;None&quot;</span><span class="p">)</span>
+                <span class="n">textarea</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">textarea_widget</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                    <span class="n">textarea</span> <span class="o">=</span> <span class="s2">&quot;&lt;textarea rows=&#39;</span><span class="si">{}</span><span class="s2">&#39; style=&#39;width: 100%&#39;&gt;</span><span class="si">{}</span><span class="s2">&lt;/textarea&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sets</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">display_cell</span><span class="p">(</span><span class="s2">&quot;# Temp</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sets</span><span class="p">))</span>
+                <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;&lt;br&gt;&quot;</span><span class="o">+</span><span class="n">textarea</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;&lt;error&gt;&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ScholarUpdate.reload"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ScholarUpdate.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload&quot;&quot;&quot;</span>
-        <span class="n">clear_output</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-            <span class="n">ScholarConf</span><span class="o">.</span><span class="n">LOG_LEVEL</span> <span class="o">=</span> <span class="mi">3</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ScholarConf</span><span class="o">.</span><span class="n">LOG_LEVEL</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="n">reload</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">worklist</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_index</span><span class="p">()</span>
-            <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">varname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worklist</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">work</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">force</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_index</span><span class="p">()</span>
-            <span class="k">return</span>
-        <span class="kn">from</span> <span class="nn">.selenium_scholar</span> <span class="k">import</span> <span class="n">SearchScholarQuery</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="n">SearchScholarQuery</span><span class="p">()</span>
-        
-        <span class="n">query</span><span class="o">.</span><span class="n">set_scope</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">query</span><span class="o">.</span><span class="n">set_words</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span>
-        <span class="n">query</span><span class="o">.</span><span class="n">set_num_page_results</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">send_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">articles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">articles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_widget</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_widget</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="n">ScholarConf</span><span class="o">.</span><span class="n">LOG_LEVEL</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ScholarConf</span><span class="o">.</span><span class="n">LOG_LEVEL</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">reload</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">worklist</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_index</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">varname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worklist</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">work</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">force</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_index</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="kn">from</span> <span class="nn">.selenium_scholar</span> <span class="k">import</span> <span class="n">SearchScholarQuery</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">SearchScholarQuery</span><span class="p">()</span>
+
+            <span class="n">query</span><span class="o">.</span><span class="n">set_scope</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">set_words</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">set_num_page_results</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">send_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">articles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">articles</span>
         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_index</span><span class="p">()</span></div>
-        
+
 <div class="viewcode-block" id="ScholarUpdate.browser"><a class="viewcode-back" href="../../snowballing/snowballing.html#snowballing.snowballing.ScholarUpdate.browser">[docs]</a>    <span class="k">def</span> <span class="nf">browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Present widget&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div></div>
-    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div>
+
+    <span class="k">def</span> <span class="nf">_ipython_display_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Displays widget &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -1183,7 +1003,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.8',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

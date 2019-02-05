@@ -12,7 +12,7 @@ except (IOError, ImportError):
 
 setup(
     name="Snowballing",
-    version="0.1.9",
+    version="0.2.1",
     url="https://github.com/JoaoFelipe/snowballing",
     description="Provides tools for literature snowballing",
     long_description=long_description,
@@ -25,7 +25,7 @@ setup(
     install_requires=[
         'ipython',
         'jupyter',
-        'ipywidgets',
+        'ipywidgets>=7.0.0',
         'pyposast',
         'svgwrite',
         'bibtexparser',
@@ -36,7 +36,7 @@ setup(
         'pandas',
         'seaborn',
         'numpy',
-    ],  
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
 
