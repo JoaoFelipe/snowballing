@@ -16,13 +16,20 @@ class State(object):
 
     last_id = -1
 
-    def __init__(self, visited=None, related=None, filter_function=None, name=None):
+    def __init__(
+        self, visited=None, related=None, filter_function=None, name=None,
+        filter_visited=None,
+    ):
+        if filter_visited is None:
+            filter_visited = lambda x: True
+
         self.name = name or self.new_name()
         self.visited = copy(visited)
         self.related = copy(related)
         self.previous = []
 
         self.filter_function = filter_function
+        self.filter_visited = filter_visited
         self.last_visited_size = len(self.visited)
 
     def find(self, goal):
@@ -42,13 +49,17 @@ class State(object):
 
     def visit(self, work):
         """Visit work"""
-        self.visited.add(work)
+        if self.filter_visited(work):
+            self.visited.add(work)
         if self.filter_function(work):
             self.related.add(work)
 
     def derive(self, operation, name=None):
         """Create a derived state"""
-        new_state = State(self.visited, self.related, self.filter_function, name=name)
+        new_state = State(
+            self.visited, self.related, self.filter_function, name=name,
+            filter_visited=self.filter_visited
+        )
         new_state.previous = ([self], operation)
         return new_state
 
@@ -301,14 +312,22 @@ class Strategy(object):
 
     """
 
-    def __init__(self, initial_set, filter_function=None, visited=None):
+    def __init__(
+        self, initial_set, filter_function=None, visited=None,
+        filter_visited=None
+    ):
 
         if filter_function is None:
             filter_function = lambda x: x.category == "snowball"
+        if filter_visited is None:
+            filter_visited = lambda x: True
 
         reload()
         State.last_id = -1
-        self.initial = State(visited or initial_set, initial_set, filter_function)
+        self.initial = State(
+            visited or initial_set, initial_set, filter_function,
+            filter_visited=filter_visited
+        )
 
         self.ref = defaultdict(list)
         self.rev_ref = defaultdict(list)

@@ -203,7 +203,7 @@ def wcite(approach, works, extra=""):
             works[w]['ID']
             for w in approach.work
             if w in works
-            if "snowball" in w.category
+            if ("snowball" in w.category) or ("ok" in w.category)
         ])
     )
 
