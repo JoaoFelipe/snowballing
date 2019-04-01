@@ -3,6 +3,7 @@ import re
 import importlib
 import pkgutil
 import difflib
+import sys
 
 from collections import namedtuple
 from textwrap import TextWrapper
@@ -312,6 +313,14 @@ def adjust_point(x0, y0, x1, y1, dt, shape="circle"):
     return (x1 - dt * sign_x, y1 - dt * sign_y)
 
 
+def import_or_reload(full_name):
+    if full_name in sys.modules:
+        importlib.reload(sys.modules[full_name])
+        return sys.modules[full_name]
+    module = importlib.import_module(full_name)
+    return module
+
+
 def import_submodules(package, recursive=True):
     """Import all submodules of a module, recursively, including subpackages
 
@@ -326,14 +335,12 @@ def import_submodules(package, recursive=True):
     if package is None:
         return {}
     if isinstance(package, str):
-        package = importlib.import_module(package)
-        importlib.reload(package)
+        package = import_or_reload(package)
     results = {}
     for loader, name, is_pkg in pkgutil.walk_packages(package.__path__):
         full_name = package.__name__ + '.' + name
 
-        results[full_name] = importlib.import_module(full_name)
-        importlib.reload(results[full_name])
+        results[full_name] = import_or_reload(full_name)
         if recursive and is_pkg:
             results.update(import_submodules(full_name))
     return results

@@ -540,7 +540,7 @@ class ScholarArticleParser120726(ScholarArticleParser):
         self.article.div = div
 
         for tag in div:
-            if not hasattr(tag, 'name'):
+            if not getattr(tag, 'name'):
                 continue
             if str(tag).lower().find('.pdf'):
                 if tag.find('div', {'class': 'gs_ttss'}):

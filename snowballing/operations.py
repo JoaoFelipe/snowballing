@@ -123,6 +123,7 @@ def _clear_db():
     from .approaches import APPROACHES
     APPROACHES.clear()
     importlib.invalidate_caches()
+    DB.clear_places()
     DB.clear_work()
     DB.clear_citations()
 
