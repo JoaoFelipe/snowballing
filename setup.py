@@ -2,6 +2,14 @@ import os
 from setuptools import setup, find_packages
 
 
+def recursive_path(pack, path):
+    matches = []
+    for root, dirnames, filenames in os.walk(os.path.join(pack, path)):
+        for filename in filenames:
+            matches.append(os.path.join(root, filename)[len(pack) + 1:])
+    return matches
+
+
 try:
     import pypandoc
     long_description = pypandoc.convert('README.md', 'rst').replace("\r", "")
@@ -12,11 +20,16 @@ except (IOError, ImportError):
 
 setup(
     name="Snowballing",
-    version="0.2.3",
+    version="0.2.4",
     url="https://github.com/JoaoFelipe/snowballing",
     description="Provides tools for literature snowballing",
     long_description=long_description,
     packages=find_packages(),
+    package_data={
+        "snowballing": (
+            recursive_path("snowballing", "example")
+        ),
+    },
     author=("Joao Felipe Pimentel",),
     author_email="joaofelipenp@gmail.com",
     license="MIT",

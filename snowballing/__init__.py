@@ -33,7 +33,7 @@ def recursive_copy(origin, destiny):
 def start(args):
     """ Create a new literature snowballing folder """
     print('Creating {}'.format(args.path))
-    recursive_copy('../example', args.path)
+    recursive_copy('example', args.path)
     print('Done!')
 
 
