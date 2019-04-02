@@ -91,8 +91,8 @@ class Converter:
         self.frompdf_widget = Textarea()
         self.output_widget = Textarea()
         self.label_widget = Label()
-        self.frompdf_widget.observe(self.write)
-        self.mode_widget.observe(self.select)
+        self.frompdf_widget.observe(self.write, names="value")
+        self.mode_widget.observe(self.select, names="value")
         self.button_widget.on_click(self.set_variable)
         self.view = VBox([
             HBox([self.mode_widget, self.button_widget, self.label_widget]),
@@ -110,24 +110,24 @@ class Converter:
         """ Writes right column according to selected mode """
         getattr(self, self.mode_widget.value)(b)
 
-    def select(self, b):
+    def select(self, change):
         """ Selects new mode. Use previous output as input """
         self.backup = self.frompdf_widget.value
         self.frompdf_widget.value = self.output_widget.value
-        self.button_widget.disabled = self.mode_widget.value not in ("citation", "bibtex")
+        self.button_widget.disabled = change.new not in ("citation", "bibtex")
 
-    def quoted(self, b):
+    def quoted(self, change):
         """ Adds quotes to value. Use it for citation """
         self.label_widget.value = ""
-        inputpdf = self.frompdf_widget.value
+        inputpdf = change.new
         result = "".join(re.split(r'[\r\n]+', inputpdf.strip()))
         result = '"{}",\n        '.format(result)
         self.output_widget.value = result
 
-    def text(self, b):
+    def text(self, change):
         """ Removes line breaks and diacricts """
         self.label_widget.value = ""
-        inputpdf = self.frompdf_widget.value
+        inputpdf = change.new
         result = "".join(re.split(r'[\r\n]+', inputpdf.strip()))
         result = (result
             .replace("ﬀ", "ff")
@@ -141,9 +141,9 @@ class Converter:
         )
         self.output_widget.value = result
 
-    def citation(self, b):
+    def citation(self, change):
         """ Produces a json based on the format [N] author name place other year """
-        inputpdf = self.frompdf_widget.value
+        inputpdf = change.new
         elements = inputpdf.split("\n\n")
         jresult = []
         incomplete = 0
@@ -184,9 +184,9 @@ class Converter:
         self.label_widget.value = str(len(jresult) - incomplete)
         self.output_widget.value = json.dumps(jresult, indent=2)
 
-    def bibtex(self, b):
+    def bibtex(self, change):
         """ Produces a json based on a bibtex """
-        inputpdf = self.frompdf_widget.value
+        inputpdf = change.new
         jresult = []
         incomplete = 0
         parser = BibTexParser()

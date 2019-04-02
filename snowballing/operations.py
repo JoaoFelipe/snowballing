@@ -12,7 +12,7 @@ import bibtexparser
 
 from bibtexparser.bparser import BibTexParser
 from bibtexparser.customization import convert_to_unicode
-from bibtexparser.customization import homogeneize_latex_encoding
+from bibtexparser.customization import homogenize_latex_encoding
 from bibtexparser.bwriter import BibTexWriter
 from bibtexparser.bibdatabase import BibDatabase
 
@@ -935,7 +935,7 @@ def work_to_bibtex_entry(work, name=None, homogeneize=True, acronym=False):
     if hasattr(work, "notes"):
         result["year"] += " [{}]".format(work.notes)
     if homogeneize:
-        result = homogeneize_latex_encoding(result)
+        result = homogenize_latex_encoding(result)
     return result
 
 

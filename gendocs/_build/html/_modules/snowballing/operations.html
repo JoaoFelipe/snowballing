@@ -186,7 +186,7 @@
 
 <span class="kn">from</span> <span class="nn">bibtexparser.bparser</span> <span class="k">import</span> <span class="n">BibTexParser</span>
 <span class="kn">from</span> <span class="nn">bibtexparser.customization</span> <span class="k">import</span> <span class="n">convert_to_unicode</span>
-<span class="kn">from</span> <span class="nn">bibtexparser.customization</span> <span class="k">import</span> <span class="n">homogeneize_latex_encoding</span>
+<span class="kn">from</span> <span class="nn">bibtexparser.customization</span> <span class="k">import</span> <span class="n">homogenize_latex_encoding</span>
 <span class="kn">from</span> <span class="nn">bibtexparser.bwriter</span> <span class="k">import</span> <span class="n">BibTexWriter</span>
 <span class="kn">from</span> <span class="nn">bibtexparser.bibdatabase</span> <span class="k">import</span> <span class="n">BibDatabase</span>
 
@@ -1108,7 +1108,7 @@
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">):</span>
         <span class="n">result</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">notes</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">homogeneize</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">homogeneize_latex_encoding</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">homogenize_latex_encoding</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span></div>
 
 
