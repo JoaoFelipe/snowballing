@@ -128,6 +128,7 @@ function fillResult(meta, item, source, after, error) {
             meta.citation = data.citation;
             meta.found = data.found;
             meta.add = data.add;
+            meta.pyref = data.pyref
             if (after) {
                 after(data);
             }
@@ -412,6 +413,7 @@ function inject() {
             'citation': false,
             'found': false,
             'add': false,
+            'pyref': null,
         }
         $(item).find(".snowballing").remove();
         $(item).append(`
@@ -498,7 +500,7 @@ function resetWork(meta, item) {
 
             if (meta.found) {
                 $(item).find('.snowballing .found').show();
-                $(item).find('.snowballing .found').text(meta.info.pyref);
+                $(item).find('.snowballing .found').text(meta.pyref);
             } else {
                 $(item).find('.snowballing .found').hide();
             }
@@ -748,7 +750,7 @@ function processFormCreation(meta, item) {
           })
           
       } else {
-          //result += `<div> Found ${data.info.pyref} </div>`;
+          //result += `<div> Found ${data.pyref} </div>`;
       }
       result += `<div class="code-area">`
       result += `<div class="code-buttons">

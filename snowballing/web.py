@@ -30,22 +30,34 @@ CORS(app)
 
 LOADED_DB = False
 STATUS = set()
+SCHOLAR_IDS = {}
+CLUSTER_IDS = {}
 
 def load_db():
     global LOADED_DB
-    importlib.reload(database)    
-    reload()
+    importlib.reload(database)
+    def populate_scholar(work, metakey):
+        config.check_load(work, metakey, warning=lambda x: STATUS.add(x))
+        SCHOLAR_IDS[oget(work, "scholar_id", "", cvar=config.SCHOLAR_MAP)] = work
+        CLUSTER_IDS[oget(work, "cluster_id", "", cvar=config.SCHOLAR_MAP)] = work
+    reload(work_func=populate_scholar)
+    if "" in SCHOLAR_IDS:
+        del SCHOLAR_IDS[""]
+    if "" in CLUSTER_IDS:
+        del CLUSTER_IDS[""]
     LOADED_DB = True
 
 
-def find_work_by_scholar_id(scholar_id):
+def find_work_by_scholar(scholar):
     if not LOADED_DB:
         load_db()
     
-    for varname, work in load_work_map_all_years():
-        config.check_load(work, varname, warning=lambda x: STATUS.add(x))
-        if oget(work, "scholar_id", "", cvar=config.SCHOLAR_MAP) == scholar_id:
-            return work
+    work = SCHOLAR_IDS.get(scholar.get("scholar_id", None), None)
+    if work:
+        return work
+    work = CLUSTER_IDS.get(scholar.get("cluster_id", None), None)
+    if work:
+        return work
     return None
 
 
@@ -72,10 +84,11 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
         if info is None and db_latex is not None:
             info = latex_to_info(db_latex)
 
-        work = find_work_by_scholar_id(scholar["scholar_id"])
+        work = find_work_by_scholar(scholar)
         if work is not None and info is None:
             info = latex_to_info(work_to_bibtex(work))
 
+        pyref = None
         if info is not None:
             for key, value in scholar.items():
                 if value is not None:
@@ -90,8 +103,10 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
             )
 
             if work is not None:
-                dset(info, "pyref", work @ metakey)
+                pyref = work @ metakey
+                dset(info, "pyref", pyref)
             
+
         else:
             should = {
                 "add": True,
@@ -105,6 +120,8 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
                 db_latex = work_to_bibtex(work)
             if not latex:
                 latex = db_latex
+            if pyref is None:
+                pyref = work.metakey
 
         
         return {
@@ -112,6 +129,7 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
             "msg": "",
             "found": bool(work),
             "info": info,
+            "pyref": pyref,
             "latex": latex,
             "db_latex": db_latex,
             "citation": bool(should["citation"]),

@@ -143,7 +143,7 @@ def _reload_work():
             )
 
 
-def reload():
+def reload(work_func=None):
     """Reload all the database
 
     Doctest:
@@ -169,6 +169,8 @@ def reload():
 
     for key, work in load_work_map_all_years():
         oset(work, "metakey", key)
+        if work_func:
+            work_func(work, key)
         for alias in config.get_work_aliases(work):
             year = config.get_alias_year(work, alias)
             module = "y{}.py".format(year) if isinstance(year, int) else year

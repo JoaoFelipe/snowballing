@@ -5,13 +5,14 @@ import json
 import traceback
 import sys
 
+from copy import copy
 from urllib.parse import urlparse, parse_qs
 
 from IPython.display import clear_output, display, HTML, Javascript
 from ipywidgets import HBox, VBox, IntSlider, ToggleButton, Text, Layout
 from ipywidgets import Dropdown, Button, Tab, Label, Textarea, Output
 
-from .collection_helpers import oset, dset, oget
+from .collection_helpers import oset, dset, oget, consume
 from .jupyter_utils import display_cell
 from .operations import bibtex_to_info, reload, citation_text, work_by_varname
 from .operations import extract_info, create_info_code, should_add_info
@@ -25,7 +26,9 @@ from . import config
 
 def form_definition():
     if not hasattr(config, "FORM_BUTTONS"):
-        return config.FORM
+        form = copy(config.FORM)
+        consume(form, "<tags>")
+        return form
     return old_form_to_new(True)
 
 
