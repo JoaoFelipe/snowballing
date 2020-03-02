@@ -433,6 +433,14 @@ def info_to_pyref(info):
     return pyref
 
 
+def set_info_letter(info, letter):
+    """Set letter of info object"""
+    if info["pyref"][-1].isalpha():
+        info["pyref"] = info["pyref"][:-1]
+    info["pyref"] += letter
+    info["display"] += " " + letter
+
+
 # Insert form
 FORM = {
     # List of widgets
@@ -691,6 +699,10 @@ def info_work_match(info, work):
     return False
 
 
+def work_display(work):
+    """Get work display"""
+    return work.display
+
 ### Aliases
 
 def get_work_aliases(work):
@@ -766,6 +778,9 @@ def approach_ids_from_work(approach, works):
         if work in works and ("snowball" in work.category or "ok" in work.category):
             yield works[work]["ID"]
 
+def approach_display(approach):
+    """Get approach display"""
+    return work_display(approach).replace("  ", "")
 
 ### Database
 
@@ -784,7 +799,6 @@ ATTR = {
     "category": "category",
     "metakey": "metakey", 
     "pyref": "pyref", 
-    "display": "display", 
     "year": "year", 
     "name": "name",
     "site_link": "link",

@@ -597,10 +597,7 @@ def find_work_by_info(paper, pyrefs=None, rules=None):
 
     if letter != ord("a") - 1:
         letter = chr(letter)
-        if dget(paper, "pyref")[-1].isalpha():
-            dset(paper, "pyref", dget(paper, "pyref")[:-1])
-        dset(paper, "pyref", dget(paper, "pyref") + letter)
-        dset(paper, "display", dget(paper, "display") + " " + letter)
+        config.set_info_letter(paper, letter)
 
     update_old(old_paper, paper, rules)
     return None
@@ -1022,7 +1019,7 @@ class WDisplay(object):
     def __rmatmul__(self, x):
         if hasattr(x, "__iter__"):
             return [y @ self for y in x]
-        return oget(x, "display")
+        return config.work_display(x)
 
 metakey = Metakey()
 metakey_title = MetakeyTitle()

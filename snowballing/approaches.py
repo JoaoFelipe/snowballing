@@ -169,7 +169,7 @@ def name(approach):
         >>> name(a)
         'noWorkflow'
     """
-    return oget(approach, "display", "").replace("  ", "")
+    return config.approach_display(approach)
 
 
 def get_approaches(condition=None):

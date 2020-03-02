@@ -129,6 +129,11 @@ config.BIBTEX_IGNORE_FIELDS = [
 #set_config("user")(config.info_to_pyref)
 
 
+## Set letter of info object. fn(info, letter)
+#set_config("user")(config.set_info_letter)
+
+
+
 # Insert form
 config.FORM = (
     ModifyRules(config.FORM, "user")
@@ -246,6 +251,8 @@ def check_insertion(nwork, info, citation_var, citation_file, should_add, ref=''
 ## Check if an Info object matches to a Work object. fn(info, work)
 #set_config("user")(config.info_work_match)
 
+## Get work display. fn(work)
+#set_config("user")(config.work_display)
 
 ### Aliases
 
@@ -278,6 +285,9 @@ config.APPROACH_RELATED_CATEGORY = "Related"
 
 ## Get work ids from approach. fn(approach, works)
 #set_config("user")(config.approach_ids_from_work)
+
+## Get approach display. fn(approach)
+#set_config("user")(config.approach_display)
 
 
 ### Database
