@@ -40,7 +40,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.message == "fetch") {
     fetch(request.input, request.init).then(function(response) {
       return response.text().then(function(text) {
-        console.log(text, response)
         sendResponse([{
           body: text,
           status: response.status,

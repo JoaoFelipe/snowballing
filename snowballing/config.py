@@ -9,6 +9,7 @@ from pathlib import Path
 from string import ascii_lowercase
 from bibtexparser.customization import homogenize_latex_encoding
 from IPython.display import HTML
+from selenium import webdriver
 
 from .collection_helpers import callable_get, define_cvar
 from .collection_helpers import consume, setitem, remove_empty
@@ -26,6 +27,9 @@ TEXT_EDITOR = None
 # Text editor argument for opening in a given line.
 # Use a format string with arguments {year_path} and {line}
 LINE_PARAMS = None
+
+# Web Driver
+WEB_DRIVER = lambda: webdriver.Chrome()
 
 # List of possible work class tuples
 # Each tuple has the follwing elements:

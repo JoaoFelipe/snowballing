@@ -350,7 +350,7 @@ function getClusterLink(item, cluster_id) {
     var elem = $(item).find("a[href^='/scholar?cites=']");
     var url = elem.attr("href");
     if (url) {
-        return ["http://scholar.google.com/scholar" + url, true];
+        return ["http://scholar.google.com" + url, true];
     } else if (cluster_id) {
         return [
             `http://scholar.google.com/scholar?cites=${cluster_id}&as_sdt=2005&sciodt=0,5&hl=en`,

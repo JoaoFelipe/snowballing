@@ -1,10 +1,11 @@
 {
-    "name": "Snowballing",
+    "name": "John Snow Extension",
     "version": "1.0",
     "description": "Connect to scholar for snowballing",
     "permissions": [
       "activeTab", "declarativeContent", "storage",
-      "http://localhost:5000/",
+      "http://*/",
+      "https://*/",
       "https://scholar.googleusercontent.com/"
     ],
     "background": {

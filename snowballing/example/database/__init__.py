@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+
+from selenium import webdriver
+
 from snowballing import config
 from snowballing.collection_helpers import define_cvar
 from snowballing.config_helpers import set_config
@@ -16,6 +19,10 @@ config.TEXT_EDITOR = "code"  # VSCode
 ## Use a format string with arguments {year_path} and {line}
 config.LINE_PARAMS = "--goto {year_path}:{line}"  # VSCode
 #config.LINE_PARAMS = "{year_path}:{line}"  # Sublime Text
+
+# Web Driver
+config.WEB_DRIVER = lambda: webdriver.Chrome()
+#config.WEB_DRIVER = lambda: webdriver.Firefox()
 
 ## List of possible work class tuples
 ## Each tuple has the follwing elements:
@@ -218,7 +225,8 @@ def check_insertion(nwork, info, citation_var, citation_file, should_add, ref=''
     if citation_var and not work_by_varname(citation_var):
         result["citation"] = "Work {} not found".format(citation_var)
 
-    if not nwork and info["_work_type"] == "Work":
+    if not nwork and info.get("_work_type", "Work") == "Work":
+        info["_work_type"] = "Work"
         result["type"] = info["_work_type"]
 
     return result

@@ -54,6 +54,7 @@ def search(args):
         print("You must execute this command inside the project folder!")
         raise
 
+
 def web(args):
     """ Start web server """
     try:
@@ -62,7 +63,12 @@ def web(args):
         my_env = os.environ.copy()
         my_env["FLASK_APP"] = os.path.join(os.path.dirname(__file__), "web.py")
         my_env["FLASK_ENV"] = "development"
-        subprocess.call([sys.executable, "-m", "flask", "run"], env=my_env)
+        cmd = [sys.executable, "-m", "flask", "run"]
+        if args.host:
+            cmd.append("--host={}".format(args.host))
+        if args.port:
+            cmd.append("--port={}".format(args.port))
+        subprocess.call(cmd, env=my_env)
     except ImportError:
         print("You must execute this command inside the project folder!")
         raise
@@ -83,6 +89,13 @@ def ref(args):
     except ImportError:
         print("You must execute this command inside the project folder!")
         raise
+
+
+def plugin(args):
+    """ Create a chrome plugin folder """
+    print("Creating {}".format(args.dir))
+    recursive_copy("extension", args.dir)
+    print("Done!")
 
 
 def main():
@@ -107,7 +120,13 @@ def main():
     web_parser = subparsers.add_parser(
         "web", help="start web server")
     web_parser.set_defaults(func=web)
-    #search_parser.add_argument("query", type=str)
+    web_parser.add_argument("-H", "--host", type=str, default=None)
+    web_parser.add_argument("-p", "--port", type=str, default=None)
+
+    plugin_parser = subparsers.add_parser(
+        "plugin", help="export plugin")
+    plugin_parser.set_defaults(func=plugin)
+    plugin_parser.add_argument("-d", "--dir", type=str, default="johnsnow_plugin")
 
     args = parser.parse_args()
     args.func(args)

@@ -458,9 +458,10 @@ class SeleniumScholarQuerier(object):
     """
 
     def __init__(self, driver=None):
+        from . import config
         self.result = None
         self.articles = []
-        self.driver = driver or webdriver.Firefox()
+        self.driver = driver or config.WEB_DRIVER()
         self.tasks = deque()
         self.last_request = time.time() - ScholarConf.DELTA_TIME - 1
 
