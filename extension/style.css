@@ -1,0 +1,150 @@
+.widget-box {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    margin: 0;
+    overflow: auto;
+}
+
+.widget-inline {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    overflow: visible;
+    position: relative;
+}
+
+.widget-inline label {
+    font-weight: normal;
+    margin-right: 4px;
+    flex-shrink: 0;
+    width: 105px;
+    font-size: 13px;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+    height: 28px;
+    line-height: 28px;
+    text-align: right;
+
+}
+
+.widget-inline select {
+    padding-right: 20px;
+    border: 1px solid #9E9E9E;
+    border-radius: 0;
+    height: inherit;
+    min-width: 0;
+    box-sizing: border-box;
+    outline: none !important;
+    box-shadow: none;
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 13px;
+    vertical-align: top;
+    padding-left: 4px;
+    width: 190px;
+}
+
+.widget-inline input[type="text"],
+.widget-inline input[type="number"],
+.widget-inline textarea {
+
+box-sizing: border-box;
+border: 1px solid #9E9E9E;
+color: rgba(0, 0, 0, 0.8);
+font-size: 13px;
+flex-grow: 1;
+min-width: 0;
+flex-shrink: 1;
+outline: none !important;
+
+}
+
+.widget-button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 148px;
+    margin: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+    height: 28px;
+    border: 0px solid;
+    line-height: 28px;
+    box-shadow: none;
+    color: rgba(0, 0, 0, 0.8);
+    background-color: rgb(238, 238, 238);
+    border-color: rgba(0, 0, 0, 0.8);
+    border: none;
+    user-select: none;
+}
+
+.code-buttons {
+    display: inline-block;
+    margin: 0 3px;
+    padding-bottom: 3px;
+}
+
+.code-buttons button {
+    display: block;
+    width: 100px;
+    margin: 4px 0 0 0;
+}
+
+.code-buttons .reload {
+    height: 80px;
+}
+
+.code {
+    width: 490px;
+    margin: 4px;
+    height: 150px;
+}
+
+.latex {
+    width: 490px;
+    margin: 4px;
+}
+
+.stdout {
+    white-space: pre-wrap;
+}
+
+.stderr {
+    white-space: pre-wrap;
+    color: red;
+}
+
+.hidden {
+    display: none;
+    white-space: pre-wrap;
+}
+
+.error-list {
+    color: red;
+}
+
+.snowballing-global {
+    z-index: 9999;
+    position: fixed;
+    top: 0px;
+   
+}
+
+.snowballing-global .global-errors {
+    color: red;
+    background-color: white;
+    border: 1px solid black;
+    padding: 4px;
+}
+

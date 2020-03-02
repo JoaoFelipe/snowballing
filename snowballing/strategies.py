@@ -3,10 +3,12 @@
 import os
 from collections import defaultdict, namedtuple, deque, Counter
 from copy import copy
-from snowballing.operations import load_citations, reload
 from functools import reduce
 
 from subprocess import Popen, PIPE as P
+from .collection_helpers import oget
+from .operations import load_citations, reload
+from . import config
 
 Step = namedtuple("Step", "name new_references new_related total_visited total_related source target")
 
@@ -318,7 +320,7 @@ class Strategy(object):
     ):
 
         if filter_function is None:
-            filter_function = lambda x: x.category == "snowball"
+            filter_function = lambda x: oget(x, "category") == "snowball"
         if filter_visited is None:
             filter_visited = lambda x: True
 

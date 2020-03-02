@@ -1,0 +1,35 @@
+{
+    "name": "Snowballing",
+    "version": "1.0",
+    "description": "Connect to scholar for snowballing",
+    "permissions": [
+      "activeTab", "declarativeContent", "storage",
+      "http://localhost:5000/",
+      "https://scholar.googleusercontent.com/"
+    ],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "options_page": "options.html",
+    "page_action": {
+      "default_popup": "popup.html"
+    },
+    "content_scripts": [
+      {
+      "run_at": "document_end",
+      "matches": [
+          "*://scholar.google.com/*"
+      ],
+      "css": ["style.css"],
+      "js": ["jquery-3.4.1.min.js", "content.js"]
+      }
+    ],
+    "icons": {
+      "16": "img/grey16.png",
+      "32": "img/grey32.png",
+      "48": "img/grey48.png",
+      "128": "img/grey128.png"
+    },
+    "manifest_version": 2
+  }

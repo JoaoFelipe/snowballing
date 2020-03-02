@@ -18,9 +18,10 @@ import os
 import re
 
 from collections import defaultdict
-from .operations import compare_str, reload, work_by_varname, load_citations
+from .operations import reload, work_by_varname, load_citations
 from .dbindex import year_file, citation_file, parse_varname, discover_year
 from .dbindex import increment_str
+from .utils import compare_str
 
 
 class ReplaceOperation(object):

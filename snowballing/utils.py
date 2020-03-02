@@ -11,6 +11,20 @@ from math import asinh, asin, cos
 from math import atan2, sin
 
 
+import bibtexparser
+from bibtexparser.bparser import BibTexParser
+from bibtexparser.customization import convert_to_unicode
+from IPython.display import display
+
+
+
+def parse_bibtex(bib):
+    """Parse BibTex and return list of entries"""
+    parser = BibTexParser(common_strings=True)
+    parser.customization = convert_to_unicode
+    return bibtexparser.loads(bib, parser=parser).entries
+
+
 def text_y(lines, font_size=12):
     """Return a list of lines positions according to how many lines are available
 
@@ -292,9 +306,6 @@ def adjust_point(x0, y0, x1, y1, dt, shape="circle"):
         (0, 5)
         >>> adjust_point(0, 0, 10, 0, 5)
         (5, 0)
-        >>> point = adjust_point(0, 0, 10, 10, 5)
-        >>> point[0] == point[1]  # 45 degree angle, sin == cos
-        True
     """
     sign_x = 1 if x1 > x0 else -1
     sign_y = 1 if y1 > y0 else -1
@@ -346,52 +357,6 @@ def import_submodules(package, recursive=True):
     return results
 
 
-def consume(info, key):
-    """Consumes key from dict
-
-    Arguments:
-
-    * `info` -- dict
-    * `key` -- key
-
-    Doctest:
-
-    .. doctest::
-
-        >>> info = {'abc': 1, 'def': 2}
-        >>> consume(info, 'abc')
-        1
-        >>> info
-        {'def': 2}
-        >>> consume(info, 'abc') is None
-        True
-    """
-    if key not in info:
-        return None
-    result = info[key]
-    del info[key]
-    return result
-
-
-def setitem(info, key, value):
-    """Set item in dict info if value is not None 
-
-    Doctest:
-
-    .. doctest::
-
-        >>> info = {}
-        >>> setitem(info, 'def', 2)
-        >>> info
-        {'def': 2}
-        >>> setitem(info, 'abc', None)
-        >>> info
-        {'def': 2}
-    """
-    if value is not None:
-        info[key] = value
-
-
 def compare_str(first, second):
     """Compare strings and return matching ratio
 
@@ -427,3 +392,8 @@ def match_any(string, regexes):
         combined = "({})".format(")|(".join(regex + "$" for regex in regexes))
         return bool(re.match(combined, string))
     
+
+def display_list(elements):
+    """Display list of elements using IPython display"""
+    for disp in elements or []:
+        display(disp)

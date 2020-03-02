@@ -6,8 +6,10 @@ import svgwrite
 import operator
 import os
 
-from . import dbindex, config
+from .collection_helpers import oget, oset, dset
 from .utils import text_y, adjust_point, Point
+
+from . import dbindex, config
 
 
 class Title(object):
@@ -114,17 +116,6 @@ class Place(WithTitle):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-
-    def draw(self, dwg, position):
-        """ Draws place in a given position """
-        text = svgwrite.text.Text(
-            self.acronym, position,
-            text_anchor="middle",
-            fill="black"
-        )
-        text.set_desc(title=Title(self.generate_title(prepend="")))
-        dwg.add(text)
-
     def __eq__(self, other):
         return self.name == other.name
 
@@ -180,18 +171,6 @@ class Work(WithTitle):
     * :attr:`~citation_file` -- citation filename (without .py)
 
       * Indicates where are the citations of this work
-
-
-    * :attr:`~alias` -- tuple with (year, title, authors) (optional)
-
-      * Represents the same work in google scholar
-
-          * The tuple can have two elements if the authors match: (year, title)
-
-          * Use year = 0, if the citation on google scholar doesn't have the
-            year information
-
-    * :attr:`~aliases` -- list of alias attributes (optional)
 
     * :attr:`~scholar` -- url of the work in google scholar (optional)
 
@@ -269,13 +248,12 @@ class Work(WithTitle):
     category = "work"
     ignore = {
         "_x", "_y", "_i", "_year_index", "_r", "_letters",
-        "display", "name", "authors", "year"
+        config.ATTR["name"], config.ATTR["year"]
     }
 
-    def __init__(self, year, name, authors="", display=None, **kwargs):
-        self.name = name
-        self.year = year
-        self.authors = authors
+    def __init__(self, year, name, **kwargs):
+        oset(self, "name", name)
+        oset(self, "year", year)
 
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -287,23 +265,16 @@ class Work(WithTitle):
         self._year_index = -1
         self._letters = 5
 
-        if display is None:
-            display = self.name
-        self.display = display
+        config.work_post_init(self)
 
     def __eq__(self, other):
-        if getattr(self, "place", None) != getattr(other, "place", None):
-            return False
-        return (
-            self.name == other.name and
-            self.year == other.year
-        )
+        return config.work_eq(self, other)
 
     def __hash__(self):
-        return hash((self.name,  self.year))
+        return config.work_hash(self)
 
     def __repr__(self):
-        return self.name
+        return oget(self, "name")
 
     def generate_title(self, prepend="\n\n"):
         """The title of a work is its BibTeX"""
@@ -312,26 +283,28 @@ class Work(WithTitle):
 
     def draw(self, dwg, fill_color=None, draw_place=False, use_circle=False):
         """Draw work"""
+        from .operations import metakey, wdisplay
         position = Point(self._x, self._y)
         if fill_color is None:
             fill_color = lambda x: "white", "black"
         fill, text_fill = fill_color(self)
-        metakey = getattr(self, 'metakey', "work{}".format(id(self)))
+        
+        str_metakey = (self @ metakey) or "work{}".format(id(self))
         if self._shape == "circle":
             shape = svgwrite.shapes.Circle(
                 position, self._r, fill=fill, stroke="black",
-                id=metakey, **{"class":metakey}
+                id=str_metakey, **{"class":str_metakey}
             )
             shape_text = self._circle_text
         else:
             r2 = Point(self._r, self._r)
             shape = svgwrite.shapes.Rect(
                 position - r2, r2 + r2, fill=fill, stroke="black",
-                id=metakey, **{"class":metakey}
+                id=str_metakey, **{"class":str_metakey}
             )
             shape_text = self._square_text
 
-        textstr = self.display[:self._letters]
+        textstr = (self @ wdisplay)[:self._letters]
         text = svgwrite.text.Text(
             "",(self._x, self._y),
             fill=text_fill,
@@ -346,29 +319,38 @@ class Work(WithTitle):
 
 
         shape.set_desc(title=Title(
-            "{}\n{}".format(self.name, self.authors) + self.generate_title()
+            config.work_tooltip(self) + self.generate_title()
         ))
         text.set_desc(title=Title(
-            "{}\n{}".format(self.name, self.authors) + self.generate_title()
+            config.work_tooltip(self) + self.generate_title()
         ))
 
+        if draw_place:
+            place_text = config.graph_place_text(self)
+            if place_text:
+                self._draw_place(
+                    config.graph_place_text(self),
+                    config.graph_place_tooltip(self),
+                    dwg, position - Point(0, self._r + 4)
+                )
 
-        if draw_place and hasattr(self, "place") and self.place is not None:
-            self.place.draw(dwg, position - Point(0, self._r + 4))
-
-        link = None
-        for link_type in reversed(self._link):
-            if link_type == "file" and self.file:
-                link = svgwrite.container.Hyperlink("files/" + self.file)
-            if link_type == "link" and hasattr(self, "link") and self.link:
-                link = svgwrite.container.Hyperlink(self.link)
-            if link_type == "scholar" and hasattr(self, "scholar"):
-                link = svgwrite.container.Hyperlink(self.scholar)
+        link = config.work_link(self)
         if link is not None:
+            link = svgwrite.container.Hyperlink(link)
             dwg.add(link)
             dwg = link
 
         dwg.add(shape)
+        dwg.add(text)
+
+    def _draw_place(self, text, title, dwg, position):
+        """ Draws place in a given position """
+        text = svgwrite.text.Text(
+            text, position,
+            text_anchor="middle",
+            fill="black"
+        )
+        text.set_desc(title=Title(title))
         dwg.add(text)
 
 
@@ -396,7 +378,8 @@ class Site(Work):
 
     def __init__(self, name, link, **kwargs):
         from .common_places import Web
-        super(Site, self).__init__(0, name, link=link, place=Web, **kwargs)
+        dset(kwargs, "site_link", link)
+        super(Site, self).__init__(0, name, place=Web, **kwargs)
 
 
 class Email(Work):
@@ -427,7 +410,8 @@ class Email(Work):
 
     def __init__(self, year, authors, subject, **kwargs):
         from .common_places import Web
-        super(Email, self).__init__(year, subject, authors=authors, place=Web, **kwargs)
+        dset(kwargs, "email_authors", authors)
+        super(Email, self).__init__(year, subject, place=Web, **kwargs)
 
 
 class Year(object):
@@ -469,7 +453,7 @@ class Year(object):
         self.previous_year = previous
         self.next_year = (-1, 0)
         self.works = works
-        self.year = year
+        oset(self, "year", year)
         self._i = i
         self._dist = dist
         self._r = r
@@ -478,7 +462,7 @@ class Year(object):
         """Draw year in the position"""
         x = self._i * self._dist + self._r
         dwg.add(svgwrite.text.Text(
-            self.year[0], (x, 20),
+            oget(self, "year")[0], (x, 20),
             text_anchor="middle",
             style="font-size:20px"
         ))
@@ -544,6 +528,7 @@ class Citation(WithTitle):
 
     def draw(self, dwg, marker, years, rows, draw_place=False):
         """Draw citation line"""
+        from .operations import metakey
         work, ref = self.work, self.citation
         if work == ref:
             return
@@ -559,7 +544,7 @@ class Citation(WithTitle):
             line = svgwrite.shapes.Line(*self._line_gen(work, ref), stroke_opacity=0.3, stroke="black")
             line["marker-end"] = marker.get_funciri()
             line.set_desc(title=Title(
-                "{0.display}{0.year} -> {1.display}{1.year}".format(work, ref)
+                "{0} -> {1}".format(work @ metakey, ref @ metakey)
                 + self.generate_title()
             ))
             group.add(line)
@@ -612,7 +597,7 @@ class Citation(WithTitle):
 
             points = source_points + list(reversed(target_points))
             line = svgwrite.shapes.Polyline(points, stroke_opacity=0.3, stroke="black", fill="none", pointer_events="stroke")
-            line.set_desc(title=Title("{0.display}{0.year} -> {1.display}{1.year}".format(work, ref) + self.generate_title()))
+            line.set_desc(title=Title("{0} -> {1}".format(work @ metakey, ref @ metakey) + self.generate_title()))
             group.add(line)
 
             line["marker-end"] = marker.get_funciri()
@@ -680,8 +665,10 @@ class Database(object):
 
 for (cls_name, category, *_) in config.CLASSES:
     if cls_name not in locals():
-        locals()[cls_name] = type(cls_name, (Work,), {"category": category})
+        attrs = {}
+        dset(attrs, "category", category)
+        locals()[cls_name] = type(cls_name, (Work,), attrs)
     else:
-        locals()[cls_name].category = category
+        oset(locals()[cls_name], "category", category)
 
 DB = Database()

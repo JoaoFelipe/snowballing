@@ -1,34 +1,32 @@
 """This module provides tools to analyze the snowballing and widgets to perform
 and curate the snowballing"""
-import base64
 import re
 import json
 import traceback
 import sys
 
-from contextlib import contextmanager
-from collections import defaultdict, namedtuple, Counter, OrderedDict
-from copy import copy
 from urllib.parse import urlparse, parse_qs
-from itertools import zip_longest
 
-import bibtexparser
-from bibtexparser.bparser import BibTexParser
-from bibtexparser.customization import convert_to_unicode
-from IPython.utils.py3compat import str_to_bytes, bytes_to_str
 from IPython.display import clear_output, display, HTML, Javascript
 from ipywidgets import HBox, VBox, IntSlider, ToggleButton, Text, Layout
 from ipywidgets import Dropdown, Button, Tab, Label, Textarea, Output
 
+from .collection_helpers import oset, dset, oget
 from .jupyter_utils import display_cell
-from .operations import consume, find_work_by_info, find_global_local_citation
-from .operations import set_pyref, bibtex_to_info
-from .operations import load_citations, reload, info_to_code, citation_text
-from .operations import work_by_varname, set_display, extract_info, set_place
+from .operations import bibtex_to_info, reload, citation_text, work_by_varname
+from .operations import extract_info, create_info_code, should_add_info
+from .operations import set_by_info, changes_dict_to_set_attribute
 from .scholar import ScholarConf
-from .models import Site
+from .rules import old_form_to_new
+from .utils import display_list, parse_bibtex
 
 from . import config
+
+
+def form_definition():
+    if not hasattr(config, "FORM_BUTTONS"):
+        return config.FORM
+    return old_form_to_new(True)
 
 
 class Converter:
@@ -148,39 +146,11 @@ class Converter:
         jresult = []
         incomplete = 0
         for element in elements:
-            lines = element.strip().split('\n')
-
-            # '[N] author name place other year'
-            info = OrderedDict()
-            info['citation_id'] = lines[0].strip()
-            if lines[-1].strip().startswith('>') and len(lines) >= 2:
-                info['pyref'] = lines[-1][1:].strip()
-                other = lines[1:-1]
-                info['_work_type'] = "Ref"
-            elif lines[-1].strip().startswith('http') and len(lines) >= 3:
-                info['name'] = lines[1].strip()
-                info['url'] = lines[-1].strip()
-                info['_work_type'] = "Site"
-                other = lines[2:-1]
-            elif len(lines) >= 5 and lines[-1].strip().isnumeric():
-                info['authors'] = lines[1].strip()
-                info['name'] = lines[2].strip()
-                info['place1'] = lines[3].strip()
-                info['year'] = int(lines[-1].strip())
-                info['_work_type'] = "Work"
-                other = lines[4:-1]
-            else:
-                jresult.append("Incomplete")
-                incomplete += 1
-                continue
-            for num, line in zip(range(1, 10000), other):
-                line = line.strip()
-                splitted = line.split('=')
-                if len(splitted) > 1:
-                    info[splitted[0]] = '='.join(splitted[1:])
-                else:
-                    info['other{}'.format(num)] = line
+            info = config.convert_citation_text_lines_to_info(element)
             jresult.append(info)
+            if info == "Incomplete":
+                incomplete += 1
+                
         self.label_widget.value = str(len(jresult) - incomplete)
         self.output_widget.value = json.dumps(jresult, indent=2)
 
@@ -189,13 +159,9 @@ class Converter:
         inputpdf = change.new
         jresult = []
         incomplete = 0
-        parser = BibTexParser()
-        parser.customization = convert_to_unicode
-        for entry in bibtexparser.loads(inputpdf, parser=parser).entries:
+        for entry in parse_bibtex(inputpdf):
             try:
-                info = bibtex_to_info(entry)
-                info['_work_type'] = "Work"
-                info['name'] = info['name'].replace('{', '').replace('}', '')
+                info = bibtex_to_info(entry, config.BIBTEX_TO_INFO_WITH_TYPE)
                 jresult.append(info)
             except Exception:
                 jresult.append("Incomplete")
@@ -217,6 +183,181 @@ class Converter:
     def _ipython_display_(self):
         """ Displays widget """
         display(self.view)
+
+
+WIDGET_CLS = {
+    'text': lambda x: Text(value=x[3] or "", description=x[1]),
+    'toggle': lambda x: ToggleButton(value=x[3] or False, description=x[1]),
+    'dropdown': lambda x: Dropdown(options=x[4], value=x[3] or "", description=x[1]),
+    'button': lambda x: Button(description=x[1]),
+}
+
+
+class EventRunner:
+    
+    def __init__(self, navigator, info=None):
+        self.widgets = navigator.widgets
+        self.widgets_empty = navigator.widgets_empty
+        self.navigator = navigator
+        self.info = info
+        self.operations = {
+            "if": self.op_if,
+            "and": self.op_and,
+            "or": self.op_or,
+            "==": self.op_eq,
+            "!=": self.op_neq,
+            ">": self.op_gt,
+            ">=": self.op_ge,
+            "<": self.op_lt,
+            "<=": self.op_le,
+            "not": self.op_not,
+            "+": self.op_plus,
+            "reload": self.op_reload,
+            "pyref": self.op_pyref,
+            "update_info": self.op_update_info,
+        }
+        
+    def access_attr(self, attr):
+        if isinstance(attr, str):
+            if attr.startswith(":"):
+                return self.widgets[attr[1:]].value
+            if self.info is not None and attr.startswith("."):
+                return self.info.get(attr[1:], "")
+            attr = attr.replace(r"\.", ".").replace(r"\:", ":")
+            return attr
+        else:
+            return self.execute(attr)
+        
+    def set_attr(self, attr, value):
+        self.widgets[attr].value = value
+        return value
+        
+    
+    def op_if(self, event):
+        condition = self.execute(event[0])
+        if condition:
+            return self.execute(event[1])
+        else:
+            return self.execute(event[2])
+        
+    def op_and(self, event):
+        for op in event:
+            if not self.execute(op):
+                return False
+        return True
+    
+    def op_or(self, event):
+        for op in event:
+            if self.execute(op):
+                return True
+        return False
+    
+    def op_eq(self, event):
+        return self.access_attr(event[0]) == self.access_attr(event[1])
+    
+    def op_neq(self, event):
+        return self.access_attr(event[0]) != self.access_attr(event[1])
+    
+    def op_gt(self, event):
+        return self.access_attr(event[0]) > self.access_attr(event[1])
+    
+    def op_ge(self, event):
+        return self.access_attr(event[0]) >= self.access_attr(event[1])
+    
+    def op_lt(self, event):
+        return self.access_attr(event[0]) < self.access_attr(event[1])
+    
+    def op_le(self, event):
+        return self.access_attr(event[0]) <= self.access_attr(event[1])
+    
+    def op_not(self, event):
+        return not self.access_attr(event[0])
+    
+    def op_plus(self, event):
+        result = self.access_attr(event[0])
+        for element in event[1:]:
+            result += self.access_attr(element)
+        return result
+
+    def op_reload(self, event):
+        self.navigator.show(clear=True)
+    
+    def op_pyref(self, event):
+        dset(self.info, "pyref", config.info_to_pyref(self.info))
+        
+    def op_update_info(self, event):
+        value = self.access_attr(event[2])
+        default = self.access_attr(event[3])
+        widget_value = self.access_attr(event[1])
+        if widget_value != default:
+            self.info[event[0]] = widget_value if value is None else value
+        return bool(widget_value)
+        
+    def execute(self, event):
+        if isinstance(event, list):
+            if event and isinstance(event[0], str):
+                if event[0] not in self.operations:
+                    print("Error: Event", event[0], "not found")
+                else:
+                    return self.operations[event[0]](event[1:])
+            else:
+                return [
+                    self.execute(inst) for inst in event
+                ]
+        elif isinstance(event, dict):
+            for key, value in event.items():
+                self.set_attr(key, self.access_attr(value))
+            return "="
+        else:
+            return event
+
+
+class WebWidget:
+
+    def __init__(self, value):
+        self.value = value
+
+
+class WebNavigator:
+
+    def __init__(self, form_values, nwork, info, citation_var=None, citation_file=None, backward=True, should_add=None):
+        self.info = info
+        self.nwork = nwork
+        self.should_add = should_add
+        self.citation_var = citation_var
+        self.citation_file = citation_file or oget(should_add["citation"], "citation_file", citation_var)
+        self.backward = backward
+
+        self.widgets = {}
+        self.widgets_empty = {}
+        self.form_values = form_values
+
+        form = form_definition()
+        for widget in form["widgets"]:
+            self.widgets[widget[2]] = WebWidget(None)
+            if len(widget) >= 4:
+                self.widgets[widget[2]].value = self.widgets_empty[widget[2]] = widget[3]
+        
+        for attr, value in form_values.items():
+            self.widgets[attr].value = value
+
+        self.show_event = form["show"]
+
+    def show(self, clear=True):
+        runner = EventRunner(self, info=self.info)
+        runner.execute(self.show_event)
+
+        result = create_info_code(
+            self.nwork, self.info,
+            self.citation_var, self.citation_file,
+            self.should_add
+        )
+        result["widgets_update"] = {}
+        for attr, value in self.form_values.items():
+            if self.widgets[attr].value != value:
+                result["widgets_update"][attr] = self.widgets[attr].value
+
+        return result
 
 
 class ArticleNavigator:
@@ -241,18 +382,7 @@ class ArticleNavigator:
         self.reload_article_widget = Button(
             description='Reload Article', icon='fa-refresh')
 
-        self.file_field_widget = ToggleButton(value=False, description="File")
-        self.due_widget = Text(value="", description="Due")
-        self.place_widget = Text(value="", description="Place")
-        self.year_widget = Text(value="", description="Year")
-        self.prefix_widget = Text(value="", description="Prefix Var")
-        self.pdfpage_widget = Text(value="", description="PDFPage")
-
-        self.work_type_widget = Dropdown(
-            options=[tup[0] for tup in config.CLASSES],
-            value=config.DEFAULT_CLASS,
-            description="Type"
-        )
+        
         self.article_number_widget = Label(value="")
         self.output_widget = Output()
 
@@ -260,16 +390,26 @@ class ArticleNavigator:
         self.previous_article_widget.on_click(self.previous_article)
         self.selector_widget.observe(self.show)
         self.reload_article_widget.on_click(self.show)
-
-        self.due_widget.observe(self.write_due)
-        self.place_widget.observe(self.write_place)
-
-        widgets = [
-            self.work_type_widget, self.file_field_widget,
-            self.due_widget, self.place_widget,
-            self.year_widget, self.prefix_widget,
-            self.pdfpage_widget,
-        ]
+        
+        self.widgets = {}
+        self.widgets_empty = {}
+        
+        form = form_definition()
+        for widget in form["widgets"]:
+            if widget[0] not in WIDGET_CLS:
+                print("Error: Widgets type {} not found".format(widget[0]))
+            else:
+                self.widgets[widget[2]] = WIDGET_CLS[widget[0]](widget)
+            if len(widget) >= 4:
+                self.widgets_empty[widget[2]] = widget[3]
+        
+        for event in form["events"]:
+            if event[1] == "observe":
+                self.widgets[event[0]].observe(self.process(event))
+            if event[1] == "click":
+                self.widgets[event[0]].on_click(self.process(event))
+                
+        self.show_event = form["show"]
 
         hboxes = [
             HBox([
@@ -278,19 +418,11 @@ class ArticleNavigator:
                 self.next_article_widget
             ]),
         ]
-
-        for row in config.FORM_BUTTONS:
-            hboxes.append(HBox([self.create_custom_button(tup) for tup in row]))
-
-        for tup in config.FORM_TEXT_FIELDS:
-            self.create_custom_text(tup)
-
-        widgets += self.custom_widgets
-
-        iterable = iter(widgets)
-        for w1, w2 in zip_longest(iterable, iterable):
-            hboxes.append(HBox([w1] + ([w2] if w2 else [])))
-
+        
+        for widgets in form["order"]:
+            hboxes.append(HBox([
+                self.widgets[widget] for widget in widgets
+            ]))
 
         hboxes.append(HBox([
             self.reload_article_widget,
@@ -305,43 +437,12 @@ class ArticleNavigator:
         self.set_articles(articles)
         self.erase_article_form()
 
-    def show_article_html(self, div):
-        display(HTML("""
-            <style>
-            .gs_or_svg {
-                position: relative;
-                width: 29px;
-                height: 16px;
-                vertical-align: text-bottom;
-                fill: none;
-                stroke: #1a0dab;
-            }
-            </style>
-        """))
-        display(HTML(repr(div)))
-
-    def create_custom_text(self, tup):
-        """Create custom text based on config.FORM_TEXT_FIELDS tuple"""
-        text = Text(value="", description=tup[0])
-        text._workattr = tup[1]
-        self.custom_widgets.append(text)
-        if tup[2]:
-            if hasattr(self, tup[2]):
-                warnings.warn("ArticleNavigator already has the attribute {}. Skipping".format(tup[2]))
-            else:
-                setattr(self, tup[2], text)
-        return text
-
-    def create_custom_button(self, tup):
-        """Create custom button based on config.FORM_BUTTONS tuple"""
-        button = Button(description=tup[0])
-        def function(b):
-            for key, value in tup[1].items():
-                getattr(self, key).value = value
-            self.show(clear=True)
-        button.on_click(function)
-        return button
-
+    def process(self, event):
+        runner = EventRunner(self)
+        def action(b):
+            runner.execute(event[2])
+        return action
+    
     def set_articles(self, articles):
         """Set list of articles and restart slider"""
         self.articles = list(self.valid_articles(articles))
@@ -362,27 +463,12 @@ class ArticleNavigator:
             min(self.selector_widget.value + 1, len(self.articles)),
             len(self.articles)
         )
-        self.file_field_widget.value = False
-        self.due_widget.value = ""
-        self.place_widget.value = ""
-        self.year_widget.value = ""
-        self.work_type_widget.value = "Work"
-        self.prefix_widget.value = ""
-        self.pdfpage_widget.value = ""
-        for widget in self.custom_widgets:
-            widget.value = ""
-
-    def write_due(self, b=None):
-        """Write event for due_widget"""
-        if self.due_widget.value and self.work_type_widget.value == "Work":
-            self.work_type_widget.value = "WorkUnrelated"
-        elif not self.due_widget.value and self.work_type_widget.value == "WorkUnrelated":
-            self.work_type_widget.value = "Work"
-
-    def write_place(self, b=None):
-        """Write event for place_widget"""
-        if self.place_widget.value == "Lang" and self.work_type_widget.value == "Work":
-            self.work_type_widget.value = "WorkLang"
+        for key, widget in self.widgets.items():
+            if key in self.widgets_empty:
+                if isinstance(widget, ToggleButton):
+                    widget.value = self.widgets_empty[key] or False 
+                else:   
+                    widget.value = self.widgets_empty[key] or ""
 
     def next_article(self, b=None):
         """Next article click event"""
@@ -401,42 +487,14 @@ class ArticleNavigator:
         if not articles:
             return
         for article in articles:
-            info = copy(article)
-            consume(info, 'div')
-            consume(info, 'citation_id')
-
-            if info.get('_work_type') == 'Site':
-                info['pyref'] = 'Site("{name}", "{url}")'.format(**info)
-                nwork = Site(info['name'], info['url'])
-            elif info.get('_work_type') == 'Ref':
-                nwork = work_by_varname(info['pyref'])
-                article['name'] = info['name'] = nwork.name
-                article['place'] = info['place'] = nwork.place.name
-            else:
-                set_display(info, check_existence=True)
-                set_pyref(info, check_existence=True)
-                set_place(info, check_existence=True)
-                nwork = find_work_by_info(info, set())
-
-            if not self.work:
-                yield article, nwork, info
-                continue
-            wo1, wo2 = nwork, self.work
-            if self.backward:
-                wo1, wo2 = wo2, wo1
-            if nwork is None:
-                yield article, nwork, info
-                continue
-            global_citation, local_citation = find_global_local_citation(
-                wo1, wo2,
-                file=self.citation_file if self.force_citation_file else None
+            should, nwork, info = should_add_info(
+                article, self.work, article=article,
+                backward=self.backward,
+                citation_file=self.citation_file if self.force_citation_file else None,
+                warning=lambda x: self.to_display.append(x)
             )
-            if global_citation and not local_citation and show:
-                self.to_display.append("Duplicate citation")
-
-            if not local_citation:
-                yield article, nwork, info
-                continue
+            if should["add"]:
+                yield article, nwork, info, should
 
     def clear(self):
         """Clear cell and output"""
@@ -453,63 +511,23 @@ class ArticleNavigator:
             info[field] = widget.value if value is None else value
         return bool(widget.value)
 
-    def show_site(self, article, nwork, info):
-        """Display site citation"""
-        text = "# Temp\n"
-        text += "insert('''"
-        text += citation_text(
-            self.citation_var, info,
-            ref=article.get('citation_id', ''),
-            backward=self.backward
-        ) + "\n"
-        text += "''', citations='{}');".format(self.citation_file)
-        display_cell(text)
-        self.output_widget.clear_output()
-        with self.output_widget:
-            if self.to_display:
-                display("\n".join(self.to_display))
-            if 'div' in article:
-                self.show_article_html(article['div'])
-            elif 'name' in article:
-                print(article['name'])
-        self.to_display = []
-
-    def show_article(self, article, nwork, info):
+    def show_article(self, article, nwork, info, should):
         """Display article"""
-        citations = ""
-        text = "# Temp\n"
-        text += "insert('''"
-        if nwork is None:
-            text += info_to_code(info) + "\n"
-        if self.citation_var:
-            text += citation_text(
-                self.citation_var, info,
-                ref=article.get('citation_id', ''),
-                backward=self.backward
-            ) + "\n"
-            citations = ", citations='{}'".format(self.citation_file)
-        text += "'''{});".format(citations)
-
-        if nwork:
-            for key, value in info.items():
-                if key in {'pyref', 'place1', '_work_type', 'excerpt'}:
-                    continue
-                if not hasattr(nwork, key):
-                    text += "\nset_attribute('{}', '{}', '{}');".format(
-                        info['pyref'], key, value
-                    )
+        result = create_info_code(
+            nwork, info,
+            self.citation_var, self.citation_file, should,
+            ref=article.get('_ref', '')
+        )
+        text = "# Temp\n" + result['code']
+       
         display_cell(text)
         self.output_widget.clear_output()
         with self.output_widget:
             if self.to_display:
                 display("\n".join(self.to_display))
-            if 'div' in article:
-                self.show_article_html(article['div'])
-            elif 'name' in article:
-                print(article['name'])
-            display(HTML("<input value='{}.pdf' style='width: 100%'></input>".format(info['pyref'])))
-            if not 'place' in info:
-                display(HTML("<input value='{}' style='width: 100%'></input>".format(info['place1'])))
+            display_list(config.display_article(article))
+            for key, value in result['extra'].items():
+                display(HTML("<label>{}</label><input value='{}' style='width: 100%'></input>".format(key, value)))
         self.to_display = []
 
     def show(self, b=None, clear=True):
@@ -522,31 +540,13 @@ class ArticleNavigator:
             self.clear()
         if self.disable_show or not self.articles:
             return
-        article, _, _ = self.articles[self.selector_widget.value]
+        article, _, _, _ = self.articles[self.selector_widget.value]
         with self.output_widget:
-            if 'div' in article:
-                self.show_article_html(article['div'])
-            else:
-                print(article['name'])
-        for article, nwork, info in self.valid_articles([article], show=True):
-            if info.get("_work_type") == "Site":
-                self.show_site(article, nwork, info)
-                continue
-            if info.get("place", "") == "Lang":
-                self.work_type_widget.value = "WorkLang"
-            _up(info, 'due', self.due_widget)
-            _up(info, 'place', self.place_widget)
-            _up(info, "_work_type", self.work_type_widget, default="Work")
-
-            if _up(info, 'year', self.year_widget) or _up(info, 'display', self.prefix_widget):
-                set_pyref(info)
-            _up(info, 'file', self.file_field_widget, info["pyref"] + ".pdf", default=False)
-            _up(info, 'file', self.pdfpage_widget, info.get("file", "") + "#page={}".format(self.pdfpage_widget.value))
-
-            for widget in self.custom_widgets:
-                _up(info, widget._workattr, widget)
-
-            self.show_article(article, nwork, info)
+            display_list(config.display_article(article))
+        for article, nwork, info, should in self.valid_articles([article], show=True):
+            runner = EventRunner(self, info=info)
+            runner.execute(self.show_event)
+            self.show_article(article, nwork, info, should)
 
     def browser(self):
         """Widget visualization"""
@@ -566,7 +566,7 @@ class BackwardSnowballing(ArticleNavigator):
 
     def __init__(self, citation_var, citation_file=None, articles=None, force_citation_file=True):
         work = work_by_varname(citation_var)
-        citation_file = citation_file or getattr(work, "citation_file", citation_var)
+        citation_file = citation_file or oget(work, "citation_file", citation_var)
         super(BackwardSnowballing, self).__init__(
             citation_var=citation_var,
             citation_file=citation_file,
@@ -584,7 +584,7 @@ class ForwardSnowballing:
         reload()
         self.querier = querier
         work = work_by_varname(citation_var)
-        citation_file = citation_file or getattr(work, "citation_file", citation_var)
+        citation_file = citation_file or oget(work, "citation_file", citation_var)
         self.navigator = ArticleNavigator(citation_var, citation_file, backward=False, force_citation_file=False)
         self.query = URLQuery(self.navigator.work.scholar, start)
         self.next_page_widget = Button(description='Next Page', icon='fa-arrow-right')
@@ -660,8 +660,9 @@ class ForwardSnowballing:
 class ScholarUpdate:
     """Widget for curating database"""
 
-    def __init__(self, querier, worklist, force=False, debug=False, index=0):
+    def __init__(self, querier, worklist, force=False, debug=False, index=0, rules=None):
         reload()
+        self.rules = rules or config.BIBTEX_TO_INFO
         self.worklist = worklist
         self.force = force
         self.querier = querier
@@ -718,48 +719,26 @@ class ScholarUpdate:
                 print(self.varname, "<unknown>")
                 return
             try:
-                print(self.varname, getattr(self.work, "scholar_ok", False))
+                print(self.varname, getattr(self.work, self.rules.get(
+                    "<scholar_ok>", "_some_invalid_attr_for_scholar_ok"
+                ), False))
                 var, work, articles = self.varname, self.work, self.articles
                 meta = extract_info(articles[0])
                 table = "<table>{}</table>"
-                if not hasattr(work, 'entrytype'):
-                    work.entrytype = work.place.type
-                tool = {'y', 'x', 'i', 'display', 'pyref', "place", 'ID', 'year_index', 'file', 'excerpt', 'div'}
-                if "place" in meta and not "place1" in meta:
-                    meta["place1"] = meta["place"]
-                work.place1 = "{} ({})".format(work.place.name, work.place.acronym)
-
-                keys = {k for k in work.__dict__.keys() if not k.startswith("__")} - tool
-                meta_keys = meta.keys() - tool
-                order = {"name": 0, "authors": 1, "entrytype": 2, "place1": 3, "year": 4}
                 rows = ["<tr><th></th><th>{}</th><th>{}</th></tr>".format(var, "Scholar")]
-                sets = []
-                shared = sorted(list(meta_keys & keys), key=lambda x: (order.get(x, len(order)), x))
-                for key in shared:
-                    value = str(meta[key])
-                    add = False
-                    if key in ('place1', 'year'): # Always show. Don't replace
-                        add = True
-                    elif getattr(work, key) != value: # Show changes
-                        add = True
-                        sets.append("set_attribute('{}', '{}', '{}')".format(var, key, value))
-                    elif key in order: # Always show. Replace
-                        add = True
-                    if add:
-                        rows.append("<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(key, getattr(work, key), value))
-                for key in meta_keys - keys:
-                    value = str(meta[key])
-                    rows.append("<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(key, "", value))
-                    sets.append("set_attribute('{}', '{}', '{}')".format(var, key, value))
-
-                if not hasattr(work, "scholar_ok"):
-                    sets.append("set_attribute('{}', 'scholar_ok', True)".format(var))
-                sets.append("None")
+                changes = set_by_info(work, meta, rules=self.rules)
+                set_text = changes_dict_to_set_attribute(var, changes["set"])
+                for key, value in changes["show"].items():
+                    if value is not None:
+                        meta_value, work_value = value
+                        rows.append("<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+                            key, work_value, meta_value
+                        ))
                 textarea = ""
                 if self.textarea_widget.value:
-                    textarea = "<textarea rows='{}' style='width: 100%'>{}</textarea>".format(len(rows), "\n".join(sets))
+                    textarea = "<textarea rows='{}' style='width: 100%'>{}</textarea>".format(len(rows), set_text)
                 else:
-                    display_cell("# Temp\n"+ "\n".join(sets))
+                    display_cell("# Temp\n" + set_text)
                 display(HTML(table.format("".join(rows))+"<br>"+textarea))
             except:
                 traceback.print_exc(file=sys.stdout)
@@ -781,15 +760,15 @@ class ScholarUpdate:
                 return
             self.varname = self.worklist[self.index]
             self.work = work_by_varname(self.varname)
-            print(self.varname, getattr(self.work, "scholar_ok", False))
-            if getattr(self.work, "scholar_ok", False) and not self.force:
+            print(self.varname, oget(self.work, "scholar_ok", False, cvar=config.SCHOLAR_MAP))
+            if oget(self.work, "scholar_ok", False, cvar=config.SCHOLAR_MAP) and not self.force:
                 self.set_index()
                 return
             from .selenium_scholar import SearchScholarQuery
             query = SearchScholarQuery()
 
             query.set_scope(False)
-            query.set_words(self.work.name + " " + self.work.authors)
+            query.set_words(config.query_str(self.work))
             query.set_num_page_results(1)
             self.querier.send_query(query)
 
@@ -808,6 +787,7 @@ class ScholarUpdate:
         """ Displays widget """
         self.show()
         display(self.view)
+
 
 class SearchScholar:
     """Search Scholar and Navigate on article list for insertion"""

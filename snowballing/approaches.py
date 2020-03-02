@@ -1,6 +1,8 @@
 """This module provides classes and functions for grouping work into approach
 Groups"""
+from .collection_helpers import oget, oset, dhas, ddel, dget
 from .operations import reload
+from . import config
 
 APPROACHES = []
 
@@ -60,21 +62,22 @@ class Group:
         >>> len(APPROACHES)
         1
     """
-    _category = "Related"
+    _category = config.APPROACH_RELATED_CATEGORY
     def __init__(self, *args ,**kwargs):
-        self.work = list(args)
-        if 'dont_cite' in kwargs:
-            self.work += kwargs['dont_cite']
-            self.dont_cite = kwargs['dont_cite']
-            del kwargs['dont_cite']
+        work = list(args)
+        if dhas(kwargs, "approach_dont_cite"):
+            work += dget(kwargs, "approach_dont_cite")
+            oset(self, "approach_dont_cite", dget(kwargs, "approach_dont_cite"))
+            ddel(kwargs, "approach_dont_cite")
+        oset(self, "approach_work", work)
 
         for key, item in kwargs.items():
-            for arg in self.work:
-                if not hasattr(arg, 'force_' + key):
+            for arg in work:
+                if not hasattr(arg, config.APPROACH_FORCE_PREFIX + key):
                     setattr(arg, key, item)
             setattr(self, key, item)
 
-        if self._category == "Related":
+        if self._category == config.APPROACH_RELATED_CATEGORY:
             APPROACHES.append(self)
 
 
@@ -166,7 +169,7 @@ def name(approach):
         >>> name(a)
         'noWorkflow'
     """
-    return approach.display.replace("  ", "")
+    return oget(approach, "display", "").replace("  ", "")
 
 
 def get_approaches(condition=None):
@@ -199,12 +202,7 @@ def wcite(approach, works, extra=""):
     """Return a latex cite command with all work in an approach"""
     return ' \\cite{}{{{}}}'.format(
         extra,
-        ', '.join([
-            works[w]['ID']
-            for w in approach.work
-            if w in works
-            if ("snowball" in w.category) or ("ok" in w.category)
-        ])
+        ', '.join(config.approach_ids_from_work(approach, works))
     )
 
 

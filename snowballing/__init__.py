@@ -2,6 +2,7 @@
 import argparse
 import os
 import sys
+import subprocess
 
 from os.path import join, dirname, exists
 from pathlib import Path
@@ -53,6 +54,19 @@ def search(args):
         print('You must execute this command inside the project folder!')
         raise
 
+def web(args):
+    """ Start web server """
+    try:
+        sys.path.append(os.getcwd())
+        import database
+        my_env = os.environ.copy()
+        my_env["FLASK_APP"] = os.path.join(os.path.dirname(__file__), "web.py")
+        my_env["FLASK_ENV"] = "development"
+        subprocess.call([sys.executable, "-m", "flask", "run"], env=my_env)
+    except ImportError:
+        print('You must execute this command inside the project folder!')
+        raise
+        
 
 def ref(args):
     """ Get BibTeX for varname """
@@ -89,6 +103,11 @@ def main():
         'ref', help='get BibTeX for varname')
     ref_parser.set_defaults(func=ref)
     ref_parser.add_argument("varname", type=str)
+
+    web_parser = subparsers.add_parser(
+        'web', help='start web server')
+    web_parser.set_defaults(func=web)
+    #search_parser.add_argument("query", type=str)
 
     args = parser.parse_args()
     args.func(args)

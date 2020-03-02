@@ -1,21 +1,20 @@
 """This module produces citation graphs"""
 
-import os
 import svgwrite
 
 from collections import OrderedDict, defaultdict
 from itertools import groupby
 from pathlib import Path
-from textwrap import dedent
 
 from ipywidgets import Text, ToggleButton, IntSlider, VBox, HBox, Box, Button, Output
 from ipywidgets import ColorPicker
 
 from IPython.display import SVG, clear_output
-from IPython.display import display, SVG, Javascript, HTML
+from IPython.display import display, Javascript, HTML
 
-from .operations import load_work, load_citations, reload
+from .collection_helpers import oget
 from .models import Year
+from .operations import load_work, load_citations, reload, wdisplay
 from .utils import lines_len_in_circle, multiline_wrap
 
 from . import config
@@ -66,7 +65,7 @@ def set_positions(work_list, graph_config=None):
     years = {}
     rows = defaultdict(list)
     lines_len = lines_len_in_circle(graph_config.r)
-    for year, works in groupby(work_list, lambda x: x.year):
+    for year, works in groupby(work_list, lambda x: oget(x, "year")):
         tyear = (year, 0)
         for work in works:
             while len(by_year[tyear]) >= graph_config.max_by_year:
@@ -79,9 +78,9 @@ def set_positions(work_list, graph_config=None):
             work._dist_y = graph_config.dist_y
             work._margin = graph_config.margin
             work._letters = graph_config.letters
-            work._circle_text = multiline_wrap(work.display, lines_len)
+            work._circle_text = multiline_wrap(work @ wdisplay, lines_len)
             work._square_text = multiline_wrap(
-                work.display, [graph_config.letters] * len(lines_len)
+                work @ wdisplay, [graph_config.letters] * len(lines_len)
             )
             work._shape = graph_config.shape
             work._link = ["scholar", "link"]#["file", "link", "scholar"]
@@ -356,7 +355,7 @@ class Graph(VBox):
 
     def work_key(self, work):
         """Return work category"""
-        return work.category
+        return oget(work, "category")
 
     def work_colors(self, work):
         """Return colors for work"""
@@ -374,7 +373,7 @@ class Graph(VBox):
         if key not in self._display_categories:
             return False
         for attr in dir(work):
-            if self._filter_out and self.filter_out in str(getattr(work, attr)).lower():
+            if self._filter_out and self._filter_out in str(getattr(work, attr)).lower():
                 return False
         for attr in dir(work):
             if self._filter_in in str(getattr(work, attr)).lower():

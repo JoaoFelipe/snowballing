@@ -1,7 +1,6 @@
 """This module provides useful jupyter widgets"""
 import base64
 import os
-import subprocess
 import warnings
 
 from ipywidgets import DOMWidget, HBox, Label, Text, Button
@@ -9,7 +8,9 @@ from IPython.display import display, Javascript
 from urllib.parse import quote
 
 from .dbindex import year_file
+from .operations import invoke_editor, metakey
 from . import config
+
 
 
 def display_cell(text):
@@ -49,46 +50,6 @@ def idisplay(*args, label=True):
     display(HBox(args))
 
 
-def find_line(work):
-    """Find work position in file
-
-    Arguments:
-
-    * `work` -- work object
-
-    Doctest:
-
-    .. doctest::
-
-        >>> from .operations import reload, work_by_varname
-        >>> reload()
-        >>> murta2014a = work_by_varname("murta2014a")
-        >>> find_line(murta2014a)
-        6
-    """
-    import re
-    with open(year_file(work.year), 'rb') as f:
-        return [
-            index
-            for index, line in enumerate(f)
-            if re.findall('(^{}\\s=)'.format(work.metakey).encode(), line)
-        ][0] + 1
-
-
-def invoke_editor(work):
-    """Open work in a given line with the configured editor"""
-    if not config.TEXT_EDITOR or not config.LINE_PARAMS:
-        warnings.warn("You must set the config.TEXT_EDITOR and config.LINE_PARAMS to use this function")
-        return
-    subprocess.call([
-        config.TEXT_EDITOR,
-        config.LINE_PARAMS.format(
-            year_path=year_file(work.year),
-            line=find_line(work)
-        ),
-    ])
-
-
 def new_button(description, function):
     """Create a new Button widget and set its on_click callback"""
     button = Button(description=description)
@@ -111,4 +72,4 @@ def work_button(work, description=None):
     def click(w):
         invoke_editor(work)
 
-    return new_button(description or work.metakey, click)
+    return new_button(description or work @ metakey, click)

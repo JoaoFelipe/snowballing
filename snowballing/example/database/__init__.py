@@ -1,22 +1,29 @@
+import os
 from pathlib import Path
 from snowballing import config
+from snowballing.collection_helpers import define_cvar
+from snowballing.config_helpers import set_config
+from snowballing.operations import work_by_varname
+from snowballing.rules import ModifyRules
 
-### Database path. Do not change it unless you know what you are doing
+## Database path. Do not change it unless you know what you are doing
 config.DATABASE_DIR = Path(__file__).parent.resolve()
 
-### Text editior path
-config.TEXT_EDITOR = "C:\\Program Files\\Sublime Text 3\\sublime_text.exe"
-### Text editor argument for opening in a given line.
-### Use a format string with arguments {year_path} and {line}
-config.LINE_PARAMS = "{year_path}:{line}"
+## Text editior path
+config.TEXT_EDITOR = "code"  # VSCode
+# config.TEXT_EDITOR = "subl"  # Sublime Text
+## Text editor argument for opening in a given line.
+## Use a format string with arguments {year_path} and {line}
+config.LINE_PARAMS = "--goto {year_path}:{line}"  # VSCode
+#config.LINE_PARAMS = "{year_path}:{line}"  # Sublime Text
 
-### List of possible work class tuples
-### Each tuple has the follwing elements:
-###   Class Name
-###   Category name
-###   Graph visibility (Options: display, hide, always_hide)
-###   Graph node color
-###   Graph node text color
+## List of possible work class tuples
+## Each tuple has the follwing elements:
+##   Class Name
+##   Category name
+##   Graph visibility (Options: display, hide, always_hide)
+##   Graph node color
+##   Graph node text color
 config.CLASSES = [
     ("Work", "work", "display", "#FFD86E", "black"),
     ("WorkSnowball", "snowball", "display", "#6DCE9E", "white"),
@@ -27,16 +34,22 @@ config.CLASSES = [
     ("Site", "site", "hide", "#000080", "white"),
     ("Email", "site", "hide", "#000080", "white"),
 ]
-### Default class for insertion
+## Default class for insertion
 config.DEFAULT_CLASS = "Work"
 
-### Similary Ration for matching places
+## Similary Ratio for matching places
 config.SIMILARITY_RATIO = 0.8
 
-### Debug fields during BibTeX export
+## Check Deprecation
+config.CHECK_DEPRECATION = True
+
+
+### Fields
+
+## Debug fields during BibTeX export
 config.DEBUG_FIELDS = True
 
-### List of exportable work fields to BibTeX
+## List of exportable work fields to BibTeX
 config.WORK_FIELDS = [
     "entrytype", "year", "name", "authors", "place",
     "booktitle", "bookauthors", "edition", "available",
@@ -47,8 +60,8 @@ config.WORK_FIELDS = [
     "special", "website", "link", "scholar", "shorttitle", "address",
 ]
 
-### Ignore fields when exporting to BibTeX
-### Regexes that starts with ^ and ends with $
+## Ignore fields when exporting to BibTeX
+##   Regexes that starts with ^ and ends with $
 config.BIBTEX_IGNORE_FIELDS = [
     "excerpt", "month", "bookname", "url", "ID", 
 
@@ -63,74 +76,213 @@ config.BIBTEX_IGNORE_FIELDS = [
 ]
 
 
-### Map Work to BibTeX
-config.WORK_BIBTEX_MAP = {
-    "name": lambda x: "title",
-    "authors": lambda x: "author",
-    "local": lambda x: "address",
-    "organization": lambda x: "publisher",
-    "pp": lambda x: "pages",
-    "entrytype": lambda x: "ENTRYTYPE",
-    "place": lambda x: {
-        "incollection": "booktitle",
-        "inproceedings": "booktitle",
-        "misc": "booktitle",
-        "article": "journal",
-        "book": "",
-        "mastersthesis": "",
-        "phdthesis": "",
-        "techreport": "",
-        "": ""
-    }[getattr(x, "entrytype", "")]
-}
+### Transformation Rules
 
-### List of rows with form buttons (I suggest using no more than 4 per row)
-### The form button is a tuple with two elements:
-###  Label
-###   Map of form widgets to value
-config.FORM_BUTTONS = [
-    [
-        (
-            "Unrelated: Scripts", {
-                "due_widget": "Unrelated to scripts",
-                "file_field_widget": True,
-            }
-        ),
-        (
-            "Unrelated: Provenance", {
-                "due_widget": "Unrelated to provenance",
-                "file_field_widget": True,
-            }
-        ),
-        (
-            "Both", {
-                "due_widget": "Unrelated to scripts. Unrelated to provenance",
-                "file_field_widget": True,
-            }
-        ),
-        (
-            "Ok", {
-                "work_type_widget": "WorkOk",
-                "file_field_widget": True,
-            }
-        ),
-    ],
-]
+## Map BibTex to Info object
+#config.BIBTEX_TO_INFO = (
+#    ModifyRules(config.BIBTEX_TO_INFO, "user")
+#).rules
 
-### List of text fields in forms
-### Each tuple has 3 fields
-###   Label
-###   Work attribute
-###   Widget variable (use none if you do not want a variable)
-config.FORM_TEXT_FIELDS = [
-    ("Related", "may_be_related_to", None),
-    ("Display", "display", None),
-    ("Summary", "summary", None),
-    ("Star", "star", None),
-    ("Link", "link", None),
-]
+## Map BibTex to Info object. Set _work_type=Work
+#config.BIBTEX_TO_INFO_WITH_TYPE = (
+#    ModifyRules(config.BIBTEX_TO_INFO_WITH_TYPE, "user")
+#).rules
 
-### Module setting. Do not change it
+
+## Map BibTex to Info object. Ignore ID attribute
+#config.BIBTEX_TO_INFO_IGNORE_SET_ID = (
+#    ModifyRules(config.BIBTEX_TO_INFO_IGNORE_SET_ID, "user")
+#).rules
+
+
+## Convert Article info to Info object
+#config.ARTICLE_TO_INFO = (
+#    ModifyRules(config.ARTICLE_TO_INFO, "user")
+#).rules
+
+
+## Map Info object to Insert Code
+#config.INFO_TO_INSERT = (
+#    ModifyRules(config.INFO_TO_INSERT, "user")
+#).rules
+
+
+## Modify Info object for finding work
+#config.FIND_INFO_WORK = (
+#    ModifyRules(config.FIND_INFO_WORK, "user")
+#).rules
+
+
+## Convert Work object into BibTex dict object
+#config.WORK_TO_BIBTEX = (
+#    ModifyRules(config.WORK_TO_BIBTEX, "user")
+#).rules
+
+
+### Snowballing Forms
+
+## Convert lines of format [N] author name place other year' to Info object. fn(text)
+#set_config("user")(config.convert_citation_text_lines_to_info)
+
+
+## Create pyref from Info. fn(info)
+#set_config("user")(config.info_to_pyref)
+
+
+# Insert form
+config.FORM = (
+    ModifyRules(config.FORM, "user")
+    .append_all("widgets", [
+        ["text", "Star", "star", None],
+        ["text", "Summary", "summary", None],
+        ["button", "Unrelated: Scripts", "_b2"],
+        ["button", "Unrelated: Provenance", "_b3"],
+        ["button", "Both", "_b4"],
+
+    ])
+    .append_all("events", [
+        ["_b2", "click", [
+            {
+                "due": "Unrelated to scripts",
+                "file_field": True,
+            },
+            ["reload"]
+        ]],
+        ["_b3", "click", [ 
+            {
+                "due": "Unrelated to provenance",
+                "file_field": True,
+            },
+            ["reload"]
+        ]],
+        ["_b4", "click", [
+            {
+                "due": "Unrelated to scripts. Unrelated to provenance",
+                "file_field": True,
+            },
+            ["reload"],
+        ]],
+    ])
+    .replace("order", [
+        ["_b2", "_b3", "_b4", "_b1"],
+        ["work_type", "file_field"],
+        ["due", "place"],
+        ["year", "prefix"],
+        ["pdfpage", "may_be_related_to"],
+        ["display", "summary"],
+        ["star", "link"],
+    ])
+    .append_all("show", [
+        ["update_info", "summary", ":summary", None, ""],
+        ["update_info", "star", ":star", None, ""],
+    ])
+).rules
+
+
+@set_config("user")
+def check_insertion(nwork, info, citation_var, citation_file, should_add, ref=''):
+    """Check info validity after executing snowballing.create_info_code
+    Return dictionary of warning fields
+
+    This version: 
+        - checks for existence of pdf in the disk
+        - checks for definition of place
+        - checks for citation variable
+        - checks for work_type
+    """
+    result = {}
+    may_not_have_file = (
+        'link' in info
+        or info.get('_work_type', '') in ('nofile', 'site')
+        or info.get('place', '') == 'Patent'
+        or (nwork is not None and (
+            hasattr(nwork, 'link')
+            or nwork.category in ('nofile', 'site')
+            or getattr(getattr(nwork, 'place', None), 'name', '') == "Patent"
+        ))
+    ) 
+    if not may_not_have_file:
+        filepath = getattr(nwork, "file", info.get('file', '{}.pdf'.format(info['pyref'])))
+        if not os.path.exists(os.path.join("files", filepath)):
+            result["pdf"] = filepath
+
+    if info.get("_work_type") not in ("Site", "Ref"):
+        if 'place' not in info:
+            result["place1"] = info['place1']
+
+    if citation_var and not work_by_varname(citation_var):
+        result["citation"] = "Work {} not found".format(citation_var)
+
+    if not nwork and info["_work_type"] == "Work":
+        result["type"] = info["_work_type"]
+
+    return result
+
+## Check conditions on load
+#set_config("user")(config.check_load)
+
+
+### Snowballing display
+
+## Display article in widget. fn(article)
+#set_config("user")(config.display_article)
+
+### Query Scholar
+
+## Return string to query work on scholar. fn(work)
+#set_config("user")(config.query_str)
+
+### Work Attributes
+
+## Instructions to execute after Work __init__. fn(work)
+#set_config("user")(config.work_post_init)
+
+## Compare Work. fn(first, second)
+#set_config("user")(config.work_eq)
+
+## Uniquely identify Work. fn(work)
+#set_config("user")(config.work_hash)
+
+## Check if an Info object matches to a Work object. fn(info, work)
+#set_config("user")(config.info_work_match)
+
+
+### Aliases
+
+## Get list of aliases from work. fn(work)
+#set_config("user")(config.get_work_aliases)
+
+## Get year from alias. fn(work, alias)
+#set_config("user")(config.get_alias_year)
+
+
+### Graph Attributes
+
+## Get place name from work. fn(work) 
+#set_config("user")(config.graph_place_text)
+
+## Generate tooltip for place from work. fn(work)
+#set_config("user")(config.graph_place_tooltip)
+
+## Get work link. fn(work)
+#set_config("user")(config.work_link)
+
+## Generate tooltip for work. fn(work)
+#set_config("user")(config.work_tooltip)
+
+
+### Approaches
+
+config.APPROACH_FORCE_PREFIX = "force_"
+config.APPROACH_RELATED_CATEGORY = "Related"
+
+## Get work ids from approach. fn(approach, works)
+#set_config("user")(config.approach_ids_from_work)
+
+
+### Database
+
+## Module setting. Do not change it
 from . import places, work, citations, groups
 
 config.MODULES["places"] = places
@@ -138,3 +290,10 @@ config.MODULES["work"] = work
 config.MODULES["citations"] = citations
 config.MODULES["groups"] = groups
 
+## Map of Work attributes used by the tool
+#config.ATTR = ... 
+
+## Similar to ATTR variable, bu provide a direct map from existing keys from scholar
+#config.SCHOLAR_MAP = ...
+
+define_cvar(config.ATTR)

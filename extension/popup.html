@@ -1,0 +1,30 @@
+ <!DOCTYPE html>
+  <html>
+    <head>
+      <style>
+        #errors {
+          width: 100%;
+        }
+      </style>
+    </head>
+    <body>
+      <form id="config-form">
+        <div class="config-field">
+          <label for="citation_var">Citation Var</label>
+          <input id="citation-var" name="citation_var"></input>
+        </div>
+        <div class="config-field">
+          <label for="citation_file">Citation File</label>
+          <input id="citation-file" name="citation_file"></input>
+        </div>
+        <div class="config-field">
+          <label>
+            <input id="backward" name="backward" type="checkbox"></input>
+            Backward
+          </label>
+        </div>
+      </form>
+      <button id="reload"> Reload </button>
+      <script src="popup.js"></script>
+    </body>
+  </html>
