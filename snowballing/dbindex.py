@@ -28,7 +28,7 @@ def citation_file(name):
         >>> [citation_file('noworkflow2014')]  # doctest: +ELLIPSIS
         [.../citations/noworkflow2014.py')]
     """
-    return config.DATABASE_DIR / 'citations' / '{}.py'.format(name)
+    return config.DATABASE_DIR / "citations" / "{}.py".format(name)
 
 
 def year_file(year):
@@ -48,7 +48,7 @@ def year_file(year):
         >>> [year_file(2017)]  # doctest: +ELLIPSIS
         [.../work/y2017.py')]
     """
-    return config.DATABASE_DIR / 'work' / 'y{}.py'.format(year)
+    return config.DATABASE_DIR / "work" / "y{}.py".format(year)
 
 
 def places_file():
@@ -62,7 +62,7 @@ def places_file():
         >>> [places_file()]  # doctest: +ELLIPSIS
         [...places.py')]
     """
-    return config.DATABASE_DIR / 'places.py'
+    return config.DATABASE_DIR / "places.py"
 
 
 def this_file(filename):
@@ -81,7 +81,7 @@ def this_file(filename):
         >>> this_file(__file__)
         'dbindex'
     """
-    return '.'.join(os.path.basename(filename).split('.')[:-1])
+    return ".".join(os.path.basename(filename).split(".")[:-1])
 
 
 def discover_year(varname, year=None, fail_raise=True):
@@ -119,7 +119,7 @@ def discover_year(varname, year=None, fail_raise=True):
     year = parse_varname(varname, 2)
     if year is None:
         if fail_raise:
-            raise ValueError('Year Required')
+            raise ValueError("Year Required")
         return None
     return int(year)
 
@@ -143,8 +143,8 @@ def increment_char(letter):
         'a'
     """
     if letter not in ascii_letters:
-        return 'a'
-    return chr(ord(letter) + 1) if letter != 'z' else 'a'
+        return "a"
+    return chr(ord(letter) + 1) if letter != "z" else "a"
 
 
 def increment_str(varname):
@@ -169,14 +169,14 @@ def increment_str(varname):
         >>> increment_str('murta2014az')
         'murta2014ba'
     """
-    lpart = varname.rstrip('z')
+    lpart = varname.rstrip("z")
     num_replacements = len(varname) - len(lpart)
     new_s = lpart
     if lpart and lpart[-1] in ascii_letters:
         new_s = lpart[:-1] + increment_char(lpart[-1])
     else:
         new_s += "a"
-    new_s += 'a' * num_replacements
+    new_s += "a" * num_replacements
     return new_s
 
 
@@ -219,7 +219,7 @@ def parse_varname(varname, group_index):
         True
     """
     return getattr(
-        re.search('(.*)(\d\d\d\d)(.*)', varname),
-        'group',
+        re.search(r"(.*)(\d\d\d\d)(.*)", varname),
+        "group",
         lambda x: None
     )(group_index)

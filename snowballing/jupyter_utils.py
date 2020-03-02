@@ -26,7 +26,7 @@ def display_cell(text):
         $('span:contains("# Temp")').closest('.cell').remove();
         var code = IPython.notebook.insert_cell_{0}('code');
         code.set_text(decodeURIComponent(window.atob("{1}")));
-    """.format('below', encoded_code)))
+    """.format("below", encoded_code)))
 
 
 def idisplay(*args, label=True):

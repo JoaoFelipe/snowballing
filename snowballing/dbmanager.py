@@ -279,7 +279,7 @@ class CitationVisitor(ast.NodeVisitor):
         last_line = 0
         for stmt in body:
             if isinstance(stmt, ast.ImportFrom) and stmt.module is not None:
-                year = int(getattr(re.search(r"work\.y(\d\d\d\d)", stmt.module), 'group', lambda x: -1)(1))
+                year = int(getattr(re.search(r"work\.y(\d\d\d\d)", stmt.module), "group", lambda x: -1)(1))
                 if self.year == year and self.operation == "remove import":
                     aliases = [a for a in stmt.names if a.name == self.varname]
                     if aliases:
@@ -522,11 +522,11 @@ def insert_work(varname, name, text, year=None, ratio=0.9, dry_run=False):
         lines, sep = read_file(filename)
     except FileNotFoundError:
         lines = [
-            '# coding: utf-8',
-            'from datetime import datetime',
-            'from snowballing.models import *',
-            'from ..places import *',
-            ''
+            "# coding: utf-8",
+            "from datetime import datetime",
+            "from snowballing.models import *",
+            "from ..places import *",
+            ""
         ]
         sep = "\n"
     result = {}

@@ -23,7 +23,7 @@ from . import config
 class GraphConfig:
     """Configure graph"""
     def __init__(self, **kwargs):
-        self._max_by_year = float('inf')
+        self._max_by_year = float("inf")
         self.r = 20
         self.margin = 70
         self.margin_left = 20
@@ -46,7 +46,7 @@ class GraphConfig:
     def max_by_year(self, value):
         self._max_by_year = value
         if value <= 0:
-            self._max_by_year = float('inf')
+            self._max_by_year = float("inf")
 
 
 def set_positions(work_list, graph_config=None):
@@ -238,8 +238,8 @@ class Graph(VBox):
             ]),
             self.output_widget
         ])
-        self.layout.display = 'flex'
-        self.layout.align_items = 'stretch'
+        self.layout.display = "flex"
+        self.layout.align_items = "stretch"
         self.delayed_draw()
 
     def delayed_draw(self, *args):
@@ -293,7 +293,7 @@ class Graph(VBox):
 
     def create_category(self, name, attr, value, color, font_color):
         """Create category widget"""
-        VIS = ['none', '']
+        VIS = ["none", ""]
         widget = self.toggle_widgets[attr] = ToggleButton(value=value, description=name)
         wcolor = self.color_widgets[attr] = ColorPicker(value=color, description=name, width="180px")
         wfont_color = self.font_color_widgets[attr] = ColorPicker(value=font_color, width="110px")
@@ -361,7 +361,7 @@ class Graph(VBox):
         """Return colors for work"""
         key = self.work_key(work)
         if key not in self.color_widgets:
-            return ('white', 'black')
+            return ("white", "black")
         return (
             self.color_widgets[key].value,
             self.font_color_widgets[key].value
@@ -430,35 +430,35 @@ class Graph(VBox):
 def getcolors():
     """Generate colors"""
     kelly_colors = OrderedDict([
-        ('D6.1', (137, 80, 10)),
-        ('D6.2', (216, 179, 101)),
-        ('D6.4', (199, 234, 229)),
-        ('D6.5', (90, 180, 172)),
-        ('D6.6', (1, 41, 37)),
-        ('D6.3', (246, 232, 195)),
+        ("D6.1", (137, 80, 10)),
+        ("D6.2", (216, 179, 101)),
+        ("D6.4", (199, 234, 229)),
+        ("D6.5", (90, 180, 172)),
+        ("D6.6", (1, 41, 37)),
+        ("D6.3", (246, 232, 195)),
 
-        ('vivid_yellow', (255, 179, 0)),
-        ('strong_purple', (128, 62, 117)),
-        ('vivid_orange', (255, 104, 0)),
-        ('very_light_blue', (166, 189, 215)),
-        ('vivid_red', (193, 0, 32)),
-        ('grayish_yellow', (206, 162, 98)),
-        ('medium_gray', (129, 112, 102)),
+        ("vivid_yellow", (255, 179, 0)),
+        ("strong_purple", (128, 62, 117)),
+        ("vivid_orange", (255, 104, 0)),
+        ("very_light_blue", (166, 189, 215)),
+        ("vivid_red", (193, 0, 32)),
+        ("grayish_yellow", (206, 162, 98)),
+        ("medium_gray", (129, 112, 102)),
 
-        # these aren't good for people with defective color vision:
-        ('vivid_green', (0, 125, 52)),
-        ('strong_purplish_pink', (246, 118, 142)),
-        ('strong_blue', (0, 83, 138)),
-        ('strong_yellowish_pink', (255, 122, 92)),
-        ('strong_violet', (83, 55, 122)),
-        ('vivid_orange_yellow', (255, 142, 0)),
-        ('strong_purplish_red', (179, 40, 81)),
-        ('vivid_greenish_yellow', (244, 200, 0)),
-        ('strong_reddish_brown', (127, 24, 13)),
-        ('vivid_yellowish_green', (147, 170, 0)),
-        ('deep_yellowish_brown', (89, 51, 21)),
-        ('vivid_reddish_orange', (241, 58, 19)),
-        ('dark_olive_green', (35, 44, 22))])
+        # these aren"t good for people with defective color vision:
+        ("vivid_green", (0, 125, 52)),
+        ("strong_purplish_pink", (246, 118, 142)),
+        ("strong_blue", (0, 83, 138)),
+        ("strong_yellowish_pink", (255, 122, 92)),
+        ("strong_violet", (83, 55, 122)),
+        ("vivid_orange_yellow", (255, 142, 0)),
+        ("strong_purplish_red", (179, 40, 81)),
+        ("vivid_greenish_yellow", (244, 200, 0)),
+        ("strong_reddish_brown", (127, 24, 13)),
+        ("vivid_yellowish_green", (147, 170, 0)),
+        ("deep_yellowish_brown", (89, 51, 21)),
+        ("vivid_reddish_orange", (241, 58, 19)),
+        ("dark_olive_green", (35, 44, 22))])
     while True:
         for color in kelly_colors.values():
             yield color

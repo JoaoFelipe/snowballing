@@ -133,7 +133,7 @@ BIBTEX_TO_INFO = {
         ("pyref", lambda old, new: info_to_pyref(new)),
     ],
     "<after>": [
-        ("name", lambda old, new, current: new["name"].replace('{', '').replace('}', ''))
+        ("name", lambda old, new, current: new["name"].replace("{", "").replace("}", ""))
     ],
     "title": ["name"],
     "author": ["authors"],
@@ -241,7 +241,7 @@ INFO_TO_INSERT = {
             str_item("place1", obj="new"), 
         ])),
         ("other", lambda old, new, current: [
-            '{}={!r},'.format(key, consume(current, key)) # .replace('"', r'\"')
+            "{}={!r},".format(key, consume(current, key)) # .replace('"', r'\"')
             for key in copy(current)
         ]),
         ("attributes", lambda old, new: "\n            ".join(remove_empty([
@@ -284,8 +284,8 @@ FIND_INFO_WORK = {
             "Book" if old["entrytype"] == "book" else
             None
         ), 
-        ("_work", lambda old: work_by_varname(old['ID']) if 'ID' in old else None),
-        ("_key", lambda old: old['ID'] if 'ID' in old else None),
+        ("_work", lambda old: work_by_varname(old["ID"]) if "ID" in old else None),
+        ("_key", lambda old: old["ID"] if "ID" in old else None),
     ],
     "year": ["year", "_year"],
     "school": ["local"],
@@ -384,7 +384,7 @@ def convert_citation_text_lines_to_info(text):
         info["_work_type"] = "Ref"
         found = True
         other = lines[1:-1]
-    elif lines[-1].strip().startswith('http') and len(lines) >= 3:
+    elif lines[-1].strip().startswith("http") and len(lines) >= 3:
         # [N] WebName http://...
         info["name"] = lines[1].strip()
         info["url"] = lines[-1].strip()
@@ -404,9 +404,9 @@ def convert_citation_text_lines_to_info(text):
     if found:
         for num, line in zip(range(1, 10000), other):
             line = line.strip()
-            split = line.split('=')
+            split = line.split("=")
             if len(split) > 1:
-                info[split[0]] = '='.join(split[1:])
+                info[split[0]] = "=".join(split[1:])
             else:
                 info["other{}".format(num)] = line
         return info
@@ -557,16 +557,16 @@ FORM = {
 
 ### Checks
 
-def check_insertion(nwork, info, citation_var, citation_file, should_add, ref=''):
+def check_insertion(nwork, info, citation_var, citation_file, should_add, ref=""):
     """Check info validity after executing snowballing.create_info_code
     Return dictionary of warning fields
 
     Default: returns place1 if place is not defined and always returns the pdf name 
     """
     result = {}
-    result["pdf"] = '{}.pdf'.format(info['pyref'])
-    if 'place' not in info and info.get("_work_type") not in ("Site", "Ref"):
-        result["place1"] = info['place1']
+    result["pdf"] = "{}.pdf".format(info["pyref"])
+    if "place" not in info and info.get("_work_type") not in ("Site", "Ref"):
+        result["place1"] = info["place1"]
     return result
 
 
@@ -582,7 +582,7 @@ def check_load(work, varname, warning=lambda x: print(x)):
 
 def display_article(article):
     """Display article in widget"""
-    if 'div' in article:
+    if "div" in article:
         return [
             HTML("""
                 <style>
@@ -764,17 +764,17 @@ APPROACH_RELATED_CATEGORY = "Related"
 def approach_ids_from_work(approach, works):
     for work in approach.work:
         if work in works and ("snowball" in work.category or "ok" in work.category):
-            yield works[work]['ID']
+            yield works[work]["ID"]
 
 
 ### Database
 
 # Module setting
 MODULES = {
-    'places': None,
-    'work': None,
-    'citations': None,
-    'groups': None,
+    "places": None,
+    "work": None,
+    "citations": None,
+    "groups": None,
 }
 
 # Map of Work attributes used by the tool

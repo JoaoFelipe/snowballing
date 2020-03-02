@@ -136,35 +136,31 @@ def unified_exc(message, reload=False):
                     load_db()
                     importlib.reload(database)
                 result, work, should_add = unified_find(
-                    request.json.get('info'),
+                    request.json.get("info"),
                     {
-                        "scholar_id": request.json.get('scholar_id'),
-                        "cluster_id": request.json.get('cluster_id'),
-                        "scholar": request.json.get('scholar'),
-                        "scholar_ok": request.json.get('scholar_ok'),
+                        "scholar_id": request.json.get("scholar_id"),
+                        "cluster_id": request.json.get("cluster_id"),
+                        "scholar": request.json.get("scholar"),
+                        "scholar_ok": request.json.get("scholar_ok"),
                     },
-                    request.json.get('latex'),
-                    request.json.get('db_latex'),
-                    request.json.get('citation_var'),
-                    request.json.get('citation_file'),
-                    request.json.get('backward'),
+                    request.json.get("latex"),
+                    request.json.get("db_latex"),
+                    request.json.get("citation_var"),
+                    request.json.get("citation_file"),
+                    request.json.get("backward"),
                 )
                 result = func(result, work, should_add)
             except Exception as e:
-                result['msg'] = message + ': ' + repr(e)
+                result["msg"] = message + ": " + repr(e)
                 traceback.print_exc()
-            if result['msg']:
-                result['result'] = 'error'
+            if result["msg"]:
+                result["result"] = "error"
             return jsonify(result)
         return dec
     return unified_dec
 
 
-@app.route('/')
-def root():
-    return render_template('hello.html')
-
-@app.route('/ping', methods=['GET', 'POST'])
+@app.route("/ping", methods=["GET", "POST"])
 def ping():
     return {
         "result": "ok",
@@ -172,14 +168,14 @@ def ping():
     }
 
 
-@app.route('/find', methods=['GET', 'POST'])
-@unified_exc('Unable to find work')
+@app.route("/find", methods=["GET", "POST"])
+@unified_exc("Unable to find work")
 def find_work(result, work, should_add):
     return result
 
 
-@app.route('/click', methods=['GET', 'POST'])
-@unified_exc('Unable to open editor')
+@app.route("/click", methods=["GET", "POST"])
+@unified_exc("Unable to open editor")
 def do_click(result, work, should_add):
     if work:
         invoke_editor(work)
@@ -188,21 +184,21 @@ def do_click(result, work, should_add):
     return result
 
 
-@app.route('/form', methods=['GET', 'POST'])
-@unified_exc('Unable to load form', reload=True)
+@app.route("/form", methods=["GET", "POST"])
+@unified_exc("Unable to load form", reload=True)
 def form(result, work, should_add):
     result["form"] = form_definition()
     return result
 
-@app.route('/form/submit', methods=['GET', 'POST'])
-@unified_exc('Unable to submit form', reload=True)
+@app.route("/form/submit", methods=["GET", "POST"])
+@unified_exc("Unable to submit form", reload=True)
 def submit_form(result, work, should_add):
     if result["result"] == "ok":
         info = result["info"]
-        backward = request.json.get('backward') or ""
-        values = request.json.get('values')
-        citation_var = request.json.get('citation_var')
-        citation_file = request.json.get('citation_file')
+        backward = request.json.get("backward") or ""
+        values = request.json.get("values")
+        citation_var = request.json.get("citation_var")
+        citation_file = request.json.get("citation_file")
         navigator = WebNavigator(
             values, work, info,
             citation_file=citation_file,
@@ -214,7 +210,7 @@ def submit_form(result, work, should_add):
         result["resp"] = navigator.show()
     return result
 
-@app.route('/run', methods=['GET', 'POST'])
+@app.route("/run", methods=["GET", "POST"])
 def run():
     try:
         error = False
@@ -222,7 +218,7 @@ def run():
         err = io.StringIO()
         with redirect_stdout(out), redirect_stderr(err):
             try:
-                exec(request.json.get('code'))
+                exec(request.json.get("code"))
             except:
                 traceback.print_exc()
                 error = True
@@ -242,18 +238,18 @@ def run():
         })
 
 
-@app.route('/clear', methods=['GET', 'POST'])
+@app.route("/clear", methods=["GET", "POST"])
 def clear():
     load_db()
     STATUS.clear()
     return jsonify({
-        'result': 'ok',
-        'msg': '',
-        'status': list(STATUS),
+        "result": "ok",
+        "msg": "",
+        "status": list(STATUS),
     })
 
 
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()

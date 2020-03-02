@@ -27,9 +27,9 @@ def last_name_first_author(authors):
         >>> last_name_first_author('Joao Pimentel, Vanessa Braganholo')
         'pimentel'
     """
-    if ' and ' in authors:
-        authors = authors.split(' and ')[0]
-    if ',' not in authors:
+    if " and " in authors:
+        authors = authors.split(" and ")[0]
+    if "," not in authors:
         last = authors.split()[-1]
     else:
         last = re.findall(r'(\w*)[`\-=~!@#$%^&*()_+\[\]{};\'\\:"|<,/<>?]', authors)[0]
@@ -52,7 +52,7 @@ def reorder_place(place):
     place = re.sub(r"(.*) (International Conference on)", r"\2 \1", place, flags=re.I)
     place = re.sub(r"(.*) (International Convention on)", r"\2 \1", place, flags=re.I)
     place = re.sub(r"(.*) (International Symposium on)", r"\2 \1", place, flags=re.I)
-    return ''.join([i for i in place if not i.isdigit()])
+    return "".join([i for i in place if not i.isdigit()])
 
 
 def select_param(obj, old, new, current):
@@ -69,7 +69,7 @@ def var_item(key, before="", after=",", obj="old", use_key=True):
         if value:
             consume_key(current, key, use_key)
             func = str if isinstance(value, str) else repr
-            return '{}{}={}{}'.format(
+            return "{}{}={}{}".format(
                 before, key, func(value), after
             )
         return ""
@@ -82,7 +82,7 @@ def str_list(key, before="", after=",", obj="old", use_key=True):
         if value:
             consume_key(current, key, use_key)
             return "{}{}=[{}]{}".format(
-                before, key, ', '.join('"{}"'.format(e) for e in value.split(',')), after
+                before, key, ", ".join('"{}"'.format(e) for e in value.split(",")), after
             )
         return ""
     return str_list_apply

@@ -33,9 +33,9 @@ def recursive_copy(origin, destiny):
 
 def start(args):
     """ Create a new literature snowballing folder """
-    print('Creating {}'.format(args.path))
-    recursive_copy('example', args.path)
-    print('Done!')
+    print("Creating {}".format(args.path))
+    recursive_copy("example", args.path)
+    print("Done!")
 
 
 def search(args):
@@ -51,7 +51,7 @@ def search(args):
             print(work_to_bibtex(work))
 
     except ImportError:
-        print('You must execute this command inside the project folder!')
+        print("You must execute this command inside the project folder!")
         raise
 
 def web(args):
@@ -64,7 +64,7 @@ def web(args):
         my_env["FLASK_ENV"] = "development"
         subprocess.call([sys.executable, "-m", "flask", "run"], env=my_env)
     except ImportError:
-        print('You must execute this command inside the project folder!')
+        print("You must execute this command inside the project folder!")
         raise
         
 
@@ -81,7 +81,7 @@ def ref(args):
             print(work_to_bibtex(work))
 
     except ImportError:
-        print('You must execute this command inside the project folder!')
+        print("You must execute this command inside the project folder!")
         raise
 
 
@@ -90,22 +90,22 @@ def main():
     parser = argparse.ArgumentParser(description="Snowballing tools")
     subparsers = parser.add_subparsers()
     start_parser = subparsers.add_parser(
-        'start', help='start a new literature snowballing')
+        "start", help="start a new literature snowballing")
     start_parser.set_defaults(func=start)
     start_parser.add_argument("path", type=str, default="literature", nargs="?")
 
     search_parser = subparsers.add_parser(
-        'search', help='search references in the database')
+        "search", help="search references in the database")
     search_parser.set_defaults(func=search)
     search_parser.add_argument("query", type=str)
 
     ref_parser = subparsers.add_parser(
-        'ref', help='get BibTeX for varname')
+        "ref", help="get BibTeX for varname")
     ref_parser.set_defaults(func=ref)
     ref_parser.add_argument("varname", type=str)
 
     web_parser = subparsers.add_parser(
-        'web', help='start web server')
+        "web", help="start web server")
     web_parser.set_defaults(func=web)
     #search_parser.add_argument("query", type=str)
 

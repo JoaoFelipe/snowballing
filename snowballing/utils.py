@@ -167,7 +167,7 @@ class MultiLine(TextWrapper):
 
             # First chunk on line is whitespace -- drop it, unless this
             # is the very beginning of the text (ie. no lines started yet).
-            if self.drop_whitespace and chunks[-1].strip() == '' and lines:
+            if self.drop_whitespace and chunks[-1].strip() == "" and lines:
                 del chunks[-1]
 
             while chunks:
@@ -189,7 +189,7 @@ class MultiLine(TextWrapper):
                 cur_len = sum(map(len, cur_line))
 
             # If the last chunk on this line is all whitespace, drop it.
-            if self.drop_whitespace and cur_line and cur_line[-1].strip() == '':
+            if self.drop_whitespace and cur_line and cur_line[-1].strip() == "":
                 cur_len -= len(cur_line[-1])
                 del cur_line[-1]
 
@@ -202,13 +202,13 @@ class MultiLine(TextWrapper):
                      not chunks[0].strip()) and cur_len <= width):
                     # Convert current line back to a string and store it in
                     # list of all lines (return value).
-                    lines.append(indent + ''.join(cur_line).replace("  ", ""))
+                    lines.append(indent + "".join(cur_line).replace("  ", ""))
                 else:
                     while cur_line:
                         if (cur_line[-1].strip() and
                             cur_len + len(self.placeholder) <= width):
                             cur_line.append(self.placeholder)
-                            lines.append(indent + ''.join(cur_line).replace("  ", ""))
+                            lines.append(indent + "".join(cur_line).replace("  ", ""))
                             break
                         cur_len -= len(cur_line[-1])
                         del cur_line[-1]
@@ -349,7 +349,7 @@ def import_submodules(package, recursive=True):
         package = import_or_reload(package)
     results = {}
     for loader, name, is_pkg in pkgutil.walk_packages(package.__path__):
-        full_name = package.__name__ + '.' + name
+        full_name = package.__name__ + "." + name
 
         results[full_name] = import_or_reload(full_name)
         if recursive and is_pkg:

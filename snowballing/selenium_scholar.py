@@ -54,7 +54,7 @@ from .scholar import ScholarUtils, ScholarArticle, ScholarArticleParser120726
 from .scholar import ScholarQuery, BeautifulSoup
 from .operations import work_by_varname
 
-ScholarConf.VERSION = 's1.00'
+ScholarConf.VERSION = "s1.00"
 ScholarConf.DELTA_TIME = 1.0
 ScholarConf.DELTA_VARIATION = 0.5
 
@@ -128,18 +128,18 @@ class AddArticleTask(object):
         you adjusted the settings to tell Google Scholar to actually
         provide this information, *prior* to retrieving the article.
         """
-        if self.article['url_citation'] is None:
+        if self.article["url_citation"] is None:
             return False
         if self.article.citation_data is not None:
             return True
 
-        ScholarUtils.log('info', 'retrieving citation export data: {}'.format(
+        ScholarUtils.log("info", "retrieving citation export data: {}".format(
             self.article["url_citation"]
         ))
-        data = querier.get_response(url=self.article['url_citation'],
-                                    log_msg='citation data response',
-                                    err_msg='requesting citation data failed',
-                                    condition=(By.TAG_NAME, 'pre'))
+        data = querier.get_response(url=self.article["url_citation"],
+                                    log_msg="citation data response",
+                                    err_msg="requesting citation data failed",
+                                    condition=(By.TAG_NAME, "pre"))
         soup = BeautifulSoup(data, "html.parser")
         data = soup.text
         if data is None:
@@ -150,7 +150,7 @@ class AddArticleTask(object):
         return True
 
     def apply(self, querier):
-        if len(self.result.articles) < getattr(self.result.query, 'num_results', 10000):
+        if len(self.result.articles) < getattr(self.result.query, "num_results", 10000):
             self.get_citation_data(querier)
             self.result.articles.append(self.article)
 
@@ -166,7 +166,7 @@ class ParseTask(ScholarArticleParser120726):
 
     def handle_num_results(self, num_results):
         if self.result is not None and self.result.query is not None:
-            self.result.query['num_results'] = num_results
+            self.result.query["num_results"] = num_results
 
     def handle_article(self, art):
         self.articles.append(art)
@@ -186,8 +186,8 @@ class QueryTask(object):
 
     def apply(self, querier):
         html = querier.get_response(url=self.query.get_url(),
-                                    log_msg='dump of query response HTML',
-                                    err_msg='results retrieval failed',
+                                    log_msg="dump of query response HTML",
+                                    err_msg="results retrieval failed",
                                     condition=(By.ID, "gs_ab"))
 
         if html is None:
@@ -207,11 +207,11 @@ class SearchScholarQuery(ScholarQuery):
     configure on the Scholar website, in the advanced search options.
     """
 
-    SCHOLAR_QUERY_URL = ScholarConf.SCHOLAR_SITE + '/scholar?'
+    SCHOLAR_QUERY_URL = ScholarConf.SCHOLAR_SITE + "/scholar?"
 
     def __init__(self):
         ScholarQuery.__init__(self)
-        self._add_attribute_type('num_results', 'Results', 0)
+        self._add_attribute_type("num_results", "Results", 0)
         self.words = None # The default search behavior
         self.words_some = None # At least one of those words
         self.words_none = None # None of these words
@@ -276,7 +276,7 @@ class SearchScholarQuery(ScholarQuery):
            and self.words_none is None and self.phrase is None \
            and self.author is None and self.pub is None \
            and self.timeframe[0] is None and self.timeframe[1] is None:
-            raise QueryArgumentError('search query needs more parameters')
+            raise QueryArgumentError("search query needs more parameters")
 
         # If we have some-words or none-words lists, we need to
         # process them so GS understands them. For simple
@@ -292,17 +292,17 @@ class SearchScholarQuery(ScholarQuery):
             words_none = self._parenthesize_phrases(self.words_none)
 
         urlargs = [
-            ("as_q", self.words or ''),
-            ("as_epq", self.phrase or ''),
-            ("as_oq", words_some or ''),
-            ("as_eq", words_none or ''),
-            ("as_occt", 'title' if self.scope_title else 'any'),
-            ("as_sauthors", self.author or ''),
-            ("as_publication", self.pub or ''),
-            ("as_ylo", self.timeframe[0] or ''),
-            ("as_yhi", self.timeframe[1] or ''),
-            ("as_sdt", ('0' if self.include_patents else '1') + "%2C5"),
-            ("as_vis", '0' if self.include_citations else '1'),
+            ("as_q", self.words or ""),
+            ("as_epq", self.phrase or ""),
+            ("as_oq", words_some or ""),
+            ("as_eq", words_none or ""),
+            ("as_occt", "title" if self.scope_title else "any"),
+            ("as_sauthors", self.author or ""),
+            ("as_publication", self.pub or ""),
+            ("as_ylo", self.timeframe[0] or ""),
+            ("as_yhi", self.timeframe[1] or ""),
+            ("as_sdt", ("0" if self.include_patents else "1") + "%2C5"),
+            ("as_vis", "0" if self.include_citations else "1"),
         ]
 
         args = "&".join(
@@ -356,7 +356,7 @@ class ScholarSettingsTask(object):
 
     SETTINGS_URL = (
     	ScholarConf.SCHOLAR_SITE +
-    	'/scholar_settings?hl=en&as_sdt=0,5&sciodt=0,5'
+    	"/scholar_settings?hl=en&as_sdt=0,5&sciodt=0,5"
     )
 
     def __init__(self, pages=10, citform=0, new_window=False, collections=1):
@@ -385,7 +385,7 @@ class ScholarSettingsTask(object):
 
     @per_page_results.setter
     def per_page_results(self, value):
-        value = ScholarUtils.ensure_int(value, 'page results must be integer')
+        value = ScholarUtils.ensure_int(value, "page results must be integer")
         if value not in {10, 20}:
             raise FormatError("Error: 'pages' must be either 10 or 20")
         if value != 10:
@@ -446,7 +446,7 @@ class ScholarSettingsTask(object):
             patents = click(driver, "#gs_settings_sdtp")
 
         save_button = click(driver, '.gs_btn_act[name="save"]')
-        ScholarUtils.log('info', 'settings applied')
+        ScholarUtils.log("info", "settings applied")
 
 
 class SeleniumScholarQuerier(object):
@@ -489,11 +489,11 @@ class SeleniumScholarQuerier(object):
         Helper method, sends HTTP request and returns response payload.
         """
         if log_msg is None:
-            log_msg = 'HTTP response data follow'
+            log_msg = "HTTP response data follow"
         if err_msg is None:
-            err_msg = 'request failed'
+            err_msg = "request failed"
         try:
-            ScholarUtils.log('info', 'requesting %s' % unquote(url))
+            ScholarUtils.log("info", "requesting %s" % unquote(url))
 
             current = time.time()
             while current - ScholarConf.DELTA_TIME < self.last_request:
@@ -508,13 +508,13 @@ class SeleniumScholarQuerier(object):
 
             html = self.driver.page_source
 
-            ScholarUtils.log('debug', log_msg)
-            ScholarUtils.log('debug', '>>>>' + '-'*68)
-            ScholarUtils.log('debug', 'url: %s' % self.driver.current_url)
-            ScholarUtils.log('debug', 'data:\n' + html) # For Python 3
-            ScholarUtils.log('debug', '<<<<' + '-'*68)
+            ScholarUtils.log("debug", log_msg)
+            ScholarUtils.log("debug", ">>>>" + "-"*68)
+            ScholarUtils.log("debug", "url: %s" % self.driver.current_url)
+            ScholarUtils.log("debug", "data:\n" + html) # For Python 3
+            ScholarUtils.log("debug", "<<<<" + "-"*68)
 
             return html
         except Exception as err:
-            ScholarUtils.log('error', err_msg + ': %s' % err)
+            ScholarUtils.log("error", err_msg + ": %s" % err)
             return None

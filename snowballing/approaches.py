@@ -149,7 +149,7 @@ class Item:
 
     def __repr__(self):
         if self._examples:
-            return "{} ({})".format(self.text, ', '.join(map(str, self._examples)))
+            return "{} ({})".format(self.text, ", ".join(map(str, self._examples)))
         return self.text
 
     def __str__(self):
@@ -200,9 +200,9 @@ def get_approaches(condition=None):
 
 def wcite(approach, works, extra=""):
     """Return a latex cite command with all work in an approach"""
-    return ' \\cite{}{{{}}}'.format(
+    return " \\cite{}{{{}}}".format(
         extra,
-        ', '.join(config.approach_ids_from_work(approach, works))
+        ", ".join(config.approach_ids_from_work(approach, works))
     )
 
 

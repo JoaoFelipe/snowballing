@@ -75,10 +75,10 @@ class Converter:
     def __init__(self, mode="text"):
         self.mode_widget = Dropdown(
             options={
-                'BibTeX': 'bibtex',
-                'Text': 'text',
-                '[N] author name place other year': 'citation',
-                'Quoted': 'quoted',
+                "BibTeX": "bibtex",
+                "Text": "text",
+                "[N] author name place other year": "citation",
+                "Quoted": "quoted",
             },
             value=mode
         )
@@ -118,7 +118,7 @@ class Converter:
         """ Adds quotes to value. Use it for citation """
         self.label_widget.value = ""
         inputpdf = change.new
-        result = "".join(re.split(r'[\r\n]+', inputpdf.strip()))
+        result = "".join(re.split(r"[\r\n]+", inputpdf.strip()))
         result = '"{}",\n        '.format(result)
         self.output_widget.value = result
 
@@ -126,7 +126,7 @@ class Converter:
         """ Removes line breaks and diacricts """
         self.label_widget.value = ""
         inputpdf = change.new
-        result = "".join(re.split(r'[\r\n]+', inputpdf.strip()))
+        result = "".join(re.split(r"[\r\n]+", inputpdf.strip()))
         result = (result
             .replace("ﬀ", "ff")
             .replace("ﬁ", "fi")
@@ -171,7 +171,7 @@ class Converter:
 
     def set_variable(self, b):
         """ Creates variable 'article_list' with resulting JSON """
-        self.ipython.user_ns['article_list'] = [
+        self.ipython.user_ns["article_list"] = [
             x for x in json.loads(self.output_widget.value)
             if x != "Incomplete"
         ]
@@ -186,10 +186,10 @@ class Converter:
 
 
 WIDGET_CLS = {
-    'text': lambda x: Text(value=x[3] or "", description=x[1]),
-    'toggle': lambda x: ToggleButton(value=x[3] or False, description=x[1]),
-    'dropdown': lambda x: Dropdown(options=x[4], value=x[3] or "", description=x[1]),
-    'button': lambda x: Button(description=x[1]),
+    "text": lambda x: Text(value=x[3] or "", description=x[1]),
+    "toggle": lambda x: ToggleButton(value=x[3] or False, description=x[1]),
+    "dropdown": lambda x: Dropdown(options=x[4], value=x[3] or "", description=x[1]),
+    "button": lambda x: Button(description=x[1]),
 }
 
 
@@ -375,12 +375,12 @@ class ArticleNavigator:
         self.custom_widgets = []
 
         self.next_article_widget = Button(
-            description='Next Article', icon='fa-caret-right')
+            description="Next Article", icon="fa-caret-right")
         self.previous_article_widget = Button(
-            description='Previous Article', icon='fa-caret-left')
+            description="Previous Article", icon="fa-caret-left")
         self.selector_widget = IntSlider(value=0, min=0, max=20, step=1)
         self.reload_article_widget = Button(
-            description='Reload Article', icon='fa-refresh')
+            description="Reload Article", icon="fa-refresh")
 
         
         self.article_number_widget = Label(value="")
@@ -516,9 +516,9 @@ class ArticleNavigator:
         result = create_info_code(
             nwork, info,
             self.citation_var, self.citation_file, should,
-            ref=article.get('_ref', '')
+            ref=article.get("_ref", "")
         )
-        text = "# Temp\n" + result['code']
+        text = "# Temp\n" + result["code"]
        
         display_cell(text)
         self.output_widget.clear_output()
@@ -526,7 +526,7 @@ class ArticleNavigator:
             if self.to_display:
                 display("\n".join(self.to_display))
             display_list(config.display_article(article))
-            for key, value in result['extra'].items():
+            for key, value in result["extra"].items():
                 display(HTML("<label>{}</label><input value='{}' style='width: 100%'></input>".format(key, value)))
         self.to_display = []
 
@@ -587,9 +587,9 @@ class ForwardSnowballing:
         citation_file = citation_file or oget(work, "citation_file", citation_var)
         self.navigator = ArticleNavigator(citation_var, citation_file, backward=False, force_citation_file=False)
         self.query = URLQuery(self.navigator.work.scholar, start)
-        self.next_page_widget = Button(description='Next Page', icon='fa-arrow-right')
-        self.reload_widget = Button(description='Reload', icon='fa-refresh')
-        self.previous_page_widget = Button(description='Previous Page', icon='fa-arrow-left')
+        self.next_page_widget = Button(description="Next Page", icon="fa-arrow-right")
+        self.reload_widget = Button(description="Reload", icon="fa-refresh")
+        self.previous_page_widget = Button(description="Previous Page", icon="fa-arrow-left")
         self.debug_widget = ToggleButton(value=debug, description="Debug")
         self.page_number_widget = Label(value="")
         self.next_page_widget.on_click(self.next_page)
@@ -637,7 +637,7 @@ class ForwardSnowballing:
             self.querier.send_query(self.query)
             self.page_number_widget.value = parse_qs(urlparse(
                 self.query.get_url()).query
-            ).get('start', ['0'])[0]
+            ).get("start", ["0"])[0]
 
             self.navigator.set_articles(map(extract_info, self.querier.result.articles))
 
@@ -666,9 +666,9 @@ class ScholarUpdate:
         self.worklist = worklist
         self.force = force
         self.querier = querier
-        self.next_page_widget = Button(description='Next Work', icon='fa-arrow-right')
-        self.reload_widget = Button(description='Reload', icon='fa-refresh')
-        self.previous_page_widget = Button(description='Previous Work', icon='fa-arrow-left')
+        self.next_page_widget = Button(description="Next Work", icon="fa-arrow-right")
+        self.reload_widget = Button(description="Reload", icon="fa-refresh")
+        self.previous_page_widget = Button(description="Previous Work", icon="fa-arrow-left")
         self.debug_widget = ToggleButton(value=debug, description="Debug")
         self.textarea_widget = ToggleButton(value=False, description="TextArea")
         self.page_number_widget = Label(value="")
@@ -742,7 +742,7 @@ class ScholarUpdate:
                 display(HTML(table.format("".join(rows))+"<br>"+textarea))
             except:
                 traceback.print_exc(file=sys.stdout)
-                print(self.varname, '<error>')
+                print(self.varname, "<error>")
 
     def reload(self, b=None, show=True):
         """Reload"""
@@ -799,12 +799,12 @@ class SearchScholar:
 
         self.query = None
         self.search_text_widget = Text(value="", layout=Layout(width="99%"))
-        self.do_search_widget = Button(description='Search', icon='fa-search')
+        self.do_search_widget = Button(description="Search", icon="fa-search")
 
         self.navigator = ArticleNavigator(force_citation_file=False)
-        self.next_page_widget = Button(description='Next Page', icon='fa-arrow-right')
-        self.reload_widget = Button(description='Reload', icon='fa-refresh')
-        self.previous_page_widget = Button(description='Previous Page', icon='fa-arrow-left')
+        self.next_page_widget = Button(description="Next Page", icon="fa-arrow-right")
+        self.reload_widget = Button(description="Reload", icon="fa-refresh")
+        self.previous_page_widget = Button(description="Previous Page", icon="fa-arrow-left")
         self.debug_widget = ToggleButton(value=debug, description="Debug")
         self.page_number_widget = Label(value="")
         self.next_page_widget.on_click(self.next_page)
@@ -868,7 +868,7 @@ class SearchScholar:
             self.querier.send_query(self.query)
             self.page_number_widget.value = parse_qs(urlparse(
                 self.query.get_url()).query
-            ).get('start', ['0'])[0]
+            ).get("start", ["0"])[0]
 
             self.navigator.set_articles(map(extract_info, self.querier.result.articles))
             self.navigator.show()

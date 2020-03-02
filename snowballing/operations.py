@@ -52,7 +52,7 @@ def load_places_vars():
         >>> 'arXiv' in [varname for varname, _ in load_places_vars()]
         True
     """
-    places = config.MODULES['places']
+    places = config.MODULES["places"]
     for varname, varvalue in places.__dict__.items():
         if isinstance(varvalue, places.Place):
             yield varname, varvalue
@@ -133,9 +133,9 @@ def _clear_db():
 
 def _reload_work():
     """Reload work and create WORD_CACHE"""
-    for key, module in import_submodules(config.MODULES['work']).items():
-        yname = key.split('.')[-1]
-        fname = (yname + '.py')
+    for key, module in import_submodules(config.MODULES["work"]).items():
+        yname = key.split(".")[-1]
+        fname = (yname + ".py")
         WORK_CACHE[fname] = module
         if not yname.startswith("y") or not yname[1:].isdigit():
             warnings.warn(
@@ -160,10 +160,10 @@ def reload():
     """
     
     _clear_db()
-    importlib.reload(config.MODULES['places'])
+    importlib.reload(config.MODULES["places"])
     _reload_work()
-    import_submodules(config.MODULES['citations'])
-    import_submodules(config.MODULES['groups'])
+    import_submodules(config.MODULES["citations"])
+    import_submodules(config.MODULES["groups"])
     if getattr(config, "CHECK_DEPRECATION", True):
         check_config_deprecation()
 
@@ -508,7 +508,7 @@ def compare_paper_to_work(letter, key, work, paper):
     """
     if work is None:
         return None, letter
-    if key.startswith(dget(paper, "pyref", '<invalid>')[:-1]):
+    if key.startswith(dget(paper, "pyref", "<invalid>")[:-1]):
         lastletter = key[-1] if key[-1].isalpha() else "a"
         letter = max(ord(lastletter) + 1, letter)
 
@@ -560,7 +560,7 @@ def find_work_by_info(paper, pyrefs=None, rules=None):
                 old[key] = value
 
     for key, value in rules.get("<skip>", []):
-        if paper.get(key, '') == value:
+        if paper.get(key, "") == value:
             dset(paper, "pyref", "None")
             return None
 
@@ -808,7 +808,7 @@ def work_to_bibtex(work, name=None, acronym=False, rules=None):
     db.entries = [result]
 
     writer = BibTexWriter()
-    writer.indent = '  '
+    writer.indent = "  "
     return writer.write(db)
 
 
@@ -874,11 +874,11 @@ def find_line(work):
         6
     """
     import re
-    with open(year_file(oget(work, "year")), 'rb') as f:
+    with open(year_file(oget(work, "year")), "rb") as f:
         return [
             index
             for index, line in enumerate(f)
-            if re.findall('(^{}\\s=)'.format(oget(work, "metakey")).encode(), line)
+            if re.findall("(^{}\\s=)".format(oget(work, "metakey")).encode(), line)
         ][0] + 1
 
 
@@ -896,7 +896,7 @@ def invoke_editor(work):
     ], shell=True)
 
 
-def create_info_code(nwork, info, citation_var, citation_file, should_add, ref=''):
+def create_info_code(nwork, info, citation_var, citation_file, should_add, ref=""):
     """Create insertion code with both code and citation"""
     citations = ""
     text = "insert('''"
@@ -916,9 +916,9 @@ def create_info_code(nwork, info, citation_var, citation_file, should_add, ref='
         text += "\n" + changes_dict_to_set_attribute(dget(info, "pyref"), should_add["set"])
 
     return {
-        'code': text.strip(),
-        'extra': config.check_insertion(
-            nwork, info, citation_var, citation_file, should_add, ref=''
+        "code": text.strip(),
+        "extra": config.check_insertion(
+            nwork, info, citation_var, citation_file, should_add, ref=""
         )
     }
 
@@ -978,7 +978,7 @@ class Metakey(object):
 
     """
     def __rmatmul__(self, x):
-        if hasattr(x, '__iter__'):
+        if hasattr(x, "__iter__"):
             return [y @ self for y in x]
         return oget(x, "metakey")
 
@@ -998,7 +998,7 @@ class MetakeyTitle(object):
     """
     
     def __rmatmul__(self, x):
-        if hasattr(x, '__iter__'):
+        if hasattr(x, "__iter__"):
             return [y @ self for y in x]
         return "{} - {}".format(
             oget(x, "metakey"),
@@ -1020,7 +1020,7 @@ class WDisplay(object):
 
     """
     def __rmatmul__(self, x):
-        if hasattr(x, '__iter__'):
+        if hasattr(x, "__iter__"):
             return [y @ self for y in x]
         return oget(x, "display")
 

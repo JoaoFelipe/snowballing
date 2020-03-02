@@ -153,10 +153,10 @@ class State(object):
                 for element in current.previous[0]:
                     used_id = "u{}".format(actions["used"])
                     actions["used"] += 1
-                    result.append('  used({}; {}, {}, -)'.format(used_id, activity_id, element.name))
+                    result.append("  used({}; {}, {}, -)".format(used_id, activity_id, element.name))
                     generated_id = "g{}".format(actions["generated"])
                     actions["generated"] += 1
-                    result.append('  wasGeneratedBy({}; {}, {}, -)'.format(
+                    result.append("  wasGeneratedBy({}; {}, {}, -)".format(
                         generated_id, current.name, activity_id)
                     )
                     result.append('  wasDerivedFrom({}, {}, {}, {}, {}, [prov:type="prov:Revision"])'.format(
@@ -169,13 +169,13 @@ class State(object):
                 generated_id = "g{}".format(actions["generated"])
                 actions["generated"] += 1
                 result.append("  activity(start, -, -)")
-                result.append('  wasGeneratedBy({}; {}, start, -)'.format(
+                result.append("  wasGeneratedBy({}; {}, start, -)".format(
                     generated_id, current.name)
                 )
             result.append("")
 
         result.append("endDocument")
-        return '\n'.join(result)
+        return "\n".join(result)
 
     @property
     def dot(self):
@@ -231,7 +231,7 @@ class State(object):
             result.append("")
 
         result.append("}")
-        return '\n'.join(result)
+        return "\n".join(result)
 
     @property
     def delta_related(self):
@@ -265,18 +265,18 @@ class State(object):
         bundle = {}
 
         dot = self.dot
-        bundle['text/vnd.graphviz'] = dot
+        bundle["text/vnd.graphviz"] = dot
 
         try:
-            kwargs = {} if os.name != 'nt' else {"creationflags": 0x08000000}
-            p = Popen(['dot', '-T', "svg"], stdout=P, stdin=P, stderr=P, **kwargs)
-            image = p.communicate(dot.encode('utf-8'))[0]
-            bundle['image/svg+xml'] = image.decode("utf-8")
+            kwargs = {} if os.name != "nt" else {"creationflags": 0x08000000}
+            p = Popen(["dot", "-T", "svg"], stdout=P, stdin=P, stderr=P, **kwargs)
+            image = p.communicate(dot.encode("utf-8"))[0]
+            bundle["image/svg+xml"] = image.decode("utf-8")
         except OSError as e:
             if e.errno != os.errno.ENOENT:
                 raise
 
-        bundle['text/plain'] = '\n'.join(map(str, self.log))
+        bundle["text/plain"] = "\n".join(map(str, self.log))
         display(bundle, raw=True)
 
     @classmethod
