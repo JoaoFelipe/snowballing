@@ -86,6 +86,26 @@ We use [GraphViz](http://www.graphviz.org/) to generate the snowballing history 
 We also use [provtoolbox](http://lucmoreau.github.io/ProvToolbox/) to visualize the snowballing provenance in the notebook SnowballingProvenance.ipynb. It is more verbose than the other visualization format, but if you prefer to visualize it in a provenance format, consider installing it as well.
 
 
+### PDFReferencesExtractor
+
+[PDFReferencesExtractor](https://github.com/helenocampos/PDFReferencesExtractor) is a helpful tool for extracting citations from PDFs to assist in backward snowballing. It is integrated into the Converter widget of the notebook Backward.ipynb.
+
+To install it:
+  - Clone the repository https://github.com/helenocampos/PDFReferencesExtractor
+  - Install Java and Maven
+  - Run `$ mvn install`
+  - Configure the variable `config.PDF_EXTRACTOR` in your `database/__init__.py` to something link `"java -jar refExtractor.jar full {path}"`. Note that `java` must be in your path, and `refExtractor.jar` refer to the compiled PDFReferencesExtractor file that was generated into the `target` directory
+
+To use it:
+  - Run the Converter Widget in Backward.ipynb
+  - Select the "PDF" mode
+  - Write the PDF path (or drag a PDF file into the input textarea)
+  - It will generate a BibTex in the output area
+  - Change the mode to BibTex to generate a list of Info structures
+  - Click on "Set article_list" to save the list into a variable
+  - Run the remainder of the notebook to use it
+
+
 Contributing
 ----------------
 
@@ -110,9 +130,11 @@ Known Usages
 This tools has been used to support two papers:
 
 - Pimentel, J. F., Freire, J., Murta, L., & Braganholo, V. (2019). A survey on collecting, managing, and analyzing provenance from scripts. ACM Computing Surveys (CSUR), 52(3), 1-38.
+  
   Material: https://dew-uff.github.io/scripts-provenance
 
 - Mourão. E., Pimentel, J. F.,  Murta, L., Kalinowski, M., Mendes, E., Wohlin, C. (2020 in press). On the Performance of Hybrid Search Strategies for Systematic Literature Reviews in Software Engineering. Information and Software Technology (IST).
+  
   Material: https://gems-uff.github.io/hybrid-strategies
 
 

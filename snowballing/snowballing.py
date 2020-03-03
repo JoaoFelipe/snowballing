@@ -4,13 +4,15 @@ import re
 import json
 import traceback
 import sys
+import os
+import subprocess
 
 from copy import copy
 from urllib.parse import urlparse, parse_qs
 
 from IPython.display import clear_output, display, HTML, Javascript
 from ipywidgets import HBox, VBox, IntSlider, ToggleButton, Text, Layout
-from ipywidgets import Dropdown, Button, Tab, Label, Textarea, Output
+from ipywidgets import Dropdown, Button, Tab, Label, Textarea, Output, FileUpload
 
 from .collection_helpers import oset, dset, oget, consume
 from .jupyter_utils import display_cell
@@ -75,14 +77,21 @@ class Converter:
       * Surrounds text with quotation marks and add spaces to fit the citation
     """
 
-    def __init__(self, mode="text"):
+    def __init__(self, mode=None):
+        options={
+            "BibTeX": "bibtex",
+            "Text": "text",
+            "[N] author name place other year": "citation",
+            "Quoted": "quoted",
+        }
+
+        if config.PDF_EXTRACTOR:
+            options["PDF"] = "pdf"
+            mode = mode or "pdf"
+
+        mode = mode or "text"
         self.mode_widget = Dropdown(
-            options={
-                "BibTeX": "bibtex",
-                "Text": "text",
-                "[N] author name place other year": "citation",
-                "Quoted": "quoted",
-            },
+            options=options,
             value=mode
         )
         self.button_widget = Button(
@@ -106,16 +115,21 @@ class Converter:
         self.output_widget.layout.width = "50%"
         self.backup = ""
         self.ipython = get_ipython()
+        self.select_mode(mode)
 
     def write(self, b):
         """ Writes right column according to selected mode """
         getattr(self, self.mode_widget.value)(b)
 
-    def select(self, change):
+    def select_mode(self, mode):
         """ Selects new mode. Use previous output as input """
         self.backup = self.frompdf_widget.value
         self.frompdf_widget.value = self.output_widget.value
-        self.button_widget.disabled = change.new not in ("citation", "bibtex")
+        self.button_widget.disabled = mode not in ("citation", "bibtex")
+
+    def select(self, change):
+        """ Selects new mode. Use previous output as input """
+        self.select_mode(change.new)
 
     def quoted(self, change):
         """ Adds quotes to value. Use it for citation """
@@ -171,6 +185,24 @@ class Converter:
                 incomplete += 1
         self.label_widget.value = str(len(jresult) - incomplete)
         self.output_widget.value = json.dumps(jresult, indent=2)
+
+    def pdf(self, change):
+        """ Extracts citations from pdf """
+        filename = self.frompdf_widget.value.strip()
+        if filename.startswith("file://"):
+            filename = filename[len("file://"):]
+        self.label_widget.value = "Processing"
+        if os.path.isfile(filename):
+            cmd = config.PDF_EXTRACTOR.format(path=filename)
+            try:
+                stdout = subprocess.check_output(cmd, shell=True)
+                self.output_widget.value = stdout.decode("utf-8")
+            except subprocess.CalledProcessError as e:
+                self.output_widget.value = "Exception: {!r}".format(e)
+        else:
+            self.output_widget.value = "Invalid Path"
+        self.label_widget.value = ""
+
 
     def set_variable(self, b):
         """ Creates variable 'article_list' with resulting JSON """
@@ -363,6 +395,70 @@ class WebNavigator:
         return result
 
 
+class RunWidget:
+
+    def __init__(self):
+        from ipywidgets import Button
+        self.code = Textarea()
+        self.execute = Button(description="Run")
+        self.clear_btn = Button(description="Clear")
+        self.output = Output()
+        self.exec_count = Label("[ ]")
+        self.execute.layout.width = "60px"
+        self.execute.layout.height = "50px"
+        self.clear_btn.layout.width = "60px"
+        self.clear_btn.layout.height = "50px"
+        self.code.layout.width = "550px"
+        self.code.rows = 6
+        self.view = VBox([
+            HBox([
+                VBox([
+                    self.execute, 
+                    self.clear_btn,
+                    self.exec_count
+                ]),
+                self.code
+            ]),
+            self.output
+        ])
+        self.execute.on_click(self.click)
+        self.clear_btn.on_click(self.clear_click)
+        self.ipython = get_ipython()
+
+    def clear(self):
+        self.code.value = ""
+        self.code.rows = 6
+        self.exec_count.value = "[ ]"
+
+    def set_code(self, code):
+        self.code.value = code
+        self.code.rows = max(len(code.split("\n")) + 1, 6)
+        self.exec_count.value = "[ ]"
+
+    def click(self, b):
+        with self.output:
+            result = self.ipython.run_cell(self.code.value, store_history=True)
+            self.exec_count.value = "[{}]".format(result.execution_count or " ")
+
+    def clear_click(self, b):
+        self.output.clear_output()
+        self.clear()
+
+
+class ReplaceCellWidget:
+
+    def __init__(self):
+        self.view = Label()
+
+    def clear(self):
+        display(Javascript(
+            """$('span:contains("# Temp")').closest('.cell').remove();"""))
+
+    def set_code(self, code):
+        text = "# Temp\n" + code
+        display_cell(text)
+
+
 class ArticleNavigator:
     """Navigate on article list for insertion"""
 
@@ -435,6 +531,8 @@ class ArticleNavigator:
 
         hboxes.append(self.output_widget)
 
+        self.runner_widget = RunWidget() if config.RUN_WIDGET else ReplaceCellWidget() 
+        hboxes.append(self.runner_widget.view)
         self.view = VBox(hboxes)
 
         self.set_articles(articles)
@@ -504,8 +602,7 @@ class ArticleNavigator:
         if self.disable_show:
             return
         self.to_display = []
-        display(Javascript(
-            """$('span:contains("# Temp")').closest('.cell').remove();"""))
+        self.runner_widget.clear()
         self.output_widget.clear_output()
 
     def update_info(self, info, field, widget, value=None, default=""):
@@ -521,9 +618,7 @@ class ArticleNavigator:
             self.citation_var, self.citation_file, should,
             ref=article.get("_ref", "")
         )
-        text = "# Temp\n" + result["code"]
-       
-        display_cell(text)
+        self.runner_widget.set_code(result["code"])
         self.output_widget.clear_output()
         with self.output_widget:
             if self.to_display:
@@ -680,6 +775,7 @@ class ScholarUpdate:
         self.reload_widget.on_click(self.reload)
         self.previous_page_widget.on_click(self.previous_page)
         self.textarea_widget.observe(self.show)
+        self.runner_widget = RunWidget() if config.RUN_WIDGET else ReplaceCellWidget()
         self.view = VBox([
             HBox([
                 self.previous_page_widget,
@@ -689,7 +785,8 @@ class ScholarUpdate:
                 self.textarea_widget,
                 self.page_number_widget
             ]),
-            self.output_widget
+            self.output_widget,
+            self.runner_widget.view,
         ])
         self.index = index
         self.varname = ""
@@ -741,7 +838,7 @@ class ScholarUpdate:
                 if self.textarea_widget.value:
                     textarea = "<textarea rows='{}' style='width: 100%'>{}</textarea>".format(len(rows), set_text)
                 else:
-                    display_cell("# Temp\n" + set_text)
+                    self.runner_widget.set_code(set_text)
                 display(HTML(table.format("".join(rows))+"<br>"+textarea))
             except:
                 traceback.print_exc(file=sys.stdout)

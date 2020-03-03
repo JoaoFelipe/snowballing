@@ -117,6 +117,8 @@ class Place(WithTitle):
             setattr(self, key, value)
 
     def __eq__(self, other):
+        if not other:
+            return False
         return self.name == other.name
 
     def __str__(self):

@@ -31,6 +31,15 @@ LINE_PARAMS = None
 # Web Driver
 WEB_DRIVER = lambda: webdriver.Chrome()
 
+# Run widget
+# Use True to indicate that widgets that generate executable code should have a text area with a button for running the code.
+# Otherwise, they modify notebook cells (unsafe)
+RUN_WIDGET = True 
+
+# PDF Extractor. Use string argumen {path} to define the path
+PDF_EXTRACTOR = None
+PDF_EXTRACTOR = "java -jar refExtractor.jar full {path}"
+
 # List of possible work class tuples
 # Each tuple has the follwing elements:
 #   Class Name
@@ -170,7 +179,9 @@ BIBTEX_TO_INFO = {
             if "place" in info
             and not "place1" in info else
             None,
-        setattr(work, "place1", "{} ({})".format(work.place.name, work.place.acronym)),
+        setattr(work, "place1", "{} ({})".format(work.place.name, work.place.acronym))
+            if hasattr(work, "place") else
+            None,
     ],
 }
 

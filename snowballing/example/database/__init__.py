@@ -24,6 +24,17 @@ config.LINE_PARAMS = "--goto {year_path}:{line}"  # VSCode
 config.WEB_DRIVER = lambda: webdriver.Chrome()
 #config.WEB_DRIVER = lambda: webdriver.Firefox()
 
+# Run widget
+# Use True to indicate that widgets that generate executable code should have a text area with a button for running the code.
+# Otherwise, they modify notebook cells (unsafe)
+config.RUN_WIDGET = True 
+
+# PDF Extractor. Use string argumen {path} to define the path
+config.PDF_EXTRACTOR = None
+#config.PDF_EXTRACTOR = "java -jar refExtractor.jar full {path}"
+
+
+
 ## List of possible work class tuples
 ## Each tuple has the follwing elements:
 ##   Class Name
