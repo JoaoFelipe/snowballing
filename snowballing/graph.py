@@ -84,7 +84,7 @@ def set_positions(work_list, graph_config=None):
             )
             work._shape = graph_config.shape
             work._link = ["scholar", "link"]#["file", "link", "scholar"]
-            work.tyear = tyear
+            work._tyear = tyear
             by_year[tyear].append(work)
 
     prev = (-1, 0)
@@ -139,18 +139,18 @@ def create_graph(name, work_list, references, graph_config=None):
 
 
     for work in work_list:
-        work.draw(
+        work._draw(
             dwg,
             fill_color=graph_config.fill_color,
             draw_place=graph_config.draw_place
         )
 
     for ref in references:
-        ref.draw(dwg, marker, years, rows, draw_place=graph_config.draw_place)
+        ref._draw(dwg, marker, years, rows, draw_place=graph_config.draw_place)
 
     tyear = years[(-1, 0)].next_year
     while tyear != (-1, 0):
-        years[tyear].draw(dwg)
+        years[tyear]._draw(dwg)
         tyear = years[tyear].next_year
 
     from xml.etree.ElementTree import tostring

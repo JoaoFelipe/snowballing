@@ -16,8 +16,12 @@ from .collection_helpers import consume, setitem, remove_empty
 from .config_helpers import reorder_place, last_name_first_author
 from .config_helpers import var_item, str_list, str_item, sequence
 from .config_helpers import work_by_varname, find_work_by_info, Site
+from .config_helpers import generate_title
 from .rules import ModifyRules
 from .utils import compare_str, match_any
+
+# Tool version
+JOHN_SNOW_VERSION = "1.0.0"
 
 # Database path
 DATABASE_DIR = Path.home() / "database"
@@ -89,9 +93,9 @@ BIBTEX_IGNORE_FIELDS = [
 
     # Tool
     "_.*", "force_.*", "file.*", "category", "alias", "aliases", "scholar_ok",
-    "scholar", "cluster_id", "scholar_id", "display", "metakey", "due", "tyear",
-    "citation_file", "notes", "tracking", "snowball", "request", "draw",
-    "may_be_related_to", "ignore", "generate_title", "note",
+    "scholar", "cluster_id", "scholar_id", "display", "metakey", "due", "_tyear",
+    "citation_file", "notes", "tracking", "snowball", "request", "_draw",
+    "may_be_related_to", "note",
 ]
 
 
@@ -188,7 +192,7 @@ BIBTEX_TO_INFO = {
 
 # Map BibTex to Info object. Set _work_type=Work
 BIBTEX_TO_INFO_WITH_TYPE = (
-    ModifyRules(BIBTEX_TO_INFO)
+    ModifyRules(BIBTEX_TO_INFO, "with_type")
     .append("<before>", ("_work_type", "Work"))
 ).rules
 
@@ -718,6 +722,8 @@ def work_display(work):
     """Get work display"""
     return work.display
 
+
+
 ### Aliases
 
 def get_work_aliases(work):
@@ -733,7 +739,7 @@ def get_work_aliases(work):
 
 
 def get_alias_year(work, alias):
-    """Get year from alias\
+    """Get year from alias
 
     Default: return first element of tuple/list that represents the alias    
     """
@@ -756,7 +762,7 @@ def graph_place_tooltip(work):
 
     Default: tooltip with all information from Place object
     """
-    return work.place.generate_title(orepend="")
+    return generate_title(work.place, prepend="")
 
 
 def work_link(work):
@@ -780,7 +786,19 @@ def work_tooltip(work):
 
     Default: tooltip with paper title and authors
     """
-    return "{}\n{}".format(work.name, work.authors)
+    from .operations import work_to_bibtex
+    return (
+        "{}\n{}".format(work.name, work.authors)
+        + "\n\n" + work_to_bibtex(work)
+    )
+
+
+def citation_tooltip(citation):
+    """Generate citation tooltip"""
+    return (
+        "{0} -> {1}".format(citation.work.metakey, citation.citation.metakey)
+        + generate_title(citation, ignore={"_.*", "work", "citation"})
+    )
 
 
 ### Approaches

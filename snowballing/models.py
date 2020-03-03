@@ -22,42 +22,7 @@ class Title(object):
         return self.text
 
 
-class WithTitle(object):
-    """Graph object with title"""
-    ignore = set()
-
-    def generate_title(self, prepend="\n\n"):
-        """Generate title text with all attributes from the object
-
-        Ignores attributes that start with `_`, or attributes in the
-        :attr:`~ignore` set
-
-        Doctest:
-
-        .. doctest::
-
-            >>> obj = WithTitle()
-            >>> obj.attr = 'x'
-            >>> obj.attr2 = 'y'
-            >>> obj._ignored = 'z'
-            >>> print(obj.generate_title(prepend=""))
-            attr: x
-            attr2: y
-            >>> obj.ignore.add('attr')
-            >>> print(obj.generate_title(prepend=""))
-            attr2: y
-        """
-        result = "\n".join(
-            "{}: {}".format(attr, str(value))
-            for attr, value in self.__dict__.items()
-            if not attr.startswith("_")
-            if not attr in self.ignore
-            if value is not None
-        )
-        return prepend + result if result else ""
-
-
-class Place(WithTitle):
+class Place(object):
     """Represent a publication Place
 
     It has the following attributes:
@@ -76,10 +41,7 @@ class Place(WithTitle):
     about the place.
     Note however that it has the following reversed attributes:
 
-    * :attr:`~ignore` -- set that specifies ignore attributes in titles
-      (:class:`~WithTitle`)
-
-    * :meth:`~draw` -- method that draws the place
+    * :meth:`~_draw` -- method that draws the place
 
 
     Doctest:
@@ -131,7 +93,7 @@ class Place(WithTitle):
         return hash(self.name)
 
 
-class Work(WithTitle):
+class Work(object):
     """Work represents papers in the snowballing
 
     It has the following attributes:
@@ -197,12 +159,9 @@ class Work(WithTitle):
 
     * :attr:`~category` -- work status in the snowballing
 
-    * :attr:`~tyear` -- year object for drawing
+    * :attr:`~_tyear` -- year object for drawing
 
-    * :attr:`~ignore` -- set that specifies ignore attributes in titles
-      (:class:`~WithTitle`)
-
-    * :meth:`~draw` -- method that draws the work
+    * :meth:`~_draw` -- method that draws the work
 
     * :attr:`~_x` -- x position for drawing the work
 
@@ -248,10 +207,6 @@ class Work(WithTitle):
     """
 
     category = "work"
-    ignore = {
-        "_x", "_y", "_i", "_year_index", "_r", "_letters",
-        config.ATTR["name"], config.ATTR["year"]
-    }
 
     def __init__(self, year, name, **kwargs):
         oset(self, "name", name)
@@ -278,12 +233,7 @@ class Work(WithTitle):
     def __repr__(self):
         return oget(self, "name")
 
-    def generate_title(self, prepend="\n\n"):
-        """The title of a work is its BibTeX"""
-        from .operations import work_to_bibtex
-        return prepend + work_to_bibtex(self, name=None)
-
-    def draw(self, dwg, fill_color=None, draw_place=False, use_circle=False):
+    def _draw(self, dwg, fill_color=None, draw_place=False, use_circle=False):
         """Draw work"""
         from .operations import metakey, wdisplay
         position = Point(self._x, self._y)
@@ -321,10 +271,10 @@ class Work(WithTitle):
 
 
         shape.set_desc(title=Title(
-            config.work_tooltip(self) + self.generate_title()
+            config.work_tooltip(self)
         ))
         text.set_desc(title=Title(
-            config.work_tooltip(self) + self.generate_title()
+            config.work_tooltip(self)
         ))
 
         if draw_place:
@@ -460,7 +410,7 @@ class Year(object):
         self._dist = dist
         self._r = r
 
-    def draw(self, dwg):
+    def _draw(self, dwg):
         """Draw year in the position"""
         x = self._i * self._dist + self._r
         dwg.add(svgwrite.text.Text(
@@ -470,7 +420,7 @@ class Year(object):
         ))
 
 
-class Citation(WithTitle):
+class Citation(object):
     """Represent a citation for the work
 
     Attributes:
@@ -487,7 +437,6 @@ class Citation(WithTitle):
 
     * :attr:`~citations_file` -- file where the citation is defined
     """
-    ignore = {"work", "citation"}
 
     def __init__(self, work, citation, **kwargs):
         import inspect
@@ -528,15 +477,15 @@ class Citation(WithTitle):
         yield point0
         yield adjust_point(*point0, ref._x, ref._y, ref._r + 7, ref._shape)
 
-    def draw(self, dwg, marker, years, rows, draw_place=False):
+    def _draw(self, dwg, marker, years, rows, draw_place=False):
         """Draw citation line"""
         from .operations import metakey
         work, ref = self.work, self.citation
         if work == ref:
             return
-        if not hasattr(work, "tyear") or not hasattr(ref, "tyear"):
+        if not hasattr(work, "_tyear") or not hasattr(ref, "_tyear"):
             return
-        if work.tyear not in years or ref.tyear not in years:
+        if work._tyear not in years or ref._tyear not in years:
             return
         if work._i not in rows or ref._i not in rows:
             return
@@ -545,18 +494,15 @@ class Citation(WithTitle):
             sign = 1 if work._x < ref._x else -1
             line = svgwrite.shapes.Line(*self._line_gen(work, ref), stroke_opacity=0.3, stroke="black")
             line["marker-end"] = marker.get_funciri()
-            line.set_desc(title=Title(
-                "{0} -> {1}".format(work @ metakey, ref @ metakey)
-                + self.generate_title()
-            ))
+            line.set_desc(title=Title(config.citation_tooltip(self)))
             group.add(line)
         else:
             space_x = work._dist_x - 2 * work._r
             space_y = work._dist_y - 2 * work._r
             if draw_place:
                 space_y -= 16
-            work_year = years[work.tyear]
-            ref_year = years[ref.tyear]
+            work_year = years[work._tyear]
+            ref_year = years[ref._tyear]
             if work._x < ref._x:
                 closest_work_year = years[work_year.next_year]
                 closest_ref_year = years[ref_year.previous_year]
@@ -588,7 +534,7 @@ class Citation(WithTitle):
                 position_in_row = rows[ref._i].index(ref)
                 next_position = position_in_row + signx
                 operation = [0, operator.ge, operator.le][signx]
-                if next_position in (-1, len(rows[ref._i])) or operation(rows[ref._i][next_position].tyear, work.tyear):
+                if next_position in (-1, len(rows[ref._i])) or operation(rows[ref._i][next_position]._tyear, work._tyear):
                     target_points = [Point(ref._x, ref._y) + pE]
                 else:
                     target_points = [Point(ref._x, ref._y) + Point(0, ref._r + 7)]
@@ -599,7 +545,7 @@ class Citation(WithTitle):
 
             points = source_points + list(reversed(target_points))
             line = svgwrite.shapes.Polyline(points, stroke_opacity=0.3, stroke="black", fill="none", pointer_events="stroke")
-            line.set_desc(title=Title("{0} -> {1}".format(work @ metakey, ref @ metakey) + self.generate_title()))
+            line.set_desc(title=Title(config.citation_tooltip(self)))
             group.add(line)
 
             line["marker-end"] = marker.get_funciri()

@@ -33,8 +33,17 @@ def recursive_copy(origin, destiny):
 
 def start(args):
     """ Create a new literature snowballing folder """
+    profiles = {
+        "default": "example",
+        "bibtex": "bibtex"
+    }
+    profile = args.profile.lower()
+    if profile not in profiles:
+        print("Profile {} not found!".format(profile))
+        profile = "default"
+    print("Using {} profile".format(profile))
     print("Creating {}".format(args.path))
-    recursive_copy("example", args.path)
+    recursive_copy(profiles[profile], args.path)
     print("Done!")
 
 
@@ -106,6 +115,7 @@ def main():
         "start", help="start a new literature snowballing")
     start_parser.set_defaults(func=start)
     start_parser.add_argument("path", type=str, default="literature", nargs="?")
+    start_parser.add_argument("-p", "--profile", type=str, default="default")
 
     search_parser = subparsers.add_parser(
         "search", help="search references in the database")

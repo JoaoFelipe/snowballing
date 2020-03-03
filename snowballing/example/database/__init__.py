@@ -9,6 +9,9 @@ from snowballing.config_helpers import set_config
 from snowballing.operations import work_by_varname
 from snowballing.rules import ModifyRules
 
+## Tool version
+config.JOHN_SNOW_VERSION = "1.0.0"
+
 ## Database path. Do not change it unless you know what you are doing
 config.DATABASE_DIR = Path(__file__).parent.resolve()
 
@@ -20,16 +23,16 @@ config.TEXT_EDITOR = "code"  # VSCode
 config.LINE_PARAMS = "--goto {year_path}:{line}"  # VSCode
 #config.LINE_PARAMS = "{year_path}:{line}"  # Sublime Text
 
-# Web Driver
+## Web Driver
 config.WEB_DRIVER = lambda: webdriver.Chrome()
 #config.WEB_DRIVER = lambda: webdriver.Firefox()
 
-# Run widget
-# Use True to indicate that widgets that generate executable code should have a text area with a button for running the code.
-# Otherwise, they modify notebook cells (unsafe)
+## Run widget
+## Use True to indicate that widgets that generate executable code should have a text area with a button for running the code.
+## Otherwise, they modify notebook cells (unsafe)
 config.RUN_WIDGET = True 
 
-# PDF Extractor. Use string argumen {path} to define the path
+## PDF Extractor. Use string argumen {path} to define the path
 config.PDF_EXTRACTOR = None
 #config.PDF_EXTRACTOR = "java -jar refExtractor.jar full {path}"
 
@@ -85,9 +88,9 @@ config.BIBTEX_IGNORE_FIELDS = [
 
     # Tool
     "_.*", "force_.*", "file.*", "category", "alias", "aliases", "scholar_ok",
-    "scholar", "cluster_id", "scholar_id", "display", "metakey", "due", "tyear",
-    "citation_file", "notes", "tracking", "snowball", "request", "draw",
-    "may_be_related_to", "ignore", "generate_title", "note",
+    "scholar", "cluster_id", "scholar_id", "display", "metakey", "due", "_tyear",
+    "citation_file", "notes", "tracking", "snowball", "request", "_draw",
+    "may_be_related_to", "note",
 
     # Extra
     "summary", "star", "approach_name",
@@ -295,6 +298,9 @@ def check_insertion(nwork, info, citation_var, citation_file, should_add, ref=''
 
 ## Generate tooltip for work. fn(work)
 #set_config("user")(config.work_tooltip)
+
+## Generate tooltip for citation. fn(citation)
+#set_config("user")(config.citation_tooltip)
 
 
 ### Approaches

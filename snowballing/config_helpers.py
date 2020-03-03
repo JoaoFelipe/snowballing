@@ -5,7 +5,7 @@ import re
 from string import ascii_lowercase
 
 from .collection_helpers import consume_key
-from .utils import compare_str
+from .utils import compare_str, match_any
 
 
 def last_name_first_author(authors):
@@ -139,3 +139,32 @@ def set_config(tag, name=None):
             return func
         return config_func
     return dec
+
+
+def generate_title(obj, prepend="\n\n", ignore={"_.*"}):
+    """Generate title text with all attributes from the object
+
+    Ignores attributes that start with `_`, or attributes in the
+    :attr:`~ignore` set
+
+    Doctest:
+
+    .. doctest::
+        >>> class A: pass
+        >>> obj = A()
+        >>> obj.attr = 'x'
+        >>> obj.attr2 = 'y'
+        >>> obj._ignored = 'z'
+        >>> print(generate_title(obj, prepend=""))
+        attr: x
+        attr2: y
+        >>> print(generate_title(obj, prepend="", ignore={"_.*", "attr"}))
+        attr2: y
+    """
+    result = "\n".join(
+        "{}: {}".format(attr, str(value))
+        for attr, value in obj.__dict__.items()
+        if not match_any(attr, ignore)
+        if value is not None
+    )
+    return prepend + result if result else ""

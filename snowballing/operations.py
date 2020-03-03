@@ -160,7 +160,8 @@ def reload(work_func=None):
     """
     
     _clear_db()
-    importlib.reload(config.MODULES["places"])
+    if config.MODULES["places"]:
+        importlib.reload(config.MODULES["places"])
     _reload_work()
     import_submodules(config.MODULES["citations"])
     import_submodules(config.MODULES["groups"])

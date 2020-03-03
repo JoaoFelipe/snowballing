@@ -180,7 +180,8 @@ class Converter:
             try:
                 info = bibtex_to_info(entry, config.BIBTEX_TO_INFO_WITH_TYPE)
                 jresult.append(info)
-            except Exception:
+            except Exception as e:
+                print(repr(e))
                 jresult.append("Incomplete")
                 incomplete += 1
         self.label_widget.value = str(len(jresult) - incomplete)
@@ -684,7 +685,10 @@ class ForwardSnowballing:
         work = work_by_varname(citation_var)
         citation_file = citation_file or oget(work, "citation_file", citation_var)
         self.navigator = ArticleNavigator(citation_var, citation_file, backward=False, force_citation_file=False)
-        self.query = URLQuery(self.navigator.work.scholar, start)
+        self.query = URLQuery(
+            oget(self.navigator.work, "scholar", cvar=config.SCHOLAR_MAP),
+            start
+        )
         self.next_page_widget = Button(description="Next Page", icon="fa-arrow-right")
         self.reload_widget = Button(description="Reload", icon="fa-refresh")
         self.previous_page_widget = Button(description="Previous Page", icon="fa-arrow-left")

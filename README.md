@@ -16,9 +16,10 @@ To install the tool, you should run:
 
 For starting a new literature review project, please run:
 ```bash
-$ snowballing start literature
+$ snowballing start literature --profile bibtex
 ```
-This command will create a directory called `literature` (you are free to use other name in the command) with the notebooks for performing the snowballing and analyzing it, and an example database.
+This command will create a directory called `literature` (you are free to use other name in the command) with the notebooks for performing the snowballing and analyzing it, and an example database. Note that the command specifies the profile `bibtex`, which is more user friendly. If you don't specify a profile, it will use the `default` profile (see belou).
+
 
 Inside the directory, start Jupyter:
 ```bash
@@ -27,6 +28,69 @@ $ jupyter notebook
 ```
 
 And open the file [Index.ipynb](example/Index.ipynb). This file contains all the instructions for understanding the database and performing the snowballing.
+
+
+Profiles
+----------
+
+This tool is highly configurable through variables in the `config` module. These variables can be set using the `database/__init__.py` file. We consider each set of configurations a **profile**.
+
+Currently, this tool supports starting the snowballing project using two profiles: `default` and `bibtex`.
+
+### Default Profile
+
+This tools started as part of a literature snowballing. The functions were developped out of necessity in a adhoc way. Thus, there are some bad design decisions.
+
+One of these bad design decisions is the name of Work attributes. Some of them do not match well stablished BibTex fields. For instance:
+
+- Work `name` refer to BibTex `title`
+
+- Work `pp` refer to BibTex `pages`
+
+- Work `authors` refer to BibTex `author`
+
+Others have a bad names and direct translation to BibTex fields
+
+- Work `place1` does not indicate the actual publication place (i.e, city, country). Instead, it indicates the venue. It represents both BibTex `journal` and BibTex `booktitle` attributes.
+
+- However, `place1` is expected to be used only as a fallback for a lack of `place` field. The `place` field has the same semantics of `place1`, but it uses `Place` objects defined in `database/places.py`. Defining Place objects is harder than just adding Work with string venues.
+
+Finally, it is hard to distinguish tool-attributes from bibtex-fields, when looking at the work. For instance:
+
+- The user-defined `due` attribute that indicates why a tool is unrelated to the snowballing subject should not be exported to BibTex
+
+- Similarly, the tool-defined `category` attribute that indicates the state of the Work in the snowballing should no be exported as well
+
+
+While this profile has these drawbacks, it also has some positive aspects:
+
+- The Place objects keep the database consistent and allow to group Work by venue
+
+- This profiles has been heavily tested in actual literature reviews
+
+
+### BibTex Profile
+
+This profiles seeks to be more user-friendly by using BibTex fields as Work attributes and using `_` as a prefix to distinguish user-attributes from BibTex fields. Hence, in comparison to the `default` profile:
+
+- `name` became `title`
+
+- `pp` became `pages`
+
+- `authors` became `author`
+
+- `place1` and `place` were removed. This profile uses `journal` and `booktitle` as strings instead
+
+- `due` became `_due`
+
+- `category` became `_category`
+
+- `link` became `_url`
+
+In addition to these changes, we also removed the `display` and `may_be_related_to` attributes, but it is possible to add them back in the configuration.
+
+With this profile, it is easier to work without breaking the database (as you don't need to specify existing Place objects), and it is easier to identify which attributes should be exported to BibTex when you use the search function. 
+
 
 Supporting tools
 ------------------
@@ -40,7 +104,7 @@ This plugin modifies the Google Scholar search page to include "BibTex", "Work",
 To install it:
   - Use the following command to generate a folder with the Chrome plugin:
     - `$ snowballing plugin`
-  - Activate the developer mode in Chrome and click in "Load unpacked" to load the plugin from the generated folder.
+  - Activate the developer mode in Chrome and click in "Load unpacked" to load the plugin from the generated folder
 
 To run it:
   - Go to the snowballing project folder
@@ -55,7 +119,7 @@ To run it:
 Three notebooks use Selenium to search google scholar:
 - SearchScholar.ipynb : Use a search string to search work from scholar and add it using the tool
 - Forward.ipynb : Perform forward snowballing using the Scholar "cited by" link
-- Validate.ipynb : Validate dabatase items by searching each item at Google Scholar and comparing their BibTex.
+- Validate.ipynb : Validate dabatase items by searching each item at Google Scholar and comparing their BibTex
 
 While I recommend to use the Chrome Plugin for the former two (Google is less lenient to the Selenium method, since it performs many requests at the same time), it is hard to escape from Selenium in the third method. Hence, I suggest to install and configure a WebDriver.
 
@@ -140,13 +204,6 @@ This tools has been used to support two papers:
 
 It also has been used to calculate the h-index of a conference: https://github.com/JoaoFelipe/ipaw-index
 
-
-Notes
-----
-
-This project started as part of a literature snowballing. The tools were developped out of necessity in a adhoc way. Thus, it has some bad design decisions, such as using Python scripts as a database.
-
-Contributions to fix issues and bug reports are welcome!
 
 
 Contact
