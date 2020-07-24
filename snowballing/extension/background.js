@@ -36,6 +36,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         "title": ("Snowballing" + request.tooltip)
       }
       chrome.pageAction.setTitle(detail, () => {});
+      sendResponse(request.text)
   }
   if (request.message == "fetch") {
     fetch(request.input, request.init).then(function(response) {

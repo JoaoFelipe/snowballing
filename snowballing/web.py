@@ -1,3 +1,4 @@
+# coding: utf-8
 import os
 import sys 
 import importlib
@@ -38,8 +39,16 @@ def load_db():
     importlib.reload(database)
     def populate_scholar(work, metakey):
         config.check_load(work, metakey, warning=lambda x: STATUS.add(x))
-        SCHOLAR_IDS[oget(work, "scholar_id", "", cvar=config.SCHOLAR_MAP)] = work
-        CLUSTER_IDS[oget(work, "cluster_id", "", cvar=config.SCHOLAR_MAP)] = work
+        scholar_ids = oget(work, "scholar_id", "", cvar=config.SCHOLAR_MAP)
+        if not isinstance(scholar_ids, (list, tuple)):
+            scholar_ids = [scholar_ids]
+        for sid in scholar_ids: 
+            SCHOLAR_IDS[sid] = work
+        cluster_ids = oget(work, "cluster_id", "", cvar=config.SCHOLAR_MAP)
+        if not isinstance(cluster_ids, (list, tuple)):
+            cluster_ids = [cluster_ids]
+        for cid in cluster_ids: 
+            CLUSTER_IDS[cid] = work
     reload(work_func=populate_scholar)
     if "" in SCHOLAR_IDS:
         del SCHOLAR_IDS[""]
@@ -87,7 +96,7 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
         work = find_work_by_scholar(scholar)
         if work is not None and info is None:
             info = latex_to_info(work_to_bibtex(work))
-
+        
         pyref = None
         if info is not None:
             for key, value in scholar.items():
@@ -106,7 +115,7 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
                 pyref = work @ metakey
                 dset(info, "pyref", pyref)
             
-
+        
         else:
             should = {
                 "add": True,

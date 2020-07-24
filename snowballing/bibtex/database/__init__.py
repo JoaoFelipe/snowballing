@@ -591,9 +591,9 @@ def info_work_match(info, work):
       and similar titles
       It uses matches on places and years to reduce the similarity requirements for matching titles
     """
-    if info.get("_cluster_id", "<ii>") == getattr(work, "_cluster_id", "<iw>"):
+    if info.get("_cluster_id", "<ii>") in getattr(work, "_cluster_id", "<iw>"):
         return True
-    if info.get("_scholar_id", "<ii>") == getattr(work, "_scholar_id", "<iw>"):
+    if info.get("_scholar_id", "<ii>") in getattr(work, "_scholar_id", "<iw>"):
         return True
     
     for alias in get_work_aliases(work):

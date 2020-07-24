@@ -1,3 +1,5 @@
+var shouldUpdate = 0;
+
 function fetchResource(input, init) {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage({message:"fetch", input:input, init:init}, messageResponse => {
@@ -249,7 +251,8 @@ class EventRunner {
                             self.setAttr(attr, value);
                         }
                         $(self.baseDiv).find(".notice").html(notice);
-                        resetWork(self.meta, self.item)
+                        resetWork(self.meta, self.item);
+                        shouldUpdate += 1;
 
                     }))
                     .catch((error) => addError(self.item, error, "fetch reload"));
@@ -429,14 +432,15 @@ function inject() {
                 <div class="form"></form>
             </div>
         `);
-    resetWork(meta, item);
-    getRunning(
-        () => {
-                findWork(meta, item);
-        },
-        () => {}
-    ) 
+        resetWork(meta, item);
+        getRunning(
+            () => {
+                    findWork(meta, item);
+            },
+            () => {}
+        ) 
     });
+
 }
 
 function resetWork(meta, item) {
@@ -449,6 +453,7 @@ function resetWork(meta, item) {
         <button class="add">Add</button>
         <button class="hide-add">Hide Add</button>
         <button class="clear-list">Clear Errors</button>
+        <span class="addstatus"></span>
     `);
 
     if (!$(item).find('.snowballing .latex').val()) {
@@ -486,6 +491,7 @@ function resetWork(meta, item) {
             $(item).find('.snowballing .reload-db').show();
             if (meta.add) {
                 // $(item).find('.snowballing .add').show();
+                $(item).find('.snowballing span.addstatus').addClass("doAdd");
                 if ($(item).find('.snowballing .form').html().trim()) {
                     $(item).find('.snowballing .add').hide();
                     $(item).find('.snowballing .hide-add').show();
@@ -494,6 +500,7 @@ function resetWork(meta, item) {
                     $(item).find('.snowballing .hide-add').hide();
                 }
             } else {
+                $(item).find('.snowballing span.addstatus').removeClass("doAdd");
                 $(item).find('.snowballing .add').hide();
                 $(item).find('.snowballing .hide-add').hide();
             }
@@ -510,6 +517,7 @@ function resetWork(meta, item) {
             $(item).find('.snowballing .found').hide();
             $(item).find('.snowballing .add').hide();
             $(item).find('.snowballing .hide-add').hide();
+            $(item).find('.snowballing span.addstatus').removeClass("doAdd");
         }
     ) 
 
@@ -606,15 +614,7 @@ function resetWork(meta, item) {
         });
     });
 
-    setTimeout(() => {
-        var total = $(".snowballing .add:visible").length + $(".snowballing .hide-add:visible").length;
-        if (total) {
-            updateCount("yellow", total, `${total} papers can be added`);
-        } else {
-            updateCount("green", total, `Great!`);
-
-        }
-    }, 1000);
+    shouldUpdate += 1;
 
 }
 
@@ -851,3 +851,16 @@ chrome.runtime.onMessage.addListener(
         }
     }
 );
+
+setInterval(function(){
+    if (shouldUpdate) {
+        var total = $(".snowballing span.doAdd").length;
+        console.log(shouldUpdate, $(".snowballing span.doAdd").length, $(".snowballing button.add:visible").length, $(".snowballing button.hide-add:visible").length);
+        if (total) {
+            updateCount("yellow", total, `${total} papers can be added`);
+        } else {
+            updateCount("green", total, `Great!`);
+        }
+        shouldUpdate -= 1;
+    }
+}, 3000);

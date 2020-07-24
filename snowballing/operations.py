@@ -365,7 +365,7 @@ def set_by_info(work, info, set_scholar=True, rules=None):
             add = True
         elif getattr(work, key) != value:
             add = True
-            set_result[key] = value
+            set_result[key] = (value, getattr(work, key))
         elif key in rules.get("<set_always_show>", set()):
             add = True
         if add:
@@ -373,22 +373,26 @@ def set_by_info(work, info, set_scholar=True, rules=None):
 
     for key in meta_keys - work_keys:
         value = info[key]
-        set_result[key] = value
+        set_result[key] = (value, None)
         show_result[key] = (value, "")
 
     if set_scholar and rules.get("<scholar_ok>") and not hasattr(work, rules["<scholar_ok>"]):
-        set_result[rules["<scholar_ok>"]] = True
-    return {
+        set_result[rules["<scholar_ok>"]] = (True, None)
+
+    result = {
         "show": show_result,
         "set": set_result,
     }
+    if "<pos_diff>" in rules:
+        rules["<pos_diff>"](work, info, result)
+    return result
 
 
 def changes_dict_to_set_attribute(metakey, changes_dict, end=";"):
     """Convert dictionart of changes to set_attribute instructions"""
     result = []
-    for key, value in changes_dict.items():
-        result.append("set_attribute({!r}, {!r}, {!r})".format(metakey, key, value))
+    for key, (value, old) in changes_dict.items():
+        result.append("set_attribute({!r}, {!r}, {!r}, old={!r})".format(metakey, key, value, old))
     return "\n".join(result) + end
 
 
@@ -806,7 +810,6 @@ def work_to_bibtex(work, name=None, acronym=False, rules=None):
     result = work_to_bibtex_entry(work, name=name, acronym=acronym, rules=rules)
     db = BibDatabase()
     db.entries = [result]
-
     writer = BibTexWriter()
     writer.indent = "  "
     return writer.write(db)

@@ -70,6 +70,7 @@ def web(args):
         sys.path.append(os.getcwd())
         import database
         my_env = os.environ.copy()
+        print(os.path.join(os.path.dirname(__file__), "web.py"))
         my_env["FLASK_APP"] = os.path.join(os.path.dirname(__file__), "web.py")
         my_env["FLASK_ENV"] = "development"
         cmd = [sys.executable, "-m", "flask", "run"]

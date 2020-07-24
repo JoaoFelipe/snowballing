@@ -18,7 +18,7 @@ from .config_helpers import var_item, str_list, str_item, sequence
 from .config_helpers import work_by_varname, find_work_by_info, Site
 from .config_helpers import generate_title
 from .rules import ModifyRules
-from .utils import compare_str, match_any
+from .utils import compare_str, match_any, to_list
 
 # Tool version
 JOHN_SNOW_VERSION = "1.0.0"
@@ -134,6 +134,50 @@ def _place_value(place1):
     if maxmatch[0] >= SIMILARITY_RATIO or maxmatch[2].name in place:
         return maxmatch[1]
     
+def _pos_diff(work, info, result):
+    """Remove from diff if result in list or alias"""
+        
+    keys = set(result["set"])
+    def delkey(key, from_set=True):
+        if key in result["set"]:
+            del result["set"][key]
+        if key in result["show"]:
+            del result["show"][key]
+        if from_set:
+            keys.remove(key)
+    if hasattr(work, "ignore") and isinstance(work.ignore, list):
+        for key in work.ignore:
+            delkey(key)
+    if SCHOLAR_MAP["scholar_ok"] in keys:
+        after, before = result["set"][SCHOLAR_MAP["scholar_ok"]]
+        if before:
+            delkey(SCHOLAR_MAP["scholar_ok"])
+    if SCHOLAR_MAP["scholar"] in keys:
+        after, before = result["set"][SCHOLAR_MAP["scholar"]]
+        after = [x.replace("hl=pt-BR", "hl=en") for x in to_list(after or [])]
+        before = [x.replace("hl=pt-BR", "hl=en") for x in to_list(before or [])]
+        if len(after) == 1:
+            after = after[0]
+        if len(before) == 1:
+            before = before[0]
+        result["set"][SCHOLAR_MAP["scholar"]] = (after, before) 
+    aliases = get_work_aliases(work)
+    if ATTR["name"] in keys:
+        after, before = result["set"][ATTR["name"]]
+        for alias in aliases:
+            if alias[1] == after:
+                delkey(ATTR["name"])
+    if "authors" in keys:
+        after, before = result["set"]["authors"]
+        for alias in aliases:
+            if len(alias) > 2 and alias[2] == after:
+                delkey("authors")
+                break
+    for key in keys:
+        after, before = result["set"][key]
+        if isinstance(before, (list, tuple)) and after in before or after == before:
+            delkey(key, from_set=False)
+        
 
 # Map BibTex to Info object
 BIBTEX_TO_INFO = {
@@ -187,6 +231,7 @@ BIBTEX_TO_INFO = {
             if hasattr(work, "place") else
             None,
     ],
+    "<pos_diff>": _pos_diff
 }
 
 
@@ -335,7 +380,7 @@ def _work_to_bibtex_middle(work, new, current):
         "techreport": None,
         "": None
     }[new.get("ENTRYTYPE", "")]
-    if hasattr(work, "place"):
+    if new_place_key and hasattr(work, "place"):
         conference_has_acronym = (
             new["_acronym"]
             and work.place.type == "Conference"
@@ -345,7 +390,7 @@ def _work_to_bibtex_middle(work, new, current):
             new[new_place_key] = str(work.place.acronym)
         else:
             new[new_place_key] = str(work.place)
-    elif hasattr(work, "place1"):
+    elif new_place_key and hasattr(work, "place1"):
         new[new_place_key] = str(work.place1)
 
 WORK_TO_BIBTEX = {
@@ -559,7 +604,7 @@ FORM = {
     #   Use the same "DSL" as the events to update info object.
     "show": [
         ["if", ["==", ".place", "Lang"],
-            {":work_type": "WorkLang"},
+            {"work_type": "WorkLang"},
             []
         ],
         ["update_info", "due", ":due", None, ""],
@@ -677,9 +722,9 @@ def info_work_match(info, work):
       and similar titles
       It uses matches on places and years to reduce the similarity requirements for matching titles
     """
-    if info.get("cluster_id", "<ii>") == getattr(work, "cluster_id", "<iw>"):
+    if info.get("cluster_id", "<ii>") in getattr(work, "cluster_id", "<iw>"):
         return True
-    if info.get("scholar_id", "<ii>") == getattr(work, "scholar_id", "<iw>"):
+    if info.get("scholar_id", "<ii>") in getattr(work, "scholar_id", "<iw>"):
         return True
     
     for alias in get_work_aliases(work):

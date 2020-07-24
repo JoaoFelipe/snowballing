@@ -397,3 +397,10 @@ def display_list(elements):
     """Display list of elements using IPython display"""
     for disp in elements or []:
         display(disp)
+
+
+def to_list(var):
+    """Transform element into list"""
+    if isinstance(var, (list, tuple)):
+        return var
+    return [var]

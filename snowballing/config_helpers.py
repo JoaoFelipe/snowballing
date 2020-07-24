@@ -4,7 +4,7 @@ import re
 
 from string import ascii_lowercase
 
-from .collection_helpers import consume_key
+from .collection_helpers import consume_key, oset, odel, ohas, dset
 from .utils import compare_str, match_any
 
 
@@ -168,3 +168,17 @@ def generate_title(obj, prepend="\n\n", ignore={"_.*"}):
         if value is not None
     )
     return prepend + result if result else ""
+
+
+def update_models(old_category=None):
+    from snowballing import config, models
+    for (cls_name, category, *_) in config.CLASSES:
+        if not hasattr(models, cls_name):
+            attrs = {}
+            dset(attrs, "category", category)
+            setattr(models, cls_name, type(cls_name, (models.Work,), attrs))
+        else:
+            obj = getattr(models, cls_name)
+            if old_category is not None and hasattr(obj, old_category):
+                delattr(obj, old_category)
+            oset(obj, "category", category)

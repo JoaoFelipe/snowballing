@@ -598,7 +598,7 @@ def rename_lines(filename, lines, sep, original_name, new_name, year=None, new_y
     return lines
 
 
-def set_attribute(varname, field, value, year=None, dry_run=False):
+def set_attribute(varname, field, value, year=None, dry_run=False, old=None):
     """Set attribute for work
 
     Arguments:
