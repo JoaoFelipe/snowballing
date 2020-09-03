@@ -757,7 +757,7 @@ def info_work_match(info, work):
     if same_place:
         required -= 0.1
     
-    if compare_str(getattr(work, "name"), info.get("name")) > required:
+    if compare_str(str(getattr(work, "name")), info.get("name")) > required:
         return True
 
     return False
