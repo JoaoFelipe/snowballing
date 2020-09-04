@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,50 +11,44 @@
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> snowballing
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -82,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
@@ -106,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
@@ -113,13 +109,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">snowballing</a>
@@ -127,9 +124,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -150,7 +148,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -158,8 +156,6 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
         
       </li>
     
@@ -177,11 +173,26 @@
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">pkgutil</span>
 <span class="kn">import</span> <span class="nn">difflib</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">textwrap</span> <span class="k">import</span> <span class="n">TextWrapper</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">asinh</span><span class="p">,</span> <span class="n">asin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">atan2</span><span class="p">,</span> <span class="n">sin</span>
+
+
+<span class="kn">import</span> <span class="nn">bibtexparser</span>
+<span class="kn">from</span> <span class="nn">bibtexparser.bparser</span> <span class="k">import</span> <span class="n">BibTexParser</span>
+<span class="kn">from</span> <span class="nn">bibtexparser.customization</span> <span class="k">import</span> <span class="n">convert_to_unicode</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span>
+
+
+
+<div class="viewcode-block" id="parse_bibtex"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.parse_bibtex">[docs]</a><span class="k">def</span> <span class="nf">parse_bibtex</span><span class="p">(</span><span class="n">bib</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse BibTex and return list of entries&quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">BibTexParser</span><span class="p">(</span><span class="n">common_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">customization</span> <span class="o">=</span> <span class="n">convert_to_unicode</span>
+    <span class="k">return</span> <span class="n">bibtexparser</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">bib</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">)</span><span class="o">.</span><span class="n">entries</span></div>
 
 
 <div class="viewcode-block" id="text_y"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.text_y">[docs]</a><span class="k">def</span> <span class="nf">text_y</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
@@ -326,7 +337,7 @@
 
             <span class="c1"># First chunk on line is whitespace -- drop it, unless this</span>
             <span class="c1"># is the very beginning of the text (ie. no lines started yet).</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_whitespace</span> <span class="ow">and</span> <span class="n">chunks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_whitespace</span> <span class="ow">and</span> <span class="n">chunks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">lines</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">chunks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="k">while</span> <span class="n">chunks</span><span class="p">:</span>
@@ -348,7 +359,7 @@
                 <span class="n">cur_len</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">cur_line</span><span class="p">))</span>
 
             <span class="c1"># If the last chunk on this line is all whitespace, drop it.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_whitespace</span> <span class="ow">and</span> <span class="n">cur_line</span> <span class="ow">and</span> <span class="n">cur_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_whitespace</span> <span class="ow">and</span> <span class="n">cur_line</span> <span class="ow">and</span> <span class="n">cur_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                 <span class="n">cur_len</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cur_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="k">del</span> <span class="n">cur_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
@@ -361,13 +372,13 @@
                      <span class="ow">not</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="ow">and</span> <span class="n">cur_len</span> <span class="o">&lt;=</span> <span class="n">width</span><span class="p">):</span>
                     <span class="c1"># Convert current line back to a string and store it in</span>
                     <span class="c1"># list of all lines (return value).</span>
-                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cur_line</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cur_line</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">while</span> <span class="n">cur_line</span><span class="p">:</span>
                         <span class="k">if</span> <span class="p">(</span><span class="n">cur_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span>
                             <span class="n">cur_len</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">placeholder</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">width</span><span class="p">):</span>
                             <span class="n">cur_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">placeholder</span><span class="p">)</span>
-                            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cur_line</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cur_line</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
                             <span class="k">break</span>
                         <span class="n">cur_len</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cur_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                         <span class="k">del</span> <span class="n">cur_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -465,9 +476,6 @@
 <span class="sd">        (0, 5)</span>
 <span class="sd">        &gt;&gt;&gt; adjust_point(0, 0, 10, 0, 5)</span>
 <span class="sd">        (5, 0)</span>
-<span class="sd">        &gt;&gt;&gt; point = adjust_point(0, 0, 10, 10, 5)</span>
-<span class="sd">        &gt;&gt;&gt; point[0] == point[1]  # 45 degree angle, sin == cos</span>
-<span class="sd">        True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sign_x</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x1</span> <span class="o">&gt;</span> <span class="n">x0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">sign_y</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">y1</span> <span class="o">&gt;</span> <span class="n">y0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
@@ -486,6 +494,14 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">sign_x</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">sign_y</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="import_or_reload"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.import_or_reload">[docs]</a><span class="k">def</span> <span class="nf">import_or_reload</span><span class="p">(</span><span class="n">full_name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">full_name</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+        <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">full_name</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">full_name</span><span class="p">]</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">full_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">module</span></div>
+
+
 <div class="viewcode-block" id="import_submodules"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.import_submodules">[docs]</a><span class="k">def</span> <span class="nf">import_submodules</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Import all submodules of a module, recursively, including subpackages</span>
 
@@ -500,63 +516,15 @@
     <span class="k">if</span> <span class="n">package</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">package</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
-        <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
+        <span class="n">package</span> <span class="o">=</span> <span class="n">import_or_reload</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">loader</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">is_pkg</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">walk_packages</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">__path__</span><span class="p">):</span>
-        <span class="n">full_name</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">name</span>
+        <span class="n">full_name</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">name</span>
 
-        <span class="n">results</span><span class="p">[</span><span class="n">full_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">full_name</span><span class="p">)</span>
-        <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">full_name</span><span class="p">])</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">full_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">import_or_reload</span><span class="p">(</span><span class="n">full_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">recursive</span> <span class="ow">and</span> <span class="n">is_pkg</span><span class="p">:</span>
             <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">import_submodules</span><span class="p">(</span><span class="n">full_name</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">results</span></div>
-
-
-<div class="viewcode-block" id="consume"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.consume">[docs]</a><span class="k">def</span> <span class="nf">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Consumes key from dict</span>
-
-<span class="sd">    Arguments:</span>
-
-<span class="sd">    * `info` -- dict</span>
-<span class="sd">    * `key` -- key</span>
-
-<span class="sd">    Doctest:</span>
-
-<span class="sd">    .. doctest::</span>
-
-<span class="sd">        &gt;&gt;&gt; info = {&#39;abc&#39;: 1, &#39;def&#39;: 2}</span>
-<span class="sd">        &gt;&gt;&gt; consume(info, &#39;abc&#39;)</span>
-<span class="sd">        1</span>
-<span class="sd">        &gt;&gt;&gt; info</span>
-<span class="sd">        {&#39;def&#39;: 2}</span>
-<span class="sd">        &gt;&gt;&gt; consume(info, &#39;abc&#39;) is None</span>
-<span class="sd">        True</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-    <span class="k">del</span> <span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">result</span></div>
-
-
-<div class="viewcode-block" id="setitem"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.setitem">[docs]</a><span class="k">def</span> <span class="nf">setitem</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set item in dict info if value is not None </span>
-
-<span class="sd">    Doctest:</span>
-
-<span class="sd">    .. doctest::</span>
-
-<span class="sd">        &gt;&gt;&gt; info = {}</span>
-<span class="sd">        &gt;&gt;&gt; setitem(info, &#39;def&#39;, 2)</span>
-<span class="sd">        &gt;&gt;&gt; info</span>
-<span class="sd">        {&#39;def&#39;: 2}</span>
-<span class="sd">        &gt;&gt;&gt; setitem(info, &#39;abc&#39;, None)</span>
-<span class="sd">        &gt;&gt;&gt; info</span>
-<span class="sd">        {&#39;def&#39;: 2}</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
 
 <div class="viewcode-block" id="compare_str"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.compare_str">[docs]</a><span class="k">def</span> <span class="nf">compare_str</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">):</span>
@@ -594,12 +562,22 @@
         <span class="n">combined</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;)|(&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">regex</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span> <span class="k">for</span> <span class="n">regex</span> <span class="ow">in</span> <span class="n">regexes</span><span class="p">))</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">combined</span><span class="p">,</span> <span class="n">string</span><span class="p">))</span></div>
     
+
+<div class="viewcode-block" id="display_list"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.display_list">[docs]</a><span class="k">def</span> <span class="nf">display_list</span><span class="p">(</span><span class="n">elements</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display list of elements using IPython display&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">disp</span> <span class="ow">in</span> <span class="n">elements</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">disp</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="to_list"><a class="viewcode-back" href="../../snowballing/utils.html#snowballing.utils.to_list">[docs]</a><span class="k">def</span> <span class="nf">to_list</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform element into list&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">var</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">var</span><span class="p">]</span></div>
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -608,11 +586,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -624,37 +610,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

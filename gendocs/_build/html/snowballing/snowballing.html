@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,51 +11,46 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../index.html"/>
-        <link rel="next" title="strategies.py" href="strategies.html"/>
-        <link rel="prev" title="selenium_scholar.py" href="selenium_scholar.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="strategies.py" href="strategies.html" />
+    <link rel="prev" title="selenium_scholar.py" href="selenium_scholar.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../index.html" class="icon icon-home"> snowballing
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -83,6 +77,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
@@ -105,18 +101,27 @@
 <li class="toctree-l1"><a class="reference internal" href="scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">snowballing.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#events">Events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#eventrunner">EventRunner</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#widgets">Widgets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#webnavigator">WebNavigator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#runwidget">RunWidget</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#replacecellwidget">ReplaceCellWidget</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#converter">Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#articlenavigator">ArticleNavigator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#backwardsnowballing">BackwardSnowballing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#forwardsnowballing">ForwardSnowballing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#scholarupdate">ScholarUpdate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searchscholar">SearchScholar</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
@@ -124,13 +129,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">snowballing</a>
@@ -138,9 +144,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -161,7 +168,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>snowballing.py</li>
     
@@ -186,14 +193,173 @@
 <span id="snowballing-py"></span><h1>snowballing.py<a class="headerlink" href="#module-snowballing.snowballing" title="Permalink to this headline">¶</a></h1>
 <p>This module provides tools to analyze the snowballing and widgets to perform
 and curate the snowballing</p>
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="eventrunner">
+<h3>EventRunner<a class="headerlink" href="#eventrunner" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.snowballing.EventRunner">
+<em class="property">class </em><code class="descname">EventRunner</code><span class="sig-paren">(</span><em>navigator</em>, <em>info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.access_attr">
+<code class="descname">access_attr</code><span class="sig-paren">(</span><em>attr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.access_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.access_attr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_and">
+<code class="descname">op_and</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_and"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_and" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_eq">
+<code class="descname">op_eq</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_eq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_eq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_ge">
+<code class="descname">op_ge</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_ge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_ge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_gt">
+<code class="descname">op_gt</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_gt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_gt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_if">
+<code class="descname">op_if</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_if"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_if" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_le">
+<code class="descname">op_le</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_le"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_le" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_lt">
+<code class="descname">op_lt</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_lt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_lt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_neq">
+<code class="descname">op_neq</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_neq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_neq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_not">
+<code class="descname">op_not</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_not"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_not" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_or">
+<code class="descname">op_or</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_or"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_or" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_plus">
+<code class="descname">op_plus</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_plus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_plus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_pyref">
+<code class="descname">op_pyref</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_pyref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_pyref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_reload">
+<code class="descname">op_reload</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_reload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.op_update_info">
+<code class="descname">op_update_info</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.op_update_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.op_update_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.EventRunner.set_attr">
+<code class="descname">set_attr</code><span class="sig-paren">(</span><em>attr</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#EventRunner.set_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.EventRunner.set_attr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
 <div class="section" id="widgets">
 <h2>Widgets<a class="headerlink" href="#widgets" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="webnavigator">
+<h3>WebNavigator<a class="headerlink" href="#webnavigator" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.snowballing.WebNavigator">
+<em class="property">class </em><code class="descname">WebNavigator</code><span class="sig-paren">(</span><em>form_values</em>, <em>nwork</em>, <em>info</em>, <em>citation_var=None</em>, <em>citation_file=None</em>, <em>backward=True</em>, <em>should_add=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#WebNavigator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.WebNavigator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="snowballing.snowballing.WebNavigator.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>clear=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#WebNavigator.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.WebNavigator.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="runwidget">
+<h3>RunWidget<a class="headerlink" href="#runwidget" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.snowballing.RunWidget">
+<em class="property">class </em><code class="descname">RunWidget</code><a class="reference internal" href="../_modules/snowballing/snowballing.html#RunWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.RunWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="snowballing.snowballing.RunWidget.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#RunWidget.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.RunWidget.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.RunWidget.clear_click">
+<code class="descname">clear_click</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#RunWidget.clear_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.RunWidget.clear_click" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.RunWidget.click">
+<code class="descname">click</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#RunWidget.click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.RunWidget.click" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.RunWidget.set_code">
+<code class="descname">set_code</code><span class="sig-paren">(</span><em>code</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#RunWidget.set_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.RunWidget.set_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="replacecellwidget">
+<h3>ReplaceCellWidget<a class="headerlink" href="#replacecellwidget" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.snowballing.ReplaceCellWidget">
+<em class="property">class </em><code class="descname">ReplaceCellWidget</code><a class="reference internal" href="../_modules/snowballing/snowballing.html#ReplaceCellWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ReplaceCellWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="snowballing.snowballing.ReplaceCellWidget.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ReplaceCellWidget.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ReplaceCellWidget.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.ReplaceCellWidget.set_code">
+<code class="descname">set_code</code><span class="sig-paren">(</span><em>code</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ReplaceCellWidget.set_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ReplaceCellWidget.set_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="converter">
 <h3>Converter<a class="headerlink" href="#converter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="snowballing.snowballing.Converter">
-<em class="property">class </em><code class="descname">Converter</code><span class="sig-paren">(</span><em>mode='text'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descname">Converter</code><span class="sig-paren">(</span><em>mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Convert texts into other formats</p>
 <p>Four modes are available:</p>
 <ul>
@@ -215,12 +381,12 @@ reference</p>
 </li>
 <li><p class="first">Consider each space as a line break</p>
 </li>
-<li><p class="first">The &#8220;other&#8221; field can be created using multiple (or 0) lines</p>
+<li><p class="first">The “other” field can be created using multiple (or 0) lines</p>
 <ul>
-<li><p class="first">It also can define the attribute names using &#8216;attr=value&#8217;</p>
+<li><p class="first">It also can define the attribute names using ‘attr=value’</p>
 </li>
 <li><p class="first">For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">Pimentel</span><span class="p">,</span> <span class="n">João</span> <span class="n">Felipe</span> <span class="ow">and</span> <span class="n">Braganholo</span><span class="p">,</span> <span class="n">Vanessa</span> <span class="ow">and</span> <span class="n">Murta</span><span class="p">,</span> <span class="n">Leonardo</span> <span class="ow">and</span> <span class="n">Freire</span><span class="p">,</span> <span class="n">Juliana</span>
 <span class="n">Tracking</span> <span class="ow">and</span> <span class="n">analyzing</span> <span class="n">the</span> <span class="n">evolution</span> <span class="n">of</span> <span class="n">provenance</span> <span class="kn">from</span> <span class="nn">scripts</span>
 <span class="n">IPAW</span>
@@ -245,7 +411,7 @@ reference</p>
 </ul>
 <dl class="method">
 <dt id="snowballing.snowballing.Converter.bibtex">
-<code class="descname">bibtex</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.bibtex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.bibtex" title="Permalink to this definition">¶</a></dt>
+<code class="descname">bibtex</code><span class="sig-paren">(</span><em>change</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.bibtex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.bibtex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produces a json based on a bibtex</p>
 </dd></dl>
 
@@ -257,31 +423,43 @@ reference</p>
 
 <dl class="method">
 <dt id="snowballing.snowballing.Converter.citation">
-<code class="descname">citation</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.citation" title="Permalink to this definition">¶</a></dt>
+<code class="descname">citation</code><span class="sig-paren">(</span><em>change</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.citation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produces a json based on the format [N] author name place other year</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="snowballing.snowballing.Converter.pdf">
+<code class="descname">pdf</code><span class="sig-paren">(</span><em>change</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts citations from pdf</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="snowballing.snowballing.Converter.quoted">
-<code class="descname">quoted</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.quoted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.quoted" title="Permalink to this definition">¶</a></dt>
+<code class="descname">quoted</code><span class="sig-paren">(</span><em>change</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.quoted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.quoted" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds quotes to value. Use it for citation</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="snowballing.snowballing.Converter.select">
-<code class="descname">select</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.select" title="Permalink to this definition">¶</a></dt>
+<code class="descname">select</code><span class="sig-paren">(</span><em>change</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects new mode. Use previous output as input</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.Converter.select_mode">
+<code class="descname">select_mode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.select_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.select_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects new mode. Use previous output as input</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="snowballing.snowballing.Converter.set_variable">
 <code class="descname">set_variable</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.set_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.set_variable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates variable &#8216;article_list&#8217; with resulting JSON</p>
+<dd><p>Creates variable ‘article_list’ with resulting JSON</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="snowballing.snowballing.Converter.text">
-<code class="descname">text</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.text" title="Permalink to this definition">¶</a></dt>
+<code class="descname">text</code><span class="sig-paren">(</span><em>change</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#Converter.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.Converter.text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes line breaks and diacricts</p>
 </dd></dl>
 
@@ -299,7 +477,7 @@ reference</p>
 <dl class="class">
 <dt id="snowballing.snowballing.ArticleNavigator">
 <em class="property">class </em><code class="descname">ArticleNavigator</code><span class="sig-paren">(</span><em>citation_var=None</em>, <em>citation_file=None</em>, <em>articles=None</em>, <em>backward=True</em>, <em>force_citation_file=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Navigate on article list for insertion</p>
 <dl class="method">
 <dt id="snowballing.snowballing.ArticleNavigator.browser">
@@ -311,18 +489,6 @@ reference</p>
 <dt id="snowballing.snowballing.ArticleNavigator.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear cell and output</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="snowballing.snowballing.ArticleNavigator.create_custom_button">
-<code class="descname">create_custom_button</code><span class="sig-paren">(</span><em>tup</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.create_custom_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.create_custom_button" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create custom button based on config.FORM_BUTTONS tuple</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="snowballing.snowballing.ArticleNavigator.create_custom_text">
-<code class="descname">create_custom_text</code><span class="sig-paren">(</span><em>tup</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.create_custom_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.create_custom_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create custom text based on config.FORM_TEXT_FIELDS tuple</p>
 </dd></dl>
 
 <dl class="method">
@@ -344,6 +510,11 @@ reference</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="snowballing.snowballing.ArticleNavigator.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="snowballing.snowballing.ArticleNavigator.set_articles">
 <code class="descname">set_articles</code><span class="sig-paren">(</span><em>articles</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.set_articles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.set_articles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set list of articles and restart slider</p>
@@ -357,14 +528,8 @@ reference</p>
 
 <dl class="method">
 <dt id="snowballing.snowballing.ArticleNavigator.show_article">
-<code class="descname">show_article</code><span class="sig-paren">(</span><em>article</em>, <em>nwork</em>, <em>info</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.show_article"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.show_article" title="Permalink to this definition">¶</a></dt>
+<code class="descname">show_article</code><span class="sig-paren">(</span><em>article</em>, <em>nwork</em>, <em>info</em>, <em>should</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.show_article"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.show_article" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display article</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="snowballing.snowballing.ArticleNavigator.show_site">
-<code class="descname">show_site</code><span class="sig-paren">(</span><em>article</em>, <em>nwork</em>, <em>info</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.show_site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.show_site" title="Permalink to this definition">¶</a></dt>
-<dd><p>Display site citation</p>
 </dd></dl>
 
 <dl class="method">
@@ -379,18 +544,6 @@ reference</p>
 <dd><p>Generate valid articles</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="snowballing.snowballing.ArticleNavigator.write_due">
-<code class="descname">write_due</code><span class="sig-paren">(</span><em>b=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.write_due"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.write_due" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write event for due_widget</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="snowballing.snowballing.ArticleNavigator.write_place">
-<code class="descname">write_place</code><span class="sig-paren">(</span><em>b=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ArticleNavigator.write_place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ArticleNavigator.write_place" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write event for place_widget</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -399,7 +552,7 @@ reference</p>
 <dl class="class">
 <dt id="snowballing.snowballing.BackwardSnowballing">
 <em class="property">class </em><code class="descname">BackwardSnowballing</code><span class="sig-paren">(</span><em>citation_var</em>, <em>citation_file=None</em>, <em>articles=None</em>, <em>force_citation_file=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#BackwardSnowballing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.BackwardSnowballing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#snowballing.snowballing.ArticleNavigator" title="snowballing.snowballing.ArticleNavigator"><code class="xref py py-class docutils literal"><span class="pre">snowballing.snowballing.ArticleNavigator</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.snowballing.ArticleNavigator" title="snowballing.snowballing.ArticleNavigator"><code class="xref py py-class docutils literal notranslate"><span class="pre">snowballing.snowballing.ArticleNavigator</span></code></a></p>
 <p>Navigate on article list for insertion with backward citation</p>
 </dd></dl>
 
@@ -409,7 +562,7 @@ reference</p>
 <dl class="class">
 <dt id="snowballing.snowballing.ForwardSnowballing">
 <em class="property">class </em><code class="descname">ForwardSnowballing</code><span class="sig-paren">(</span><em>querier</em>, <em>citation_var</em>, <em>citation_file=None</em>, <em>debug=False</em>, <em>start=None</em>, <em>load=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ForwardSnowballing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ForwardSnowballing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Navigate on article list for insertion with forward citation</p>
 <dl class="method">
 <dt id="snowballing.snowballing.ForwardSnowballing.browser">
@@ -442,8 +595,8 @@ reference</p>
 <h3>ScholarUpdate<a class="headerlink" href="#scholarupdate" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="snowballing.snowballing.ScholarUpdate">
-<em class="property">class </em><code class="descname">ScholarUpdate</code><span class="sig-paren">(</span><em>querier</em>, <em>worklist</em>, <em>force=False</em>, <em>debug=False</em>, <em>index=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ScholarUpdate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ScholarUpdate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descname">ScholarUpdate</code><span class="sig-paren">(</span><em>querier</em>, <em>worklist</em>, <em>force=False</em>, <em>debug=False</em>, <em>index=0</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#ScholarUpdate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.ScholarUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Widget for curating database</p>
 <dl class="method">
 <dt id="snowballing.snowballing.ScholarUpdate.browser">
@@ -484,14 +637,51 @@ reference</p>
 </dd></dl>
 
 </div>
+<div class="section" id="searchscholar">
+<h3>SearchScholar<a class="headerlink" href="#searchscholar" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="snowballing.snowballing.SearchScholar">
+<em class="property">class </em><code class="descname">SearchScholar</code><span class="sig-paren">(</span><em>querier</em>, <em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#SearchScholar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.SearchScholar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Search Scholar and Navigate on article list for insertion</p>
+<dl class="method">
+<dt id="snowballing.snowballing.SearchScholar.browser">
+<code class="descname">browser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#SearchScholar.browser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.SearchScholar.browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Presents widget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.SearchScholar.next_page">
+<code class="descname">next_page</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#SearchScholar.next_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.SearchScholar.next_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets next page from scholar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.SearchScholar.previous_page">
+<code class="descname">previous_page</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#SearchScholar.previous_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.SearchScholar.previous_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets previous page from scholar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.SearchScholar.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><em>b</em>, <em>show=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#SearchScholar.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.SearchScholar.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reloads page</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="snowballing.snowballing.SearchScholar.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/snowballing.html#SearchScholar.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.snowballing.SearchScholar.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -500,7 +690,7 @@ reference</p>
         <a href="strategies.html" class="btn btn-neutral float-right" title="strategies.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="selenium_scholar.html" class="btn btn-neutral" title="selenium_scholar.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="selenium_scholar.html" class="btn btn-neutral float-left" title="selenium_scholar.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -509,11 +699,19 @@ reference</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -525,37 +723,15 @@ reference</p>
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

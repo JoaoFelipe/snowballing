@@ -1,0 +1,1120 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>snowballing.config &mdash; snowballing 0.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config_helper.html">config_helpers.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/jupyter_utils.html">jupyter_utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/models.html">models.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/operations.html">operations.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/scholar.html">scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/web.html">web.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snowballing</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>snowballing.config</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for snowballing.config</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module configures the snowballing.</span>
+
+<span class="sd">Please, use the database __init__ to replace these configurations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">string</span> <span class="k">import</span> <span class="n">ascii_lowercase</span>
+<span class="kn">from</span> <span class="nn">bibtexparser.customization</span> <span class="k">import</span> <span class="n">homogenize_latex_encoding</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="k">import</span> <span class="n">webdriver</span>
+
+<span class="kn">from</span> <span class="nn">.collection_helpers</span> <span class="k">import</span> <span class="n">callable_get</span><span class="p">,</span> <span class="n">define_cvar</span>
+<span class="kn">from</span> <span class="nn">.collection_helpers</span> <span class="k">import</span> <span class="n">consume</span><span class="p">,</span> <span class="n">setitem</span><span class="p">,</span> <span class="n">remove_empty</span>
+<span class="kn">from</span> <span class="nn">.config_helpers</span> <span class="k">import</span> <span class="n">reorder_place</span><span class="p">,</span> <span class="n">last_name_first_author</span>
+<span class="kn">from</span> <span class="nn">.config_helpers</span> <span class="k">import</span> <span class="n">var_item</span><span class="p">,</span> <span class="n">str_list</span><span class="p">,</span> <span class="n">str_item</span><span class="p">,</span> <span class="n">sequence</span>
+<span class="kn">from</span> <span class="nn">.config_helpers</span> <span class="k">import</span> <span class="n">work_by_varname</span><span class="p">,</span> <span class="n">find_work_by_info</span><span class="p">,</span> <span class="n">Site</span>
+<span class="kn">from</span> <span class="nn">.config_helpers</span> <span class="k">import</span> <span class="n">generate_title</span>
+<span class="kn">from</span> <span class="nn">.rules</span> <span class="k">import</span> <span class="n">ModifyRules</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">compare_str</span><span class="p">,</span> <span class="n">match_any</span><span class="p">,</span> <span class="n">to_list</span>
+
+<span class="c1"># Tool version</span>
+<span class="n">JOHN_SNOW_VERSION</span> <span class="o">=</span> <span class="s2">&quot;1.0.0&quot;</span>
+
+<span class="c1"># Database path</span>
+<span class="n">DATABASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;database&quot;</span>
+
+<span class="c1"># Text editior path</span>
+<span class="n">TEXT_EDITOR</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Text editor argument for opening in a given line.</span>
+<span class="c1"># Use a format string with arguments {year_path} and {line}</span>
+<span class="n">LINE_PARAMS</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Web Driver</span>
+<span class="n">WEB_DRIVER</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">()</span>
+
+<span class="c1"># Run widget</span>
+<span class="c1"># Use True to indicate that widgets that generate executable code should have a text area with a button for running the code.</span>
+<span class="c1"># Otherwise, they modify notebook cells (unsafe)</span>
+<span class="n">RUN_WIDGET</span> <span class="o">=</span> <span class="kc">True</span> 
+
+<span class="c1"># PDF Extractor. Use string argumen {path} to define the path</span>
+<span class="n">PDF_EXTRACTOR</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">PDF_EXTRACTOR</span> <span class="o">=</span> <span class="s2">&quot;java -jar refExtractor.jar full </span><span class="si">{path}</span><span class="s2">&quot;</span>
+
+<span class="c1"># List of possible work class tuples</span>
+<span class="c1"># Each tuple has the follwing elements:</span>
+<span class="c1">#   Class Name</span>
+<span class="c1">#   Category name</span>
+<span class="c1">#   Graph visibility (Options: display, hide, always_hide)</span>
+<span class="c1">#   Graph node color</span>
+<span class="c1">#   Graph node text color</span>
+<span class="n">CLASSES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;Work&quot;</span><span class="p">,</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;#FFD86E&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;WorkSnowball&quot;</span><span class="p">,</span> <span class="s2">&quot;snowball&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;#6DCE9E&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;WorkOk&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;#68BDF6&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;WorkUnrelated&quot;</span><span class="p">,</span> <span class="s2">&quot;unrelated&quot;</span><span class="p">,</span> <span class="s2">&quot;hide&quot;</span><span class="p">,</span> <span class="s2">&quot;#DE9BF9&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;WorkNoFile&quot;</span><span class="p">,</span> <span class="s2">&quot;nofile&quot;</span><span class="p">,</span> <span class="s2">&quot;hide&quot;</span><span class="p">,</span> <span class="s2">&quot;#A5ABB6&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;WorkLang&quot;</span><span class="p">,</span> <span class="s2">&quot;lang&quot;</span><span class="p">,</span> <span class="s2">&quot;hide&quot;</span><span class="p">,</span> <span class="s2">&quot;#ff8040&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Site&quot;</span><span class="p">,</span> <span class="s2">&quot;site&quot;</span><span class="p">,</span> <span class="s2">&quot;hide&quot;</span><span class="p">,</span> <span class="s2">&quot;#000080&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Email&quot;</span><span class="p">,</span> <span class="s2">&quot;site&quot;</span><span class="p">,</span> <span class="s2">&quot;hide&quot;</span><span class="p">,</span> <span class="s2">&quot;#000080&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="c1"># Default class for insertion</span>
+<span class="n">DEFAULT_CLASS</span> <span class="o">=</span> <span class="s2">&quot;Work&quot;</span>
+
+<span class="c1"># Similary Ratio for matching places</span>
+<span class="n">SIMILARITY_RATIO</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+<span class="c1"># Check Deprecation</span>
+<span class="n">CHECK_DEPRECATION</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="c1">### Fields</span>
+
+<span class="c1"># Debug fields during BibTeX export</span>
+<span class="n">DEBUG_FIELDS</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># List of exportable work fields to BibTeX</span>
+<span class="n">WORK_FIELDS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;entrytype&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;booktitle&quot;</span><span class="p">,</span> <span class="s2">&quot;bookauthors&quot;</span><span class="p">,</span> <span class="s2">&quot;edition&quot;</span><span class="p">,</span> <span class="s2">&quot;available&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;volume&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;section&quot;</span><span class="p">,</span> <span class="s2">&quot;pp&quot;</span><span class="p">,</span> <span class="s2">&quot;article&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn&quot;</span><span class="p">,</span>  <span class="s2">&quot;proceedings&quot;</span><span class="p">,</span> <span class="s2">&quot;issn&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;organization&quot;</span><span class="p">,</span> <span class="s2">&quot;publisher&quot;</span><span class="p">,</span> <span class="s2">&quot;school&quot;</span><span class="p">,</span> <span class="s2">&quot;institution&quot;</span><span class="p">,</span> <span class="s2">&quot;track&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ref&quot;</span><span class="p">,</span> <span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="s2">&quot;editors&quot;</span><span class="p">,</span> <span class="s2">&quot;awards&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;special&quot;</span><span class="p">,</span> <span class="s2">&quot;website&quot;</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="s2">&quot;scholar&quot;</span><span class="p">,</span> <span class="s2">&quot;shorttitle&quot;</span><span class="p">,</span> <span class="s2">&quot;address&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Regexes that starts with ^ and ends with $</span>
+<span class="n">BIBTEX_IGNORE_FIELDS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;excerpt&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;bookname&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;ID&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Tool</span>
+    <span class="s2">&quot;_.*&quot;</span><span class="p">,</span> <span class="s2">&quot;force_.*&quot;</span><span class="p">,</span> <span class="s2">&quot;file.*&quot;</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="s2">&quot;alias&quot;</span><span class="p">,</span> <span class="s2">&quot;aliases&quot;</span><span class="p">,</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;scholar&quot;</span><span class="p">,</span> <span class="s2">&quot;cluster_id&quot;</span><span class="p">,</span> <span class="s2">&quot;scholar_id&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">,</span> <span class="s2">&quot;due&quot;</span><span class="p">,</span> <span class="s2">&quot;_tyear&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;citation_file&quot;</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">,</span> <span class="s2">&quot;tracking&quot;</span><span class="p">,</span> <span class="s2">&quot;snowball&quot;</span><span class="p">,</span> <span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="s2">&quot;_draw&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;may_be_related_to&quot;</span><span class="p">,</span> <span class="s2">&quot;note&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1">### Transformation Rules</span>
+
+<span class="k">def</span> <span class="nf">_place_value</span><span class="p">(</span><span class="n">place1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get place value based on similarity</span>
+
+<span class="sd">    It considers a match if the matching ratio for the place name</span>
+<span class="sd">    is &gt;= config.SIMILARITY_RATIO (0.8).</span>
+
+<span class="sd">    It also considers a match if the acronym matches.</span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; info = {&quot;place1&quot;: &quot;IPAW&quot;}</span>
+<span class="sd">        &gt;&gt;&gt; _place_value(&quot;IPAW&quot;)</span>
+<span class="sd">        &#39;IPAW&#39;</span>
+<span class="sd">        &gt;&gt;&gt; _place_value(&quot;Software Engineering, International Conference on&quot;)</span>
+<span class="sd">        &#39;ICSE&#39;</span>
+<span class="sd">        &gt;&gt;&gt; _place_value(&quot;A random conference&quot;) is None</span>
+<span class="sd">        True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">load_places_vars</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">reorder_place</span><span class="p">(</span><span class="n">place1</span><span class="p">)</span>
+
+    <span class="n">maxmatch</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+        <span class="p">(</span><span class="nb">max</span><span class="p">(</span>
+            <span class="n">compare_str</span><span class="p">(</span><span class="n">place</span><span class="p">,</span> <span class="n">varvalue</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+            <span class="mi">1</span> <span class="k">if</span> <span class="n">place</span> <span class="o">==</span> <span class="n">varvalue</span><span class="o">.</span><span class="n">acronym</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="p">),</span> <span class="n">varname</span><span class="p">,</span> <span class="n">varvalue</span><span class="p">)</span> <span class="k">for</span> <span class="n">varname</span><span class="p">,</span> <span class="n">varvalue</span> <span class="ow">in</span> <span class="n">load_places_vars</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">maxmatch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">SIMILARITY_RATIO</span> <span class="ow">or</span> <span class="n">maxmatch</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">place</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">maxmatch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+<span class="k">def</span> <span class="nf">_pos_diff</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove from diff if result in list or alias&quot;&quot;&quot;</span>
+        
+    <span class="n">keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">delkey</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">from_set</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">]:</span>
+            <span class="k">del</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;show&quot;</span><span class="p">]:</span>
+            <span class="k">del</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;show&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">from_set</span><span class="p">:</span>
+            <span class="n">keys</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">ignore</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">work</span><span class="o">.</span><span class="n">ignore</span><span class="p">:</span>
+            <span class="n">delkey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">SCHOLAR_MAP</span><span class="p">[</span><span class="s2">&quot;scholar_ok&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">after</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">][</span><span class="n">SCHOLAR_MAP</span><span class="p">[</span><span class="s2">&quot;scholar_ok&quot;</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">before</span><span class="p">:</span>
+            <span class="n">delkey</span><span class="p">(</span><span class="n">SCHOLAR_MAP</span><span class="p">[</span><span class="s2">&quot;scholar_ok&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">SCHOLAR_MAP</span><span class="p">[</span><span class="s2">&quot;scholar&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">after</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">][</span><span class="n">SCHOLAR_MAP</span><span class="p">[</span><span class="s2">&quot;scholar&quot;</span><span class="p">]]</span>
+        <span class="n">after</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;hl=pt-BR&quot;</span><span class="p">,</span> <span class="s2">&quot;hl=en&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">to_list</span><span class="p">(</span><span class="n">after</span> <span class="ow">or</span> <span class="p">[])]</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;hl=pt-BR&quot;</span><span class="p">,</span> <span class="s2">&quot;hl=en&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">to_list</span><span class="p">(</span><span class="n">before</span> <span class="ow">or</span> <span class="p">[])]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">after</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">after</span> <span class="o">=</span> <span class="n">after</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">before</span> <span class="o">=</span> <span class="n">before</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">][</span><span class="n">SCHOLAR_MAP</span><span class="p">[</span><span class="s2">&quot;scholar&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">after</span><span class="p">,</span> <span class="n">before</span><span class="p">)</span> 
+    <span class="n">aliases</span> <span class="o">=</span> <span class="n">get_work_aliases</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ATTR</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">after</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">][</span><span class="n">ATTR</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">after</span><span class="p">:</span>
+                <span class="n">delkey</span><span class="p">(</span><span class="n">ATTR</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">&quot;authors&quot;</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">after</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">][</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">alias</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">after</span><span class="p">:</span>
+                <span class="n">delkey</span><span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">after</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">before</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="n">after</span> <span class="ow">in</span> <span class="n">before</span> <span class="ow">or</span> <span class="n">after</span> <span class="o">==</span> <span class="n">before</span><span class="p">:</span>
+            <span class="n">delkey</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">from_set</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+
+<span class="c1"># Map BibTex to Info object</span>
+<span class="n">BIBTEX_TO_INFO</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;before&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;place1&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;[in press]&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">)),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;middle&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">_place_value</span><span class="p">(</span><span class="n">new</span><span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">])),</span>
+        <span class="p">(</span><span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">last_name_first_author</span><span class="p">(</span><span class="n">new</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">])),</span>
+        <span class="p">(</span><span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">info_to_pyref</span><span class="p">(</span><span class="n">new</span><span class="p">)),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;after&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="n">new</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;local&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;publisher&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;organization&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;pages&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pp&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;ENTRYTYPE&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;entrytype&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;journal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;booktitle&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;note&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;in press&quot;</span> <span class="k">if</span> <span class="s2">&quot;[in press]&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;article&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;excerpt&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">article</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;excerpt&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;cluster_id&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">article</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;cluster_id&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;scholar&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">article</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;url_citations&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">article</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">div</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;set_ignore_keys&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;excerpt&quot;</span><span class="p">,</span> <span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="s2">&quot;_work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;_ref&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;&lt;set_ignore_but_show&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;place1&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;&lt;set_always_show&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="s2">&quot;entrytype&quot;</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;&lt;set_order&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="s2">&quot;entrytype&quot;</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;&lt;scholar_ok&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&lt;set_before&gt;&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">work</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="p">[</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;entrytype&quot;</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;entrytype&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">)</span> <span class="k">else</span> 
+            <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;place&quot;</span> <span class="ow">in</span> <span class="n">info</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;place1&quot;</span> <span class="ow">in</span> <span class="n">info</span> <span class="k">else</span>
+            <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">acronym</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">)</span> <span class="k">else</span>
+            <span class="kc">None</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;pos_diff&gt;&quot;</span><span class="p">:</span> <span class="n">_pos_diff</span>
+<span class="p">}</span>
+
+
+<span class="c1"># Map BibTex to Info object. Set _work_type=Work</span>
+<span class="n">BIBTEX_TO_INFO_WITH_TYPE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ModifyRules</span><span class="p">(</span><span class="n">BIBTEX_TO_INFO</span><span class="p">,</span> <span class="s2">&quot;with_type&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;before&gt;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;_work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;Work&quot;</span><span class="p">))</span>
+<span class="p">)</span><span class="o">.</span><span class="n">rules</span>
+
+
+<span class="c1"># Map BibTex to Info object. Ignore ID attribute</span>
+<span class="n">BIBTEX_TO_INFO_IGNORE_SET_ID</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ModifyRules</span><span class="p">(</span><span class="n">BIBTEX_TO_INFO</span><span class="p">,</span> <span class="s2">&quot;ignore_set&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;&lt;set_ignore_keys&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;ID&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">rules</span>
+
+
+<span class="c1"># Convert Article info to Info object</span>
+<span class="c1">#   If the work exists, it should populate the attribute _nwork (use find_work_by_info)</span>
+<span class="n">ARTICLE_TO_INFO</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;after&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span>
+            <span class="p">[</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="s1">&#39;Site(&quot;</span><span class="si">{name}</span><span class="s1">&quot;, &quot;</span><span class="si">{url}</span><span class="s1">&quot;)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">new</span><span class="p">)),</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;_nwork&quot;</span><span class="p">,</span> <span class="n">Site</span><span class="p">(</span><span class="n">new</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">new</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]))</span>
+            <span class="p">]</span> <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_work_type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Site&quot;</span> <span class="k">else</span>
+            <span class="p">[</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;_nwork&quot;</span><span class="p">,</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="n">new</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">])),</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">new</span><span class="p">[</span><span class="s2">&quot;_nwork&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="n">new</span><span class="p">[</span><span class="s2">&quot;_nwork&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+            <span class="p">]</span> <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_work_type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Ref&quot;</span> <span class="k">else</span> 
+            <span class="p">[</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="n">_place_value</span><span class="p">(</span><span class="n">new</span><span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">]))</span> <span class="k">if</span> <span class="s2">&quot;place&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="n">last_name_first_author</span><span class="p">(</span><span class="n">new</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]))</span> <span class="k">if</span> <span class="s2">&quot;display&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="n">info_to_pyref</span><span class="p">(</span><span class="n">new</span><span class="p">))</span> <span class="k">if</span> <span class="s2">&quot;pyref&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;_nwork&quot;</span><span class="p">,</span> <span class="n">find_work_by_info</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="nb">set</span><span class="p">())),</span>
+            <span class="p">]</span>
+        
+        <span class="p">)</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;div&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="s2">&quot;citation_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="s2">&quot;&lt;article&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">article</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> 
+            <span class="p">[</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="s2">&quot;_show_site&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="s2">&quot;_ref&quot;</span><span class="p">,</span> <span class="n">article</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;citation_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+            <span class="p">]</span> <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_work_type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Site&quot;</span> <span class="k">else</span>
+            <span class="p">[</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)),</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;place&quot;</span><span class="p">)),</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="s2">&quot;_ref&quot;</span><span class="p">,</span> <span class="n">article</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;citation_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+            <span class="p">]</span> <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_work_type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Ref&quot;</span> <span class="k">else</span> <span class="p">[</span>
+                <span class="n">setitem</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="s2">&quot;_ref&quot;</span><span class="p">,</span> <span class="n">article</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;citation_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+            <span class="p">]</span>
+           
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+
+<span class="c1"># Map Info object to Insert Code</span>
+<span class="n">INFO_TO_INSERT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;before&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;Work&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;due&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;related&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;the_place&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;other&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;middle&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;the_place&quot;</span><span class="p">,</span> <span class="n">sequence</span><span class="p">([</span>
+            <span class="n">var_item</span><span class="p">(</span><span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="s2">&quot;new&quot;</span><span class="p">),</span>
+            <span class="n">str_item</span><span class="p">(</span><span class="s2">&quot;place1&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="s2">&quot;new&quot;</span><span class="p">),</span> 
+        <span class="p">])),</span>
+        <span class="p">(</span><span class="s2">&quot;other&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">=</span><span class="si">{!r}</span><span class="s2">,&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">consume</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span> <span class="c1"># .replace(&#39;&quot;&#39;, r&#39;\&quot;&#39;)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+        <span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">            &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remove_empty</span><span class="p">([</span>
+            <span class="n">new</span><span class="p">[</span><span class="s2">&quot;due&quot;</span><span class="p">],</span> <span class="n">new</span><span class="p">[</span><span class="s2">&quot;related&quot;</span><span class="p">],</span> <span class="n">new</span><span class="p">[</span><span class="s2">&quot;display&quot;</span><span class="p">],</span>
+            <span class="n">new</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">],</span> <span class="n">new</span><span class="p">[</span><span class="s2">&quot;the_place&quot;</span><span class="p">]</span>
+        <span class="p">]</span> <span class="o">+</span> <span class="n">new</span><span class="p">[</span><span class="s2">&quot;other&quot;</span><span class="p">]))),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;result&gt;&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        </span><span class="si">{pyref}</span><span class="s2"> = DB(</span><span class="si">{work_type}</span><span class="s2">(</span>
+<span class="s2">            </span><span class="si">{year}</span><span class="s2">, &quot;</span><span class="si">{name}</span><span class="s2">&quot;,</span>
+<span class="s2">            </span><span class="si">{attributes}</span><span class="s2"></span>
+<span class="s2">        ))&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">new</span><span class="p">)),</span>
+    <span class="s2">&quot;_work_type&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;work_type&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="n">str_item</span><span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">))],</span>
+    <span class="s2">&quot;display&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="n">str_item</span><span class="p">(</span><span class="s2">&quot;display&quot;</span><span class="p">))],</span>
+    <span class="s2">&quot;pyref&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;place&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;place1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;may_be_related_to&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;related&quot;</span><span class="p">,</span> <span class="n">str_list</span><span class="p">(</span><span class="s2">&quot;may_be_related_to&quot;</span><span class="p">))],</span>
+    <span class="s2">&quot;due&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;due&quot;</span><span class="p">,</span> <span class="n">str_item</span><span class="p">(</span><span class="s2">&quot;due&quot;</span><span class="p">))]</span> <span class="p">,</span>
+    <span class="s2">&quot;excerpt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="s2">&quot;_ref&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+<span class="p">}</span>
+
+
+<span class="c1"># Modify Info object for finding work</span>
+<span class="c1">#   &lt;skip&gt; and &lt;ignore&gt; only exist for this</span>
+<span class="n">FIND_INFO_WORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;skip&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;_work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;Site&quot;</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;ignore&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;_year&quot;</span><span class="p">,</span> <span class="s2">&quot;_work&quot;</span><span class="p">,</span> <span class="s2">&quot;_key&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;&lt;before&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">:</span> 
+            <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;entrytype&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">old</span> <span class="k">else</span>
+            <span class="s2">&quot;Thesis&quot;</span> <span class="k">if</span> <span class="n">old</span><span class="p">[</span><span class="s2">&quot;entrytype&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;phdthesis&quot;</span><span class="p">,</span> <span class="s2">&quot;mastersthesis&quot;</span><span class="p">)</span> <span class="k">else</span>
+            <span class="s2">&quot;TechReport&quot;</span> <span class="k">if</span> <span class="n">old</span><span class="p">[</span><span class="s2">&quot;entrytype&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;techreport&quot;</span> <span class="k">else</span>
+            <span class="s2">&quot;Book&quot;</span> <span class="k">if</span> <span class="n">old</span><span class="p">[</span><span class="s2">&quot;entrytype&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;book&quot;</span> <span class="k">else</span>
+            <span class="kc">None</span>
+        <span class="p">),</span> 
+        <span class="p">(</span><span class="s2">&quot;_work&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">:</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="n">old</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;ID&quot;</span> <span class="ow">in</span> <span class="n">old</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;_key&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">old</span><span class="p">:</span> <span class="n">old</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;ID&quot;</span> <span class="ow">in</span> <span class="n">old</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;_year&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;school&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;local&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+
+
+<span class="c1"># Convert Work into BibTex dict</span>
+<span class="c1">#   The &quot;new&quot; object starts with three parameters</span>
+<span class="c1">#     _name: override metakey name</span>
+<span class="c1">#     _homogeneize: bibtex homogeneize</span>
+<span class="c1">#     _acronym: use acronym instead of full place text</span>
+<span class="c1">#   The result do not need these attributes</span>
+<span class="k">def</span> <span class="nf">_work_to_bibtex_middle</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">current</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">DEBUG_FIELDS</span><span class="p">:</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">callable_get</span><span class="p">(</span><span class="n">WORK_TO_BIBTEX</span><span class="p">,</span> <span class="s2">&quot;&lt;use&gt;&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">ignore</span> <span class="o">=</span> <span class="n">callable_get</span><span class="p">(</span><span class="n">WORK_TO_BIBTEX</span><span class="p">,</span> <span class="s2">&quot;&lt;ignore&gt;&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">match_any</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">use</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">match_any</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ignore</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[DEBUG WARNING]&quot;</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">display</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="n">new_place_key</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;incollection&quot;</span><span class="p">:</span> <span class="s2">&quot;booktitle&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;inproceedings&quot;</span><span class="p">:</span> <span class="s2">&quot;booktitle&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;misc&quot;</span><span class="p">:</span> <span class="s2">&quot;booktitle&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;article&quot;</span><span class="p">:</span> <span class="s2">&quot;journal&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;book&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;mastersthesis&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;phdthesis&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;techreport&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">}[</span><span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ENTRYTYPE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">new_place_key</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">):</span>
+        <span class="n">conference_has_acronym</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">new</span><span class="p">[</span><span class="s2">&quot;_acronym&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;Conference&quot;</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">acronym</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">conference_has_acronym</span><span class="p">:</span>
+            <span class="n">new</span><span class="p">[</span><span class="n">new_place_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">acronym</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new</span><span class="p">[</span><span class="n">new_place_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">new_place_key</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">):</span>
+        <span class="n">new</span><span class="p">[</span><span class="n">new_place_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">place1</span><span class="p">)</span>
+
+<span class="n">WORK_TO_BIBTEX</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;before&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">work</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">new</span><span class="p">[</span><span class="s2">&quot;_name&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">metakey</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">)</span> <span class="k">else</span>
+            <span class="p">(</span><span class="k">lambda</span> <span class="n">split</span><span class="p">:</span> <span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">split</span> <span class="k">else</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">))(</span><span class="n">work</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        <span class="p">)),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;middle&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">_work_to_bibtex_middle</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;&lt;ignore&gt;&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">BIBTEX_IGNORE_FIELDS</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;&lt;use&gt;&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">WORK_FIELDS</span><span class="p">,</span>
+    <span class="s2">&quot;&lt;result&gt;&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">work</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">consume</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;_name&quot;</span><span class="p">),</span>
+            <span class="n">consume</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;_acronym&quot;</span><span class="p">),</span>
+            <span class="n">homogenize_latex_encoding</span><span class="p">(</span><span class="n">new</span><span class="p">)</span> <span class="k">if</span> <span class="n">consume</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;_homogeneize&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">new</span><span class="p">,</span>
+        <span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">),</span> 
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;local&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;organization&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;publisher&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;pp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pages&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;entrytype&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ENTRYTYPE&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+
+
+<span class="c1">### Snowballing Forms</span>
+
+<div class="viewcode-block" id="convert_citation_text_lines_to_info"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.convert_citation_text_lines_to_info">[docs]</a><span class="k">def</span> <span class="nf">convert_citation_text_lines_to_info</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert lines of format [N] author name place other year&#39; to Info object</span>
+<span class="sd">    If it is an invalid format, it should return &quot;Incomplete&quot;.</span>
+
+<span class="sd">    Default: Recognizes 3 patterns:</span>
+<span class="sd">      - Citation: [N] &gt; varname</span>
+<span class="sd">      - Site: [N] SiteName http://</span>
+<span class="sd">      - Work: [N] author name place other year</span>
+<span class="sd">        - &#39;other&#39; can be either lines with values, or use the format key=value</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;citation_id&quot;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+    <span class="p">}</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">other</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># [N] &gt; varname</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;_work_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Ref&quot;</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="c1"># [N] WebName http://...</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;_work_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Site&quot;</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
+        <span class="c1"># [N] author name place other year</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;_work_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Work&quot;</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">),</span> <span class="n">other</span><span class="p">):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">split</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">[</span><span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">[</span><span class="s2">&quot;other</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num</span><span class="p">)]</span> <span class="o">=</span> <span class="n">line</span>
+        <span class="k">return</span> <span class="n">info</span>
+    
+    <span class="k">return</span> <span class="s2">&quot;Incomplete&quot;</span></div>
+
+
+<div class="viewcode-block" id="info_to_pyref"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.info_to_pyref">[docs]</a><span class="k">def</span> <span class="nf">info_to_pyref</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create pyref for info</span>
+<span class="sd">    </span>
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+<span class="sd">        &gt;&gt;&gt; info_to_pyref({&#39;display&#39;: &#39;pimentel&#39;, &#39;year&#39;: 2017})</span>
+<span class="sd">        &#39;pimentel2017a&#39;</span>
+<span class="sd">        &gt;&gt;&gt; info_to_pyref({&#39;display&#39;: &#39;pimentel&#39;, &#39;year&#39;: 2015})</span>
+<span class="sd">        &#39;pimentel2015b&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pyref</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{display}{year}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">info</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">ascii_lowercase</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="n">pyref</span> <span class="o">+</span> <span class="n">letter</span><span class="p">):</span>
+            <span class="k">break</span>
+    <span class="n">pyref</span> <span class="o">+=</span> <span class="n">letter</span>
+    <span class="k">return</span> <span class="n">pyref</span></div>
+
+
+<div class="viewcode-block" id="set_info_letter"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.set_info_letter">[docs]</a><span class="k">def</span> <span class="nf">set_info_letter</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">letter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set letter of info object&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">info</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">letter</span>
+    <span class="n">info</span><span class="p">[</span><span class="s2">&quot;display&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">letter</span></div>
+
+
+<span class="c1"># Insert form</span>
+<span class="n">FORM</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># List of widgets</span>
+    <span class="c1">#   Each widget has at least 3 fields</span>
+    <span class="c1">#     Type (text, dropdown, toggle, button)</span>
+    <span class="c1">#     Label</span>
+    <span class="c1">#     Variable</span>
+    <span class="c1">#   Some widget requ-ire extra fields</span>
+    <span class="c1">#     text, dropdown, and toggle: 4th field indicates the value</span>
+    <span class="c1">#     dropdown: 5th field is a list with options</span>
+    <span class="s2">&quot;widgets&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1"># Base</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;dropdown&quot;</span><span class="p">,</span> <span class="s2">&quot;Type&quot;</span><span class="p">,</span> <span class="s2">&quot;work_type&quot;</span><span class="p">,</span> <span class="n">DEFAULT_CLASS</span><span class="p">,</span> 
+            <span class="p">[</span><span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">CLASSES</span><span class="p">]</span>
+        <span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;toggle&quot;</span><span class="p">,</span> <span class="s2">&quot;File&quot;</span><span class="p">,</span> <span class="s2">&quot;file_field&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;Due&quot;</span><span class="p">,</span> <span class="s2">&quot;due&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;Place&quot;</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;Year&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;Prefix Var&quot;</span><span class="p">,</span> <span class="s2">&quot;prefix&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;PDFPage&quot;</span><span class="p">,</span> <span class="s2">&quot;pdfpage&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;Related&quot;</span><span class="p">,</span> <span class="s2">&quot;may_be_related_to&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;Display&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;Link&quot;</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="c1"># Buttons</span>
+        <span class="p">[</span><span class="s2">&quot;button&quot;</span><span class="p">,</span> <span class="s2">&quot;Ok&quot;</span><span class="p">,</span> <span class="s2">&quot;_b1&quot;</span><span class="p">],</span>
+        
+    <span class="p">],</span>
+    <span class="c1"># List of events</span>
+    <span class="c1">#   Each event has 3 fields</span>
+    <span class="c1">#     Widget variable</span>
+    <span class="c1">#     Listener (observe, click)</span>
+    <span class="c1">#     Action. It can be:</span>
+    <span class="c1">#       A dictionary indicating which values to chance</span>
+    <span class="c1">#       A list with the action (first item is a str) and its parameters (other actions)</span>
+    <span class="c1">#       A list of actions to run in sequence</span>
+    <span class="s2">&quot;events&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1"># Base</span>
+        <span class="p">[</span><span class="s2">&quot;due&quot;</span><span class="p">,</span> <span class="s2">&quot;observe&quot;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s2">&quot;if&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="s2">&quot;and&quot;</span><span class="p">,</span>
+                    <span class="p">[</span><span class="s2">&quot;!=&quot;</span><span class="p">,</span> <span class="s2">&quot;:due&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="s2">&quot;:work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;Work&quot;</span><span class="p">]</span>
+                <span class="p">],</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;work_type&quot;</span><span class="p">:</span> <span class="s2">&quot;WorkUnrelated&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="p">[</span><span class="s2">&quot;if&quot;</span><span class="p">,</span>
+                    <span class="p">[</span><span class="s2">&quot;and&quot;</span><span class="p">,</span>
+                        <span class="p">[</span><span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="s2">&quot;:due&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+                        <span class="p">[</span><span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="s2">&quot;:work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;WorkUnrelated&quot;</span><span class="p">]</span>
+                    <span class="p">],</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;work_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Work&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">[]</span>
+
+                <span class="p">]</span>
+            <span class="p">]</span>
+
+        <span class="p">]],</span>
+        <span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="s2">&quot;observe&quot;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s2">&quot;if&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="s2">&quot;and&quot;</span><span class="p">,</span>
+                    <span class="p">[</span><span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="s2">&quot;:place&quot;</span><span class="p">,</span> <span class="s2">&quot;Lang&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="s2">&quot;:work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;Work&quot;</span><span class="p">]</span>
+                <span class="p">],</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;work_type&quot;</span><span class="p">:</span> <span class="s2">&quot;WorkLang&quot;</span>
+                <span class="p">},</span>
+                <span class="p">[]</span>
+            <span class="p">]</span>
+        <span class="p">]],</span>
+        <span class="c1"># Buttons</span>
+        <span class="p">[</span><span class="s2">&quot;_b1&quot;</span><span class="p">,</span> <span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;work_type&quot;</span><span class="p">:</span> <span class="s2">&quot;WorkOk&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;file_field&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">[</span><span class="s2">&quot;reload&quot;</span><span class="p">],</span>
+        <span class="p">]],</span>
+    <span class="p">],</span>
+    <span class="c1"># Exhibition of the widges.</span>
+    <span class="c1">#   Each list indicates a row with other widgets</span>
+    <span class="c1">#   I suggest using no more than 4 buttons in a row </span>
+    <span class="c1">#   and no more than 2 inputs in a row</span>
+    <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s2">&quot;_b1&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;file_field&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;due&quot;</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;prefix&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;may_be_related_to&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">],</span>
+    <span class="p">],</span>
+    <span class="c1"># Show operation</span>
+    <span class="c1">#   Use the same &quot;DSL&quot; as the events to update info object.</span>
+    <span class="s2">&quot;show&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s2">&quot;if&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="s2">&quot;.place&quot;</span><span class="p">,</span> <span class="s2">&quot;Lang&quot;</span><span class="p">],</span>
+            <span class="p">{</span><span class="s2">&quot;work_type&quot;</span><span class="p">:</span> <span class="s2">&quot;WorkLang&quot;</span><span class="p">},</span>
+            <span class="p">[]</span>
+        <span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;due&quot;</span><span class="p">,</span> <span class="s2">&quot;:due&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="s2">&quot;:place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;_work_type&quot;</span><span class="p">,</span> <span class="s2">&quot;:work_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Work&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;if&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;or&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;:year&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+                <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;:prefix&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+            <span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">],</span>
+            <span class="p">[]</span>
+        <span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;:file_field&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;.pyref&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\.pdf&quot;</span><span class="p">],</span> <span class="kc">False</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;:pdfpage&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;.file&quot;</span><span class="p">,</span> <span class="s2">&quot;#page=&quot;</span><span class="p">,</span> <span class="s2">&quot;:pdfpage&quot;</span><span class="p">],</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;may_be_related_to&quot;</span><span class="p">,</span> <span class="s2">&quot;:may_be_related_to&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;:display&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;update_info&quot;</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="s2">&quot;:link&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+
+<span class="c1">### Checks</span>
+
+<div class="viewcode-block" id="check_insertion"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.check_insertion">[docs]</a><span class="k">def</span> <span class="nf">check_insertion</span><span class="p">(</span><span class="n">nwork</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">citation_var</span><span class="p">,</span> <span class="n">citation_file</span><span class="p">,</span> <span class="n">should_add</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check info validity after executing snowballing.create_info_code</span>
+<span class="sd">    Return dictionary of warning fields</span>
+
+<span class="sd">    Default: returns place1 if place is not defined and always returns the pdf name </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pdf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.pdf&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">&quot;place&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span> <span class="ow">and</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_work_type&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Site&quot;</span><span class="p">,</span> <span class="s2">&quot;Ref&quot;</span><span class="p">):</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="check_load"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.check_load">[docs]</a><span class="k">def</span> <span class="nf">check_load</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">warning</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Check conditions on load&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_id&quot;</span><span class="p">):</span>
+        <span class="n">warning</span><span class="p">(</span><span class="s2">&quot;[Warning] Work </span><span class="si">{}</span><span class="s2"> does not have scholar_id&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">varname</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warning</span><span class="p">(</span><span class="s2">&quot;[Error] Work </span><span class="si">{}</span><span class="s2"> does not have place&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">varname</span><span class="p">))</span></div>
+
+
+<span class="c1">### Snowballing display</span>
+
+<div class="viewcode-block" id="display_article"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.display_article">[docs]</a><span class="k">def</span> <span class="nf">display_article</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display article in widget&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;div&quot;</span> <span class="ow">in</span> <span class="n">article</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                &lt;style&gt;</span>
+<span class="s2">                .gs_or_svg {</span>
+<span class="s2">                    position: relative;</span>
+<span class="s2">                    width: 29px;</span>
+<span class="s2">                    height: 16px;</span>
+<span class="s2">                    vertical-align: text-bottom;</span>
+<span class="s2">                    fill: none;</span>
+<span class="s2">                    stroke: #1a0dab;</span>
+<span class="s2">                }</span>
+<span class="s2">                &lt;/style&gt;</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">),</span>
+            <span class="n">HTML</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;div&quot;</span><span class="p">]))</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">article</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="p">]</span></div>
+
+
+<span class="c1">### Query Scholar</span>
+
+<div class="viewcode-block" id="query_str"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.query_str">[docs]</a><span class="k">def</span> <span class="nf">query_str</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return string to query work on scholar&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">work</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">work</span><span class="o">.</span><span class="n">authors</span></div>
+
+
+<span class="c1">### Work Attributes</span>
+
+<div class="viewcode-block" id="work_post_init"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.work_post_init">[docs]</a><span class="k">def</span> <span class="nf">work_post_init</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Instructions to execute after Work __init__</span>
+
+<span class="sd">    Default: set display to title if display is None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">work</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="work_eq"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.work_eq">[docs]</a><span class="k">def</span> <span class="nf">work_eq</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compare work</span>
+<span class="sd">    </span>
+<span class="sd">    Default: compare place, title and year</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">second</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">first</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">second</span><span class="o">.</span><span class="n">name</span>
+        <span class="ow">and</span> <span class="n">first</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="n">second</span><span class="o">.</span><span class="n">year</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="work_hash"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.work_hash">[docs]</a><span class="k">def</span> <span class="nf">work_hash</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Uniquely identify work</span>
+
+<span class="sd">    Default: use title and year</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="n">work</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="info_work_match"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.info_work_match">[docs]</a><span class="k">def</span> <span class="nf">info_work_match</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if an Info object matches to a Work object</span>
+<span class="sd">    </span>
+<span class="sd">    Default: checks for exact matches by cluster_id, scholar_id, (year, name, authors) of aliases</span>
+<span class="sd">      and similar titles</span>
+<span class="sd">      It uses matches on places and years to reduce the similarity requirements for matching titles</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cluster_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;ii&gt;&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;cluster_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;iw&gt;&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scholar_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;ii&gt;&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;iw&gt;&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    
+    <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">get_work_aliases</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">alias</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span>
+                <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">required</span> <span class="o">=</span> <span class="mf">0.9</span>
+    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">required</span> <span class="o">+=</span> <span class="mf">0.1</span>
+
+    <span class="n">same_place</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;place&quot;</span> <span class="ow">in</span> <span class="n">info</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">MODULES</span><span class="p">[</span><span class="s2">&quot;places&quot;</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">],</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;ii&gt;&quot;</span>
+        <span class="p">)</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;iw&gt;&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">same_place</span><span class="p">:</span>
+        <span class="n">required</span> <span class="o">-=</span> <span class="mf">0.1</span>
+    
+    <span class="k">if</span> <span class="n">compare_str</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)),</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">required</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="work_display"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.work_display">[docs]</a><span class="k">def</span> <span class="nf">work_display</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get work display&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">work</span><span class="o">.</span><span class="n">display</span></div>
+
+
+
+<span class="c1">### Aliases</span>
+
+<div class="viewcode-block" id="get_work_aliases"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.get_work_aliases">[docs]</a><span class="k">def</span> <span class="nf">get_work_aliases</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get list of aliases from work</span>
+
+<span class="sd">    Default: the tool uses the attributes &quot;alias&quot; and &quot;aliases&quot; to represent aliases</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;alias&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">work</span><span class="o">.</span><span class="n">alias</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;aliases&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">work</span><span class="o">.</span><span class="n">aliases</span>
+    <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="get_alias_year"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.get_alias_year">[docs]</a><span class="k">def</span> <span class="nf">get_alias_year</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">alias</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get year from alias</span>
+
+<span class="sd">    Default: return first element of tuple/list that represents the alias    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<span class="c1">### Graph Attributes</span>
+
+<div class="viewcode-block" id="graph_place_text"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.graph_place_text">[docs]</a><span class="k">def</span> <span class="nf">graph_place_text</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get place text for graph</span>
+<span class="sd">    </span>
+<span class="sd">    Default: return place acronym</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">acronym</span></div>
+
+
+<div class="viewcode-block" id="graph_place_tooltip"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.graph_place_tooltip">[docs]</a><span class="k">def</span> <span class="nf">graph_place_tooltip</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate place tooltip</span>
+
+<span class="sd">    Default: tooltip with all information from Place object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">generate_title</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="p">,</span> <span class="n">prepend</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="work_link"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.work_link">[docs]</a><span class="k">def</span> <span class="nf">work_link</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create hyperlink based on work attributes. </span>
+<span class="sd">    The attribute _link is set by the graph creator and it specifies the priority order of link types</span>
+<span class="sd">    </span>
+<span class="sd">    Default: uses attributes file, link, or scholar to create link</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">link_type</span> <span class="ow">in</span> <span class="n">work</span><span class="o">.</span><span class="n">_link</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span> <span class="ow">and</span> <span class="n">work</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;files/&quot;</span> <span class="o">+</span> <span class="n">work</span><span class="o">.</span><span class="n">file</span>
+        <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;link&quot;</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">work</span><span class="o">.</span><span class="n">link</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">work</span><span class="o">.</span><span class="n">link</span>
+        <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;scholar&quot;</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;scholar&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">work</span><span class="o">.</span><span class="n">scholar</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="work_tooltip"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.work_tooltip">[docs]</a><span class="k">def</span> <span class="nf">work_tooltip</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate work tooltip</span>
+
+<span class="sd">    Default: tooltip with paper title and authors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">work_to_bibtex</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">work_to_bibtex</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="citation_tooltip"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.citation_tooltip">[docs]</a><span class="k">def</span> <span class="nf">citation_tooltip</span><span class="p">(</span><span class="n">citation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate citation tooltip&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> -&gt; </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">citation</span><span class="o">.</span><span class="n">work</span><span class="o">.</span><span class="n">metakey</span><span class="p">,</span> <span class="n">citation</span><span class="o">.</span><span class="n">citation</span><span class="o">.</span><span class="n">metakey</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">generate_title</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;_.*&quot;</span><span class="p">,</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span> <span class="s2">&quot;citation&quot;</span><span class="p">})</span>
+    <span class="p">)</span></div>
+
+
+<span class="c1">### Approaches</span>
+
+<span class="n">APPROACH_FORCE_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;force_&quot;</span>
+<span class="n">APPROACH_RELATED_CATEGORY</span> <span class="o">=</span> <span class="s2">&quot;Related&quot;</span>
+
+<div class="viewcode-block" id="approach_ids_from_work"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.approach_ids_from_work">[docs]</a><span class="k">def</span> <span class="nf">approach_ids_from_work</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">approach</span><span class="o">.</span><span class="n">work</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">works</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">&quot;snowball&quot;</span> <span class="ow">in</span> <span class="n">work</span><span class="o">.</span><span class="n">category</span> <span class="ow">or</span> <span class="s2">&quot;ok&quot;</span> <span class="ow">in</span> <span class="n">work</span><span class="o">.</span><span class="n">category</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">works</span><span class="p">[</span><span class="n">work</span><span class="p">][</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="approach_display"><a class="viewcode-back" href="../../snowballing/config.html#snowballing.config.approach_display">[docs]</a><span class="k">def</span> <span class="nf">approach_display</span><span class="p">(</span><span class="n">approach</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get approach display&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">work_display</span><span class="p">(</span><span class="n">approach</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<span class="c1">### Database</span>
+
+<span class="c1"># Module setting</span>
+<span class="n">MODULES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;places&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;work&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;citations&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Map of Work attributes used by the tool</span>
+<span class="c1">#   I advise against changing this variable since I may have forgotten to replace an attribute in a function</span>
+<span class="n">ATTR</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># Work</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;category&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;metakey&quot;</span><span class="p">:</span> <span class="s2">&quot;metakey&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;pyref&quot;</span><span class="p">:</span> <span class="s2">&quot;pyref&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;site_link&quot;</span><span class="p">:</span> <span class="s2">&quot;link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email_authors&quot;</span><span class="p">:</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;citation_file&quot;</span><span class="p">:</span> <span class="s2">&quot;citation_file&quot;</span><span class="p">,</span>
+
+
+    <span class="c1"># Approach</span>
+    <span class="s2">&quot;approach_dont_cite&quot;</span><span class="p">:</span> <span class="s2">&quot;dont_cite&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;approach_work&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># Similar to ATTR variable, bu provide a direct map from existing keys from scholar</span>
+<span class="n">SCHOLAR_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;scholar_id&quot;</span><span class="p">:</span> <span class="s2">&quot;scholar_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cluster_id&quot;</span><span class="p">:</span> <span class="s2">&quot;cluster_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;scholar&quot;</span><span class="p">:</span> <span class="s2">&quot;scholar&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;scholar_ok&quot;</span><span class="p">:</span> <span class="s2">&quot;scholar_ok&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">define_cvar</span><span class="p">(</span><span class="n">ATTR</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

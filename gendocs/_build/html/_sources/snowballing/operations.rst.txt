@@ -25,6 +25,30 @@ find
 .. autofunction:: snowballing.operations.find
 
 
+find_line
+-----------------------------
+
+.. autofunction:: snowballing.operations.find_line
+
+
+invoke_editor
+-----------------------------
+
+.. autofunction:: snowballing.operations.invoke_editor
+
+
+create_info_code
+-----------------------------
+
+.. autofunction:: snowballing.operations.create_info_code
+
+
+should_add_info
+-----------------------------
+
+.. autofunction:: snowballing.operations.should_add_info
+
+
 load_work_map_all_years
 -----------------------------
 
@@ -73,6 +97,12 @@ find_global_local_citation
 .. autofunction:: snowballing.operations.find_global_local_citation
 
 
+find_local_citation
+-----------------------------
+
+.. autofunction:: snowballing.operations.find_local_citation
+
+
 ------------------
 BibTeX
 ------------------
@@ -113,24 +143,6 @@ bibtex_to_info
 .. autofunction:: snowballing.operations.bibtex_to_info
 
 
-set_display
------------------------------
-
-.. autofunction:: snowballing.operations.set_display
-
-
-set_pyref
------------------------------
-
-.. autofunction:: snowballing.operations.set_pyref
-
-
-set_place
------------------------------
-
-.. autofunction:: snowballing.operations.set_place
-
-
 extract_info
 -----------------------------
 
@@ -142,4 +154,21 @@ info_to_code
 
 .. autofunction:: snowballing.operations.info_to_code
 
+
+set_by_info
+-----------------------------
+
+.. autofunction:: snowballing.operations.set_by_info
+
+
+changes_dict_to_set_attribute
+-----------------------------
+
+.. autofunction:: snowballing.operations.set_by_info
+
+
+check_config_deprecation
+-----------------------------
+
+.. autofunction:: snowballing.operations.check_config_deprecation
 

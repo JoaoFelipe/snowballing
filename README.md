@@ -18,7 +18,7 @@ For starting a new literature review project, please run:
 ```bash
 $ snowballing start literature --profile bibtex
 ```
-This command will create a directory called `literature` (you are free to use other name in the command) with the notebooks for performing the snowballing and analyzing it, and an example database. Note that the command specifies the profile `bibtex`, which is more user friendly. If you don't specify a profile, it will use the `default` profile (see belou).
+This command will create a directory called `literature` (you are free to use other name in the command) with the notebooks for performing the snowballing and analyzing it, and an example database. Note that the command specifies the profile `bibtex`, which is more user friendly. If you don't specify a profile, it will use the `default` profile (see below).
 
 
 Inside the directory, start Jupyter:

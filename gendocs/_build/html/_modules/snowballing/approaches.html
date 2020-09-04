@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,50 +11,44 @@
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> snowballing
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -82,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
@@ -106,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
@@ -113,13 +109,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">snowballing</a>
@@ -127,9 +124,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -150,7 +148,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -158,8 +156,6 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
         
       </li>
     
@@ -174,7 +170,9 @@
   <h1>Source code for snowballing.approaches</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;This module provides classes and functions for grouping work into approach</span>
 <span class="sd">Groups&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.collection_helpers</span> <span class="k">import</span> <span class="n">oget</span><span class="p">,</span> <span class="n">oset</span><span class="p">,</span> <span class="n">dhas</span><span class="p">,</span> <span class="n">ddel</span><span class="p">,</span> <span class="n">dget</span>
 <span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">reload</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="n">APPROACHES</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -234,21 +232,22 @@
 <span class="sd">        &gt;&gt;&gt; len(APPROACHES)</span>
 <span class="sd">        1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_category</span> <span class="o">=</span> <span class="s2">&quot;Related&quot;</span>
+    <span class="n">_category</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">APPROACH_RELATED_CATEGORY</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">work</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;dont_cite&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">work</span> <span class="o">+=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dont_cite&#39;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dont_cite</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dont_cite&#39;</span><span class="p">]</span>
-            <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dont_cite&#39;</span><span class="p">]</span>
+        <span class="n">work</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dhas</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;approach_dont_cite&quot;</span><span class="p">):</span>
+            <span class="n">work</span> <span class="o">+=</span> <span class="n">dget</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;approach_dont_cite&quot;</span><span class="p">)</span>
+            <span class="n">oset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;approach_dont_cite&quot;</span><span class="p">,</span> <span class="n">dget</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;approach_dont_cite&quot;</span><span class="p">))</span>
+            <span class="n">ddel</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;approach_dont_cite&quot;</span><span class="p">)</span>
+        <span class="n">oset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;approach_work&quot;</span><span class="p">,</span> <span class="n">work</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="s1">&#39;force_&#39;</span> <span class="o">+</span> <span class="n">key</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">work</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">APPROACH_FORCE_PREFIX</span> <span class="o">+</span> <span class="n">key</span><span class="p">):</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">==</span> <span class="s2">&quot;Related&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">APPROACH_RELATED_CATEGORY</span><span class="p">:</span>
             <span class="n">APPROACHES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
@@ -320,7 +319,7 @@
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">)))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -340,7 +339,7 @@
 <span class="sd">        &gt;&gt;&gt; name(a)</span>
 <span class="sd">        &#39;noWorkflow&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">approach</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">approach_display</span><span class="p">(</span><span class="n">approach</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_approaches"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.get_approaches">[docs]</a><span class="k">def</span> <span class="nf">get_approaches</span><span class="p">(</span><span class="n">condition</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -371,14 +370,9 @@
 
 <div class="viewcode-block" id="wcite"><a class="viewcode-back" href="../../snowballing/approaches.html#snowballing.approaches.wcite">[docs]</a><span class="k">def</span> <span class="nf">wcite</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a latex cite command with all work in an approach&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s1">&#39; </span><span class="se">\\</span><span class="s1">cite</span><span class="si">{}</span><span class="s1">{{</span><span class="si">{}</span><span class="s1">}}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="k">return</span> <span class="s2">&quot; </span><span class="se">\\</span><span class="s2">cite</span><span class="si">{}</span><span class="s2">{{</span><span class="si">{}</span><span class="s2">}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">extra</span><span class="p">,</span>
-        <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-            <span class="n">works</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">approach</span><span class="o">.</span><span class="n">work</span>
-            <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">works</span>
-            <span class="k">if</span> <span class="s2">&quot;snowball&quot;</span> <span class="ow">in</span> <span class="n">w</span><span class="o">.</span><span class="n">category</span>
-        <span class="p">])</span>
+        <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">approach_ids_from_work</span><span class="p">(</span><span class="n">approach</span><span class="p">,</span> <span class="n">works</span><span class="p">))</span>
     <span class="p">)</span></div>
 
 
@@ -397,9 +391,7 @@
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -408,11 +400,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -424,37 +424,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

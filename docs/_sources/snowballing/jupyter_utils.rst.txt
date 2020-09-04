@@ -19,18 +19,6 @@ idisplay
 .. autofunction:: snowballing.jupyter_utils.idisplay
 
 
-find_line
------------------------------
-
-.. autofunction:: snowballing.jupyter_utils.find_line
-
-
-invoke_editor
------------------------------
-
-.. autofunction:: snowballing.jupyter_utils.invoke_editor
-
-
 new_button
 -----------------------------
 

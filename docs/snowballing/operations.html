@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,51 +11,46 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../index.html"/>
-        <link rel="next" title="scholar.py" href="scholar.html"/>
-        <link rel="prev" title="models.py" href="models.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="scholar.py" href="scholar.html" />
+    <link rel="prev" title="models.py" href="models.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../index.html" class="icon icon-home"> snowballing
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -83,6 +77,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
@@ -106,6 +102,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#reload">reload</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#work-by-varname">work_by_varname</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#find">find</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#find-line">find_line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#invoke-editor">invoke_editor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-info-code">create_info_code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#should-add-info">should_add_info</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-work-map-all-years">load_work_map_all_years</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-work">load_work</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-citations">load_citations</a></li>
@@ -114,6 +114,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#citation-text">citation_text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#find-citation">find_citation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#find-global-local-citation">find_global_local_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#find-local-citation">find_local_citation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#bibtex">BibTeX</a><ul>
@@ -123,11 +124,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#compare-paper-to-work">compare_paper_to_work</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#find-work-by-info">find_work_by_info</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bibtex-to-info">bibtex_to_info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#set-display">set_display</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#set-pyref">set_pyref</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#set-place">set_place</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extract-info">extract_info</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#info-to-code">info_to_code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-by-info">set_by_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changes-dict-to-set-attribute">changes_dict_to_set_attribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-config-deprecation">check_config_deprecation</a></li>
 </ul>
 </li>
 </ul>
@@ -137,6 +138,7 @@
 <li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
@@ -144,13 +146,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">snowballing</a>
@@ -158,9 +161,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -181,7 +185,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>operations.py</li>
     
@@ -204,7 +208,7 @@
             
   <div class="section" id="module-snowballing.operations">
 <span id="operations-py"></span><h1>operations.py<a class="headerlink" href="#module-snowballing.operations" title="Permalink to this headline">¶</a></h1>
-<p>This module contains functions to <a class="reference internal" href="#snowballing.operations.reload" title="snowballing.operations.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a> the database, load work and
+<p>This module contains functions to <a class="reference internal" href="#snowballing.operations.reload" title="snowballing.operations.reload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reload()</span></code></a> the database, load work and
 citations from there, and operate BibTeX</p>
 <div class="section" id="database">
 <h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
@@ -212,15 +216,15 @@ citations from there, and operate BibTeX</p>
 <h3>reload<a class="headerlink" href="#reload" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="snowballing.operations.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.reload" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reload</code><span class="sig-paren">(</span><em>work_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.reload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reload all the database</p>
 <p>Doctest:</p>
 <p>..doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">example.database.work.y2014</span> <span class="k">import</span> <span class="n">murta2014a</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">snowballing.example.database.work.y2014</span> <span class="k">import</span> <span class="n">murta2014a</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span><span class="o">.</span><span class="n">metakey</span>
 <span class="go">&#39;murta2014a&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">example.database.work.y2015</span> <span class="k">import</span> <span class="n">murta2014a</span> <span class="k">as</span> <span class="n">alias</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">snowballing.example.database.work.y2015</span> <span class="k">import</span> <span class="n">murta2014a</span> <span class="k">as</span> <span class="n">alias</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alias</span> <span class="ow">is</span> <span class="n">murta2014a</span>
 <span class="go">True</span>
 </pre></div>
@@ -235,7 +239,7 @@ citations from there, and operate BibTeX</p>
 <code class="descname">work_by_varname</code><span class="sig-paren">(</span><em>varname</em>, <em>year=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#work_by_varname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.work_by_varname" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load work by varname</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">work</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s1">&#39;murta2014a&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">work</span><span class="o">.</span><span class="n">year</span>
 <span class="go">2014</span>
@@ -253,6 +257,54 @@ citations from there, and operate BibTeX</p>
 </dd></dl>
 
 </div>
+<div class="section" id="find-line">
+<h3>find_line<a class="headerlink" href="#find-line" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.operations.find_line">
+<code class="descname">find_line</code><span class="sig-paren">(</span><em>work</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#find_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.find_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find work position in file</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><cite>work</cite> – work object</li>
+</ul>
+<p>Doctest:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">.operations</span> <span class="kn">import</span> <span class="nb">reload</span><span class="p">,</span> <span class="n">work_by_varname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">find_line</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">)</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="invoke-editor">
+<h3>invoke_editor<a class="headerlink" href="#invoke-editor" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.operations.invoke_editor">
+<code class="descname">invoke_editor</code><span class="sig-paren">(</span><em>work</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#invoke_editor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.invoke_editor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open work in a given line with the configured editor</p>
+</dd></dl>
+
+</div>
+<div class="section" id="create-info-code">
+<h3>create_info_code<a class="headerlink" href="#create-info-code" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.operations.create_info_code">
+<code class="descname">create_info_code</code><span class="sig-paren">(</span><em>nwork</em>, <em>info</em>, <em>citation_var</em>, <em>citation_file</em>, <em>should_add</em>, <em>ref=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#create_info_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.create_info_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create insertion code with both code and citation</p>
+</dd></dl>
+
+</div>
+<div class="section" id="should-add-info">
+<h3>should_add_info<a class="headerlink" href="#should-add-info" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.operations.should_add_info">
+<code class="descname">should_add_info</code><span class="sig-paren">(</span><em>info</em>, <em>citation</em>, <em>article=None</em>, <em>backward=False</em>, <em>citation_file=None</em>, <em>warning=&lt;function &lt;lambda&gt;&gt;</em>, <em>set_scholar=False</em>, <em>article_rules=None</em>, <em>bibtex_rules=None</em>, <em>add_citation=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#should_add_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.should_add_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if there is anything to add for this info</p>
+</dd></dl>
+
+</div>
 <div class="section" id="load-work-map-all-years">
 <h3>load_work_map_all_years<a class="headerlink" href="#load-work-map-all-years" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
@@ -260,12 +312,12 @@ citations from there, and operate BibTeX</p>
 <code class="descname">load_work_map_all_years</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#load_work_map_all_years"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.load_work_map_all_years" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load all work from all years</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([(</span><span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">load_work_map_all_years</span><span class="p">()])</span>
 <span class="go">[(2008, &#39;freire2008a&#39;), (2014, &#39;murta2014a&#39;), (2014, &#39;murta2014a&#39;), (2015, &#39;pimentel2015a&#39;)]</span>
 </pre></div>
 </div>
-<p>(2014, &#8216;murta2014a&#8217;) appears twice because it has an alias in 2015</p>
+<p>(2014, ‘murta2014a’) appears twice because it has an alias in 2015</p>
 </dd></dl>
 
 </div>
@@ -295,7 +347,7 @@ citations from there, and operate BibTeX</p>
 <dd><p>Load all places from the database</p>
 <p>It generates tuples with variable name and Place object</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;arXiv&#39;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">varname</span> <span class="k">for</span> <span class="n">varname</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">load_places_vars</span><span class="p">()]</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;arXiv&#39;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">varname</span> <span class="k">for</span> <span class="n">varname</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">load_places_vars</span><span class="p">()]</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -310,12 +362,12 @@ citations from there, and operate BibTeX</p>
 <dd><p>Load all work from a given year file
 It generates tuples with variable name and Work object</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([(</span><span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">load_work_map</span><span class="p">(</span><span class="mi">2015</span><span class="p">)])</span>
 <span class="go">[(2014, &#39;murta2014a&#39;), (2015, &#39;pimentel2015a&#39;)]</span>
 </pre></div>
 </div>
-<p>(2014, &#8216;murta2014a&#8217;) appears because it has an alias in 2015</p>
+<p>(2014, ‘murta2014a’) appears because it has an alias in 2015</p>
 </dd></dl>
 
 </div>
@@ -327,16 +379,16 @@ It generates tuples with variable name and Work object</p>
 <dd><p>Create code for citation</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li><cite>workref</cite> &#8211; work varname that is cited (by default)</li>
-<li><cite>cited</cite> &#8211; work info dict that cites the work (by default)</li>
+<li><cite>workref</cite> – work varname that is cited (by default)</li>
+<li><cite>cited</cite> – work info dict that cites the work (by default)</li>
 </ul>
 <p>Keyword arguments:</p>
 <ul class="simple">
-<li><cite>ref</cite> &#8211; citation number</li>
-<li><cite>backward</cite> &#8211; invert citation: <cite>workref</cite> cites <cite>cited</cite></li>
+<li><cite>ref</cite> – citation number</li>
+<li><cite>backward</cite> – invert citation: <cite>workref</cite> cites <cite>cited</cite></li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">citation_text</span><span class="p">(</span><span class="s1">&#39;freire2008a&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">}))</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">citation_text</span><span class="p">(</span><span class="s1">&#39;freire2008a&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">}))</span>
 
 <span class="go">DB(Citation(</span>
 <span class="go">    murta2014a, freire2008a, ref=&quot;&quot;,</span>
@@ -346,7 +398,7 @@ It generates tuples with variable name and Work object</p>
 <span class="go">))</span>
 
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">citation_text</span><span class="p">(</span><span class="s1">&#39;pimentel2015a&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">},</span> <span class="n">backward</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;[8]&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">citation_text</span><span class="p">(</span><span class="s1">&#39;pimentel2015a&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">},</span> <span class="n">backward</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;[8]&quot;</span><span class="p">))</span>
 
 <span class="go">DB(Citation(</span>
 <span class="go">    pimentel2015a, murta2014a, ref=&quot;[8]&quot;,</span>
@@ -367,19 +419,19 @@ It generates tuples with variable name and Work object</p>
 <dd><p>Find citation in the local database</p>
 <p>Returns the citation if the <cite>citer</cite> work cites the <cite>cited</cite> work</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">freire2008a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;freire2008a&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pimentel2015a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;pimentel2015a&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">citation</span> <span class="o">=</span> <span class="n">find_citation</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">freire2008a</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">citation</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">citation</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">citation</span><span class="o">.</span><span class="n">ref</span>
 <span class="go">&#39;5&#39;</span>
 
 <span class="go">Not found:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">citation</span> <span class="o">=</span> <span class="n">find_citation</span><span class="p">(</span><span class="n">pimentel2015a</span><span class="p">,</span> <span class="n">freire2008a</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">citation</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">citation</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -394,30 +446,38 @@ It generates tuples with variable name and Work object</p>
 <dd><p>Find citations locally and globally for the works</p>
 <p>We use it to check if there is citation redefinition</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">freire2008a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;freire2008a&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pimentel2015a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;pimentel2015a&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">glo</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">find_global_local_citation</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">freire2008a</span><span class="p">,</span> <span class="s2">&quot;random&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">glo</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">glo</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">glo</span><span class="o">.</span><span class="n">ref</span>
 <span class="go">&#39;5&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">loc</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loc</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fname</span> <span class="o">=</span> <span class="s2">&quot;murta2014a&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">glo</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">find_global_local_citation</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">freire2008a</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">glo</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">glo</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">glo</span><span class="o">.</span><span class="n">ref</span>
 <span class="go">&#39;5&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">loc</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loc</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">loc</span> <span class="ow">is</span> <span class="n">glo</span>
 <span class="go">True</span>
 </pre></div>
 </div>
 </dd></dl>
+
+</div>
+<div class="section" id="find-local-citation">
+<h3>find_local_citation<a class="headerlink" href="#find-local-citation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.operations.find_local_citation">
+<code class="descname">find_local_citation</code><span class="sig-paren">(</span><em>wo1</em>, <em>wo2</em>, <em>backward</em>, <em>citation_file=None</em>, <em>warning=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#find_local_citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.find_local_citation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>
@@ -427,14 +487,14 @@ It generates tuples with variable name and Work object</p>
 <h3>work_to_bibtex_entry<a class="headerlink" href="#work-to-bibtex-entry" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="snowballing.operations.work_to_bibtex_entry">
-<code class="descname">work_to_bibtex_entry</code><span class="sig-paren">(</span><em>work</em>, <em>name=None</em>, <em>homogeneize=True</em>, <em>acronym=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#work_to_bibtex_entry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.work_to_bibtex_entry" title="Permalink to this definition">¶</a></dt>
+<code class="descname">work_to_bibtex_entry</code><span class="sig-paren">(</span><em>work</em>, <em>name=None</em>, <em>homogeneize=True</em>, <em>acronym=False</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#work_to_bibtex_entry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.work_to_bibtex_entry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert work to BibTeX entry dict for bibtexparser</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">work_to_bibtex_entry</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-<span class="go">[&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;booktitle&#39;, &#39;author&#39;, &#39;title&#39;, &#39;year&#39;, &#39;ENTRYTYPE&#39;]</span>
+<span class="go">[&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;author&#39;, &#39;title&#39;, &#39;ENTRYTYPE&#39;, &#39;booktitle&#39;, &#39;year&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
 <span class="go">&#39;murta2014a&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span>
@@ -457,14 +517,14 @@ It generates tuples with variable name and Work object</p>
 <span class="go">Custom name:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">work_to_bibtex_entry</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;other&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-<span class="go">[&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;booktitle&#39;, &#39;author&#39;, &#39;title&#39;, &#39;year&#39;, &#39;ENTRYTYPE&#39;]</span>
+<span class="go">[&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;author&#39;, &#39;title&#39;, &#39;ENTRYTYPE&#39;, &#39;booktitle&#39;, &#39;year&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
 <span class="go">&#39;other&#39;</span>
 
 <span class="go">Use acronym for place name:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">work_to_bibtex_entry</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">work_to_bibtex_entry</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-<span class="go">[&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;booktitle&#39;, &#39;author&#39;, &#39;title&#39;, &#39;year&#39;, &#39;ENTRYTYPE&#39;]</span>
+<span class="go">[&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;author&#39;, &#39;title&#39;, &#39;ENTRYTYPE&#39;, &#39;booktitle&#39;, &#39;year&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;booktitle&#39;</span><span class="p">]</span>
 <span class="go">&#39;IPAW&#39;</span>
 </pre></div>
@@ -476,12 +536,12 @@ It generates tuples with variable name and Work object</p>
 <h3>work_to_bibtex<a class="headerlink" href="#work-to-bibtex" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="snowballing.operations.work_to_bibtex">
-<code class="descname">work_to_bibtex</code><span class="sig-paren">(</span><em>work</em>, <em>name=None</em>, <em>acronym=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#work_to_bibtex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.work_to_bibtex" title="Permalink to this definition">¶</a></dt>
+<code class="descname">work_to_bibtex</code><span class="sig-paren">(</span><em>work</em>, <em>name=None</em>, <em>acronym=False</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#work_to_bibtex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.work_to_bibtex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert work to bibtex text</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">work_to_bibtex</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">work_to_bibtex</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">))</span>
 <span class="go">@inproceedings{murta2014a,</span>
 <span class="go">  address = {Cologne, Germany},</span>
 <span class="go">  author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},</span>
@@ -496,9 +556,9 @@ It generates tuples with variable name and Work object</p>
 
 <span class="go">Custom name:</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">work_to_bibtex</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;other&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">work_to_bibtex</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;other&quot;</span><span class="p">))</span>
 <span class="go">@inproceedings{other,</span>
 <span class="go">  address = {Cologne, Germany},</span>
 <span class="go">  author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},</span>
@@ -513,7 +573,7 @@ It generates tuples with variable name and Work object</p>
 
 <span class="go">Use acronym for place name:</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">work_to_bibtex</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">work_to_bibtex</span><span class="p">(</span><span class="n">murta2014a</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
 <span class="go">@inproceedings{murta2014a,</span>
 <span class="go">  address = {Cologne, Germany},</span>
 <span class="go">  author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},</span>
@@ -537,15 +597,15 @@ It generates tuples with variable name and Work object</p>
 <dd><p>Find works by bibtex entries</p>
 <p>Returns a list of matches: (entry, work)</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; @inproceedings{murta2014a,</span>
 <span class="gp">... </span><span class="s1">  address = {Cologne, Germany},</span>
 <span class="gp">... </span><span class="s1">  author = {Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},</span>
-<span class="gp">... </span><span class="s1">  booktitle = </span><span class="si">{IPAW}</span><span class="s1">,</span>
+<span class="gp">... </span><span class="s1">  booktitle = {IPAW},</span>
 <span class="gp">... </span><span class="s1">  pages = {71--83},</span>
-<span class="gp">... </span><span class="s1">  publisher = </span><span class="si">{Springer}</span><span class="s1">,</span>
-<span class="gp">... </span><span class="s1">  title = {no</span><span class="si">{W}</span><span class="s1">orkflow: capturing and analyzing provenance of scripts},</span>
-<span class="gp">... </span><span class="s1">  year = </span><span class="si">{2014}</span><span class="s1"></span>
+<span class="gp">... </span><span class="s1">  publisher = {Springer},</span>
+<span class="gp">... </span><span class="s1">  title = {no{W}orkflow: capturing and analyzing provenance of scripts},</span>
+<span class="gp">... </span><span class="s1">  year = {2014}</span>
 <span class="gp">... </span><span class="s1">} &#39;&#39;&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">works</span> <span class="o">=</span> <span class="n">match_bibtex_to_work</span><span class="p">(</span><span class="n">bibtex</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s2">&quot;murta2014a&quot;</span><span class="p">)</span>
@@ -564,17 +624,17 @@ It generates tuples with variable name and Work object</p>
 <dd><p>Compares paper info to work</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li><cite>letter</cite> &#8211; indicates last letter</li>
-<li><cite>key</cite> &#8211; indicates the key ID in BibTeX</li>
-<li><cite>work</cite> &#8211; work object</li>
-<li><cite>paper</cite> &#8211; paper info dict</li>
+<li><cite>letter</cite> – indicates last letter</li>
+<li><cite>key</cite> – indicates the key ID in BibTeX</li>
+<li><cite>work</cite> – work object</li>
+<li><cite>paper</cite> – paper info dict</li>
 </ul>
 <p>Returns: work, letter</p>
 <ul class="simple">
-<li>If it doesn&#8217;t match, work is None</li>
+<li>If it doesn’t match, work is None</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">work</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s1">&#39;murta2014a&#39;</span><span class="p">)</span>
 
 <span class="go">Fail:</span>
@@ -605,7 +665,7 @@ It generates tuples with variable name and Work object</p>
 
 <span class="go">Similar Name fail:</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">paper</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">,</span> <span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;noWorkflow: capturing provenance of scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2014</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paper</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;noWorkflow: capturing provenance of scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2014</span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">compare_paper_to_work</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;other2017a&#39;</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">paper</span><span class="p">)</span>
 <span class="go">(None, 96)</span>
 
@@ -623,22 +683,22 @@ It generates tuples with variable name and Work object</p>
 <h3>find_work_by_info<a class="headerlink" href="#find-work-by-info" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="snowballing.operations.find_work_by_info">
-<code class="descname">find_work_by_info</code><span class="sig-paren">(</span><em>paper</em>, <em>pyrefs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#find_work_by_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.find_work_by_info" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_work_by_info</code><span class="sig-paren">(</span><em>paper</em>, <em>pyrefs=None</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#find_work_by_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.find_work_by_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find work by paper info dict</p>
 <p>Limits search for specific year (or all years, if year is 0)</p>
-<p>Generates &#8216;place&#8217; based on &#8216;entrytype&#8217;</p>
-<p>Converts &#8216;school&#8217; -&gt; &#8216;local&#8217;</p>
-<p>Tries to get varname from &#8216;ID&#8217; in case the bibtex were generated from our db</p>
+<p>Generates ‘place’ based on ‘entrytype’</p>
+<p>Converts ‘school’ -&gt; ‘local’</p>
+<p>Tries to get varname from ‘ID’ in case the bibtex were generated from our db</p>
 <p>If it finds the work, it returns it</p>
 <p>Otherwise, it updates pyref and display to include a valid letter</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">work</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="s1">&#39;murta2014a&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">paper</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">,</span> <span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;noWorkflow: capturing and analyzing provenance of scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2014</span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">find_work_by_info</span><span class="p">(</span><span class="n">paper</span><span class="p">)</span> <span class="o">==</span> <span class="n">work</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">paper</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">,</span> <span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Murta, Leonardo&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Other&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2014</span><span class="p">,</span> <span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;murta&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">find_work_by_info</span><span class="p">(</span><span class="n">paper</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">find_work_by_info</span><span class="p">(</span><span class="n">paper</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">paper</span><span class="p">[</span><span class="s1">&#39;pyref&#39;</span><span class="p">]</span>
 <span class="go">&#39;murta2014b&#39;</span>
@@ -653,130 +713,23 @@ It generates tuples with variable name and Work object</p>
 <h3>bibtex_to_info<a class="headerlink" href="#bibtex-to-info" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="snowballing.operations.bibtex_to_info">
-<code class="descname">bibtex_to_info</code><span class="sig-paren">(</span><em>citation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#bibtex_to_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.bibtex_to_info" title="Permalink to this definition">¶</a></dt>
+<code class="descname">bibtex_to_info</code><span class="sig-paren">(</span><em>citation</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#bibtex_to_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.bibtex_to_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert BibTeX dict from bibtexparse to info dict for adding a db entry</p>
-<p>It has the following conversions:</p>
-<ul class="simple">
-<li>title -&gt; name (required)</li>
-<li>author -&gt; authors (required)</li>
-<li>year -&gt; year (0 if not specified)<ul>
-<li>If there is &#8216;[in press]&#8217;, creates &#8216;note&#8217; with &#8216;in press&#8217;</li>
-</ul>
-</li>
-<li>journal/booktitle -&gt; place1 (&#8216;&#8217; if not specified)<ul>
-<li>If &#8216;place1&#8217; matches a place in the database, creates also &#8216;place&#8217;</li>
-</ul>
-</li>
-<li>pages -&gt; pp</li>
-<li>ENTRYTYPE -&gt; entrytype</li>
-</ul>
-<p>Also creates the following fields:</p>
-<ul class="simple">
-<li>display &#8211; Last name of first author</li>
-<li>pyref &#8211; {display}{year}{letter}</li>
-</ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex_to_info</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Pim, J&#39;</span><span class="p">})</span>
-<span class="go">{&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex_to_info</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Pim, J&#39;</span><span class="p">})</span>
+<span class="go">{&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex_to_info</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Pim, J&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;2017&#39;</span><span class="p">})</span>
-<span class="go">{&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 2017, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim2017a&#39;}</span>
+<span class="go">{&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 2017, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim2017a&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex_to_info</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Pim, J&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;2017 [in press]&#39;</span><span class="p">})</span>
-<span class="go">{&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;note&#39;: &#39;in press&#39;, &#39;year&#39;: 2017, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim2017a&#39;}</span>
+<span class="go">{&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 2017, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;note&#39;: &#39;in press&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim2017a&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex_to_info</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Pim, J&#39;</span><span class="p">,</span> <span class="s1">&#39;pages&#39;</span><span class="p">:</span> <span class="s1">&#39;1--5&#39;</span><span class="p">})</span>
-<span class="go">{&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;pp&#39;: &#39;1--5&#39;, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
+<span class="go">{&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;pp&#39;: &#39;1--5&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex_to_info</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Pim, J&#39;</span><span class="p">,</span> <span class="s1">&#39;journal&#39;</span><span class="p">:</span> <span class="s1">&#39;CiSE&#39;</span><span class="p">})</span>
-<span class="go">{&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;place1&#39;: &#39;CiSE&#39;, &#39;place&#39;: &#39;CiSE&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
+<span class="go">{&#39;place1&#39;: &#39;CiSE&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;place&#39;: &#39;CiSE&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex_to_info</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Pim, J&#39;</span><span class="p">,</span> <span class="s1">&#39;ENTRYTYPE&#39;</span><span class="p">:</span> <span class="s1">&#39;article&#39;</span><span class="p">})</span>
-<span class="go">{&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;place1&#39;: &#39;&#39;, &#39;entrytype&#39;: &#39;article&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
+<span class="go">{&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;entrytype&#39;: &#39;article&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bibtex_to_info</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Pim, J&#39;</span><span class="p">,</span> <span class="s1">&#39;other&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">})</span>
-<span class="go">{&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;, &#39;other&#39;: &#39;a&#39;}</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</div>
-<div class="section" id="set-display">
-<h3>set_display<a class="headerlink" href="#set-display" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="snowballing.operations.set_display">
-<code class="descname">set_display</code><span class="sig-paren">(</span><em>info</em>, <em>check_existence=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#set_display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.set_display" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set displays of info based on the authors field</p>
-<p>Selects the last name of the first author</p>
-<p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Pimentel, Joao&#39;</span><span class="p">};</span> <span class="n">set_display</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span>
-<span class="go">&#39;pimentel&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Pimentel, Joao and Braganholo, Vanessa&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_display</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span>
-<span class="go">&#39;pimentel&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Joao Pimentel&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_display</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span>
-<span class="go">&#39;pimentel&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Joao Pimentel and Vanessa Braganholo&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_display</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span>
-<span class="go">&#39;pimentel&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Joao Pimentel, Vanessa Braganholo&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_display</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span>
-<span class="go">&#39;pimentel&#39;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</div>
-<div class="section" id="set-pyref">
-<h3>set_pyref<a class="headerlink" href="#set-pyref" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="snowballing.operations.set_pyref">
-<code class="descname">set_pyref</code><span class="sig-paren">(</span><em>info</em>, <em>check_existence=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#set_pyref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.set_pyref" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set pyref of info. Finds the next available letter in the database</p>
-<p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;pimentel&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2017</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_pyref</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;pyref&#39;</span><span class="p">]</span>
-<span class="go">&#39;pimentel2017a&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;pimentel&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2015</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_pyref</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;pyref&#39;</span><span class="p">]</span>
-<span class="go">&#39;pimentel2015b&#39;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</div>
-<div class="section" id="set-place">
-<h3>set_place<a class="headerlink" href="#set-place" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="snowballing.operations.set_place">
-<code class="descname">set_place</code><span class="sig-paren">(</span><em>info</em>, <em>check_existence=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#set_place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.set_place" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set place of info</p>
-<p>It reorders common patterns:</p>
-<ul class="simple">
-<li>Proceedings of the</li>
-<li>International Conference on</li>
-<li>International Convention on</li>
-<li>International Symposium on</li>
-</ul>
-<p>Then, it removes numbers and it tries to match places in the database.</p>
-<p>It considers a match if the matching ratio for the place name
-is &gt;= config.SIMILARITY_RATIO (0.8).</p>
-<p>It also considers a match if the acronym matches.</p>
-<p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;place1&quot;</span><span class="p">:</span> <span class="s2">&quot;IPAW&quot;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_place</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span>
-<span class="go">&#39;IPAW&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;place1&quot;</span><span class="p">:</span> <span class="s2">&quot;Software Engineering, International Conference on&quot;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_place</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span>
-<span class="go">&#39;ICSE&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;place1&quot;</span><span class="p">:</span> <span class="s2">&quot;A random conference&quot;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">set_place</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;place&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span>
-<span class="go">True</span>
+<span class="go">{&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;, &#39;other&#39;: &#39;a&#39;}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -786,34 +739,34 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
 <h3>extract_info<a class="headerlink" href="#extract-info" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="snowballing.operations.extract_info">
-<code class="descname">extract_info</code><span class="sig-paren">(</span><em>article</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#extract_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.extract_info" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extract_info</code><span class="sig-paren">(</span><em>article</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#extract_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.extract_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract info from google scholar article</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Mock</span><span class="p">:</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="go">Mock:</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Article</span><span class="p">:</span> <span class="k">pass</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">article</span> <span class="o">=</span> <span class="n">Article</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">article</span><span class="o">.</span><span class="n">as_citation</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">... @inproceedings{murta2014noworkflow,</span>
-<span class="s1">...   title={noWorkflow: capturing and analyzing provenance of scripts},</span>
-<span class="s1">...   author={Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},</span>
-<span class="s1">...   booktitle={International Provenance and Annotation Workshop},</span>
-<span class="s1">...   pages={71--83},</span>
-<span class="s1">...   year=</span><span class="si">{2014}</span><span class="s1">,</span>
-<span class="s1">...   organization=</span><span class="si">{Springer}</span><span class="s1"></span>
-<span class="s1">... }&#39;&#39;&#39;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">article</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-<span class="o">...</span>   <span class="s1">&#39;excerpt&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Abstract&#39;</span><span class="p">],</span>
-<span class="o">...</span>   <span class="s1">&#39;cluster_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;5458343950729529273&#39;</span><span class="p">],</span>
-<span class="o">...</span>   <span class="s1">&#39;url_citations&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;http://scholar.google.com/scholar?cites=5458343950729529273&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=en&#39;</span><span class="p">],</span>
-<span class="o">...</span> <span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">article</span><span class="o">.</span><span class="n">div</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Article</span><span class="p">:</span> <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">article</span> <span class="o">=</span> <span class="n">Article</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">article</span><span class="o">.</span><span class="n">as_citation</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="gp">... </span><span class="s1">@inproceedings{murta2014noworkflow,</span>
+<span class="gp">... </span><span class="s1">  title={noWorkflow: capturing and analyzing provenance of scripts},</span>
+<span class="gp">... </span><span class="s1">  author={Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana},</span>
+<span class="gp">... </span><span class="s1">  booktitle={International Provenance and Annotation Workshop},</span>
+<span class="gp">... </span><span class="s1">  pages={71--83},</span>
+<span class="gp">... </span><span class="s1">  year={2014},</span>
+<span class="gp">... </span><span class="s1">  organization={Springer}</span>
+<span class="gp">... </span><span class="s1">}&#39;&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">article</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>  <span class="s1">&#39;excerpt&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Abstract&#39;</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="s1">&#39;cluster_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;5458343950729529273&#39;</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="s1">&#39;url_citations&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;http://scholar.google.com/scholar?cites=5458343950729529273&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=en&#39;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">article</span><span class="o">.</span><span class="n">div</span> <span class="o">=</span> <span class="bp">None</span>
 
-<span class="n">Test</span><span class="p">:</span>
+<span class="go">Test:</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">reload</span><span class="p">()</span>  <span class="c1"># Deterministic name</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">extract_info</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
-<span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;noWorkflow: capturing and analyzing provenance of scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="s1">&#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2014</span><span class="p">,</span> <span class="s1">&#39;pp&#39;</span><span class="p">:</span> <span class="s1">&#39;71--83&#39;</span><span class="p">,</span> <span class="s1">&#39;place1&#39;</span><span class="p">:</span> <span class="s1">&#39;International Provenance and Annotation Workshop&#39;</span><span class="p">,</span> <span class="s1">&#39;entrytype&#39;</span><span class="p">:</span> <span class="s1">&#39;inproceedings&#39;</span><span class="p">,</span> <span class="s1">&#39;place&#39;</span><span class="p">:</span> <span class="s1">&#39;IPAW&#39;</span><span class="p">,</span> <span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;murta&#39;</span><span class="p">,</span> <span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014b&#39;</span><span class="p">,</span> <span class="s1">&#39;organization&#39;</span><span class="p">:</span> <span class="s1">&#39;Springer&#39;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014noworkflow&#39;</span><span class="p">,</span> <span class="s1">&#39;excerpt&#39;</span><span class="p">:</span> <span class="s1">&#39;Abstract&#39;</span><span class="p">,</span> <span class="s1">&#39;cluster_id&#39;</span><span class="p">:</span> <span class="s1">&#39;5458343950729529273&#39;</span><span class="p">,</span> <span class="s1">&#39;scholar&#39;</span><span class="p">:</span> <span class="s1">&#39;http://scholar.google.com/scholar?cites=5458343950729529273&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=en&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">reload</span><span class="p">()</span>  <span class="c1"># Deterministic name</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">extract_info</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+<span class="go">{&#39;place1&#39;: &#39;International Provenance and Annotation Workshop&#39;, &#39;year&#39;: 2014, &#39;pp&#39;: &#39;71--83&#39;, &#39;authors&#39;: &#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;, &#39;name&#39;: &#39;noWorkflow: capturing and analyzing provenance of scripts&#39;, &#39;entrytype&#39;: &#39;inproceedings&#39;, &#39;place&#39;: &#39;IPAW&#39;, &#39;display&#39;: &#39;murta&#39;, &#39;pyref&#39;: &#39;murta2014b&#39;, &#39;organization&#39;: &#39;Springer&#39;, &#39;ID&#39;: &#39;murta2014noworkflow&#39;, &#39;excerpt&#39;: &#39;Abstract&#39;, &#39;cluster_id&#39;: &#39;5458343950729529273&#39;, &#39;scholar&#39;: &#39;http://scholar.google.com/scholar?cites=5458343950729529273&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=en&#39;}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -823,7 +776,7 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
 <h3>info_to_code<a class="headerlink" href="#info-to-code" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="snowballing.operations.info_to_code">
-<code class="descname">info_to_code</code><span class="sig-paren">(</span><em>article</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#info_to_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.info_to_code" title="Permalink to this definition">¶</a></dt>
+<code class="descname">info_to_code</code><span class="sig-paren">(</span><em>article</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#info_to_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.info_to_code" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert info dict into code</p>
 <p>Required attributes:</p>
 <ul class="simple">
@@ -834,7 +787,7 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
 <li>place || place1</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">info_to_code</span><span class="p">({</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">info_to_code</span><span class="p">({</span>
 <span class="gp">... </span>  <span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;pimentel2017a&#39;</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;disp&#39;</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2017</span><span class="p">,</span>
@@ -852,7 +805,7 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
 
 <span class="go">With place:</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">info_to_code</span><span class="p">({</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">info_to_code</span><span class="p">({</span>
 <span class="gp">... </span>  <span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;noworkflow&#39;</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2014</span><span class="p">,</span>
@@ -866,12 +819,11 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
 <span class="go">    display=&quot;noworkflow&quot;,</span>
 <span class="go">    authors=&quot;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&quot;,</span>
 <span class="go">    place=IPAW,</span>
-
 <span class="go">))</span>
 
 <span class="go">With string place:</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">info_to_code</span><span class="p">({</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">info_to_code</span><span class="p">({</span>
 <span class="gp">... </span>  <span class="s1">&#39;pyref&#39;</span><span class="p">:</span> <span class="s1">&#39;murta2014a&#39;</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;noworkflow&#39;</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2014</span><span class="p">,</span>
@@ -885,12 +837,11 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
 <span class="go">    display=&quot;noworkflow&quot;,</span>
 <span class="go">    authors=&quot;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&quot;,</span>
 <span class="go">    place=IPAW,</span>
-
 <span class="go">))</span>
 
 <span class="go">With _work_type, due, excerpt, others:</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">info_to_code</span><span class="p">({</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">info_to_code</span><span class="p">({</span>
 <span class="gp">... </span>  <span class="s1">&#39;_work_type&#39;</span><span class="p">:</span> <span class="s1">&#39;WorkSnowball&#39;</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="s1">&#39;due&#39;</span><span class="p">:</span> <span class="s1">&#39;Unrelated to my snowballing&#39;</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="s1">&#39;excerpt&#39;</span><span class="p">:</span> <span class="s1">&#39;Ignore excerpt&#39;</span><span class="p">,</span>
@@ -909,21 +860,45 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
 <span class="go">    display=&quot;noworkflow&quot;,</span>
 <span class="go">    authors=&quot;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&quot;,</span>
 <span class="go">    place=IPAW,</span>
-<span class="go">    other=&quot;Do not ignore other fields&quot;,</span>
+<span class="go">    other=&#39;Do not ignore other fields&#39;,</span>
 <span class="go">))</span>
 </pre></div>
 </div>
 </dd></dl>
 
 </div>
+<div class="section" id="set-by-info">
+<h3>set_by_info<a class="headerlink" href="#set-by-info" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.operations.set_by_info">
+<code class="descname">set_by_info</code><span class="sig-paren">(</span><em>work</em>, <em>info</em>, <em>set_scholar=True</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#set_by_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.set_by_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find attributes that should be modified in a work object to make it match an info object</p>
+</dd></dl>
+
+</div>
+<div class="section" id="changes-dict-to-set-attribute">
+<h3>changes_dict_to_set_attribute<a class="headerlink" href="#changes-dict-to-set-attribute" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt>
+<code class="descname">set_by_info</code><span class="sig-paren">(</span><em>work</em>, <em>info</em>, <em>set_scholar=True</em>, <em>rules=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#set_by_info"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Find attributes that should be modified in a work object to make it match an info object</p>
+</dd></dl>
+
+</div>
+<div class="section" id="check-config-deprecation">
+<h3>check_config_deprecation<a class="headerlink" href="#check-config-deprecation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="snowballing.operations.check_config_deprecation">
+<code class="descname">check_config_deprecation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/operations.html#check_config_deprecation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.operations.check_config_deprecation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -932,7 +907,7 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
         <a href="scholar.html" class="btn btn-neutral float-right" title="scholar.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="models.html" class="btn btn-neutral" title="models.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="models.html" class="btn btn-neutral float-left" title="models.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -941,11 +916,19 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -957,37 +940,15 @@ is &gt;= config.SIMILARITY_RATIO (0.8).</p>
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

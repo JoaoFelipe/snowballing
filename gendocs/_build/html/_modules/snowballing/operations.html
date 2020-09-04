@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,50 +11,44 @@
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> snowballing
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -82,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
@@ -106,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
@@ -113,13 +109,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">snowballing</a>
@@ -127,9 +124,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -150,7 +148,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -158,8 +156,6 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
         
       </li>
     
@@ -178,41 +174,43 @@
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 
 <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">copy</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">string</span> <span class="k">import</span> <span class="n">ascii_lowercase</span>
-<span class="kn">import</span> <span class="nn">bibtexparser</span>
 
-<span class="kn">from</span> <span class="nn">bibtexparser.bparser</span> <span class="k">import</span> <span class="n">BibTexParser</span>
-<span class="kn">from</span> <span class="nn">bibtexparser.customization</span> <span class="k">import</span> <span class="n">convert_to_unicode</span>
-<span class="kn">from</span> <span class="nn">bibtexparser.customization</span> <span class="k">import</span> <span class="n">homogenize_latex_encoding</span>
 <span class="kn">from</span> <span class="nn">bibtexparser.bwriter</span> <span class="k">import</span> <span class="n">BibTexWriter</span>
 <span class="kn">from</span> <span class="nn">bibtexparser.bibdatabase</span> <span class="k">import</span> <span class="n">BibDatabase</span>
 
 
+<span class="kn">from</span> <span class="nn">.collection_helpers</span> <span class="k">import</span> <span class="n">oget</span><span class="p">,</span> <span class="n">oset</span><span class="p">,</span> <span class="n">dget</span><span class="p">,</span> <span class="n">dset</span><span class="p">,</span> <span class="n">dhas</span>
+<span class="kn">from</span> <span class="nn">.collection_helpers</span> <span class="k">import</span> <span class="n">consume</span><span class="p">,</span> <span class="n">setitem</span><span class="p">,</span> <span class="n">callable_get</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="k">import</span> <span class="n">DB</span><span class="p">,</span> <span class="n">Year</span>
-<span class="kn">from</span> <span class="nn">.dbindex</span> <span class="k">import</span> <span class="n">parse_varname</span><span class="p">,</span> <span class="n">places_file</span>
+<span class="kn">from</span> <span class="nn">.dbindex</span> <span class="k">import</span> <span class="n">parse_varname</span><span class="p">,</span> <span class="n">year_file</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">config</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">import_submodules</span><span class="p">,</span> <span class="n">consume</span><span class="p">,</span> <span class="n">setitem</span><span class="p">,</span> <span class="n">compare_str</span><span class="p">,</span> <span class="n">match_any</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">import_submodules</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">parse_bibtex</span>
+<span class="kn">from</span> <span class="nn">.rules</span> <span class="k">import</span> <span class="n">ConvertDict</span><span class="p">,</span> <span class="n">ConvertWork</span><span class="p">,</span> <span class="n">old_form_to_new</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="n">WORK_CACHE</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">CITATION_CACHE</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">GROUP_CACHE</span> <span class="o">=</span> <span class="p">{}</span>
 
 
-<div class="viewcode-block" id="load_work"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.load_work">[docs]</a><span class="k">def</span> <span class="nf">load_work</span><span class="p">():</span>
+<div class="viewcode-block" id="load_work"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.load_work">[docs]</a><span class="k">def</span> <span class="nf">load_work</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Load a list of all work in the database&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">DB</span><span class="o">.</span><span class="n">work</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="load_citations"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.load_citations">[docs]</a><span class="k">def</span> <span class="nf">load_citations</span><span class="p">():</span>
+<div class="viewcode-block" id="load_citations"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.load_citations">[docs]</a><span class="k">def</span> <span class="nf">load_citations</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Load a list of all citations&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">DB</span><span class="o">.</span><span class="n">citations</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="load_places_vars"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.load_places_vars">[docs]</a><span class="k">def</span> <span class="nf">load_places_vars</span><span class="p">():</span>
+<div class="viewcode-block" id="load_places_vars"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.load_places_vars">[docs]</a><span class="k">def</span> <span class="nf">load_places_vars</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Load all places from the database</span>
 
 <span class="sd">    It generates tuples with variable name and Place object</span>
@@ -224,13 +222,13 @@
 <span class="sd">        &gt;&gt;&gt; &#39;arXiv&#39; in [varname for varname, _ in load_places_vars()]</span>
 <span class="sd">        True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">places</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s1">&#39;places&#39;</span><span class="p">]</span>
+    <span class="n">places</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s2">&quot;places&quot;</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">varname</span><span class="p">,</span> <span class="n">varvalue</span> <span class="ow">in</span> <span class="n">places</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">varvalue</span><span class="p">,</span> <span class="n">places</span><span class="o">.</span><span class="n">Place</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">varname</span><span class="p">,</span> <span class="n">varvalue</span></div>
 
 
-<div class="viewcode-block" id="load_work_map"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.load_work_map">[docs]</a><span class="k">def</span> <span class="nf">load_work_map</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
+<div class="viewcode-block" id="load_work_map"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.load_work_map">[docs]</a><span class="k">def</span> <span class="nf">load_work_map</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Load all work from a given year file</span>
 <span class="sd">    It generates tuples with variable name and Work object</span>
 
@@ -250,10 +248,11 @@
     <span class="n">worklist</span> <span class="o">=</span> <span class="n">WORK_CACHE</span><span class="p">[</span><span class="n">module</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">worklist</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">worklist</span><span class="o">.</span><span class="n">Work</span><span class="p">):</span>
+            <span class="n">oset</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
             <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span></div>
 
 
-<div class="viewcode-block" id="work_by_varname"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.work_by_varname">[docs]</a><span class="k">def</span> <span class="nf">work_by_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="work_by_varname"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.work_by_varname">[docs]</a><span class="k">def</span> <span class="nf">work_by_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Load work by varname</span>
 
 <span class="sd">    Doctest:</span>
@@ -274,7 +273,7 @@
     <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">worklist</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_work_map_all_years"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.load_work_map_all_years">[docs]</a><span class="k">def</span> <span class="nf">load_work_map_all_years</span><span class="p">():</span>
+<div class="viewcode-block" id="load_work_map_all_years"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.load_work_map_all_years">[docs]</a><span class="k">def</span> <span class="nf">load_work_map_all_years</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Load all work from all years</span>
 
 <span class="sd">    Doctest:</span>
@@ -297,15 +296,16 @@
     <span class="kn">from</span> <span class="nn">.approaches</span> <span class="k">import</span> <span class="n">APPROACHES</span>
     <span class="n">APPROACHES</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
     <span class="n">importlib</span><span class="o">.</span><span class="n">invalidate_caches</span><span class="p">()</span>
+    <span class="n">DB</span><span class="o">.</span><span class="n">clear_places</span><span class="p">()</span>
     <span class="n">DB</span><span class="o">.</span><span class="n">clear_work</span><span class="p">()</span>
     <span class="n">DB</span><span class="o">.</span><span class="n">clear_citations</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">_reload_work</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Reload work and create WORD_CACHE&quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">import_submodules</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s1">&#39;work&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">yname</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">fname</span> <span class="o">=</span> <span class="p">(</span><span class="n">yname</span> <span class="o">+</span> <span class="s1">&#39;.py&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">import_submodules</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s2">&quot;work&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">yname</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="p">(</span><span class="n">yname</span> <span class="o">+</span> <span class="s2">&quot;.py&quot;</span><span class="p">)</span>
         <span class="n">WORK_CACHE</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">yname</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">yname</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
@@ -313,7 +313,7 @@
             <span class="p">)</span>
 
 
-<div class="viewcode-block" id="reload"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.reload">[docs]</a><span class="k">def</span> <span class="nf">reload</span><span class="p">():</span>
+<div class="viewcode-block" id="reload"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.reload">[docs]</a><span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="n">work_func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reload all the database</span>
 
 <span class="sd">    Doctest:</span>
@@ -321,227 +321,63 @@
 <span class="sd">    ..doctest::</span>
 
 <span class="sd">        &gt;&gt;&gt; reload()</span>
-<span class="sd">        &gt;&gt;&gt; from example.database.work.y2014 import murta2014a</span>
+<span class="sd">        &gt;&gt;&gt; from snowballing.example.database.work.y2014 import murta2014a</span>
 <span class="sd">        &gt;&gt;&gt; murta2014a.metakey</span>
 <span class="sd">        &#39;murta2014a&#39;</span>
-<span class="sd">        &gt;&gt;&gt; from example.database.work.y2015 import murta2014a as alias</span>
+<span class="sd">        &gt;&gt;&gt; from snowballing.example.database.work.y2015 import murta2014a as alias</span>
 <span class="sd">        &gt;&gt;&gt; alias is murta2014a</span>
 <span class="sd">        True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">_clear_db</span><span class="p">()</span>
-    <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s1">&#39;places&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s2">&quot;places&quot;</span><span class="p">]:</span>
+        <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s2">&quot;places&quot;</span><span class="p">])</span>
     <span class="n">_reload_work</span><span class="p">()</span>
-    <span class="n">import_submodules</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s1">&#39;citations&#39;</span><span class="p">])</span>
-    <span class="n">import_submodules</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s1">&#39;groups&#39;</span><span class="p">])</span>
+    <span class="n">import_submodules</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s2">&quot;citations&quot;</span><span class="p">])</span>
+    <span class="n">import_submodules</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s2">&quot;groups&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;CHECK_DEPRECATION&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">check_config_deprecation</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">load_work_map_all_years</span><span class="p">():</span>
-        <span class="n">aliases</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">work</span><span class="o">.</span><span class="n">metakey</span> <span class="o">=</span> <span class="n">key</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s1">&#39;alias&#39;</span><span class="p">):</span>
-            <span class="n">aliases</span> <span class="o">=</span> <span class="p">[</span><span class="n">work</span><span class="o">.</span><span class="n">alias</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s1">&#39;aliases&#39;</span><span class="p">):</span>
-            <span class="n">aliases</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">aliases</span>
-        <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
-            <span class="n">year</span> <span class="o">=</span> <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">oset</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">work_func</span><span class="p">:</span>
+            <span class="n">work_func</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get_work_aliases</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_alias_year</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">alias</span><span class="p">)</span>
             <span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;y</span><span class="si">{}</span><span class="s2">.py&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">year</span>
             <span class="k">if</span> <span class="n">module</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">WORK_CACHE</span><span class="p">:</span>
                 <span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;y9999.py&quot;</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">WORK_CACHE</span><span class="p">[</span><span class="n">module</span><span class="p">],</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="bibtex_to_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.bibtex_to_info">[docs]</a><span class="k">def</span> <span class="nf">bibtex_to_info</span><span class="p">(</span><span class="n">citation</span><span class="p">):</span>
+<div class="viewcode-block" id="bibtex_to_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.bibtex_to_info">[docs]</a><span class="k">def</span> <span class="nf">bibtex_to_info</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert BibTeX dict from bibtexparse to info dict for adding a db entry</span>
-
-<span class="sd">    It has the following conversions:</span>
-
-<span class="sd">    * title -&gt; name (required)</span>
-
-<span class="sd">    * author -&gt; authors (required)</span>
-
-<span class="sd">    * year -&gt; year (0 if not specified)</span>
-
-<span class="sd">      * If there is &#39;[in press]&#39;, creates &#39;note&#39; with &#39;in press&#39;</span>
-
-<span class="sd">    * journal/booktitle -&gt; place1 (&#39;&#39; if not specified)</span>
-
-<span class="sd">      * If &#39;place1&#39; matches a place in the database, creates also &#39;place&#39;</span>
-
-<span class="sd">    * pages -&gt; pp</span>
-
-<span class="sd">    * ENTRYTYPE -&gt; entrytype</span>
-
-<span class="sd">    Also creates the following fields:</span>
-
-<span class="sd">    * display -- Last name of first author</span>
-
-<span class="sd">    * pyref -- {display}{year}{letter}</span>
-
-
+<span class="sd">    </span>
 <span class="sd">    Doctest:</span>
 
 <span class="sd">    .. doctest::</span>
 
 <span class="sd">        &gt;&gt;&gt; bibtex_to_info({&#39;title&#39;: &#39;a&#39;, &#39;author&#39;: &#39;Pim, J&#39;})</span>
-<span class="sd">        {&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
+<span class="sd">        {&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
 <span class="sd">        &gt;&gt;&gt; bibtex_to_info({&#39;title&#39;: &#39;a&#39;, &#39;author&#39;: &#39;Pim, J&#39;, &#39;year&#39;: &#39;2017&#39;})</span>
-<span class="sd">        {&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 2017, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim2017a&#39;}</span>
+<span class="sd">        {&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 2017, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim2017a&#39;}</span>
 <span class="sd">        &gt;&gt;&gt; bibtex_to_info({&#39;title&#39;: &#39;a&#39;, &#39;author&#39;: &#39;Pim, J&#39;, &#39;year&#39;: &#39;2017 [in press]&#39;})</span>
-<span class="sd">        {&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;note&#39;: &#39;in press&#39;, &#39;year&#39;: 2017, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim2017a&#39;}</span>
+<span class="sd">        {&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 2017, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;note&#39;: &#39;in press&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim2017a&#39;}</span>
 <span class="sd">        &gt;&gt;&gt; bibtex_to_info({&#39;title&#39;: &#39;a&#39;, &#39;author&#39;: &#39;Pim, J&#39;, &#39;pages&#39;: &#39;1--5&#39;})</span>
-<span class="sd">        {&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;pp&#39;: &#39;1--5&#39;, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
+<span class="sd">        {&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;pp&#39;: &#39;1--5&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
 <span class="sd">        &gt;&gt;&gt; bibtex_to_info({&#39;title&#39;: &#39;a&#39;, &#39;author&#39;: &#39;Pim, J&#39;, &#39;journal&#39;: &#39;CiSE&#39;})</span>
-<span class="sd">        {&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;place1&#39;: &#39;CiSE&#39;, &#39;place&#39;: &#39;CiSE&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
+<span class="sd">        {&#39;place1&#39;: &#39;CiSE&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;place&#39;: &#39;CiSE&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
 <span class="sd">        &gt;&gt;&gt; bibtex_to_info({&#39;title&#39;: &#39;a&#39;, &#39;author&#39;: &#39;Pim, J&#39;, &#39;ENTRYTYPE&#39;: &#39;article&#39;})</span>
-<span class="sd">        {&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;place1&#39;: &#39;&#39;, &#39;entrytype&#39;: &#39;article&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
+<span class="sd">        {&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;entrytype&#39;: &#39;article&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;}</span>
 <span class="sd">        &gt;&gt;&gt; bibtex_to_info({&#39;title&#39;: &#39;a&#39;, &#39;author&#39;: &#39;Pim, J&#39;, &#39;other&#39;: &#39;a&#39;})</span>
-<span class="sd">        {&#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;year&#39;: 0, &#39;place1&#39;: &#39;&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;, &#39;other&#39;: &#39;a&#39;}</span>
+<span class="sd">        {&#39;place1&#39;: &#39;&#39;, &#39;year&#39;: 0, &#39;name&#39;: &#39;a&#39;, &#39;authors&#39;: &#39;Pim, J&#39;, &#39;display&#39;: &#39;pim&#39;, &#39;pyref&#39;: &#39;pim0a&#39;, &#39;other&#39;: &#39;a&#39;}</span>
+<span class="sd">   </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">))</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="s2">&quot;[in press]&quot;</span> <span class="ow">in</span> <span class="n">citation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;note&quot;</span><span class="p">,</span> <span class="s2">&quot;in press&quot;</span><span class="p">)</span>
-        <span class="n">citation</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citation</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;pp&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;pages&quot;</span><span class="p">))</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;journal&quot;</span><span class="p">)</span> <span class="ow">or</span>
-            <span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;booktitle&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;entrytype&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="s2">&quot;ENTRYTYPE&quot;</span><span class="p">))</span>
-
-    <span class="n">set_place</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-    <span class="n">set_display</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-    <span class="n">set_pyref</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">citation</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">result</span></div>
+    <span class="n">rules</span> <span class="o">=</span> <span class="n">rules</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">BIBTEX_TO_INFO</span>
+    <span class="k">return</span> <span class="n">ConvertDict</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="set_display"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.set_display">[docs]</a><span class="k">def</span> <span class="nf">set_display</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">check_existence</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set displays of info based on the authors field</span>
-
-<span class="sd">    Selects the last name of the first author</span>
-
-<span class="sd">    Doctest:</span>
-
-<span class="sd">    .. doctest::</span>
-
-<span class="sd">        &gt;&gt;&gt; info = {&#39;authors&#39;: &#39;Pimentel, Joao&#39;}; set_display(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&#39;display&#39;]</span>
-<span class="sd">        &#39;pimentel&#39;</span>
-<span class="sd">        &gt;&gt;&gt; info = {&#39;authors&#39;: &#39;Pimentel, Joao and Braganholo, Vanessa&#39;}</span>
-<span class="sd">        &gt;&gt;&gt; set_display(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&#39;display&#39;]</span>
-<span class="sd">        &#39;pimentel&#39;</span>
-<span class="sd">        &gt;&gt;&gt; info = {&#39;authors&#39;: &#39;Joao Pimentel&#39;}</span>
-<span class="sd">        &gt;&gt;&gt; set_display(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&#39;display&#39;]</span>
-<span class="sd">        &#39;pimentel&#39;</span>
-<span class="sd">        &gt;&gt;&gt; info = {&#39;authors&#39;: &#39;Joao Pimentel and Vanessa Braganholo&#39;}</span>
-<span class="sd">        &gt;&gt;&gt; set_display(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&#39;display&#39;]</span>
-<span class="sd">        &#39;pimentel&#39;</span>
-<span class="sd">        &gt;&gt;&gt; info = {&#39;authors&#39;: &#39;Joao Pimentel, Vanessa Braganholo&#39;}</span>
-<span class="sd">        &gt;&gt;&gt; set_display(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&#39;display&#39;]</span>
-<span class="sd">        &#39;pimentel&#39;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">check_existence</span> <span class="ow">and</span> <span class="s1">&#39;display&#39;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="n">authors</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;authors&#39;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s1">&#39; and &#39;</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">:</span>
-        <span class="n">authors</span> <span class="o">=</span> <span class="n">authors</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; and &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s1">&#39;,&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">:</span>
-        <span class="n">last</span> <span class="o">=</span> <span class="n">authors</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">last</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w*)[`\-=~!@#$%^&amp;*()_+\[\]</span><span class="si">{}</span><span class="s1">;</span><span class="se">\&#39;\\</span><span class="s1">:&quot;|&lt;,/&lt;&gt;?]&#39;</span><span class="p">,</span> <span class="n">authors</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="n">last</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span></div>
-
-
-<div class="viewcode-block" id="set_pyref"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.set_pyref">[docs]</a><span class="k">def</span> <span class="nf">set_pyref</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">check_existence</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set pyref of info. Finds the next available letter in the database</span>
-
-<span class="sd">    Doctest:</span>
-
-<span class="sd">    .. doctest::</span>
-
-<span class="sd">        &gt;&gt;&gt; info = {&#39;display&#39;: &#39;pimentel&#39;, &#39;year&#39;: 2017}</span>
-<span class="sd">        &gt;&gt;&gt; set_pyref(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&#39;pyref&#39;]</span>
-<span class="sd">        &#39;pimentel2017a&#39;</span>
-<span class="sd">        &gt;&gt;&gt; info = {&#39;display&#39;: &#39;pimentel&#39;, &#39;year&#39;: 2015}</span>
-<span class="sd">        &gt;&gt;&gt; set_pyref(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&#39;pyref&#39;]</span>
-<span class="sd">        &#39;pimentel2015b&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">check_existence</span> <span class="ow">and</span> <span class="s1">&#39;pyref&#39;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="n">pyref</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{display}{year}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">info</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">ascii_lowercase</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="n">pyref</span> <span class="o">+</span> <span class="n">letter</span><span class="p">):</span>
-            <span class="k">break</span>
-    <span class="n">pyref</span> <span class="o">+=</span> <span class="n">letter</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="n">pyref</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="set_place"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.set_place">[docs]</a><span class="k">def</span> <span class="nf">set_place</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">check_existence</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set place of info</span>
-
-<span class="sd">    It reorders common patterns:</span>
-
-<span class="sd">    * Proceedings of the</span>
-<span class="sd">    * International Conference on</span>
-<span class="sd">    * International Convention on</span>
-<span class="sd">    * International Symposium on</span>
-
-<span class="sd">    Then, it removes numbers and it tries to match places in the database.</span>
-
-<span class="sd">    It considers a match if the matching ratio for the place name</span>
-<span class="sd">    is &gt;= config.SIMILARITY_RATIO (0.8).</span>
-
-<span class="sd">    It also considers a match if the acronym matches.</span>
-
-<span class="sd">    Doctest:</span>
-
-<span class="sd">    .. doctest::</span>
-
-<span class="sd">        &gt;&gt;&gt; info = {&quot;place1&quot;: &quot;IPAW&quot;}</span>
-<span class="sd">        &gt;&gt;&gt; set_place(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&quot;place&quot;]</span>
-<span class="sd">        &#39;IPAW&#39;</span>
-<span class="sd">        &gt;&gt;&gt; info = {&quot;place1&quot;: &quot;Software Engineering, International Conference on&quot;}</span>
-<span class="sd">        &gt;&gt;&gt; set_place(info)</span>
-<span class="sd">        &gt;&gt;&gt; info[&quot;place&quot;]</span>
-<span class="sd">        &#39;ICSE&#39;</span>
-<span class="sd">        &gt;&gt;&gt; info = {&quot;place1&quot;: &quot;A random conference&quot;}</span>
-<span class="sd">        &gt;&gt;&gt; set_place(info)</span>
-<span class="sd">        &gt;&gt;&gt; &#39;place&#39; not in info</span>
-<span class="sd">        True</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">check_existence</span> <span class="ow">and</span> <span class="s1">&#39;place&#39;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="kn">import</span> <span class="nn">re</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;place1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Proceedings of the &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?&lt;=[0-9])(?:st|nd|rd|th)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">place</span><span class="p">)</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.*) (International Conference on)&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\2 \1&quot;</span><span class="p">,</span> <span class="n">place</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.*) (International Convention on)&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\2 \1&quot;</span><span class="p">,</span> <span class="n">place</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.*) (International Symposium on)&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\2 \1&quot;</span><span class="p">,</span> <span class="n">place</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">place</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()])</span>
-
-    <span class="n">maxmatch</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-        <span class="p">(</span><span class="nb">max</span><span class="p">(</span>
-            <span class="n">compare_str</span><span class="p">(</span><span class="n">place</span><span class="p">,</span> <span class="n">varvalue</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-            <span class="mi">1</span> <span class="k">if</span> <span class="n">place</span> <span class="o">==</span> <span class="n">varvalue</span><span class="o">.</span><span class="n">acronym</span> <span class="k">else</span> <span class="mi">0</span>
-        <span class="p">),</span> <span class="n">varname</span><span class="p">,</span> <span class="n">varvalue</span><span class="p">)</span> <span class="k">for</span> <span class="n">varname</span><span class="p">,</span> <span class="n">varvalue</span> <span class="ow">in</span> <span class="n">load_places_vars</span><span class="p">()</span>
-    <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">maxmatch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">config</span><span class="o">.</span><span class="n">SIMILARITY_RATIO</span> <span class="ow">or</span> <span class="n">maxmatch</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">place</span><span class="p">:</span>
-        <span class="n">setitem</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">,</span> <span class="n">maxmatch</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
-
-
-<div class="viewcode-block" id="extract_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.extract_info">[docs]</a><span class="k">def</span> <span class="nf">extract_info</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.extract_info">[docs]</a><span class="k">def</span> <span class="nf">extract_info</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extract info from google scholar article</span>
 
 <span class="sd">    Doctest:</span>
@@ -572,23 +408,18 @@
 
 <span class="sd">        &gt;&gt;&gt; reload()  # Deterministic name</span>
 <span class="sd">        &gt;&gt;&gt; extract_info(article)</span>
-<span class="sd">        {&#39;name&#39;: &#39;noWorkflow: capturing and analyzing provenance of scripts&#39;, &#39;authors&#39;: &#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;, &#39;year&#39;: 2014, &#39;pp&#39;: &#39;71--83&#39;, &#39;place1&#39;: &#39;International Provenance and Annotation Workshop&#39;, &#39;entrytype&#39;: &#39;inproceedings&#39;, &#39;place&#39;: &#39;IPAW&#39;, &#39;display&#39;: &#39;murta&#39;, &#39;pyref&#39;: &#39;murta2014b&#39;, &#39;organization&#39;: &#39;Springer&#39;, &#39;ID&#39;: &#39;murta2014noworkflow&#39;, &#39;excerpt&#39;: &#39;Abstract&#39;, &#39;cluster_id&#39;: &#39;5458343950729529273&#39;, &#39;scholar&#39;: &#39;http://scholar.google.com/scholar?cites=5458343950729529273&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=en&#39;}</span>
+<span class="sd">        {&#39;place1&#39;: &#39;International Provenance and Annotation Workshop&#39;, &#39;year&#39;: 2014, &#39;pp&#39;: &#39;71--83&#39;, &#39;authors&#39;: &#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;, &#39;name&#39;: &#39;noWorkflow: capturing and analyzing provenance of scripts&#39;, &#39;entrytype&#39;: &#39;inproceedings&#39;, &#39;place&#39;: &#39;IPAW&#39;, &#39;display&#39;: &#39;murta&#39;, &#39;pyref&#39;: &#39;murta2014b&#39;, &#39;organization&#39;: &#39;Springer&#39;, &#39;ID&#39;: &#39;murta2014noworkflow&#39;, &#39;excerpt&#39;: &#39;Abstract&#39;, &#39;cluster_id&#39;: &#39;5458343950729529273&#39;, &#39;scholar&#39;: &#39;http://scholar.google.com/scholar?cites=5458343950729529273&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=en&#39;}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">BibTexParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">customization</span> <span class="o">=</span> <span class="n">convert_to_unicode</span>
+    <span class="n">rules</span> <span class="o">=</span> <span class="n">rules</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">BIBTEX_TO_INFO</span>
     <span class="n">as_citation</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">as_citation</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">as_citation</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">as_citation</span> <span class="o">=</span> <span class="n">as_citation</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-    <span class="n">citation</span> <span class="o">=</span> <span class="n">bibtexparser</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">as_citation</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">)</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">bibtex_to_info</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;excerpt&quot;</span><span class="p">,</span> <span class="n">article</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;excerpt&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;cluster_id&quot;</span><span class="p">,</span> <span class="n">article</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;cluster_id&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;scholar&quot;</span><span class="p">,</span> <span class="n">article</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;url_citations&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">setitem</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">article</span><span class="o">.</span><span class="n">div</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span></div>
+    <span class="n">citation</span> <span class="o">=</span> <span class="n">parse_bibtex</span><span class="p">(</span><span class="n">as_citation</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">converter</span> <span class="o">=</span> <span class="n">ConvertDict</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">converter</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">article</span><span class="o">=</span><span class="n">article</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="info_to_code"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.info_to_code">[docs]</a><span class="k">def</span> <span class="nf">info_to_code</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
+<div class="viewcode-block" id="info_to_code"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.info_to_code">[docs]</a><span class="k">def</span> <span class="nf">info_to_code</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert info dict into code</span>
 
 <span class="sd">    Required attributes:</span>
@@ -635,7 +466,6 @@
 <span class="sd">            display=&quot;noworkflow&quot;,</span>
 <span class="sd">            authors=&quot;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&quot;,</span>
 <span class="sd">            place=IPAW,</span>
-<span class="sd">        &lt;BLANKLINE&gt;</span>
 <span class="sd">        ))</span>
 
 <span class="sd">        With string place:</span>
@@ -654,7 +484,6 @@
 <span class="sd">            display=&quot;noworkflow&quot;,</span>
 <span class="sd">            authors=&quot;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&quot;,</span>
 <span class="sd">            place=IPAW,</span>
-<span class="sd">        &lt;BLANKLINE&gt;</span>
 <span class="sd">        ))</span>
 
 <span class="sd">        With _work_type, due, excerpt, others:</span>
@@ -678,46 +507,66 @@
 <span class="sd">            display=&quot;noworkflow&quot;,</span>
 <span class="sd">            authors=&quot;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&quot;,</span>
 <span class="sd">            place=IPAW,</span>
-<span class="sd">            other=&quot;Do not ignore other fields&quot;,</span>
+<span class="sd">            other=&#39;Do not ignore other fields&#39;,</span>
 <span class="sd">        ))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rules</span> <span class="o">=</span> <span class="n">rules</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">INFO_TO_INSERT</span>
     <span class="n">info</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
-    <span class="n">work_type</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;_work_type&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;Work&quot;</span>
-    <span class="n">year</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
-    <span class="n">authors</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;authors&quot;</span><span class="p">)</span>
-    <span class="n">display</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">)</span>
-    <span class="n">pyref</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">)</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;place&quot;</span><span class="p">)</span>
-    <span class="n">may_be_related_to</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;may_be_related_to&quot;</span><span class="p">)</span>
-    <span class="n">due</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;due&quot;</span><span class="p">)</span>
-    <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;excerpt&quot;</span><span class="p">)</span>
-    <span class="n">other</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">place</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;place1&quot;</span><span class="p">)</span>
-        <span class="n">func</span> <span class="o">=</span> <span class="nb">str</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">place</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">repr</span>
-        <span class="n">other</span> <span class="o">+=</span> <span class="s1">&#39;place=</span><span class="si">{}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">        &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">place</span><span class="p">))</span>
-
-    <span class="n">other</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">        &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">=&quot;</span><span class="si">{}</span><span class="s1">&quot;,&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\&quot;&#39;</span><span class="p">))</span>
-                          <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-
-    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    </span><span class="si">{pyref}</span><span class="s2"> = DB(</span><span class="si">{work_type}</span><span class="s2">(</span>
-<span class="s2">        </span><span class="si">{year}</span><span class="s2">, &quot;</span><span class="si">{name}</span><span class="s2">&quot;,</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="k">if</span> <span class="n">due</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;        due=&quot;</span><span class="si">{}</span><span class="s1">&quot;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">due</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">may_be_related_to</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;        may_be_related_to=[</span><span class="si">{}</span><span class="s1">],</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">may_be_related_to</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
-        <span class="p">)</span>
-    <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;        display=&quot;</span><span class="si">{display}</span><span class="s2">&quot;,</span>
-<span class="s2">        authors=&quot;</span><span class="si">{authors}</span><span class="s2">&quot;,</span>
-<span class="s2">        </span><span class="si">{other}</span><span class="s2"></span>
-<span class="s2">    ))&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+    <span class="n">converter</span> <span class="o">=</span> <span class="n">ConvertDict</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">converter</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="citation_text"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.citation_text">[docs]</a><span class="k">def</span> <span class="nf">citation_text</span><span class="p">(</span><span class="n">workref</span><span class="p">,</span> <span class="n">cited</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="set_by_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.set_by_info">[docs]</a><span class="k">def</span> <span class="nf">set_by_info</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">set_scholar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find attributes that should be modified in a work object to make it match an info object&quot;&quot;&quot;</span>
+    
+    <span class="n">rules</span> <span class="o">=</span> <span class="n">rules</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">BIBTEX_TO_INFO</span>
+    <span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&lt;set_before&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="kc">None</span><span class="p">)(</span><span class="n">work</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+    <span class="n">work_keys</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">work</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)}</span> <span class="o">-</span> <span class="n">rules</span><span class="p">[</span><span class="s2">&quot;&lt;set_ignore_keys&gt;&quot;</span><span class="p">]</span>
+    <span class="n">meta_keys</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">-</span> <span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&lt;set_ignore_keys&gt;&quot;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+    <span class="n">show_result</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&lt;set_order&gt;&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="p">)</span>
+    <span class="n">set_result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">shared</span> <span class="o">=</span> <span class="n">meta_keys</span> <span class="o">&amp;</span> <span class="n">work_keys</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">shared</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">add</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&lt;set_ignore_but_show&gt;&quot;</span><span class="p">,</span> <span class="nb">set</span><span class="p">()):</span>
+            <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">set_result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&lt;set_always_show&gt;&quot;</span><span class="p">,</span> <span class="nb">set</span><span class="p">()):</span>
+            <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">add</span><span class="p">:</span>
+            <span class="n">show_result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">meta_keys</span> <span class="o">-</span> <span class="n">work_keys</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">set_result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">show_result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">set_scholar</span> <span class="ow">and</span> <span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&lt;scholar_ok&gt;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">rules</span><span class="p">[</span><span class="s2">&quot;&lt;scholar_ok&gt;&quot;</span><span class="p">]):</span>
+        <span class="n">set_result</span><span class="p">[</span><span class="n">rules</span><span class="p">[</span><span class="s2">&quot;&lt;scholar_ok&gt;&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;show&quot;</span><span class="p">:</span> <span class="n">show_result</span><span class="p">,</span>
+        <span class="s2">&quot;set&quot;</span><span class="p">:</span> <span class="n">set_result</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="s2">&quot;&lt;pos_diff&gt;&quot;</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
+        <span class="n">rules</span><span class="p">[</span><span class="s2">&quot;&lt;pos_diff&gt;&quot;</span><span class="p">](</span><span class="n">work</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="k">def</span> <span class="nf">changes_dict_to_set_attribute</span><span class="p">(</span><span class="n">metakey</span><span class="p">,</span> <span class="n">changes_dict</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert dictionart of changes to set_attribute instructions&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">old</span><span class="p">)</span> <span class="ow">in</span> <span class="n">changes_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;set_attribute(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, old=</span><span class="si">{!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metakey</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">old</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">+</span> <span class="n">end</span>
+
+
+<div class="viewcode-block" id="citation_text"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.citation_text">[docs]</a><span class="k">def</span> <span class="nf">citation_text</span><span class="p">(</span><span class="n">workref</span><span class="p">,</span> <span class="n">cited</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create code for citation</span>
 
 <span class="sd">    Arguments:</span>
@@ -757,7 +606,7 @@
 <span class="sd">        ))</span>
 <span class="sd">        &lt;BLANKLINE&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pyref</span> <span class="o">=</span> <span class="n">cited</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span>
+    <span class="n">pyref</span> <span class="o">=</span> <span class="n">dget</span><span class="p">(</span><span class="n">cited</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">)</span>
     <span class="n">thepyref</span> <span class="o">=</span> <span class="n">pyref</span>
     <span class="k">if</span> <span class="n">backward</span><span class="p">:</span>
         <span class="n">pyref</span><span class="p">,</span> <span class="n">workref</span> <span class="o">=</span> <span class="n">workref</span><span class="p">,</span> <span class="n">pyref</span>
@@ -771,7 +620,7 @@
 <span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">()))</span></div>
 
 
-<div class="viewcode-block" id="compare_paper_to_work"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.compare_paper_to_work">[docs]</a><span class="k">def</span> <span class="nf">compare_paper_to_work</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">paper</span><span class="p">):</span>
+<div class="viewcode-block" id="compare_paper_to_work"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.compare_paper_to_work">[docs]</a><span class="k">def</span> <span class="nf">compare_paper_to_work</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">paper</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compares paper info to work</span>
 
 <span class="sd">    Arguments:</span>
@@ -824,7 +673,7 @@
 
 <span class="sd">        Similar Name fail:</span>
 
-<span class="sd">        &gt;&gt;&gt; paper = {&#39;pyref&#39;: &#39;murta2014a&#39;, &#39;authors&#39;: &#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;, &#39;name&#39;: &#39;noWorkflow: capturing provenance of scripts&#39;, &#39;year&#39;: 2014}</span>
+<span class="sd">        &gt;&gt;&gt; paper = {&#39;authors&#39;: &#39;Murta, Leonardo and Braganholo, Vanessa and Chirigati, Fernando and Koop, David and Freire, Juliana&#39;, &#39;name&#39;: &#39;noWorkflow: capturing provenance of scripts&#39;, &#39;year&#39;: 2014}</span>
 <span class="sd">        &gt;&gt;&gt; compare_paper_to_work(ord(&quot;a&quot;) - 1, &#39;other2017a&#39;, work, paper)</span>
 <span class="sd">        (None, 96)</span>
 
@@ -836,40 +685,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">work</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">letter</span>
-    <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">paper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="s1">&#39;&lt;invalid&gt;&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">dget</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;invalid&gt;&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
         <span class="n">lastletter</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;a&quot;</span>
         <span class="n">letter</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">lastletter</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">letter</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;cluster_id&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;cluster_id&quot;</span> <span class="ow">in</span> <span class="n">paper</span> <span class="ow">and</span> <span class="n">work</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">==</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;cluster_id&quot;</span><span class="p">]:</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
-        <span class="k">return</span> <span class="n">work</span><span class="p">,</span> <span class="n">letter</span>
-    <span class="n">aliases</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;alias&quot;</span><span class="p">):</span>
-        <span class="n">aliases</span> <span class="o">=</span> <span class="p">[</span><span class="n">work</span><span class="o">.</span><span class="n">alias</span><span class="p">]</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;aliases&quot;</span><span class="p">):</span>
-        <span class="n">aliases</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">aliases</span>
-    <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">alias</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">work</span><span class="o">.</span><span class="n">authors</span> <span class="o">==</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]:</span>
-                <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
-                <span class="k">return</span> <span class="n">work</span><span class="p">,</span> <span class="n">letter</span>
-
-    <span class="n">required</span> <span class="o">=</span> <span class="mf">0.90</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.1</span> <span class="k">if</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;place&quot;</span> <span class="ow">in</span> <span class="n">paper</span><span class="p">:</span>
-        <span class="n">place</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MODULES</span><span class="p">[</span><span class="s1">&#39;places&#39;</span><span class="p">],</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">place</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">place</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">work</span><span class="o">.</span><span class="n">place</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-            <span class="n">required</span> <span class="o">-=</span> <span class="mf">0.1</span>
-
-    <span class="k">if</span> <span class="n">work</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">letter</span>
-    <span class="k">if</span> <span class="n">compare_str</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">required</span><span class="p">:</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">info_work_match</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="n">work</span><span class="p">):</span>
+        <span class="n">dset</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">work</span><span class="p">,</span> <span class="n">letter</span>
 
     <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">letter</span></div>
 
 
-<div class="viewcode-block" id="find_work_by_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.find_work_by_info">[docs]</a><span class="k">def</span> <span class="nf">find_work_by_info</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="n">pyrefs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="find_work_by_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.find_work_by_info">[docs]</a><span class="k">def</span> <span class="nf">find_work_by_info</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="n">pyrefs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find work by paper info dict</span>
 
 <span class="sd">    Limits search for specific year (or all years, if year is 0)</span>
@@ -902,61 +729,58 @@
 <span class="sd">        &gt;&gt;&gt; paper[&#39;display&#39;]</span>
 <span class="sd">        &#39;murta b&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rules</span> <span class="o">=</span> <span class="n">rules</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">FIND_INFO_WORK</span>
+    <span class="k">def</span> <span class="nf">update_old</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">rules</span><span class="p">):</span>
+        <span class="n">ignore</span> <span class="o">=</span> <span class="n">callable_get</span><span class="p">(</span><span class="n">rules</span><span class="p">,</span> <span class="s2">&quot;&lt;ignore&gt;&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore</span><span class="p">:</span>
+                <span class="n">old</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="k">if</span> <span class="n">paper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_work_type&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Site&#39;</span><span class="p">:</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s1">&#39;pyref&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
-        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&lt;skip&gt;&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="k">if</span> <span class="n">paper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">dset</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">pyrefs</span> <span class="o">=</span> <span class="n">pyrefs</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
     <span class="n">letter</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
-    <span class="n">worklist</span> <span class="o">=</span> <span class="n">load_work_map</span><span class="p">(</span><span class="n">paper</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">])</span>
+    <span class="n">convert</span> <span class="o">=</span> <span class="n">ConvertDict</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
+    <span class="n">new_paper</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">paper</span><span class="p">)</span>
+    <span class="n">old_paper</span><span class="p">,</span> <span class="n">paper</span> <span class="o">=</span> <span class="n">paper</span><span class="p">,</span> <span class="n">new_paper</span>
 
-    <span class="k">if</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">worklist</span> <span class="o">=</span> <span class="n">load_work_map</span><span class="p">(</span><span class="n">paper</span><span class="p">[</span><span class="s2">&quot;_year&quot;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;_year&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">worklist</span> <span class="o">=</span> <span class="n">load_work_map_all_years</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">paper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;entrytype&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;phdthesis&quot;</span><span class="p">,</span> <span class="s2">&quot;mastersthesis&quot;</span><span class="p">):</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Thesis&quot;</span>
-
-    <span class="k">if</span> <span class="n">paper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;entrytype&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;techreport&quot;</span><span class="p">:</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;TechReport&quot;</span>
-
-    <span class="k">if</span> <span class="n">paper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;entrytype&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;book&quot;</span><span class="p">:</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Book&quot;</span>
-
-    <span class="k">if</span> <span class="s2">&quot;school&quot;</span> <span class="ow">in</span> <span class="n">paper</span><span class="p">:</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;local&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;school&quot;</span><span class="p">]</span>
-        <span class="k">del</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;school&quot;</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="s2">&quot;ID&quot;</span> <span class="ow">in</span> <span class="n">paper</span><span class="p">:</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span>
-        <span class="n">work</span> <span class="o">=</span> <span class="n">work_by_varname</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;_work&quot;</span> <span class="ow">in</span> <span class="n">paper</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;_key&quot;</span><span class="p">]</span>
+        <span class="n">work</span> <span class="o">=</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;_work&quot;</span><span class="p">]</span>
         <span class="n">work</span><span class="p">,</span> <span class="n">letter</span> <span class="o">=</span> <span class="n">compare_paper_to_work</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">paper</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">work</span><span class="p">:</span>
+            <span class="n">update_old</span><span class="p">(</span><span class="n">old_paper</span><span class="p">,</span> <span class="n">paper</span><span class="p">,</span> <span class="n">rules</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">work</span>
 
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">worklist</span><span class="p">:</span>
         <span class="n">work</span><span class="p">,</span> <span class="n">letter</span> <span class="o">=</span> <span class="n">compare_paper_to_work</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">work</span><span class="p">,</span> <span class="n">paper</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">work</span><span class="p">:</span>
+            <span class="n">update_old</span><span class="p">(</span><span class="n">old_paper</span><span class="p">,</span> <span class="n">paper</span><span class="p">,</span> <span class="n">rules</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">work</span>
 
-
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pyrefs</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">&quot;pyref&quot;</span> <span class="ow">in</span> <span class="n">paper</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">dhas</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">dget</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">)):</span>
             <span class="n">lastletter</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;a&quot;</span>
             <span class="n">letter</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">lastletter</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="n">letter</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">letter</span> <span class="o">!=</span> <span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">letter</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
-            <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;pyref&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">letter</span>
-        <span class="n">paper</span><span class="p">[</span><span class="s2">&quot;display&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">letter</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">set_info_letter</span><span class="p">(</span><span class="n">paper</span><span class="p">,</span> <span class="n">letter</span><span class="p">)</span>
 
+    <span class="n">update_old</span><span class="p">(</span><span class="n">old_paper</span><span class="p">,</span> <span class="n">paper</span><span class="p">,</span> <span class="n">rules</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="find_citation"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.find_citation">[docs]</a><span class="k">def</span> <span class="nf">find_citation</span><span class="p">(</span><span class="n">citer</span><span class="p">,</span> <span class="n">cited</span><span class="p">):</span>
+<div class="viewcode-block" id="find_citation"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.find_citation">[docs]</a><span class="k">def</span> <span class="nf">find_citation</span><span class="p">(</span><span class="n">citer</span><span class="p">,</span> <span class="n">cited</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find citation in the local database</span>
 
 <span class="sd">    Returns the citation if the `citer` work cites the `cited` work</span>
@@ -986,7 +810,7 @@
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="find_global_local_citation"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.find_global_local_citation">[docs]</a><span class="k">def</span> <span class="nf">find_global_local_citation</span><span class="p">(</span><span class="n">citer</span><span class="p">,</span> <span class="n">cited</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="find_global_local_citation"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.find_global_local_citation">[docs]</a><span class="k">def</span> <span class="nf">find_global_local_citation</span><span class="p">(</span><span class="n">citer</span><span class="p">,</span> <span class="n">cited</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find citations locally and globally for the works</span>
 
 <span class="sd">    We use it to check if there is citation redefinition</span>
@@ -1020,7 +844,7 @@
     <span class="n">glob</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">load_citations</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">citation</span><span class="o">.</span><span class="n">work</span> <span class="o">==</span> <span class="n">citer</span> <span class="ow">and</span> <span class="n">citation</span><span class="o">.</span><span class="n">citation</span> <span class="o">==</span> <span class="n">cited</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">file</span> <span class="o">==</span> <span class="n">citation</span><span class="o">.</span><span class="n">_citations_file</span> <span class="ow">or</span> <span class="n">file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span> <span class="o">==</span> <span class="n">citation</span><span class="o">.</span><span class="n">_citations_file</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">file</span><span class="p">:</span>
                 <span class="n">glob</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">citation</span>
                 <span class="k">break</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1028,7 +852,25 @@
     <span class="k">return</span> <span class="n">glob</span><span class="p">,</span> <span class="n">loc</span></div>
 
 
-<div class="viewcode-block" id="work_to_bibtex_entry"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.work_to_bibtex_entry">[docs]</a><span class="k">def</span> <span class="nf">work_to_bibtex_entry</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">homogeneize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="find_local_citation"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.find_local_citation">[docs]</a><span class="k">def</span> <span class="nf">find_local_citation</span><span class="p">(</span><span class="n">wo1</span><span class="p">,</span> <span class="n">wo2</span><span class="p">,</span> <span class="n">backward</span><span class="p">,</span> <span class="n">citation_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">warning</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">backward</span><span class="p">:</span>
+        <span class="n">wo1</span><span class="p">,</span> <span class="n">wo2</span> <span class="o">=</span> <span class="n">wo2</span><span class="p">,</span> <span class="n">wo1</span>
+
+    <span class="n">global_citation</span><span class="p">,</span> <span class="n">local_citation</span> <span class="o">=</span> <span class="n">find_global_local_citation</span><span class="p">(</span>
+        <span class="n">wo1</span><span class="p">,</span> <span class="n">wo2</span><span class="p">,</span>
+        <span class="n">file</span><span class="o">=</span><span class="n">citation_file</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">global_citation</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">local_citation</span> <span class="ow">and</span> <span class="n">warning</span><span class="p">:</span>
+        <span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Duplicate citation: </span><span class="si">{}</span><span class="s2"> -&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">oget</span><span class="p">(</span><span class="n">wo1</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">),</span>
+            <span class="n">oget</span><span class="p">(</span><span class="n">wo2</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">),</span>
+        <span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">local_citation</span></div>
+
+
+<div class="viewcode-block" id="work_to_bibtex_entry"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.work_to_bibtex_entry">[docs]</a><span class="k">def</span> <span class="nf">work_to_bibtex_entry</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">homogeneize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert work to BibTeX entry dict for bibtexparser</span>
 
 <span class="sd">    Doctest:</span>
@@ -1039,7 +881,7 @@
 <span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; result = work_to_bibtex_entry(murta2014a)</span>
 <span class="sd">        &gt;&gt;&gt; list(result)</span>
-<span class="sd">        [&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;booktitle&#39;, &#39;author&#39;, &#39;title&#39;, &#39;year&#39;, &#39;ENTRYTYPE&#39;]</span>
+<span class="sd">        [&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;author&#39;, &#39;title&#39;, &#39;ENTRYTYPE&#39;, &#39;booktitle&#39;, &#39;year&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; result[&#39;ID&#39;]</span>
 <span class="sd">        &#39;murta2014a&#39;</span>
 <span class="sd">        &gt;&gt;&gt; result[&#39;address&#39;]</span>
@@ -1062,57 +904,26 @@
 <span class="sd">        Custom name:</span>
 <span class="sd">        &gt;&gt;&gt; result = work_to_bibtex_entry(murta2014a, name=&quot;other&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; list(result)</span>
-<span class="sd">        [&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;booktitle&#39;, &#39;author&#39;, &#39;title&#39;, &#39;year&#39;, &#39;ENTRYTYPE&#39;]</span>
+<span class="sd">        [&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;author&#39;, &#39;title&#39;, &#39;ENTRYTYPE&#39;, &#39;booktitle&#39;, &#39;year&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; result[&#39;ID&#39;]</span>
 <span class="sd">        &#39;other&#39;</span>
 
 <span class="sd">        Use acronym for place name:</span>
 <span class="sd">        &gt;&gt;&gt; result = work_to_bibtex_entry(murta2014a, acronym=True)</span>
 <span class="sd">        &gt;&gt;&gt; list(result)</span>
-<span class="sd">        [&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;booktitle&#39;, &#39;author&#39;, &#39;title&#39;, &#39;year&#39;, &#39;ENTRYTYPE&#39;]</span>
+<span class="sd">        [&#39;ID&#39;, &#39;address&#39;, &#39;publisher&#39;, &#39;pages&#39;, &#39;author&#39;, &#39;title&#39;, &#39;ENTRYTYPE&#39;, &#39;booktitle&#39;, &#39;year&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; result[&#39;booktitle&#39;]</span>
 <span class="sd">        &#39;IPAW&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">options</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">WORK_FIELDS</span>
-    <span class="n">ignore</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">BIBTEX_IGNORE_FIELDS</span>
-    <span class="n">mapa</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">WORK_BIBTEX_MAP</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s1">&#39;metakey&#39;</span><span class="p">):</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">metakey</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">split</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">split</span> <span class="k">else</span> <span class="s2">&quot;a&quot;</span>
-            <span class="n">name</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">DEBUG_FIELDS</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">match_any</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">match_any</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ignore</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">display</span><span class="p">,</span> <span class="n">work</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-
-    <span class="n">result</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">match_any</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ignore</span><span class="p">):</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-            <span class="n">is_conference</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;place&quot;</span> <span class="ow">and</span> <span class="n">acronym</span> <span class="ow">and</span>
-                <span class="n">value</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;Conference&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">acronym</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">is_conference</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">acronym</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">mapa</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">key</span><span class="p">)(</span><span class="n">work</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;ENTRYTYPE&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ENTRYTYPE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;misc&quot;</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">):</span>
-        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">notes</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">homogeneize</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">homogenize_latex_encoding</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span></div>
+    <span class="n">converter</span> <span class="o">=</span> <span class="n">ConvertWork</span><span class="p">(</span><span class="n">rules</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">WORK_TO_BIBTEX</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">converter</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">({</span>
+        <span class="s2">&quot;_name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;_acronym&quot;</span><span class="p">:</span> <span class="n">acronym</span><span class="p">,</span>
+        <span class="s2">&quot;_homogeneize&quot;</span><span class="p">:</span> <span class="n">homogeneize</span><span class="p">,</span>
+    <span class="p">}))</span></div>
 
 
-<div class="viewcode-block" id="work_to_bibtex"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.work_to_bibtex">[docs]</a><span class="k">def</span> <span class="nf">work_to_bibtex</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="work_to_bibtex"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.work_to_bibtex">[docs]</a><span class="k">def</span> <span class="nf">work_to_bibtex</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert work to bibtex text</span>
 
 <span class="sd">    Doctest:</span>
@@ -1166,16 +977,15 @@
 <span class="sd">        &lt;BLANKLINE&gt;</span>
 <span class="sd">        &lt;BLANKLINE&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">work_to_bibtex_entry</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="n">acronym</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">work_to_bibtex_entry</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">acronym</span><span class="o">=</span><span class="n">acronym</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="n">rules</span><span class="p">)</span>
     <span class="n">db</span> <span class="o">=</span> <span class="n">BibDatabase</span><span class="p">()</span>
     <span class="n">db</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">]</span>
-
     <span class="n">writer</span> <span class="o">=</span> <span class="n">BibTexWriter</span><span class="p">()</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="s1">&#39;  &#39;</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="s2">&quot;  &quot;</span>
     <span class="k">return</span> <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">db</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="match_bibtex_to_work"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.match_bibtex_to_work">[docs]</a><span class="k">def</span> <span class="nf">match_bibtex_to_work</span><span class="p">(</span><span class="n">bibtex_str</span><span class="p">):</span>
+<div class="viewcode-block" id="match_bibtex_to_work"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.match_bibtex_to_work">[docs]</a><span class="k">def</span> <span class="nf">match_bibtex_to_work</span><span class="p">(</span><span class="n">bibtex_str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find works by bibtex entries</span>
 
 <span class="sd">    Returns a list of matches: (entry, work)</span>
@@ -1199,18 +1009,14 @@
 <span class="sd">        &gt;&gt;&gt; works[0][1] is murta2014a</span>
 <span class="sd">        True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">BibTexParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">customization</span> <span class="o">=</span> <span class="n">convert_to_unicode</span>
-    <span class="n">entries</span> <span class="o">=</span> <span class="n">bibtexparser</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">bibtex_str</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">)</span><span class="o">.</span><span class="n">entries</span>
-    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
-        <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">entries</span> <span class="o">=</span> <span class="n">parse_bibtex</span><span class="p">(</span><span class="n">bibtex_str</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span>
         <span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">find_work_by_info</span><span class="p">(</span><span class="n">bibtex_to_info</span><span class="p">(</span><span class="n">copy</span><span class="p">(</span><span class="n">entry</span><span class="p">))))</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span>
     <span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="find"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.operations.find">[docs]</a><span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="find"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.find">[docs]</a><span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find work by text in any of its attributes&quot;&quot;&quot;</span>
     <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">load_work</span><span class="p">():</span>
@@ -1221,12 +1027,194 @@
                 <span class="k">break</span>
         <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">work</span></div>
+
+
+<div class="viewcode-block" id="find_line"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.find_line">[docs]</a><span class="k">def</span> <span class="nf">find_line</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find work position in file</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    * `work` -- work object</span>
+
+<span class="sd">    Doctest:</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; from .operations import reload, work_by_varname</span>
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; find_line(murta2014a)</span>
+<span class="sd">        6</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">year_file</span><span class="p">(</span><span class="n">oget</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">)),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">index</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;(^</span><span class="si">{}</span><span class="se">\\</span><span class="s2">s=)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">oget</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">line</span><span class="p">)</span>
+        <span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="invoke_editor"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.invoke_editor">[docs]</a><span class="k">def</span> <span class="nf">invoke_editor</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Open work in a given line with the configured editor&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">TEXT_EDITOR</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">LINE_PARAMS</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;You must set the config.TEXT_EDITOR and config.LINE_PARAMS to use this function&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">TEXT_EDITOR</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">LINE_PARAMS</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">year_path</span><span class="o">=</span><span class="n">year_file</span><span class="p">(</span><span class="n">oget</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">)),</span>
+            <span class="n">line</span><span class="o">=</span><span class="n">find_line</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+        <span class="p">),</span>
+    <span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_info_code"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.create_info_code">[docs]</a><span class="k">def</span> <span class="nf">create_info_code</span><span class="p">(</span><span class="n">nwork</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">citation_var</span><span class="p">,</span> <span class="n">citation_file</span><span class="p">,</span> <span class="n">should_add</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create insertion code with both code and citation&quot;&quot;&quot;</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;insert(&#39;&#39;&#39;&quot;</span>
+    <span class="k">if</span> <span class="n">nwork</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="n">info_to_code</span><span class="p">(</span><span class="n">info</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;citation&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">citation_var</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="n">citation_text</span><span class="p">(</span>
+            <span class="n">citation_var</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span>
+            <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;backward&quot;</span><span class="p">]</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">citations</span> <span class="o">=</span> <span class="s2">&quot;, citations=&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">citation_file</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&#39;&#39;&#39;</span><span class="si">{}</span><span class="s2">);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;insert(&#39;&#39;&#39;&#39;&#39;&#39;);&quot;</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">nwork</span> <span class="ow">and</span> <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="s2">&quot;(&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dget</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">changes_dict_to_set_attribute</span><span class="p">(</span><span class="n">dget</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;pyref&quot;</span><span class="p">),</span> <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">check_insertion</span><span class="p">(</span>
+            <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">citation_var</span><span class="p">,</span> <span class="n">citation_file</span><span class="p">,</span> <span class="n">should_add</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+        <span class="p">)</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="should_add_info"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.should_add_info">[docs]</a><span class="k">def</span> <span class="nf">should_add_info</span><span class="p">(</span>
+    <span class="n">info</span><span class="p">,</span> <span class="n">citation</span><span class="p">,</span> <span class="n">article</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">citation_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">warning</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="n">set_scholar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">article_rules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bibtex_rules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">add_citation</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if there is anything to add for this info&quot;&quot;&quot;</span>
+    <span class="n">convert</span> <span class="o">=</span> <span class="n">ConvertDict</span><span class="p">(</span><span class="n">article_rules</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">ARTICLE_TO_INFO</span><span class="p">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">article</span><span class="o">=</span><span class="n">article</span><span class="p">)</span>
+    <span class="n">nwork</span> <span class="o">=</span> <span class="n">consume</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;_nwork&quot;</span><span class="p">)</span>
+    <span class="n">should_add</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;add&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;citation&quot;</span><span class="p">:</span> <span class="n">citation</span><span class="p">,</span>
+        <span class="s2">&quot;set&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;backward&quot;</span><span class="p">:</span> <span class="n">backward</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">nwork</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">citation</span> <span class="ow">and</span> <span class="n">add_citation</span><span class="p">):</span>
+        <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;citation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citation</span>
+        <span class="k">return</span> <span class="n">should_add</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span>
+    
+    <span class="n">changes</span> <span class="o">=</span> <span class="n">set_by_info</span><span class="p">(</span><span class="n">nwork</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">set_scholar</span><span class="o">=</span><span class="n">set_scholar</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="n">bibtex_rules</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">BIBTEX_TO_INFO</span><span class="p">)</span>
+    <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">changes</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;set&quot;</span><span class="p">]:</span>
+        <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">add_citation</span><span class="p">:</span>
+        <span class="n">local_citation</span> <span class="o">=</span> <span class="n">find_local_citation</span><span class="p">(</span>
+            <span class="n">nwork</span><span class="p">,</span> <span class="n">citation</span><span class="p">,</span> <span class="n">backward</span><span class="p">,</span>
+            <span class="n">citation_file</span><span class="o">=</span><span class="n">citation_file</span><span class="p">,</span> <span class="n">warning</span><span class="o">=</span><span class="n">warning</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">local_citation</span><span class="p">:</span>
+            <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;citation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">should_add</span><span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">should_add</span><span class="p">,</span> <span class="n">nwork</span><span class="p">,</span> <span class="n">info</span></div>
+
+
+<span class="k">class</span> <span class="nc">Metakey</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert work or list of work to metakey</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a @ Metakey()</span>
+<span class="sd">        &#39;murta2014a&#39;</span>
+<span class="sd">        &gt;&gt;&gt; [murta2014a] @ Metakey()</span>
+<span class="sd">        [&#39;murta2014a&#39;]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__rmatmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">y</span> <span class="o">@</span> <span class="bp">self</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">oget</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MetakeyTitle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert work or list of work to metakey - title</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a @ MetakeyTitle()</span>
+<span class="sd">        &#39;murta2014a - noWorkflow: capturing and analyzing provenance of scripts&#39;</span>
+<span class="sd">        &gt;&gt;&gt; [murta2014a] @ MetakeyTitle()</span>
+<span class="sd">        [&#39;murta2014a - noWorkflow: capturing and analyzing provenance of scripts&#39;]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__rmatmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">y</span> <span class="o">@</span> <span class="bp">self</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> - </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">oget</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;metakey&quot;</span><span class="p">),</span>
+            <span class="n">oget</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">WDisplay</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert work or list of work to display</span>
+
+<span class="sd">    .. doctest::</span>
+
+<span class="sd">        &gt;&gt;&gt; reload()</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a = work_by_varname(&quot;murta2014a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; murta2014a @ WDisplay()</span>
+<span class="sd">        &#39;no  Work  flow&#39;</span>
+<span class="sd">        &gt;&gt;&gt; [murta2014a] @ WDisplay()</span>
+<span class="sd">        [&#39;no  Work  flow&#39;]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__rmatmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">y</span> <span class="o">@</span> <span class="bp">self</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">work_display</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">metakey</span> <span class="o">=</span> <span class="n">Metakey</span><span class="p">()</span>
+<span class="n">metakey_title</span> <span class="o">=</span> <span class="n">MetakeyTitle</span><span class="p">()</span>
+<span class="n">wdisplay</span> <span class="o">=</span> <span class="n">WDisplay</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="check_config_deprecation"><a class="viewcode-back" href="../../snowballing/operations.html#snowballing.jupyter_utils.check_config_deprecation">[docs]</a><span class="k">def</span> <span class="nf">check_config_deprecation</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;WORK_BIBTEX_MAP&quot;</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;The configuration config.WORK_BIBTEX_MAP is not supported anymore.</span>
+<span class="s2">        It was replaced by config.WORK_TO_BIBTEX, which is more complete.</span>
+<span class="s2">        Please, modify it according to your needs</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;FORM_BUTTONS&quot;</span><span class="p">):</span>
+        <span class="n">old_form_to_new</span><span class="p">(</span><span class="n">show_deprecation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -1235,11 +1223,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1251,37 +1247,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

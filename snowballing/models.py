@@ -231,7 +231,7 @@ class Work(object):
         return config.work_hash(self)
 
     def __repr__(self):
-        return oget(self, "name")
+        return str(oget(self, "name"))
 
     def _draw(self, dwg, fill_color=None, draw_place=False, use_circle=False):
         """Draw work"""

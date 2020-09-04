@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,51 +11,46 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../index.html"/>
-        <link rel="next" title="dbmanager.py" href="dbmanager.html"/>
-        <link rel="prev" title="config.py" href="config.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dbmanager.py" href="dbmanager.html" />
+    <link rel="prev" title="config_helpers.py" href="config_helper.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../index.html" class="icon icon-home"> snowballing
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -83,6 +77,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">dbindex.py</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#citation-file">citation_file</a></li>
@@ -120,6 +116,7 @@
 <li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
@@ -127,13 +124,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">snowballing</a>
@@ -141,9 +139,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -164,7 +163,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>dbindex.py</li>
     
@@ -197,13 +196,13 @@ files and extract information from the convention we use for varnames</p>
 <dt id="snowballing.dbindex.citation_file">
 <code class="descname">citation_file</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbindex.html#citation_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbindex.citation_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the database file for a specific approach</p>
-<p>This file includes Citation&#8217;s metadata</p>
+<p>This file includes Citation’s metadata</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li><cite>name</cite> &#8211; citation_file attribute of work</li>
+<li><cite>name</cite> – citation_file attribute of work</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">citation_file</span><span class="p">(</span><span class="s1">&#39;noworkflow2014&#39;</span><span class="p">)]</span>  
 <span class="go">[.../citations/noworkflow2014.py&#39;)]</span>
 </pre></div>
@@ -217,13 +216,13 @@ files and extract information from the convention we use for varnames</p>
 <dt id="snowballing.dbindex.year_file">
 <code class="descname">year_file</code><span class="sig-paren">(</span><em>year</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbindex.html#year_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbindex.year_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the database file for a specific year</p>
-<p>This file includes Paper&#8217;s metadata</p>
+<p>This file includes Paper’s metadata</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li><cite>year</cite> &#8211; desired year</li>
+<li><cite>year</cite> – desired year</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">year_file</span><span class="p">(</span><span class="mi">2017</span><span class="p">)]</span>  
 <span class="go">[.../work/y2017.py&#39;)]</span>
 </pre></div>
@@ -238,7 +237,7 @@ files and extract information from the convention we use for varnames</p>
 <code class="descname">places_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbindex.html#places_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbindex.places_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the places file</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">places_file</span><span class="p">()]</span>  
 <span class="go">[...places.py&#39;)]</span>
 </pre></div>
@@ -255,10 +254,10 @@ files and extract information from the convention we use for varnames</p>
 <p>It is used on citation files in the database to identify them</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li><cite>filename</cite> &#8211; python filename (usually __file__)</li>
+<li><cite>filename</cite> – python filename (usually __file__)</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">this_file</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">this_file</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
 <span class="go">&#39;dbindex&#39;</span>
 </pre></div>
 </div>
@@ -273,20 +272,20 @@ files and extract information from the convention we use for varnames</p>
 <dd><p>Discover year from varname or year argument</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li>varname &#8211; work variable name (e.g., &#8216;murta2014a&#8217;)</li>
+<li>varname – work variable name (e.g., ‘murta2014a’)</li>
 </ul>
 <p>Keyword Arguments:</p>
 <ul class="simple">
-<li><cite>year</cite> &#8211; if it is defined, bypass varname extraction and return it</li>
-<li><cite>fail_raise</cite> &#8211; if it fails to extract from varname, it may raise an
+<li><cite>year</cite> – if it is defined, bypass varname extraction and return it</li>
+<li><cite>fail_raise</cite> – if it fails to extract from varname, it may raise an
 exception according this argument</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">discover_year</span><span class="p">(</span><span class="s1">&#39;murta2014a&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">discover_year</span><span class="p">(</span><span class="s1">&#39;murta2014a&#39;</span><span class="p">)</span>
 <span class="go">2014</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">discover_year</span><span class="p">(</span><span class="s1">&#39;murta2014a&#39;</span><span class="p">,</span> <span class="mi">2015</span><span class="p">)</span>
 <span class="go">2015</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">discover_year</span><span class="p">(</span><span class="s1">&#39;invalid&#39;</span><span class="p">,</span> <span class="n">fail_raise</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discover_year</span><span class="p">(</span><span class="s1">&#39;invalid&#39;</span><span class="p">,</span> <span class="n">fail_raise</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">discover_year</span><span class="p">(</span><span class="s1">&#39;invalid&#39;</span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
@@ -302,13 +301,13 @@ exception according this argument</li>
 <dl class="function">
 <dt id="snowballing.dbindex.increment_char">
 <code class="descname">increment_char</code><span class="sig-paren">(</span><em>letter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbindex.html#increment_char"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbindex.increment_char" title="Permalink to this definition">¶</a></dt>
-<dd><p>Increment letter from &#8216;a&#8217; through &#8216;z&#8217;</p>
+<dd><p>Increment letter from ‘a’ through ‘z’</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li>letter &#8211; current letter</li>
+<li>letter – current letter</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">increment_char</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">increment_char</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
 <span class="go">&#39;b&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">increment_char</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
 <span class="go">&#39;c&#39;</span>
@@ -325,13 +324,13 @@ exception according this argument</li>
 <dt id="snowballing.dbindex.increment_str">
 <code class="descname">increment_str</code><span class="sig-paren">(</span><em>varname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/dbindex.html#increment_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.dbindex.increment_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Increment letter from varname</p>
-<p>If it reaches the &#8216;z&#8217;, adds a new &#8216;a&#8217; letter and restarts the process</p>
+<p>If it reaches the ‘z’, adds a new ‘a’ letter and restarts the process</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li><cite>varname</cite> &#8211; variable name (e.g., &#8216;murta2014a&#8217;)</li>
+<li><cite>varname</cite> – variable name (e.g., ‘murta2014a’)</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">increment_str</span><span class="p">(</span><span class="s1">&#39;murta2014&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">increment_str</span><span class="p">(</span><span class="s1">&#39;murta2014&#39;</span><span class="p">)</span>
 <span class="go">&#39;murta2014a&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">increment_str</span><span class="p">(</span><span class="s1">&#39;murta2014a&#39;</span><span class="p">)</span>
 <span class="go">&#39;murta2014b&#39;</span>
@@ -353,11 +352,11 @@ exception according this argument</li>
 <p>The convention is (last name of first author)(year)(sequential letter)</p>
 <p>Arguments:</p>
 <ul class="simple">
-<li><cite>varname</cite> &#8211; variable name for extraction (e.g., &#8216;murta2014a&#8217;)<ul>
-<li>If the varname doesn&#8217;t match the convention, returns None</li>
+<li><cite>varname</cite> – variable name for extraction (e.g., ‘murta2014a’)<ul>
+<li>If the varname doesn’t match the convention, returns None</li>
 </ul>
 </li>
-<li><cite>group_index</cite> &#8211; indicates which part should be extracted<ul>
+<li><cite>group_index</cite> – indicates which part should be extracted<ul>
 <li>0 = all the varname</li>
 <li>1 = last name of first author</li>
 <li>2 = year</li>
@@ -366,7 +365,7 @@ exception according this argument</li>
 </li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">varname</span> <span class="o">=</span> <span class="s1">&#39;murta2014a&#39;</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">varname</span> <span class="o">=</span> <span class="s1">&#39;murta2014a&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parse_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="go">&#39;murta2014a&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parse_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -376,7 +375,7 @@ exception according this argument</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parse_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="go">&#39;a&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">varname</span> <span class="o">=</span> <span class="s1">&#39;invalid&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -388,9 +387,7 @@ exception according this argument</li>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -399,7 +396,7 @@ exception according this argument</li>
         <a href="dbmanager.html" class="btn btn-neutral float-right" title="dbmanager.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="config.html" class="btn btn-neutral" title="config.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="config_helper.html" class="btn btn-neutral float-left" title="config_helpers.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -408,11 +405,19 @@ exception according this argument</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -424,37 +429,15 @@ exception according this argument</li>
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

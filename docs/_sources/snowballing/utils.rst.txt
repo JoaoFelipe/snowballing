@@ -8,6 +8,12 @@ utils.py
 Functions
 ------------------
 
+parse_bibtex
+-----------------------------
+
+.. autofunction:: snowballing.utils.parse_bibtex
+
+
 match_any
 -----------------------------
 
@@ -20,22 +26,16 @@ compare_str
 .. autofunction:: snowballing.utils.compare_str
 
 
-setitem
------------------------------
-
-.. autofunction:: snowballing.utils.setitem
-
-
-consume
------------------------------
-
-.. autofunction:: snowballing.utils.consume
-
-
 import_submodules
 -----------------------------
 
 .. autofunction:: snowballing.utils.import_submodules
+
+
+import_or_reload
+-----------------------------
+
+.. autofunction:: snowballing.utils.import_or_reload
 
 
 adjust_point
@@ -60,6 +60,18 @@ text_y
 -----------------------------
 
 .. autofunction:: snowballing.utils.text_y
+
+
+display_list
+-----------------------------
+
+.. autofunction:: snowballing.utils.display_list
+
+
+to_list
+-----------------------------
+
+.. autofunction:: snowballing.utils.to_list
 
 
 ------------------

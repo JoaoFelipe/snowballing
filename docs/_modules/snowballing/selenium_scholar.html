@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,50 +11,44 @@
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> snowballing
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -82,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
@@ -106,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
@@ -113,13 +109,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">snowballing</a>
@@ -127,9 +124,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -150,7 +148,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -158,8 +156,6 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
         
       </li>
     
@@ -228,13 +224,13 @@
 <span class="kn">from</span> <span class="nn">.scholar</span> <span class="k">import</span> <span class="n">ScholarQuery</span><span class="p">,</span> <span class="n">BeautifulSoup</span>
 <span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">work_by_varname</span>
 
-<span class="n">ScholarConf</span><span class="o">.</span><span class="n">VERSION</span> <span class="o">=</span> <span class="s1">&#39;s1.00&#39;</span>
+<span class="n">ScholarConf</span><span class="o">.</span><span class="n">VERSION</span> <span class="o">=</span> <span class="s2">&quot;s1.00&quot;</span>
 <span class="n">ScholarConf</span><span class="o">.</span><span class="n">DELTA_TIME</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">ScholarConf</span><span class="o">.</span><span class="n">DELTA_VARIATION</span> <span class="o">=</span> <span class="mf">0.5</span>
 
 
 <div class="viewcode-block" id="get_scholar_url"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.get_scholar_url">[docs]</a><span class="k">def</span> <span class="nf">get_scholar_url</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Gets scholar url from work &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Get scholar url from work&quot;&quot;&quot;</span>
     <span class="n">scholar_url</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">urlparse</span><span class="p">(</span><span class="n">work</span><span class="o">.</span><span class="n">scholar</span><span class="p">))</span>
     <span class="n">scholar_url</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;http&quot;</span>
     <span class="n">scholar_url</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;scholar.google.com&quot;</span>
@@ -246,15 +242,15 @@
 
 
 <div class="viewcode-block" id="click"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.click">[docs]</a><span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Clicks on selector &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Click on selector&quot;&quot;&quot;</span>
     <span class="n">element</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">find_element_by_css_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
     <span class="n">element</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">element</span></div>
 
 
 <div class="viewcode-block" id="URLQuery"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.URLQuery">[docs]</a><span class="k">class</span> <span class="nc">URLQuery</span><span class="p">(</span><span class="n">ScholarQuery</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Represents a Google Scholar query using a generic query</span>
-<span class="sd">    We use it to navigate on the citations &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Represent a Google Scholar query using a generic query</span>
+<span class="sd">    We use it to navigate on the citations&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">ScholarQuery</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -272,7 +268,7 @@
 
 
 <div class="viewcode-block" id="Result"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.Result">[docs]</a><span class="k">class</span> <span class="nc">Result</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Represents a result with articles &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Represent a result with articles&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">html</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">articles</span> <span class="o">=</span> <span class="p">[]</span>
@@ -290,7 +286,7 @@
 
 
 <div class="viewcode-block" id="AddArticleTask"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.AddArticleTask">[docs]</a><span class="k">class</span> <span class="nc">AddArticleTask</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Task that adds an article to the result &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Task that adds an article to the result&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">article</span> <span class="o">=</span> <span class="n">article</span>
@@ -302,18 +298,18 @@
 <span class="sd">        you adjusted the settings to tell Google Scholar to actually</span>
 <span class="sd">        provide this information, *prior* to retrieving the article.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;url_citation&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;url_citation&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="o">.</span><span class="n">citation_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-        <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;retrieving citation export data: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieving citation export data: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;url_citation&quot;</span><span class="p">]</span>
         <span class="p">))</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">querier</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;url_citation&#39;</span><span class="p">],</span>
-                                    <span class="n">log_msg</span><span class="o">=</span><span class="s1">&#39;citation data response&#39;</span><span class="p">,</span>
-                                    <span class="n">err_msg</span><span class="o">=</span><span class="s1">&#39;requesting citation data failed&#39;</span><span class="p">,</span>
-                                    <span class="n">condition</span><span class="o">=</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">TAG_NAME</span><span class="p">,</span> <span class="s1">&#39;pre&#39;</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">querier</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;url_citation&quot;</span><span class="p">],</span>
+                                    <span class="n">log_msg</span><span class="o">=</span><span class="s2">&quot;citation data response&quot;</span><span class="p">,</span>
+                                    <span class="n">err_msg</span><span class="o">=</span><span class="s2">&quot;requesting citation data failed&quot;</span><span class="p">,</span>
+                                    <span class="n">condition</span><span class="o">=</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">TAG_NAME</span><span class="p">,</span> <span class="s2">&quot;pre&quot;</span><span class="p">))</span>
         <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">text</span>
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -324,13 +320,13 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="AddArticleTask.apply"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.AddArticleTask.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querier</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">articles</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="s1">&#39;num_results&#39;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">articles</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="s2">&quot;num_results&quot;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_citation_data</span><span class="p">(</span><span class="n">querier</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">articles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ParseTask"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.ParseTask">[docs]</a><span class="k">class</span> <span class="nc">ParseTask</span><span class="p">(</span><span class="n">ScholarArticleParser120726</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Task that parsers articles &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Task that parsers articles&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
         <span class="n">ScholarArticleParser120726</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -340,7 +336,7 @@
 
 <div class="viewcode-block" id="ParseTask.handle_num_results"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.ParseTask.handle_num_results">[docs]</a>    <span class="k">def</span> <span class="nf">handle_num_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_results</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s1">&#39;num_results&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_results</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s2">&quot;num_results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_results</span></div>
 
 <div class="viewcode-block" id="ParseTask.handle_article"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.ParseTask.handle_article">[docs]</a>    <span class="k">def</span> <span class="nf">handle_article</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">art</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">articles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">art</span><span class="p">)</span></div>
@@ -352,17 +348,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">querier</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">appendleft</span><span class="p">(</span><span class="n">AddArticleTask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">art</span><span class="p">))</span></div></div>
 
 
-
 <div class="viewcode-block" id="QueryTask"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.QueryTask">[docs]</a><span class="k">class</span> <span class="nc">QueryTask</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Task that queries the scholar &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Task that queries the scholar&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
 
 <div class="viewcode-block" id="QueryTask.apply"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.QueryTask.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querier</span><span class="p">):</span>
         <span class="n">html</span> <span class="o">=</span> <span class="n">querier</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get_url</span><span class="p">(),</span>
-                                    <span class="n">log_msg</span><span class="o">=</span><span class="s1">&#39;dump of query response HTML&#39;</span><span class="p">,</span>
-                                    <span class="n">err_msg</span><span class="o">=</span><span class="s1">&#39;results retrieval failed&#39;</span><span class="p">,</span>
+                                    <span class="n">log_msg</span><span class="o">=</span><span class="s2">&quot;dump of query response HTML&quot;</span><span class="p">,</span>
+                                    <span class="n">err_msg</span><span class="o">=</span><span class="s2">&quot;results retrieval failed&quot;</span><span class="p">,</span>
                                     <span class="n">condition</span><span class="o">=</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s2">&quot;gs_ab&quot;</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">html</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -382,11 +377,11 @@
 <span class="sd">    configure on the Scholar website, in the advanced search options.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">SCHOLAR_QUERY_URL</span> <span class="o">=</span> <span class="n">ScholarConf</span><span class="o">.</span><span class="n">SCHOLAR_SITE</span> <span class="o">+</span> <span class="s1">&#39;/scholar?&#39;</span>
+    <span class="n">SCHOLAR_QUERY_URL</span> <span class="o">=</span> <span class="n">ScholarConf</span><span class="o">.</span><span class="n">SCHOLAR_SITE</span> <span class="o">+</span> <span class="s2">&quot;/scholar?&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ScholarQuery</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_add_attribute_type</span><span class="p">(</span><span class="s1">&#39;num_results&#39;</span><span class="p">,</span> <span class="s1">&#39;Results&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_attribute_type</span><span class="p">(</span><span class="s2">&quot;num_results&quot;</span><span class="p">,</span> <span class="s2">&quot;Results&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">words</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># The default search behavior</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">words_some</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># At least one of those words</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">words_none</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># None of these words</span>
@@ -451,7 +446,7 @@
            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">words_none</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">phrase</span> <span class="ow">is</span> <span class="kc">None</span> \
            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub</span> <span class="ow">is</span> <span class="kc">None</span> \
            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeframe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeframe</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">QueryArgumentError</span><span class="p">(</span><span class="s1">&#39;search query needs more parameters&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">QueryArgumentError</span><span class="p">(</span><span class="s2">&quot;search query needs more parameters&quot;</span><span class="p">)</span>
 
         <span class="c1"># If we have some-words or none-words lists, we need to</span>
         <span class="c1"># process them so GS understands them. For simple</span>
@@ -467,17 +462,17 @@
             <span class="n">words_none</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parenthesize_phrases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">words_none</span><span class="p">)</span>
 
         <span class="n">urlargs</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;as_q&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">words</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_epq&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phrase</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_oq&quot;</span><span class="p">,</span> <span class="n">words_some</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_eq&quot;</span><span class="p">,</span> <span class="n">words_none</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_occt&quot;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope_title</span> <span class="k">else</span> <span class="s1">&#39;any&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_sauthors&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_publication&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_ylo&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeframe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_yhi&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeframe</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_sdt&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;0&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_patents</span> <span class="k">else</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%2C5&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;as_vis&quot;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_citations</span> <span class="k">else</span> <span class="s1">&#39;1&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_q&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">words</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_epq&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phrase</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_oq&quot;</span><span class="p">,</span> <span class="n">words_some</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_eq&quot;</span><span class="p">,</span> <span class="n">words_none</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_occt&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope_title</span> <span class="k">else</span> <span class="s2">&quot;any&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_sauthors&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_publication&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_ylo&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeframe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_yhi&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeframe</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_sdt&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;0&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_patents</span> <span class="k">else</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%2C5&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;as_vis&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_citations</span> <span class="k">else</span> <span class="s2">&quot;1&quot;</span><span class="p">),</span>
         <span class="p">]</span>
 
         <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
@@ -488,12 +483,12 @@
 
 
 <div class="viewcode-block" id="wait_for"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.wait_for">[docs]</a><span class="k">def</span> <span class="nf">wait_for</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Wait for an element appear during :delay seconds &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Wait for an element appear during :delay seconds &quot;&quot;&quot;</span>
     <span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">visibility_of_element_located</span><span class="p">(</span><span class="n">condition</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="check_captcha"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.check_captcha">[docs]</a><span class="k">def</span> <span class="nf">check_captcha</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Check if it expects a captcha &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Check if it expects a captcha&quot;&quot;&quot;</span>
     <span class="n">captcha</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_css_selector</span><span class="p">(</span><span class="s2">&quot;#captcha&quot;</span><span class="p">)</span>
     <span class="n">captcha</span> <span class="o">+=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_css_selector</span><span class="p">(</span><span class="s2">&quot;#gs_captcha_f&quot;</span><span class="p">)</span>
     <span class="n">captcha</span> <span class="o">+=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_css_selector</span><span class="p">(</span><span class="s2">&quot;#g-recaptcha&quot;</span><span class="p">)</span>
@@ -531,7 +526,7 @@
 
     <span class="n">SETTINGS_URL</span> <span class="o">=</span> <span class="p">(</span>
     	<span class="n">ScholarConf</span><span class="o">.</span><span class="n">SCHOLAR_SITE</span> <span class="o">+</span>
-    	<span class="s1">&#39;/scholar_settings?hl=en&amp;as_sdt=0,5&amp;sciodt=0,5&#39;</span>
+    	<span class="s2">&quot;/scholar_settings?hl=en&amp;as_sdt=0,5&amp;sciodt=0,5&quot;</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pages</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">citform</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_window</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">collections</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -560,7 +555,7 @@
 
     <span class="nd">@per_page_results</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">per_page_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">ensure_int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;page results must be integer&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">ensure_int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;page results must be integer&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">}:</span>
             <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="s2">&quot;Error: &#39;pages&#39; must be either 10 or 20&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">:</span>
@@ -595,33 +590,33 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_configured</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ScholarSettingsTask</span><span class="o">.</span><span class="n">SETTINGS_URL</span><span class="p">)</span>
-        <span class="n">check_captcha</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s2">&quot;gs_num-bd&quot;</span><span class="p">))</span>
+        <span class="n">check_captcha</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s2">&quot;gs_num-b&quot;</span><span class="p">))</span>
 
 
-        <span class="n">results_per_page</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_num-bd&quot;</span><span class="p">)</span>
+        <span class="n">results_per_page</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_num-b&quot;</span><span class="p">)</span>
         <span class="n">twenty_results</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span>
         	<span class="n">results_per_page</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
-        	<span class="s1">&#39;li[data-v=&quot;</span><span class="si">{}</span><span class="s1">&quot;]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">per_page_results</span><span class="p">)</span>
+        	<span class="s1">&#39;a[data-v=&quot;</span><span class="si">{}</span><span class="s1">&quot;]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">per_page_results</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">citform</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">cittype</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_scisf-bd&quot;</span><span class="p">)</span>
+            <span class="n">cittype</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_settings_import-b&quot;</span><span class="p">)</span>
             <span class="n">bibtex</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span>
-            	<span class="n">cittype</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;li[data-v=&quot;</span><span class="si">{}</span><span class="s1">&quot;]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citform</span><span class="p">)</span>
+            	<span class="n">cittype</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;a[data-v=&quot;</span><span class="si">{}</span><span class="s1">&quot;]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citform</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">dont_show</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#scis0&quot;</span><span class="p">)</span>
+            <span class="n">dont_show</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_settings_import_none&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_window</span><span class="p">:</span>
             <span class="n">new_window</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_nw&quot;</span><span class="p">)</span>
 
-        <span class="n">case_laws</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#as_sdt2&quot;</span><span class="p">)</span>
+        <span class="n">case_laws</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_settings_sdt2&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collections</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">articles</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#as_sdt1&quot;</span><span class="p">)</span>
+            <span class="n">articles</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_settings_sdt1&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collections</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">patents</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#as_sdtp&quot;</span><span class="p">)</span>
+            <span class="n">patents</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s2">&quot;#gs_settings_sdtp&quot;</span><span class="p">)</span>
 
         <span class="n">save_button</span> <span class="o">=</span> <span class="n">click</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s1">&#39;.gs_btn_act[name=&quot;save&quot;]&#39;</span><span class="p">)</span>
-        <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;settings applied&#39;</span><span class="p">)</span></div></div>
+        <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;settings applied&quot;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="SeleniumScholarQuerier"><a class="viewcode-back" href="../../snowballing/selenium_scholar.html#snowballing.selenium_scholar.SeleniumScholarQuerier">[docs]</a><span class="k">class</span> <span class="nc">SeleniumScholarQuerier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -633,9 +628,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">articles</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span> <span class="ow">or</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">WEB_DRIVER</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">ScholarConf</span><span class="o">.</span><span class="n">DELTA_TIME</span> <span class="o">-</span> <span class="mi">1</span>
 
@@ -664,11 +660,11 @@
 <span class="sd">        Helper method, sends HTTP request and returns response payload.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">log_msg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">log_msg</span> <span class="o">=</span> <span class="s1">&#39;HTTP response data follow&#39;</span>
+            <span class="n">log_msg</span> <span class="o">=</span> <span class="s2">&quot;HTTP response data follow&quot;</span>
         <span class="k">if</span> <span class="n">err_msg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">err_msg</span> <span class="o">=</span> <span class="s1">&#39;request failed&#39;</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s2">&quot;request failed&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;requesting </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">unquote</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;requesting </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">unquote</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
 
             <span class="n">current</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="k">while</span> <span class="n">current</span> <span class="o">-</span> <span class="n">ScholarConf</span><span class="o">.</span><span class="n">DELTA_TIME</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="p">:</span>
@@ -683,22 +679,20 @@
 
             <span class="n">html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">page_source</span>
 
-            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="n">log_msg</span><span class="p">)</span>
-            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&gt;&gt;&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">68</span><span class="p">)</span>
-            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;url: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span>
-            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;data:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">html</span><span class="p">)</span> <span class="c1"># For Python 3</span>
-            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&lt;&lt;&lt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">68</span><span class="p">)</span>
+            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="n">log_msg</span><span class="p">)</span>
+            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&gt;&gt;&gt;&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">68</span><span class="p">)</span>
+            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="s2">&quot;url: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span>
+            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="s2">&quot;data:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">html</span><span class="p">)</span> <span class="c1"># For Python 3</span>
+            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&lt;&lt;&lt;&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">68</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">html</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="n">err_msg</span> <span class="o">+</span> <span class="s1">&#39;: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">err</span><span class="p">)</span>
+            <span class="n">ScholarUtils</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="n">err_msg</span> <span class="o">+</span> <span class="s2">&quot;: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">err</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span></div></div>
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -707,11 +701,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -723,37 +725,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

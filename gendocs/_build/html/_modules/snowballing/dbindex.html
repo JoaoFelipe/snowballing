@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,50 +11,44 @@
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> snowballing
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -82,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
@@ -106,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
@@ -113,13 +109,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">snowballing</a>
@@ -127,9 +124,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -150,7 +148,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -158,8 +156,6 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
         
       </li>
     
@@ -202,7 +198,7 @@
 <span class="sd">        &gt;&gt;&gt; [citation_file(&#39;noworkflow2014&#39;)]  # doctest: +ELLIPSIS</span>
 <span class="sd">        [.../citations/noworkflow2014.py&#39;)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">DATABASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;citations&#39;</span> <span class="o">/</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.py&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">DATABASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;citations&quot;</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.py&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="year_file"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.year_file">[docs]</a><span class="k">def</span> <span class="nf">year_file</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
@@ -222,7 +218,7 @@
 <span class="sd">        &gt;&gt;&gt; [year_file(2017)]  # doctest: +ELLIPSIS</span>
 <span class="sd">        [.../work/y2017.py&#39;)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">DATABASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;work&#39;</span> <span class="o">/</span> <span class="s1">&#39;y</span><span class="si">{}</span><span class="s1">.py&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">year</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">DATABASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;work&quot;</span> <span class="o">/</span> <span class="s2">&quot;y</span><span class="si">{}</span><span class="s2">.py&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">year</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="places_file"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.places_file">[docs]</a><span class="k">def</span> <span class="nf">places_file</span><span class="p">():</span>
@@ -236,7 +232,7 @@
 <span class="sd">        &gt;&gt;&gt; [places_file()]  # doctest: +ELLIPSIS</span>
 <span class="sd">        [...places.py&#39;)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">DATABASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;places.py&#39;</span></div>
+    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">DATABASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;places.py&quot;</span></div>
 
 
 <div class="viewcode-block" id="this_file"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.this_file">[docs]</a><span class="k">def</span> <span class="nf">this_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
@@ -255,7 +251,7 @@
 <span class="sd">        &gt;&gt;&gt; this_file(__file__)</span>
 <span class="sd">        &#39;dbindex&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="discover_year"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.discover_year">[docs]</a><span class="k">def</span> <span class="nf">discover_year</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fail_raise</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -293,7 +289,7 @@
     <span class="n">year</span> <span class="o">=</span> <span class="n">parse_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">year</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">fail_raise</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Year Required&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Year Required&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span></div>
 
@@ -317,8 +313,8 @@
 <span class="sd">        &#39;a&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">letter</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ascii_letters</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;a&#39;</span>
-    <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">letter</span> <span class="o">!=</span> <span class="s1">&#39;z&#39;</span> <span class="k">else</span> <span class="s1">&#39;a&#39;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;a&quot;</span>
+    <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">letter</span> <span class="o">!=</span> <span class="s2">&quot;z&quot;</span> <span class="k">else</span> <span class="s2">&quot;a&quot;</span></div>
 
 
 <div class="viewcode-block" id="increment_str"><a class="viewcode-back" href="../../snowballing/dbindex.html#snowballing.dbindex.increment_str">[docs]</a><span class="k">def</span> <span class="nf">increment_str</span><span class="p">(</span><span class="n">varname</span><span class="p">):</span>
@@ -343,14 +339,14 @@
 <span class="sd">        &gt;&gt;&gt; increment_str(&#39;murta2014az&#39;)</span>
 <span class="sd">        &#39;murta2014ba&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">lpart</span> <span class="o">=</span> <span class="n">varname</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+    <span class="n">lpart</span> <span class="o">=</span> <span class="n">varname</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
     <span class="n">num_replacements</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">lpart</span><span class="p">)</span>
     <span class="n">new_s</span> <span class="o">=</span> <span class="n">lpart</span>
     <span class="k">if</span> <span class="n">lpart</span> <span class="ow">and</span> <span class="n">lpart</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">ascii_letters</span><span class="p">:</span>
         <span class="n">new_s</span> <span class="o">=</span> <span class="n">lpart</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">increment_char</span><span class="p">(</span><span class="n">lpart</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">new_s</span> <span class="o">+=</span> <span class="s2">&quot;a&quot;</span>
-    <span class="n">new_s</span> <span class="o">+=</span> <span class="s1">&#39;a&#39;</span> <span class="o">*</span> <span class="n">num_replacements</span>
+    <span class="n">new_s</span> <span class="o">+=</span> <span class="s2">&quot;a&quot;</span> <span class="o">*</span> <span class="n">num_replacements</span>
     <span class="k">return</span> <span class="n">new_s</span></div>
 
 
@@ -393,16 +389,14 @@
 <span class="sd">        True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span>
-        <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;(.*)(\d\d\d\d)(.*)&#39;</span><span class="p">,</span> <span class="n">varname</span><span class="p">),</span>
-        <span class="s1">&#39;group&#39;</span><span class="p">,</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.*)(\d\d\d\d)(.*)&quot;</span><span class="p">,</span> <span class="n">varname</span><span class="p">),</span>
+        <span class="s2">&quot;group&quot;</span><span class="p">,</span>
         <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">None</span>
     <span class="p">)(</span><span class="n">group_index</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -411,11 +405,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -427,37 +429,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

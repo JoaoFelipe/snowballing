@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,51 +11,46 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../index.html"/>
-        <link rel="next" title="operations.py" href="operations.html"/>
-        <link rel="prev" title="jupyter_utils.py" href="jupyter_utils.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="operations.py" href="operations.html" />
+    <link rel="prev" title="jupyter_utils.py" href="jupyter_utils.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../index.html" class="icon icon-home"> snowballing
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -83,6 +77,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graph.html">graph.py</a></li>
@@ -118,6 +114,7 @@
 <li class="toctree-l1"><a class="reference internal" href="snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
@@ -125,13 +122,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">snowballing</a>
@@ -139,9 +137,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -162,7 +161,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>models.py</li>
     
@@ -193,41 +192,41 @@ citation graph</p>
 <h3>Work<a class="headerlink" href="#work" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="snowballing.models.Work">
-<em class="property">class </em><code class="descname">Work</code><span class="sig-paren">(</span><em>year</em>, <em>name</em>, <em>authors=''</em>, <em>display=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Work"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Work" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">snowballing.models.WithTitle</span></code></p>
+<em class="property">class </em><code class="descname">Work</code><span class="sig-paren">(</span><em>year</em>, <em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Work"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Work" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Work represents papers in the snowballing</p>
 <p>It has the following attributes:</p>
 <ul>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">year</span></code> &#8211; year of publivation (int)</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">year</span></code> – year of publivation (int)</p>
 <ul class="simple">
 <li>Convention: use 0 if it is not required (website), or 9999 if it is not
 informed</li>
 </ul>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">name</span></code> &#8211; paper title</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code> – paper title</p>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">authors</span></code> &#8211; paper authors</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">authors</span></code> – paper authors</p>
 <ul class="simple">
-<li>For exporting properly to BibTeX, I suggest using the format &#8216;LastName1,
-FirstName1 and LastName2, FirstName2 and LastName3, FirstName3 ...&#8217;</li>
+<li>For exporting properly to BibTeX, I suggest using the format ‘LastName1,
+FirstName1 and LastName2, FirstName2 and LastName3, FirstName3 …’</li>
 </ul>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code> &#8211; display label for graphs</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">display</span></code> – display label for graphs</p>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">metakey</span></code> &#8211; variable name</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">metakey</span></code> – variable name</p>
 <ul class="simple">
 <li>It is automatically collected from the database. It it does not exist,
-call <code class="xref py py-func docutils literal"><span class="pre">snowvalling.operations.reload()</span></code> again.</li>
+call <code class="xref py py-func docutils literal notranslate"><span class="pre">snowvalling.operations.reload()</span></code> again.</li>
 </ul>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">file</span></code> &#8211; filename of the work (optional)</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">file</span></code> – filename of the work (optional)</p>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">due</span></code> &#8211; reason for work not being related (optional)</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">due</span></code> – reason for work not being related (optional)</p>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">notes</span></code> &#8211; use it to append a string to year in BibTeX (optional)</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">notes</span></code> – use it to append a string to year in BibTeX (optional)</p>
 <ul>
 <li><p class="first">For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">work</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2014</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">work</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2014</span>
 <span class="n">work</span><span class="o">.</span><span class="n">notes</span> <span class="o">=</span> <span class="s2">&quot;in press&quot;</span>
 </pre></div>
 </div>
@@ -236,38 +235,23 @@ call <code class="xref py py-func docutils literal"><span class="pre">snowvallin
 </li>
 </ul>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">snowball</span></code> &#8211; forward snowballing date (optional)</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">snowball</span></code> – forward snowballing date (optional)</p>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">citation_file</span></code> &#8211; citation filename (without .py)</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">citation_file</span></code> – citation filename (without .py)</p>
 <ul class="simple">
 <li>Indicates where are the citations of this work</li>
 </ul>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">alias</span></code> &#8211; tuple with (year, title, authors) (optional)</p>
-<ul>
-<li><p class="first">Represents the same work in google scholar</p>
-<blockquote>
-<div><ul class="simple">
-<li>The tuple can have two elements if the authors match: (year, title)</li>
-<li>Use year = 0, if the citation on google scholar doesn&#8217;t have the
-year information</li>
-</ul>
-</div></blockquote>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scholar</span></code> – url of the work in google scholar (optional)</p>
 </li>
-</ul>
-</li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">aliases</span></code> &#8211; list of alias attributes (optional)</p>
-</li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">scholar</span></code> &#8211; url of the work in google scholar (optional)</p>
-</li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">scholar_ok</span></code> &#8211; status of the work according to a google scholar
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scholar_ok</span></code> – status of the work according to a google scholar
 curation (optional)</p>
 <ul class="simple">
-<li>True means that we already merged google scholar&#8217;s bibtex to the work</li>
-<li>False means that we didn&#8217;t</li>
+<li>True means that we already merged google scholar’s bibtex to the work</li>
+<li>False means that we didn’t</li>
 </ul>
 </li>
-<li><p class="first"><code class="xref py py-attr docutils literal"><span class="pre">tracking</span></code> indicates if we set an alert for the work (optional)</p>
+<li><p class="first"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tracking</span></code> indicates if we set an alert for the work (optional)</p>
 <ul class="simple">
 <li>Note: the alert is manual. This tool does not set the alert.
 You can use whatever value you want for it</li>
@@ -278,22 +262,20 @@ You can use whatever value you want for it</li>
 about the work.</p>
 <p>Note however that it has the following reserved attributes:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#snowballing.models.Work.category" title="snowballing.models.Work.category"><code class="xref py py-attr docutils literal"><span class="pre">category</span></code></a> &#8211; work status in the snowballing</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">tyear</span></code> &#8211; year object for drawing</li>
-<li><a class="reference internal" href="#snowballing.models.Work.ignore" title="snowballing.models.Work.ignore"><code class="xref py py-attr docutils literal"><span class="pre">ignore</span></code></a> &#8211; set that specifies ignore attributes in titles
-(<code class="xref py py-class docutils literal"><span class="pre">WithTitle</span></code>)</li>
-<li><a class="reference internal" href="#snowballing.models.Work.draw" title="snowballing.models.Work.draw"><code class="xref py py-meth docutils literal"><span class="pre">draw()</span></code></a> &#8211; method that draws the work</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_x</span></code> &#8211; x position for drawing the work</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_y</span></code> &#8211; y position for drawing the work</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_r</span></code> &#8211; radius for circular node drawing</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_i</span></code> &#8211; column index for drawing the work</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_year_index</span></code> &#8211; row index for drawing the work</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_letters</span></code> &#8211; max amount of letters for drawing</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_shape</span></code> &#8211; shape of node (circle vs rectangle)</li>
+<li><a class="reference internal" href="#snowballing.models.Work.category" title="snowballing.models.Work.category"><code class="xref py py-attr docutils literal notranslate"><span class="pre">category</span></code></a> – work status in the snowballing</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_tyear</span></code> – year object for drawing</li>
+<li><code class="xref py py-meth docutils literal notranslate"><span class="pre">_draw()</span></code> – method that draws the work</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_x</span></code> – x position for drawing the work</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_y</span></code> – y position for drawing the work</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_r</span></code> – radius for circular node drawing</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_i</span></code> – column index for drawing the work</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_year_index</span></code> – row index for drawing the work</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_letters</span></code> – max amount of letters for drawing</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_shape</span></code> – shape of node (circle vs rectangle)</li>
 </ul>
 <p>Works are considered equal if they have the same place, name and year</p>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">IPAW</span> <span class="o">=</span> <span class="n">Place</span><span class="p">(</span><span class="s1">&#39;IPAW&#39;</span><span class="p">,</span> <span class="s1">&#39;IPAW&#39;</span><span class="p">,</span> <span class="s1">&#39;conference&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">IPAW</span> <span class="o">=</span> <span class="n">Place</span><span class="p">(</span><span class="s1">&#39;IPAW&#39;</span><span class="p">,</span> <span class="s1">&#39;IPAW&#39;</span><span class="p">,</span> <span class="s1">&#39;conference&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">murta2014a</span> <span class="o">=</span> <span class="n">Work</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="mi">2014</span><span class="p">,</span> <span class="s2">&quot;noWorkflow: capturing and analyzing provenance of scripts&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">display</span><span class="o">=</span><span class="s2">&quot;noWorkflow&quot;</span><span class="p">,</span>
@@ -301,7 +283,7 @@ about the work.</p>
 <span class="gp">... </span>            <span class="s2">&quot;Fernando and Koop, David and Freire, Juliana&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">place</span><span class="o">=</span><span class="n">IPAW</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">local</span><span class="o">=</span><span class="s2">&quot;Cologne, Germany&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">file</span><span class="o">=</span><span class="s2">&quot;Murta2014a.pdf&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="nb">file</span><span class="o">=</span><span class="s2">&quot;Murta2014a.pdf&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">pp</span><span class="o">=</span><span class="s2">&quot;71--83&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">entrytype</span><span class="o">=</span><span class="s2">&quot;inproceedings&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">citation_file</span><span class="o">=</span><span class="s2">&quot;noworkflow2014&quot;</span><span class="p">,</span>
@@ -319,23 +301,6 @@ about the work.</p>
 <code class="descname">category</code><em class="property"> = 'work'</em><a class="headerlink" href="#snowballing.models.Work.category" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="snowballing.models.Work.draw">
-<code class="descname">draw</code><span class="sig-paren">(</span><em>dwg</em>, <em>fill_color=None</em>, <em>draw_place=False</em>, <em>use_circle=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Work.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Work.draw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw work</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="snowballing.models.Work.generate_title">
-<code class="descname">generate_title</code><span class="sig-paren">(</span><em>prepend='\n\n'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Work.generate_title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Work.generate_title" title="Permalink to this definition">¶</a></dt>
-<dd><p>The title of a work is its BibTeX</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="snowballing.models.Work.ignore">
-<code class="descname">ignore</code><em class="property"> = {'name', '_x', '_i', 'display', 'year', '_year_index', 'authors', '_letters', '_y', '_r'}</em><a class="headerlink" href="#snowballing.models.Work.ignore" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div>
@@ -344,15 +309,15 @@ about the work.</p>
 <dl class="class">
 <dt id="snowballing.models.Site">
 <em class="property">class </em><code class="descname">Site</code><span class="sig-paren">(</span><em>name</em>, <em>link</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Site" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#snowballing.models.Work" title="snowballing.models.Work"><code class="xref py py-class docutils literal"><span class="pre">snowballing.models.Work</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.models.Work" title="snowballing.models.Work"><code class="xref py py-class docutils literal notranslate"><span class="pre">snowballing.models.Work</span></code></a></p>
 <p>Represent a site reference</p>
 <p>It does not have an year, but it requires following attributes:</p>
 <ul class="simple">
-<li><code class="xref py py-attr docutils literal"><span class="pre">name</span></code> &#8211; website name</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">link</span></code> &#8211; website link</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code> – website name</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">link</span></code> – website link</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">site</span> <span class="o">=</span> <span class="n">Site</span><span class="p">(</span><span class="s2">&quot;GitHub&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.github.com&quot;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">site</span> <span class="o">=</span> <span class="n">Site</span><span class="p">(</span><span class="s2">&quot;GitHub&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.github.com&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">site</span><span class="o">.</span><span class="n">name</span>
 <span class="go">&#39;GitHub&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">site</span><span class="o">.</span><span class="n">link</span>
@@ -372,16 +337,16 @@ about the work.</p>
 <dl class="class">
 <dt id="snowballing.models.Email">
 <em class="property">class </em><code class="descname">Email</code><span class="sig-paren">(</span><em>year</em>, <em>authors</em>, <em>subject</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#snowballing.models.Work" title="snowballing.models.Work"><code class="xref py py-class docutils literal"><span class="pre">snowballing.models.Work</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#snowballing.models.Work" title="snowballing.models.Work"><code class="xref py py-class docutils literal notranslate"><span class="pre">snowballing.models.Work</span></code></a></p>
 <p>Represent an email reference</p>
 <p>It requires the following attributes:</p>
 <ul class="simple">
-<li><code class="xref py py-attr docutils literal"><span class="pre">year</span></code> &#8211; year it was received</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">authors</span></code> &#8211; email author</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">name</span></code> &#8211; email subject</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">year</span></code> – year it was received</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">authors</span></code> – email author</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code> – email subject</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">email</span> <span class="o">=</span> <span class="n">Email</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="s2">&quot;Pimentel, Joao&quot;</span><span class="p">,</span> <span class="s2">&quot;noWorkflow model&quot;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">email</span> <span class="o">=</span> <span class="n">Email</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="s2">&quot;Pimentel, Joao&quot;</span><span class="p">,</span> <span class="s2">&quot;noWorkflow model&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">email</span><span class="o">.</span><span class="n">year</span>
 <span class="go">2017</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">email</span><span class="o">.</span><span class="n">authors</span>
@@ -403,30 +368,19 @@ about the work.</p>
 <dl class="class">
 <dt id="snowballing.models.Citation">
 <em class="property">class </em><code class="descname">Citation</code><span class="sig-paren">(</span><em>work</em>, <em>citation</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Citation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Citation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">snowballing.models.WithTitle</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represent a citation for the work</p>
 <p>Attributes:</p>
 <ul class="simple">
-<li><code class="xref py py-attr docutils literal"><span class="pre">work</span></code> &#8211; the work that cites</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">citation</span></code> &#8211; the work that is cited</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">work</span></code> – the work that cites</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">citation</span></code> – the work that is cited</li>
 </ul>
 <p>Other attributes are optional and can be used to include extra information
 about the citation.</p>
 <p>Note however that it has the following reserved attributes:</p>
 <ul class="simple">
-<li><code class="xref py py-attr docutils literal"><span class="pre">citations_file</span></code> &#8211; file where the citation is defined</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">citations_file</span></code> – file where the citation is defined</li>
 </ul>
-<dl class="method">
-<dt id="snowballing.models.Citation.draw">
-<code class="descname">draw</code><span class="sig-paren">(</span><em>dwg</em>, <em>marker</em>, <em>years</em>, <em>rows</em>, <em>draw_place=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Citation.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Citation.draw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw citation line</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="snowballing.models.Citation.ignore">
-<code class="descname">ignore</code><em class="property"> = {'work', 'citation'}</em><a class="headerlink" href="#snowballing.models.Citation.ignore" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div>
@@ -435,37 +389,31 @@ about the citation.</p>
 <dl class="class">
 <dt id="snowballing.models.Year">
 <em class="property">class </em><code class="descname">Year</code><span class="sig-paren">(</span><em>year</em>, <em>previous</em>, <em>works</em>, <em>i=-1</em>, <em>dist=60</em>, <em>r=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Year" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represent a year in the citation graph</p>
 <p>It has the following attributes:</p>
 <ul class="simple">
-<li><code class="xref py py-attr docutils literal"><span class="pre">year</span></code> &#8211;  int</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">next_year</span></code> &#8211;  tuple with year object and index<ul>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">year</span></code> –  int</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">next_year</span></code> –  tuple with year object and index<ul>
 <li>year = -1 indicates that there is no next year</li>
 </ul>
 </li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">previous_year</span></code> &#8211;  tuple with year object and index
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">previous_year</span></code> –  tuple with year object and index
 * previous = -1 indicates that there is no previous year</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">works</span></code> &#8211;  list of works in the year</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">works</span></code> –  list of works in the year</li>
 </ul>
 <p>It has the following reversed attributes</p>
 <ul class="simple">
-<li><code class="xref py py-attr docutils literal"><span class="pre">_i</span></code> &#8211;  column index for drawing the year</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_dist</span></code> &#8211;  distance between year columns</li>
-<li><code class="xref py py-attr docutils literal"><span class="pre">_r</span></code> &#8211; extra margin</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_i</span></code> –  column index for drawing the year</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_dist</span></code> –  distance between year columns</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">_r</span></code> – extra margin</li>
 </ul>
 <p>Doctest:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y2017</span> <span class="o">=</span> <span class="n">Year</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">[])</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y2017</span> <span class="o">=</span> <span class="n">Year</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y2017</span><span class="o">.</span><span class="n">year</span>
 <span class="go">2017</span>
 </pre></div>
 </div>
-<dl class="method">
-<dt id="snowballing.models.Year.draw">
-<code class="descname">draw</code><span class="sig-paren">(</span><em>dwg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/snowballing/models.html#Year.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Year.draw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw year in the position</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -474,7 +422,7 @@ about the citation.</p>
 <dl class="class">
 <dt id="snowballing.models.Database">
 <em class="property">class </em><code class="descname">Database</code><a class="reference internal" href="../_modules/snowballing/models.html#Database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#snowballing.models.Database" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represent a database with all elements that can be accessed</p>
 <dl class="method">
 <dt id="snowballing.models.Database.citations">
@@ -532,9 +480,7 @@ about the citation.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -543,7 +489,7 @@ about the citation.</p>
         <a href="operations.html" class="btn btn-neutral float-right" title="operations.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="jupyter_utils.html" class="btn btn-neutral" title="jupyter_utils.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="jupyter_utils.html" class="btn btn-neutral float-left" title="jupyter_utils.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -552,11 +498,19 @@ about the citation.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -568,37 +522,15 @@ about the citation.</p>
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

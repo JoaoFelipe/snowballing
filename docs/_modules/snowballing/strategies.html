@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,50 +11,44 @@
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> snowballing
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -82,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/graph.html">graph.py</a></li>
@@ -106,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../snowballing/web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
@@ -113,13 +109,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">snowballing</a>
@@ -127,9 +124,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -150,7 +148,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -158,8 +156,6 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
         
       </li>
     
@@ -177,10 +173,12 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">deque</span><span class="p">,</span> <span class="n">Counter</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">copy</span>
-<span class="kn">from</span> <span class="nn">snowballing.operations</span> <span class="k">import</span> <span class="n">load_citations</span><span class="p">,</span> <span class="n">reload</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">reduce</span>
 
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span> <span class="k">as</span> <span class="n">P</span>
+<span class="kn">from</span> <span class="nn">.collection_helpers</span> <span class="k">import</span> <span class="n">oget</span>
+<span class="kn">from</span> <span class="nn">.operations</span> <span class="k">import</span> <span class="n">load_citations</span><span class="p">,</span> <span class="n">reload</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="n">Step</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Step&quot;</span><span class="p">,</span> <span class="s2">&quot;name new_references new_related total_visited total_related source target&quot;</span><span class="p">)</span>
 
@@ -190,24 +188,50 @@
 
     <span class="n">last_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visited</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">related</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">visited</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">related</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">filter_visited</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">filter_visited</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filter_visited</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">True</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_name</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">visited</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">related</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">related</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">filter_function</span> <span class="o">=</span> <span class="n">filter_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_visited</span> <span class="o">=</span> <span class="n">filter_visited</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_visited_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+
+<div class="viewcode-block" id="State.find"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Find state by name&quot;&quot;&quot;</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="p">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)}</span>
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">goal</span> <span class="o">==</span> <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">current</span>
+            <span class="n">antecessors</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span> <span class="k">else</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">previous</span> <span class="ow">in</span> <span class="n">antecessors</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">previous</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">previous</span><span class="p">))</span>
+                    <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">previous</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="State.visit"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.visit">[docs]</a>    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Visit work&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_visited</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_function</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">work</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="State.derive"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.derive">[docs]</a>    <span class="k">def</span> <span class="nf">derive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a derived state&quot;&quot;&quot;</span>
-        <span class="n">new_state</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">filter_visited</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_visited</span>
+        <span class="p">)</span>
         <span class="n">new_state</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="p">([</span><span class="bp">self</span><span class="p">],</span> <span class="n">operation</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_state</span></div>
 
@@ -299,10 +323,10 @@
                 <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                     <span class="n">used_id</span> <span class="o">=</span> <span class="s2">&quot;u</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actions</span><span class="p">[</span><span class="s2">&quot;used&quot;</span><span class="p">])</span>
                     <span class="n">actions</span><span class="p">[</span><span class="s2">&quot;used&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  used(</span><span class="si">{}</span><span class="s1">; </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, -)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">used_id</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  used(</span><span class="si">{}</span><span class="s2">; </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, -)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">used_id</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
                     <span class="n">generated_id</span> <span class="o">=</span> <span class="s2">&quot;g</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">])</span>
                     <span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  wasGeneratedBy(</span><span class="si">{}</span><span class="s1">; </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, -)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  wasGeneratedBy(</span><span class="si">{}</span><span class="s2">; </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, -)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">generated_id</span><span class="p">,</span> <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">)</span>
                     <span class="p">)</span>
                     <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  wasDerivedFrom(</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, [prov:type=&quot;prov:Revision&quot;])&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -315,13 +339,13 @@
                 <span class="n">generated_id</span> <span class="o">=</span> <span class="s2">&quot;g</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">])</span>
                 <span class="n">actions</span><span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  activity(start, -, -)&quot;</span><span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  wasGeneratedBy(</span><span class="si">{}</span><span class="s1">; </span><span class="si">{}</span><span class="s1">, start, -)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  wasGeneratedBy(</span><span class="si">{}</span><span class="s2">; </span><span class="si">{}</span><span class="s2">, start, -)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">generated_id</span><span class="p">,</span> <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;endDocument&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -362,17 +386,22 @@
             <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span>
                 <span class="n">operation</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{}</span><span class="s1"> -&gt; </span><span class="si">{}</span><span class="s1"> [label=&quot;</span><span class="si">{}</span><span class="se">\\</span><span class="s1">nfound: </span><span class="si">{}</span><span class="se">\\</span><span class="s1">nrelated: </span><span class="si">{}</span><span class="s1">&quot;];&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span>
-                        <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">delta_visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">delta_related</span><span class="p">)</span>
-                    <span class="p">))</span>
+                    <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;union&quot;</span><span class="p">:</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{}</span><span class="s1"> -&gt; </span><span class="si">{}</span><span class="s1"> [label=&quot;</span><span class="si">{}</span><span class="s1">&quot;];&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">operation</span>
+                        <span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{}</span><span class="s1"> -&gt; </span><span class="si">{}</span><span class="s1"> [label=&quot;</span><span class="si">{}</span><span class="se">\\</span><span class="s1">nfound: </span><span class="si">{}</span><span class="se">\\</span><span class="s1">nrelated: </span><span class="si">{}</span><span class="s1">&quot;];&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span>
+                            <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">delta_visited</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">delta_related</span><span class="p">)</span>
+                        <span class="p">))</span>
                     <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
                         <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
                         <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">delta_related</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -406,28 +435,28 @@
         <span class="n">bundle</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">dot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dot</span>
-        <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;text/vnd.graphviz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot</span>
+        <span class="n">bundle</span><span class="p">[</span><span class="s2">&quot;text/vnd.graphviz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;nt&#39;</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;creationflags&quot;</span><span class="p">:</span> <span class="mh">0x08000000</span><span class="p">}</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;dot&#39;</span><span class="p">,</span> <span class="s1">&#39;-T&#39;</span><span class="p">,</span> <span class="s2">&quot;svg&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">dot</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;image/svg+xml&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;nt&quot;</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;creationflags&quot;</span><span class="p">:</span> <span class="mh">0x08000000</span><span class="p">}</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;dot&quot;</span><span class="p">,</span> <span class="s2">&quot;-T&quot;</span><span class="p">,</span> <span class="s2">&quot;svg&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">dot</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">bundle</span><span class="p">[</span><span class="s2">&quot;image/svg+xml&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">os</span><span class="o">.</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">:</span>
                 <span class="k">raise</span>
 
-        <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;text/plain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">))</span>
+        <span class="n">bundle</span><span class="p">[</span><span class="s2">&quot;text/plain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">))</span>
         <span class="n">display</span><span class="p">(</span><span class="n">bundle</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="State.new_name"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.new_name">[docs]</a>    <span class="k">def</span> <span class="nf">new_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="State.new_name"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.new_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">new_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate new name for SeedSet&quot;&quot;&quot;</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">last_id</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="s2">&quot;s</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">last_id</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="State.union"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.union">[docs]</a>    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;union&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="State.union"><a class="viewcode-back" href="../../snowballing/strategies.html#snowballing.strategies.State.union">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;union&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a joined state&quot;&quot;&quot;</span>
         <span class="n">new_state</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">derive</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="n">new_state</span><span class="o">.</span><span class="n">visited</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">second</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
@@ -455,14 +484,22 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">filter_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visited</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">filter_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visited</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">filter_visited</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
 
         <span class="k">if</span> <span class="n">filter_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">filter_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;snowball&quot;</span>
+            <span class="n">filter_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">oget</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;snowball&quot;</span>
+        <span class="k">if</span> <span class="n">filter_visited</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filter_visited</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">True</span>
 
         <span class="n">reload</span><span class="p">()</span>
         <span class="n">State</span><span class="o">.</span><span class="n">last_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span><span class="n">visited</span> <span class="ow">or</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">filter_function</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span>
+            <span class="n">visited</span> <span class="ow">or</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">initial_set</span><span class="p">,</span> <span class="n">filter_function</span><span class="p">,</span>
+            <span class="n">filter_visited</span><span class="o">=</span><span class="n">filter_visited</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rev_ref</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
@@ -711,9 +748,7 @@
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -722,11 +757,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -738,37 +781,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

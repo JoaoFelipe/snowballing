@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,50 +11,45 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="snowballing 0.2.0 documentation" href="#"/>
-        <link rel="next" title="Getting started" href="start.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting started" href="start.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="#" class="icon icon-home"> snowballing
+            <a href="#" class="icon icon-home" alt="Documentation Home"> snowballing
           
 
           
@@ -82,6 +76,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="snowballing/approaches.html">approaches.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/common_places.html">common_places.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/config_helper.html">config_helpers.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/dbindex.html">dbindex.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/dbmanager.html">dbmanager.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/graph.html">graph.py</a></li>
@@ -106,6 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="snowballing/snowballing.html">snowballing.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/strategies.html">strategies.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/utils.html">utils.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
@@ -113,13 +110,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="#">snowballing</a>
@@ -127,9 +125,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -150,7 +149,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
       <li>Snowballing</li>
     
@@ -220,6 +219,24 @@ it is not the case.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/config.html">config.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/config_helper.html">config_helpers.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/config_helper.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#last-name-first-author">last_name_first_author</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#reorder-place">reorder_place</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#select-param">select_param</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#var-item">var_item</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#str-list">str_list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#str-item">str_item</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#sequence">sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#work-by-varname">work_by_varname</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#find-work-by-info">find_work_by_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#set-config">set_config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#generate-title">generate_title</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/config_helper.html#update-models">update_models</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/dbindex.html">dbindex.py</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="snowballing/dbindex.html#functions">Functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/dbindex.html#citation-file">citation_file</a></li>
@@ -291,8 +308,6 @@ it is not the case.</p>
 <li class="toctree-l2"><a class="reference internal" href="snowballing/jupyter_utils.html#functions">Functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#display-cell">display_cell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#idisplay">idisplay</a></li>
-<li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#find-line">find_line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#invoke-editor">invoke_editor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#new-button">new_button</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/jupyter_utils.html#work-button">work_button</a></li>
 </ul>
@@ -316,6 +331,10 @@ it is not the case.</p>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#reload">reload</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#work-by-varname">work_by_varname</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find">find</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find-line">find_line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#invoke-editor">invoke_editor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#create-info-code">create_info_code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#should-add-info">should_add_info</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#load-work-map-all-years">load_work_map_all_years</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#load-work">load_work</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#load-citations">load_citations</a></li>
@@ -324,6 +343,7 @@ it is not the case.</p>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#citation-text">citation_text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find-citation">find_citation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find-global-local-citation">find_global_local_citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find-local-citation">find_local_citation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="snowballing/operations.html#bibtex">BibTeX</a><ul>
@@ -333,11 +353,11 @@ it is not the case.</p>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#compare-paper-to-work">compare_paper_to_work</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#find-work-by-info">find_work_by_info</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#bibtex-to-info">bibtex_to_info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#set-display">set_display</a></li>
-<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#set-pyref">set_pyref</a></li>
-<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#set-place">set_place</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#extract-info">extract_info</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#info-to-code">info_to_code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#set-by-info">set_by_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#changes-dict-to-set-attribute">changes_dict_to_set_attribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/operations.html#check-config-deprecation">check_config_deprecation</a></li>
 </ul>
 </li>
 </ul>
@@ -345,12 +365,20 @@ it is not the case.</p>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/scholar.html">scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/selenium_scholar.html">selenium_scholar.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/snowballing.html">snowballing.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snowballing/snowballing.html#events">Events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#eventrunner">EventRunner</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="snowballing/snowballing.html#widgets">Widgets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#webnavigator">WebNavigator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#runwidget">RunWidget</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#replacecellwidget">ReplaceCellWidget</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#converter">Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#articlenavigator">ArticleNavigator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#backwardsnowballing">BackwardSnowballing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#forwardsnowballing">ForwardSnowballing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#scholarupdate">ScholarUpdate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/snowballing.html#searchscholar">SearchScholar</a></li>
 </ul>
 </li>
 </ul>
@@ -366,15 +394,17 @@ it is not the case.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="snowballing/utils.html">utils.py</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="snowballing/utils.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#parse-bibtex">parse_bibtex</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#match-any">match_any</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#compare-str">compare_str</a></li>
-<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#setitem">setitem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#consume">consume</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#import-submodules">import_submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#import-or-reload">import_or_reload</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#adjust-point">adjust_point</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#multiline-wrap">multiline_wrap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#lines-len-in-circle">lines_len_in_circle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#text-y">text_y</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#display-list">display_list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snowballing/utils.html#to-list">to_list</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="snowballing/utils.html#classes">Classes</a><ul>
@@ -384,6 +414,7 @@ it is not the case.</p>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="snowballing/web.html">web.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#notes">Notes</a></li>
 </ul>
@@ -396,9 +427,7 @@ it is not the case.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -414,11 +443,19 @@ it is not the case.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Joao Felipe Pimentel.
+        
+        &copy; Copyright 2017, Joao Felipe Pimentel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -430,37 +467,15 @@ it is not the case.</p>
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
