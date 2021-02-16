@@ -81,13 +81,15 @@ def latex_to_info(latex):
 
 
 def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, backward):
-    try:       
+    try:
         citation_work = work_by_varname(citation_var)
         if citation_var and not citation_work:
             STATUS.add("[Error] Citation var {} not found".format(citation_var))
 
         work = None
         db_latex = None
+        view_html = None
+        view_autoopen = None
         if latex is not None:
             info = latex_to_info(latex)
         if info is None and db_latex is not None:
@@ -131,7 +133,9 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
                 latex = db_latex
             if pyref is None:
                 pyref = work.metakey
-
+            view_html = config.view_func(work)  # pylint: disable=assignment-from-none
+            if view_html is not None:
+                view_autoopen = config.view_autoopen(work)
         
         return {
             "result": "ok",
@@ -144,6 +148,8 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
             "citation": bool(should["citation"]),
             "add": should["add"],
             "status": list(STATUS),
+            "view_html": view_html,
+            "view_autoopen": view_autoopen,
         }, work, should
     except Exception as e:
         traceback.print_exc()
@@ -209,6 +215,23 @@ def do_click(result, work, should_add):
     else:
         result["msg"] = "Work not found"
     return result
+
+@app.route("/simpleclick")
+def do_simpleclick():
+    pyref = request.args.get('pyref')
+    reload()
+    work = work_by_varname(pyref)
+    result = "{} not found".format(pyref)
+    if work:
+        result = "ok"
+        invoke_editor(work)
+    return {
+        "result": result,
+        "msg": "",
+    }
+
+
+
 
 
 @app.route("/form", methods=["GET", "POST"])

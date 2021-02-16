@@ -3,7 +3,7 @@ import base64
 import os
 import warnings
 
-from ipywidgets import DOMWidget, HBox, Label, Text, Button
+from ipywidgets import DOMWidget, HBox, VBox, Label, Text, Button
 from IPython.display import display, Javascript
 from urllib.parse import quote
 
@@ -29,7 +29,7 @@ def display_cell(text):
     """.format("below", encoded_code)))
 
 
-def idisplay(*args, label=True):
+def idisplay(*args, label=True, horizontal=True):
     """Display multiple values using ipywidget HBox
 
     Arguments:
@@ -47,7 +47,7 @@ def idisplay(*args, label=True):
         arg if isinstance(arg, DOMWidget) else new_widget(arg)
         for arg in args
     ]
-    display(HBox(args))
+    display((HBox if horizontal else VBox)(args))
 
 
 def new_button(description, function):
@@ -73,3 +73,21 @@ def work_button(work, description=None):
         invoke_editor(work)
 
     return new_button(description or work @ metakey, click)
+
+
+def file_button(path, description=None):
+    """Create a button for a file using the default program
+
+    Arguments:
+
+    * `path` -- the file path object
+
+    Keyword arguments:
+
+    * `description` -- button label. It uses the work varname if it is not
+      specified
+    """
+    def click(w):
+        os.startfile(path)
+
+    return new_button(description or path, click)

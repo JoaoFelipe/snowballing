@@ -363,7 +363,7 @@ def set_by_info(work, info, set_scholar=True, rules=None):
         add = False
         if key in rules.get("<set_ignore_but_show>", set()):
             add = True
-        elif getattr(work, key) != value:
+        elif getattr(work, key) != value and key not in getattr(work, rules.get("<set_ignore_attr>", "ignoreattrs"), set()):
             add = True
             set_result[key] = (value, getattr(work, key))
         elif key in rules.get("<set_always_show>", set()):
@@ -890,13 +890,13 @@ def invoke_editor(work):
     if not config.TEXT_EDITOR or not config.LINE_PARAMS:
         warnings.warn("You must set the config.TEXT_EDITOR and config.LINE_PARAMS to use this function")
         return
-    subprocess.call([
+    subprocess.call((
         config.TEXT_EDITOR + " " +
         config.LINE_PARAMS.format(
             year_path=year_file(oget(work, "year")),
             line=find_line(work)
-        ),
-    ], shell=True)
+        )
+    ), shell=True)
 
 
 def create_info_code(nwork, info, citation_var, citation_file, should_add, ref=""):

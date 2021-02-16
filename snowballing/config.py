@@ -626,6 +626,23 @@ FORM = {
     ]
 }
 
+### View info
+
+def view_func(work):
+    """Display work in the web interface
+
+    Returning None indicates that the display is not available
+    Return HTML for avaible display
+    """
+    return None
+
+def view_autoopen(work):
+    """Indicate whether the work view should be visible upon load
+
+    Returning None disables the work view in the interface
+    Default: False -- work info keeps hidden
+    """
+    return False
 
 ### Checks
 

@@ -131,6 +131,8 @@ function fillResult(meta, item, source, after, error) {
             meta.found = data.found;
             meta.add = data.add;
             meta.pyref = data.pyref
+            meta.view_autoopen = data.view_autoopen
+            meta.view_html = data.view_html
             if (after) {
                 after(data);
             }
@@ -417,6 +419,8 @@ function inject() {
             'found': false,
             'add': false,
             'pyref': null,
+            'view_html': null,
+            'view_autoopen': null,
         }
         $(item).find(".snowballing").remove();
         $(item).append(`
@@ -429,7 +433,8 @@ function inject() {
                 <div class="work"></div>
                 <div class="bibtex-type"></div>
                 <textarea class="latex"></textarea>
-                <div class="form"></form>
+                <div class="form"></div>
+                <div class="viewdiv"></div>
             </div>
         `);
         resetWork(meta, item);
@@ -452,6 +457,8 @@ function resetWork(meta, item) {
         <button class="found"></button>
         <button class="add">Add</button>
         <button class="hide-add">Hide Add</button>
+        <button class="view">View</button>
+        <button class="hide-view">Hide View</button>
         <button class="clear-list">Clear Errors</button>
         <span class="addstatus"></span>
     `);
@@ -511,12 +518,30 @@ function resetWork(meta, item) {
             } else {
                 $(item).find('.snowballing .found').hide();
             }
+            if (meta.view_html != null && meta.view_autoopen != null) {
+                $(item).find('.snowballing .viewdiv').html(meta.view_html)
+                if (meta.view_autoopen) {
+                    $(item).find('.snowballing .view').hide();
+                    $(item).find('.snowballing .hide-view').show();
+                    $(item).find('.snowballing .viewdiv').show();
+                } else {
+                    $(item).find('.snowballing .view').show();
+                    $(item).find('.snowballing .hide-view').hide();
+                    $(item).find('.snowballing .viewdiv').hide();
+                }
+            } else {
+                $(item).find('.snowballing .view').hide();
+                $(item).find('.snowballing .hide-view').hide();
+                $(item).find('.snowballing .viewdiv').hide();
+            }
         },
         () => {
             $(item).find('.snowballing .reload-db').hide();
             $(item).find('.snowballing .found').hide();
             $(item).find('.snowballing .add').hide();
             $(item).find('.snowballing .hide-add').hide();
+            $(item).find('.snowballing .view').hide();
+            $(item).find('.snowballing .hide-view').hide();
             $(item).find('.snowballing span.addstatus').removeClass("doAdd");
         }
     ) 
@@ -585,6 +610,17 @@ function resetWork(meta, item) {
     $(item).find('.snowballing .clear-list').bind('click', function() {
         $(item).find('.snowballing .error-list').html("");
         $(item).find('.snowballing .clear-list').hide();
+    })
+
+    $(item).find('.snowballing .view').bind('click', function() {
+        $(item).find('.snowballing .viewdiv').show();
+        $(item).find('.snowballing .hide-view').show();
+        $(item).find('.snowballing .view').hide();
+    })
+    $(item).find('.snowballing .hide-view').bind('click', function() {
+        $(item).find('.snowballing .viewdiv').hide();
+        $(item).find('.snowballing .hide-view').hide();
+        $(item).find('.snowballing .view').show();
     })
 
     }
