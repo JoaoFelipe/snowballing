@@ -62,6 +62,8 @@ chrome.runtime.onInstalled.addListener(function() {
     "citation_file": "",
     "backward": false,
     "url": 'http://localhost:5000',
+    "show_snowballing": true,
+    "show_search": false
   });
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     chrome.declarativeContent.onPageChanged.addRules([{

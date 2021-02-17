@@ -231,7 +231,25 @@ def do_simpleclick():
     }
 
 
-
+@app.route("/simplefind", methods=["GET", "POST"])
+def do_find():
+    pyref = request.args.get('pyref').strip()
+    reload()
+    work = work_by_varname(pyref)
+    result = {
+        "found": None
+    }
+    if work:
+        info = latex_to_info(work_to_bibtex(work))
+        scholar = getattr(work, 'scholar', None)
+        if isinstance(scholar, list) and scholar:
+            scholar = scholar[0]
+        result = {
+            "found": pyref,
+            "scholar": scholar,
+            "title": info['name']
+        }
+    return result
 
 
 @app.route("/form", methods=["GET", "POST"])

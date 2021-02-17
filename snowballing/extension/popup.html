@@ -5,26 +5,56 @@
         #errors {
           width: 100%;
         }
+
+        .invalid {
+          border: 1px solid #ffdddd;
+        }
+
+        .toggle {
+          cursor: pointer;
+        }
+        .down {
+          background: #bbb;
+         
+        }
       </style>
     </head>
     <body>
-      <form id="config-form">
-        <div class="config-field">
-          <label for="citation_var">Citation Var</label>
-          <input id="citation-var" name="citation_var"></input>
-        </div>
-        <div class="config-field">
-          <label for="citation_file">Citation File</label>
-          <input id="citation-file" name="citation_file"></input>
-        </div>
-        <div class="config-field">
-          <label>
-            <input id="backward" name="backward" type="checkbox"></input>
-            Backward
-          </label>
-        </div>
-      </form>
-      <button id="reload"> Reload </button>
+      <button id="snowballingbtn" class="toggle"> Snowballing </button>
+      <button id="searchbtn" class="toggle"> Search </button>
+      <div id="snowballing" style="display: none;">
+        <span>Snowballing</span>
+        <form id="config-form">
+          <div class="config-field">
+            <label for="citation_var">Citation Var</label>
+            <input id="citation-var" name="citation_var"></input>
+          </div>
+          <div class="config-field">
+            <label for="citation_file">Citation File</label>
+            <input id="citation-file" name="citation_file"></input>
+          </div>
+          <div class="config-field">
+            <label>
+              <input id="backward" name="backward" type="checkbox"></input>
+              Backward
+            </label>
+          </div>
+        </form>
+        <button id="reload"> Reload </button>
+        <button id="citedby"> Cited By </button>
+      </div>
+      <div id="search" style="display: none;">
+        
+        <span>Search</span>
+        <form id="search-form">
+          <div class="config-field">
+            <label for="scitation_var">Citation Var</label>
+            <input id="scitation-var" name="citation_var"></input>
+          </div>
+        </form>
+        <button id="goto"> Go To </button>
+        <button id="bytitle"> Search title </button>
+      </div>
       <script src="popup.js"></script>
     </body>
   </html>
