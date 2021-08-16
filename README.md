@@ -12,7 +12,10 @@ Getting started
 
 To install the tool, you should run:
 
-`$ pip install snowballing `
+```
+$ git clone https://github.com/JoaoFelipe/snowballing.git
+$ pip install -e snowballing
+```
 
 For starting a new literature review project, please run:
 ```bash
