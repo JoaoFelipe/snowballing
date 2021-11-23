@@ -2,11 +2,12 @@ import os
 from setuptools import setup, find_packages
 
 
-def recursive_path(pack, path):
+def recursive_path(pack, paths):
     matches = []
-    for root, dirnames, filenames in os.walk(os.path.join(pack, path)):
-        for filename in filenames:
-            matches.append(os.path.join(root, filename)[len(pack) + 1:])
+    for path in paths:
+        for root, dirnames, filenames in os.walk(os.path.join(pack, path)):
+            for filename in filenames:
+                matches.append(os.path.join(root, filename)[len(pack) + 1:])
     return matches
 
 
@@ -26,9 +27,7 @@ setup(
     long_description=long_description,
     packages=find_packages(),
     package_data={
-        "snowballing": (
-            recursive_path("snowballing", "example")
-        ),
+        "snowballing": recursive_path("snowballing", ["example", "bibtex"])
     },
     author=("Joao Felipe Pimentel",),
     author_email="joaofelipenp@gmail.com",
