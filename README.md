@@ -9,12 +9,18 @@ Please, find the project documentation at [https://joaofelipe.github.io/snowball
 
 Getting started
 ------------------
-
-To install the tool, you should run:
-
-```
+First of all, clone this repo:
+```bash
 $ git clone https://github.com/JoaoFelipe/snowballing.git
+```
+
+To install the tool, you need run:
+```bash
 $ pip install -e snowballing
+```
+or
+```bash
+$ python setup.py install
 ```
 
 For starting a new literature review project, please run:
