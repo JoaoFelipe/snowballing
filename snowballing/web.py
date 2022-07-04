@@ -147,7 +147,7 @@ def unified_find(info, scholar, latex, db_latex, citation_var, citation_file, ba
             "db_latex": db_latex,
             "citation": bool(should["citation"]),
             "add": should["add"],
-            "status": list(STATUS),
+            "status": sorted(list(STATUS)),
             "view_html": view_html,
             "view_autoopen": view_autoopen,
         }, work, should

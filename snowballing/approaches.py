@@ -198,23 +198,23 @@ def get_approaches(condition=None):
     return all_approaches
 
 
-def wcite(approach, works, extra=""):
+def wcite(approach, works, command="cite"):
     """Return a latex cite command with all work in an approach"""
-    return " \\cite{}{{{}}}".format(
-        extra,
+    return " \\{}{{{}}}".format(
+        command,
         ", ".join(config.approach_ids_from_work(approach, works))
     )
 
 
-def wlatex_name(approach, works):
+def wlatex_name(approach, works, command="citet"):
     """Return approach name or latex citation according to attribute _cite"""
     if not approach._cite:
         return name(approach)
-    return wcite(approach, works, "t")
+    return wcite(approach, works, command)
 
 
-def wcitea(approach, works):
+def wcitea(approach, works, command="citet"):
     """Return approach name followed by latex citation"""
     if not approach._cite:
         return name(approach) + wcite(approach, works)
-    return wcite(approach, works, "t")
+    return wcite(approach, works, command)

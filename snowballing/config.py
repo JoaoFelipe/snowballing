@@ -190,7 +190,7 @@ BIBTEX_TO_INFO = {
     ],
     "<middle>": [
         ("place", lambda old, new: _place_value(new["place1"])),
-        ("display", lambda old, new: last_name_first_author(new["authors"])),
+        ("display", lambda old, new: last_name_first_author(new.get("authors", "authors"))),
         ("pyref", lambda old, new: info_to_pyref(new)),
     ],
     "<after>": [
@@ -839,6 +839,8 @@ def work_link(work):
         if link_type == "link" and hasattr(work, "link") and work.link:
             return work.link
         if link_type == "scholar" and hasattr(work, "scholar"):
+            if isinstance(work.scholar, list):
+                return work.scholar[0]            
             return work.scholar
     return None
 
