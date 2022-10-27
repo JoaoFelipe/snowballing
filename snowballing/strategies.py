@@ -1,6 +1,7 @@
 """This module provides functions to describe the snowballing strategies"""
 
 import os
+import errno
 from collections import defaultdict, namedtuple, deque, Counter
 from copy import copy
 from functools import reduce
@@ -273,7 +274,7 @@ class State(object):
             image = p.communicate(dot.encode("utf-8"))[0]
             bundle["image/svg+xml"] = image.decode("utf-8")
         except OSError as e:
-            if e.errno != os.errno.ENOENT:
+            if e.errno != errno.ENOENT:
                 raise
 
         bundle["text/plain"] = "\n".join(map(str, self.log))
