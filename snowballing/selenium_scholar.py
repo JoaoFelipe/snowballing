@@ -73,7 +73,7 @@ def get_scholar_url(work):
 
 def click(parent, selector):
     """Click on selector"""
-    element = parent.find_element_by_css_selector(selector)
+    element = parent.find_element(By.CSS_SELECTOR, selector)
     element.click()
     return element
 
@@ -109,7 +109,7 @@ class Result(object):
 
     def set_navigation(self, driver, name, text):
         try:
-            link = driver.find_element_by_link_text(text)
+            link = driver.find_element(By.LINK_TEXT, text)
             setattr(self, name, URLQuery(link.get_attribute("href")))
         except NoSuchElementException:
             pass
@@ -319,10 +319,10 @@ def wait_for(driver, condition, delay=5):
 
 def check_captcha(driver, condition):
     """Check if it expects a captcha"""
-    captcha = driver.find_elements_by_css_selector("#captcha")
-    captcha += driver.find_elements_by_css_selector("#gs_captcha_f")
-    captcha += driver.find_elements_by_css_selector("#g-recaptcha")
-    captcha += driver.find_elements_by_css_selector("#recaptcha")
+    captcha = driver.find_elements(By.CSS_SELECTOR, "#captcha")
+    captcha += driver.find_elements(By.CSS_SELECTOR, "#gs_captcha_f")
+    captcha += driver.find_elements(By.CSS_SELECTOR, "#g-recaptcha")
+    captcha += driver.find_elements(By.CSS_SELECTOR, "#recaptcha")
     while captcha:
         print("Ops. It requires a captcha!")
         print("If you filled in the browser, type '<ok>' here.")
@@ -336,7 +336,7 @@ def check_captcha(driver, condition):
                 wait_for(driver, condition)
             break
         except TimeoutException:
-            captcha = driver.find_elements_by_css_selector("#captcha")
+            captcha = driver.find_elements(By.CSS_SELECTOR, "#captcha")
 
 
 class ScholarSettingsTask(object):
